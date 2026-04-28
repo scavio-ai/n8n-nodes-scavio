@@ -1,0 +1,112 @@
+import type { INodeProperties } from 'n8n-workflow';
+
+export const amazonOperations: INodeProperties[] = [
+	{
+		displayName: 'Operation',
+		name: 'operation',
+		type: 'options',
+		noDataExpression: true,
+		displayOptions: { show: { resource: ['amazon'] } },
+		options: [
+			{
+				name: 'Search Products',
+				value: 'search',
+				action: 'Search amazon products',
+				description: 'Search Amazon and return product listings',
+				routing: { request: { method: 'POST', url: '/api/v1/amazon/search' } },
+			},
+			{
+				name: 'Get Product',
+				value: 'product',
+				action: 'Get an amazon product',
+				description: 'Get detailed information for an Amazon product by ASIN',
+				routing: { request: { method: 'POST', url: '/api/v1/amazon/product' } },
+			},
+		],
+		default: 'search',
+	},
+];
+
+export const amazonFields: INodeProperties[] = [
+	{
+		displayName: 'Query',
+		name: 'query',
+		type: 'string',
+		required: true,
+		default: '',
+		placeholder: 'wireless noise cancelling headphones',
+		displayOptions: { show: { resource: ['amazon'], operation: ['search'] } },
+		routing: { request: { body: { query: '={{ $value }}' } } },
+		description: 'Product search query',
+	},
+	{
+		displayName: 'ASIN',
+		name: 'query',
+		type: 'string',
+		required: true,
+		default: '',
+		placeholder: 'B09V3KXJPB',
+		displayOptions: { show: { resource: ['amazon'], operation: ['product'] } },
+		routing: { request: { body: { query: '={{ $value }}' } } },
+		description: 'The 10-character Amazon product ID, e.g. B09V3KXJPB. Found in /dp/ASIN URLs.',
+	},
+	{
+		displayName: 'Domain',
+		name: 'domain',
+		type: 'string',
+		default: 'com',
+		placeholder: 'com',
+		displayOptions: { show: { resource: ['amazon'] } },
+		routing: { request: { body: { domain: '={{ $value }}' } } },
+		description: 'Amazon domain suffix, e.g. com (US), co.uk (UK), de (Germany), co.jp (Japan)',
+	},
+	{
+		displayName: 'Additional Options',
+		name: 'additionalOptions',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
+		displayOptions: { show: { resource: ['amazon'], operation: ['search'] } },
+		options: [
+			{
+				displayName: 'Sort By',
+				name: 'sort_by',
+				type: 'options',
+				default: 'featured',
+				options: [
+					{ name: 'Average Review', value: 'average_review' },
+					{ name: 'Bestsellers', value: 'bestsellers' },
+					{ name: 'Featured', value: 'featured' },
+					{ name: 'Most Recent', value: 'most_recent' },
+					{ name: 'Price: High to Low', value: 'price_high_to_low' },
+					{ name: 'Price: Low to High', value: 'price_low_to_high' },
+				],
+				routing: { request: { body: { sort_by: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Start Page',
+				name: 'start_page',
+				type: 'number',
+				default: 1,
+				typeOptions: { minValue: 1 },
+				routing: { request: { body: { start_page: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Min Price',
+				name: 'min_price',
+				type: 'number',
+				default: 0,
+				description: 'Minimum price in domain currency',
+				routing: { request: { body: { min_price: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Max Price',
+				name: 'max_price',
+				type: 'number',
+				default: 0,
+				description: 'Maximum price in domain currency',
+				routing: { request: { body: { max_price: '={{ $value }}' } } },
+			},
+		],
+	},
+];

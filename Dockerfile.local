@@ -1,0 +1,11 @@
+FROM n8nio/n8n:latest
+
+USER root
+RUN mkdir -p /home/node/.n8n/custom/node_modules/n8n-nodes-scavio \
+    && chown -R node:node /home/node/.n8n
+USER node
+
+COPY --chown=node:node dist /home/node/.n8n/custom/node_modules/n8n-nodes-scavio/dist
+COPY --chown=node:node package.json /home/node/.n8n/custom/node_modules/n8n-nodes-scavio/package.json
+
+RUN printf '{\n  "name": "installed-nodes",\n  "private": true,\n  "dependencies": {\n    "n8n-nodes-scavio": "0.1.0"\n  }\n}\n' > /home/node/.n8n/custom/package.json

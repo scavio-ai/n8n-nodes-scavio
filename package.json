@@ -1,0 +1,64 @@
+{
+  "name": "n8n-nodes-scavio",
+  "version": "0.1.0",
+  "description": "n8n community node for Scavio — real-time search across Google, Amazon, Walmart, YouTube, and Reddit returning structured JSON.",
+  "keywords": [
+    "n8n-community-node-package",
+    "scavio",
+    "search",
+    "google",
+    "amazon",
+    "walmart",
+    "youtube",
+    "reddit",
+    "serp",
+    "ai"
+  ],
+  "license": "MIT",
+  "homepage": "https://scavio.dev",
+  "author": {
+    "name": "Scavio",
+    "email": "support@scavio.dev",
+    "url": "https://scavio.dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scavio-dev/n8n-nodes-scavio.git"
+  },
+  "engines": {
+    "node": ">=20.15"
+  },
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc && gulp build:icons",
+    "dev": "tsc --watch",
+    "format": "prettier nodes credentials --write",
+    "lint": "eslint nodes credentials",
+    "lintfix": "eslint nodes credentials --fix",
+    "prepublishOnly": "npm run build && npm run lint"
+  },
+  "files": [
+    "dist"
+  ],
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "credentials": [
+      "dist/credentials/ScavioApi.credentials.js"
+    ],
+    "nodes": [
+      "dist/nodes/Scavio/Scavio.node.js"
+    ]
+  },
+  "devDependencies": {
+    "@typescript-eslint/parser": "^8.0.0",
+    "eslint": "^9.0.0",
+    "eslint-plugin-n8n-nodes-base": "^1.16.3",
+    "gulp": "^5.0.0",
+    "n8n-workflow": "*",
+    "prettier": "^3.0.0",
+    "typescript": "^5.6.0"
+  },
+  "peerDependencies": {
+    "n8n-workflow": "*"
+  }
+}
