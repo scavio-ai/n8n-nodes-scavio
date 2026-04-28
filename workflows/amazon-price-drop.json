@@ -1,0 +1,154 @@
+{
+  "name": "Amazon Price-Drop Alert (Scavio)",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 6
+            }
+          ]
+        }
+      },
+      "id": "1",
+      "name": "Every 6 Hours",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a1",
+              "name": "asin",
+              "value": "B09V3KXJPB",
+              "type": "string"
+            },
+            {
+              "id": "a2",
+              "name": "email",
+              "value": "you@example.com",
+              "type": "string"
+            },
+            {
+              "id": "a3",
+              "name": "domain",
+              "value": "com",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "2",
+      "name": "Config",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [460, 300],
+      "notes": "Edit ASIN, recipient email, and Amazon domain (com / co.uk / de / ...)"
+    },
+    {
+      "parameters": {
+        "resource": "amazon",
+        "operation": "product",
+        "query": "={{ $json.asin }}",
+        "domain": "={{ $json.domain }}"
+      },
+      "id": "3",
+      "name": "Scavio: Get Product",
+      "type": "n8n-nodes-scavio.scavio",
+      "typeVersion": 1,
+      "position": [680, 300],
+      "credentials": {
+        "scavioApi": {
+          "id": "REPLACE_ME",
+          "name": "Scavio API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "language": "javaScript",
+        "jsCode": "const product = $json.data ?? $json;\nconst currentPrice = Number(product.price?.value ?? product.price ?? 0);\nconst title = product.title ?? '(unknown product)';\nconst url = product.url ?? `https://www.amazon.${$('Config').first().json.domain}/dp/${$('Config').first().json.asin}`;\n\nconst sd = $workflow.staticData;\nconst lastPrice = typeof sd.lastPrice === 'number' ? sd.lastPrice : null;\nconst dropped = lastPrice !== null && currentPrice > 0 && currentPrice < lastPrice;\n\nif (currentPrice > 0) sd.lastPrice = currentPrice;\n\nreturn [{\n  json: {\n    asin: $('Config').first().json.asin,\n    email: $('Config').first().json.email,\n    title,\n    url,\n    currentPrice,\n    lastPrice,\n    dropped,\n    delta: lastPrice ? +(currentPrice - lastPrice).toFixed(2) : 0,\n  },\n}];"
+      },
+      "id": "4",
+      "name": "Compare to Last Price",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [900, 300],
+      "notes": "First run seeds $workflow.staticData.lastPrice; subsequent runs compare against it."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict" },
+          "conditions": [
+            {
+              "id": "c1",
+              "leftValue": "={{ $json.dropped }}",
+              "rightValue": true,
+              "operator": { "type": "boolean", "operation": "true", "singleValue": true }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "5",
+      "name": "Price Dropped?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [1120, 300]
+    },
+    {
+      "parameters": {
+        "fromEmail": "alerts@example.com",
+        "toEmail": "={{ $json.email }}",
+        "subject": "=Price drop on {{ $json.title }}",
+        "emailFormat": "text",
+        "text": "=Good news!\n\n{{ $json.title }} dropped from ${{ $json.lastPrice }} to ${{ $json.currentPrice }} (delta {{ $json.delta }}).\n\n{{ $json.url }}\n\n— Scavio price tracker",
+        "options": {}
+      },
+      "id": "6",
+      "name": "Send Email",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [1360, 220],
+      "credentials": {
+        "smtp": {
+          "id": "REPLACE_ME",
+          "name": "SMTP"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Every 6 Hours": {
+      "main": [[{ "node": "Config", "type": "main", "index": 0 }]]
+    },
+    "Config": {
+      "main": [[{ "node": "Scavio: Get Product", "type": "main", "index": 0 }]]
+    },
+    "Scavio: Get Product": {
+      "main": [[{ "node": "Compare to Last Price", "type": "main", "index": 0 }]]
+    },
+    "Compare to Last Price": {
+      "main": [[{ "node": "Price Dropped?", "type": "main", "index": 0 }]]
+    },
+    "Price Dropped?": {
+      "main": [
+        [{ "node": "Send Email", "type": "main", "index": 0 }],
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1" },
+  "meta": {
+    "templateCredsSetupCompleted": false
+  }
+}

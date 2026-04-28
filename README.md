@@ -29,6 +29,20 @@ You need a Scavio API key. Sign up at [scavio.dev](https://scavio.dev), grab you
 
 The credential test calls `GET /api/v1/usage` (free) so you get instant feedback that your key works.
 
+## Example: Amazon Price-Drop Alert
+
+Track an ASIN every 6 hours and email the user when the price drops.
+
+1. In n8n: **Workflows -> Import from File** -> pick [`workflows/amazon-price-drop.json`](workflows/amazon-price-drop.json).
+2. Open the **Config** node and set your `asin`, recipient `email`, and Amazon `domain`.
+3. Open **Scavio: Get Product** -> attach your Scavio API credential.
+4. Open **Send Email** -> attach your SMTP credential.
+5. Activate the workflow. The first run seeds the baseline price; every subsequent run compares against it and emails on a drop.
+
+Five nodes total: Schedule -> Config -> Scavio (Amazon Get Product) -> Code (compare) -> IF -> Email. State persists in `$workflow.staticData.lastPrice` (no external DB needed).
+
+Same shape works for Walmart (swap the Scavio operation), YouTube view-count tracking, Reddit thread monitoring, etc.
+
 ## Compatibility
 
 - Requires n8n version 1.0 or later.
