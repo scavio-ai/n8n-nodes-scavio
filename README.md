@@ -37,8 +37,8 @@ Track any number of ASINs every 6 hours and email the user when prices drop. Sta
 
 Create a Google Sheet with two tabs:
 
-- **Watchlist** — columns: `asin | email | domain | lastPrice | title`
-  Add one row per product you want to track. Leave `lastPrice` blank — the workflow fills it on the first run.
+- **Watchlist** — columns: `asin | email | domain | targetPrice | lastPrice | title`
+  Add one row per product you want to track. `targetPrice` is your alert threshold — set it to the max price you'd actually pay (e.g. `199.00`). Leave it blank or `0` to alert on any drop. Leave `lastPrice` blank; the workflow fills it on the first run.
 - **History** — columns: `asin | price | timestamp | title | url`
   Append-only log; powers price-history charts.
 
@@ -52,7 +52,7 @@ In n8n: **Workflows -> Import from File** -> pick [`workflows/amazon-price-drop.
 - **Scavio: Get Product** -> attach your Scavio API credential.
 - **Send Email** -> attach an SMTP credential and set `fromEmail`.
 
-**4. Activate.** First run seeds `lastPrice` for every row; every subsequent run compares the current price against it, appends a history row, updates the watchlist, and emails on a drop.
+**4. Activate.** First run seeds `lastPrice` for every row. Every subsequent run compares the current price against `lastPrice` and emails when it both **dropped** and **hit your `targetPrice`** (or just dropped, if no target is set). Every check appends to `History` regardless.
 
 Eight nodes: Schedule -> Sheets read -> Scavio Amazon Get Product -> Code (compute drop) -> Sheets update + Sheets append -> IF -> Email. n8n iterates per watchlist row automatically.
 
