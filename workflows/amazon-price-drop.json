@@ -13,7 +13,7 @@
       "name": "Every 6 Hours",
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
-      "position": [220, 300]
+      "position": [240, 300]
     },
     {
       "parameters": {
@@ -34,18 +34,17 @@
       "name": "Get Watchlist",
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.5,
-      "position": [440, 300],
+      "position": [460, 300],
       "credentials": {
         "googleSheetsOAuth2Api": { "id": "REPLACE_ME", "name": "Google Sheets" }
       },
-      "notes": "Watchlist sheet columns: asin | email | domain | targetPrice | lastPrice | title. Set targetPrice to your alert threshold (0 or blank = alert on any drop)."
+      "notes": "Watchlist columns: asin | email | targetPrice | title. Delete the row after you buy."
     },
     {
       "parameters": {
         "resource": "amazon",
         "operation": "product",
-        "query": "={{ $json.asin }}",
-        "domain": "={{ $json.domain || 'com' }}"
+        "query": "={{ $json.asin }}"
       },
       "id": "3",
       "name": "Scavio: Get Product",
@@ -58,120 +57,40 @@
     },
     {
       "parameters": {
-        "language": "javaScript",
-        "jsCode": "const product = $json.data ?? $json;\nconst row = $('Get Watchlist').item.json;\n\nconst currentPrice = Number(product.price?.value ?? product.price ?? 0);\nconst lastPrice = Number(row.lastPrice ?? 0);\nconst targetPrice = Number(row.targetPrice ?? 0);\n\nconst priceFell = lastPrice > 0 && currentPrice > 0 && currentPrice < lastPrice;\nconst hitTarget = targetPrice > 0 ? currentPrice <= targetPrice : true;\nconst dropped = priceFell && hitTarget;\n\nreturn [{\n  json: {\n    asin: row.asin,\n    email: row.email,\n    domain: row.domain || 'com',\n    title: product.title ?? row.title ?? row.asin,\n    url: product.url ?? `https://www.amazon.${row.domain || 'com'}/dp/${row.asin}`,\n    currentPrice,\n    lastPrice,\n    targetPrice,\n    dropped,\n    delta: lastPrice ? +(currentPrice - lastPrice).toFixed(2) : 0,\n    checkedAt: new Date().toISOString(),\n  },\n}];"
-      },
-      "id": "4",
-      "name": "Compare Prices",
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [900, 300]
-    },
-    {
-      "parameters": {
-        "operation": "appendOrUpdate",
-        "documentId": {
-          "__rl": true,
-          "mode": "list",
-          "value": "REPLACE_WITH_SPREADSHEET_ID"
-        },
-        "sheetName": {
-          "__rl": true,
-          "mode": "list",
-          "value": "Watchlist"
-        },
-        "columns": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "asin": "={{ $json.asin }}",
-            "lastPrice": "={{ $json.currentPrice }}",
-            "title": "={{ $json.title }}",
-            "lastChecked": "={{ $json.checkedAt }}"
-          },
-          "matchingColumns": ["asin"]
-        },
-        "options": {}
-      },
-      "id": "5",
-      "name": "Update Watchlist",
-      "type": "n8n-nodes-base.googleSheets",
-      "typeVersion": 4.5,
-      "position": [1140, 300],
-      "credentials": {
-        "googleSheetsOAuth2Api": { "id": "REPLACE_ME", "name": "Google Sheets" }
-      }
-    },
-    {
-      "parameters": {
-        "operation": "append",
-        "documentId": {
-          "__rl": true,
-          "mode": "list",
-          "value": "REPLACE_WITH_SPREADSHEET_ID"
-        },
-        "sheetName": {
-          "__rl": true,
-          "mode": "list",
-          "value": "History"
-        },
-        "columns": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "asin": "={{ $json.asin }}",
-            "price": "={{ $json.currentPrice }}",
-            "timestamp": "={{ $json.checkedAt }}",
-            "title": "={{ $json.title }}",
-            "url": "={{ $json.url }}"
-          }
-        },
-        "options": {}
-      },
-      "id": "6",
-      "name": "Append History",
-      "type": "n8n-nodes-base.googleSheets",
-      "typeVersion": 4.5,
-      "position": [1140, 480],
-      "credentials": {
-        "googleSheetsOAuth2Api": { "id": "REPLACE_ME", "name": "Google Sheets" }
-      },
-      "notes": "History sheet columns: asin | price | timestamp | title | url"
-    },
-    {
-      "parameters": {
         "conditions": {
-          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict" },
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "loose" },
           "conditions": [
             {
               "id": "c1",
-              "leftValue": "={{ $json.dropped }}",
-              "rightValue": true,
-              "operator": { "type": "boolean", "operation": "true", "singleValue": true }
+              "leftValue": "={{ Number($json.data?.price?.value ?? $json.data?.price ?? $json.price ?? 0) }}",
+              "rightValue": "={{ Number($('Get Watchlist').item.json.targetPrice) }}",
+              "operator": { "type": "number", "operation": "lte" }
             }
           ],
           "combinator": "and"
         },
         "options": {}
       },
-      "id": "7",
-      "name": "Price Dropped?",
+      "id": "4",
+      "name": "Below Target?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
-      "position": [1380, 300]
+      "position": [900, 300]
     },
     {
       "parameters": {
         "fromEmail": "alerts@example.com",
-        "toEmail": "={{ $json.email }}",
-        "subject": "=Price drop on {{ $json.title }}",
+        "toEmail": "={{ $('Get Watchlist').item.json.email }}",
+        "subject": "=Price hit target on {{ $('Get Watchlist').item.json.title }}",
         "emailFormat": "text",
-        "text": "=Good news!\n\n{{ $json.title }} dropped from ${{ $json.lastPrice }} to ${{ $json.currentPrice }} (delta {{ $json.delta }}, target ${{ $json.targetPrice }}).\n\n{{ $json.url }}\n\n— Scavio price tracker",
+        "text": "={{ $('Get Watchlist').item.json.title }} is now ${{ $json.data?.price?.value ?? $json.data?.price ?? $json.price }} (your target was ${{ $('Get Watchlist').item.json.targetPrice }}).\n\nhttps://www.amazon.com/dp/{{ $('Get Watchlist').item.json.asin }}\n\n— Scavio price tracker",
         "options": {}
       },
-      "id": "8",
+      "id": "5",
       "name": "Send Email",
       "type": "n8n-nodes-base.emailSend",
       "typeVersion": 2.1,
-      "position": [1620, 220],
+      "position": [1140, 220],
       "credentials": {
         "smtp": { "id": "REPLACE_ME", "name": "SMTP" }
       }
@@ -185,18 +104,9 @@
       "main": [[{ "node": "Scavio: Get Product", "type": "main", "index": 0 }]]
     },
     "Scavio: Get Product": {
-      "main": [[{ "node": "Compare Prices", "type": "main", "index": 0 }]]
+      "main": [[{ "node": "Below Target?", "type": "main", "index": 0 }]]
     },
-    "Compare Prices": {
-      "main": [[
-        { "node": "Update Watchlist", "type": "main", "index": 0 },
-        { "node": "Append History", "type": "main", "index": 0 }
-      ]]
-    },
-    "Update Watchlist": {
-      "main": [[{ "node": "Price Dropped?", "type": "main", "index": 0 }]]
-    },
-    "Price Dropped?": {
+    "Below Target?": {
       "main": [
         [{ "node": "Send Email", "type": "main", "index": 0 }],
         []

@@ -31,32 +31,27 @@ The credential test calls `GET /api/v1/usage` (free) so you get instant feedback
 
 ## Example: Amazon Price-Drop Alert
 
-Track any number of ASINs every 6 hours and email the user when prices drop. State + history live in a Google Sheet so you can edit your watchlist by editing rows, and chart price history with one click.
+Track any number of ASINs every 6 hours and email when a price hits your target.
 
 **1. Set up the spreadsheet** (one-time)
 
-Create a Google Sheet with two tabs:
-
-- **Watchlist** — columns: `asin | email | domain | targetPrice | lastPrice | title`
-  Add one row per product you want to track. `targetPrice` is your alert threshold — set it to the max price you'd actually pay (e.g. `199.00`). Leave it blank or `0` to alert on any drop. Leave `lastPrice` blank; the workflow fills it on the first run.
-- **History** — columns: `asin | price | timestamp | title | url`
-  Append-only log; powers price-history charts.
+Create a Google Sheet with one tab named **Watchlist**, columns: `asin | email | targetPrice | title`. Add one row per product you want to track and set `targetPrice` to the max price you'd pay.
 
 **2. Import the workflow**
 
-In n8n: **Workflows -> Import from File** -> pick [`workflows/amazon-price-drop.json`](workflows/amazon-price-drop.json).
+In n8n: **Workflows -> Import from File** -> [`workflows/amazon-price-drop.json`](workflows/amazon-price-drop.json).
 
-**3. Wire credentials and the spreadsheet ID**
+**3. Wire credentials**
 
-- **Get Watchlist**, **Update Watchlist**, **Append History** -> set the spreadsheet (`REPLACE_WITH_SPREADSHEET_ID`) and attach a Google Sheets OAuth credential.
-- **Scavio: Get Product** -> attach your Scavio API credential.
-- **Send Email** -> attach an SMTP credential and set `fromEmail`.
+- **Get Watchlist** -> spreadsheet ID + Google Sheets OAuth credential.
+- **Scavio: Get Product** -> Scavio API credential.
+- **Send Email** -> SMTP credential and `fromEmail`.
 
-**4. Activate.** First run seeds `lastPrice` for every row. Every subsequent run compares the current price against `lastPrice` and emails when it both **dropped** and **hit your `targetPrice`** (or just dropped, if no target is set). Every check appends to `History` regardless.
+**4. Activate.** Every 6 hours, the workflow checks each row. If the current price is at or below `targetPrice`, it emails the address in that row. **Delete the row from the sheet once you buy** — otherwise you'll keep getting reminders while the deal is still on.
 
-Eight nodes: Schedule -> Sheets read -> Scavio Amazon Get Product -> Code (compute drop) -> Sheets update + Sheets append -> IF -> Email. n8n iterates per watchlist row automatically.
+Five nodes: Schedule -> Sheets read -> Scavio Amazon Get Product -> IF (price <= target) -> Email. n8n iterates per row automatically.
 
-Same shape works for Walmart (swap the Scavio operation), YouTube view-count tracking, Reddit thread monitoring, etc.
+Same shape works for Walmart (swap the Scavio operation), YouTube view-count alerts, Reddit thread monitoring, etc.
 
 ## Compatibility
 
