@@ -1,14 +1,11 @@
 {
-  "name": "Amazon Price-Drop Alert (Scavio)",
+  "name": "Amazon Price-Drop Alert (Scavio + Sheets)",
   "nodes": [
     {
       "parameters": {
         "rule": {
           "interval": [
-            {
-              "field": "hours",
-              "hoursInterval": 6
-            }
+            { "field": "hours", "hoursInterval": 6 }
           ]
         }
       },
@@ -16,47 +13,39 @@
       "name": "Every 6 Hours",
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
-      "position": [240, 300]
+      "position": [220, 300]
     },
     {
       "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "a1",
-              "name": "asin",
-              "value": "B09V3KXJPB",
-              "type": "string"
-            },
-            {
-              "id": "a2",
-              "name": "email",
-              "value": "you@example.com",
-              "type": "string"
-            },
-            {
-              "id": "a3",
-              "name": "domain",
-              "value": "com",
-              "type": "string"
-            }
-          ]
+        "operation": "read",
+        "documentId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "REPLACE_WITH_SPREADSHEET_ID"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "list",
+          "value": "Watchlist"
         },
         "options": {}
       },
       "id": "2",
-      "name": "Config",
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [460, 300],
-      "notes": "Edit ASIN, recipient email, and Amazon domain (com / co.uk / de / ...)"
+      "name": "Get Watchlist",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [440, 300],
+      "credentials": {
+        "googleSheetsOAuth2Api": { "id": "REPLACE_ME", "name": "Google Sheets" }
+      },
+      "notes": "Watchlist sheet columns: asin | email | domain | lastPrice | title"
     },
     {
       "parameters": {
         "resource": "amazon",
         "operation": "product",
         "query": "={{ $json.asin }}",
-        "domain": "={{ $json.domain }}"
+        "domain": "={{ $json.domain || 'com' }}"
       },
       "id": "3",
       "name": "Scavio: Get Product",
@@ -64,23 +53,88 @@
       "typeVersion": 1,
       "position": [680, 300],
       "credentials": {
-        "scavioApi": {
-          "id": "REPLACE_ME",
-          "name": "Scavio API"
-        }
+        "scavioApi": { "id": "REPLACE_ME", "name": "Scavio API" }
       }
     },
     {
       "parameters": {
         "language": "javaScript",
-        "jsCode": "const product = $json.data ?? $json;\nconst currentPrice = Number(product.price?.value ?? product.price ?? 0);\nconst title = product.title ?? '(unknown product)';\nconst url = product.url ?? `https://www.amazon.${$('Config').first().json.domain}/dp/${$('Config').first().json.asin}`;\n\nconst sd = $workflow.staticData;\nconst lastPrice = typeof sd.lastPrice === 'number' ? sd.lastPrice : null;\nconst dropped = lastPrice !== null && currentPrice > 0 && currentPrice < lastPrice;\n\nif (currentPrice > 0) sd.lastPrice = currentPrice;\n\nreturn [{\n  json: {\n    asin: $('Config').first().json.asin,\n    email: $('Config').first().json.email,\n    title,\n    url,\n    currentPrice,\n    lastPrice,\n    dropped,\n    delta: lastPrice ? +(currentPrice - lastPrice).toFixed(2) : 0,\n  },\n}];"
+        "jsCode": "const product = $json.data ?? $json;\nconst row = $('Get Watchlist').item.json;\n\nconst currentPrice = Number(product.price?.value ?? product.price ?? 0);\nconst lastPrice = Number(row.lastPrice ?? 0);\nconst dropped = lastPrice > 0 && currentPrice > 0 && currentPrice < lastPrice;\n\nreturn [{\n  json: {\n    asin: row.asin,\n    email: row.email,\n    domain: row.domain || 'com',\n    title: product.title ?? row.title ?? row.asin,\n    url: product.url ?? `https://www.amazon.${row.domain || 'com'}/dp/${row.asin}`,\n    currentPrice,\n    lastPrice,\n    dropped,\n    delta: lastPrice ? +(currentPrice - lastPrice).toFixed(2) : 0,\n    checkedAt: new Date().toISOString(),\n  },\n}];"
       },
       "id": "4",
-      "name": "Compare to Last Price",
+      "name": "Compare Prices",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [900, 300],
-      "notes": "First run seeds $workflow.staticData.lastPrice; subsequent runs compare against it."
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "REPLACE_WITH_SPREADSHEET_ID"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "list",
+          "value": "Watchlist"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "asin": "={{ $json.asin }}",
+            "lastPrice": "={{ $json.currentPrice }}",
+            "title": "={{ $json.title }}",
+            "lastChecked": "={{ $json.checkedAt }}"
+          },
+          "matchingColumns": ["asin"]
+        },
+        "options": {}
+      },
+      "id": "5",
+      "name": "Update Watchlist",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [1140, 300],
+      "credentials": {
+        "googleSheetsOAuth2Api": { "id": "REPLACE_ME", "name": "Google Sheets" }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "REPLACE_WITH_SPREADSHEET_ID"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "list",
+          "value": "History"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "asin": "={{ $json.asin }}",
+            "price": "={{ $json.currentPrice }}",
+            "timestamp": "={{ $json.checkedAt }}",
+            "title": "={{ $json.title }}",
+            "url": "={{ $json.url }}"
+          }
+        },
+        "options": {}
+      },
+      "id": "6",
+      "name": "Append History",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [1140, 480],
+      "credentials": {
+        "googleSheetsOAuth2Api": { "id": "REPLACE_ME", "name": "Google Sheets" }
+      },
+      "notes": "History sheet columns: asin | price | timestamp | title | url"
     },
     {
       "parameters": {
@@ -98,11 +152,11 @@
         },
         "options": {}
       },
-      "id": "5",
+      "id": "7",
       "name": "Price Dropped?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
-      "position": [1120, 300]
+      "position": [1380, 300]
     },
     {
       "parameters": {
@@ -113,30 +167,33 @@
         "text": "=Good news!\n\n{{ $json.title }} dropped from ${{ $json.lastPrice }} to ${{ $json.currentPrice }} (delta {{ $json.delta }}).\n\n{{ $json.url }}\n\n— Scavio price tracker",
         "options": {}
       },
-      "id": "6",
+      "id": "8",
       "name": "Send Email",
       "type": "n8n-nodes-base.emailSend",
       "typeVersion": 2.1,
-      "position": [1360, 220],
+      "position": [1620, 220],
       "credentials": {
-        "smtp": {
-          "id": "REPLACE_ME",
-          "name": "SMTP"
-        }
+        "smtp": { "id": "REPLACE_ME", "name": "SMTP" }
       }
     }
   ],
   "connections": {
     "Every 6 Hours": {
-      "main": [[{ "node": "Config", "type": "main", "index": 0 }]]
+      "main": [[{ "node": "Get Watchlist", "type": "main", "index": 0 }]]
     },
-    "Config": {
+    "Get Watchlist": {
       "main": [[{ "node": "Scavio: Get Product", "type": "main", "index": 0 }]]
     },
     "Scavio: Get Product": {
-      "main": [[{ "node": "Compare to Last Price", "type": "main", "index": 0 }]]
+      "main": [[{ "node": "Compare Prices", "type": "main", "index": 0 }]]
     },
-    "Compare to Last Price": {
+    "Compare Prices": {
+      "main": [[
+        { "node": "Update Watchlist", "type": "main", "index": 0 },
+        { "node": "Append History", "type": "main", "index": 0 }
+      ]]
+    },
+    "Update Watchlist": {
       "main": [[{ "node": "Price Dropped?", "type": "main", "index": 0 }]]
     },
     "Price Dropped?": {
@@ -148,7 +205,5 @@
   },
   "active": false,
   "settings": { "executionOrder": "v1" },
-  "meta": {
-    "templateCredsSetupCompleted": false
-  }
+  "meta": { "templateCredsSetupCompleted": false }
 }

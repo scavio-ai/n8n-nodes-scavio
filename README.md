@@ -31,15 +31,30 @@ The credential test calls `GET /api/v1/usage` (free) so you get instant feedback
 
 ## Example: Amazon Price-Drop Alert
 
-Track an ASIN every 6 hours and email the user when the price drops.
+Track any number of ASINs every 6 hours and email the user when prices drop. State + history live in a Google Sheet so you can edit your watchlist by editing rows, and chart price history with one click.
 
-1. In n8n: **Workflows -> Import from File** -> pick [`workflows/amazon-price-drop.json`](workflows/amazon-price-drop.json).
-2. Open the **Config** node and set your `asin`, recipient `email`, and Amazon `domain`.
-3. Open **Scavio: Get Product** -> attach your Scavio API credential.
-4. Open **Send Email** -> attach your SMTP credential.
-5. Activate the workflow. The first run seeds the baseline price; every subsequent run compares against it and emails on a drop.
+**1. Set up the spreadsheet** (one-time)
 
-Five nodes total: Schedule -> Config -> Scavio (Amazon Get Product) -> Code (compare) -> IF -> Email. State persists in `$workflow.staticData.lastPrice` (no external DB needed).
+Create a Google Sheet with two tabs:
+
+- **Watchlist** — columns: `asin | email | domain | lastPrice | title`
+  Add one row per product you want to track. Leave `lastPrice` blank — the workflow fills it on the first run.
+- **History** — columns: `asin | price | timestamp | title | url`
+  Append-only log; powers price-history charts.
+
+**2. Import the workflow**
+
+In n8n: **Workflows -> Import from File** -> pick [`workflows/amazon-price-drop.json`](workflows/amazon-price-drop.json).
+
+**3. Wire credentials and the spreadsheet ID**
+
+- **Get Watchlist**, **Update Watchlist**, **Append History** -> set the spreadsheet (`REPLACE_WITH_SPREADSHEET_ID`) and attach a Google Sheets OAuth credential.
+- **Scavio: Get Product** -> attach your Scavio API credential.
+- **Send Email** -> attach an SMTP credential and set `fromEmail`.
+
+**4. Activate.** First run seeds `lastPrice` for every row; every subsequent run compares the current price against it, appends a history row, updates the watchlist, and emails on a drop.
+
+Eight nodes: Schedule -> Sheets read -> Scavio Amazon Get Product -> Code (compute drop) -> Sheets update + Sheets append -> IF -> Email. n8n iterates per watchlist row automatically.
 
 Same shape works for Walmart (swap the Scavio operation), YouTube view-count tracking, Reddit thread monitoring, etc.
 
