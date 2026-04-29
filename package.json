@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-scavio",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "n8n community node for Scavio — real-time search across Google, Amazon, Walmart, YouTube, and Reddit returning structured JSON.",
   "keywords": [
     "n8n-community-node-package",
@@ -18,7 +18,7 @@
   "homepage": "https://scavio.dev",
   "author": {
     "name": "Scavio",
-    "email": "support@scavio.dev",
+    "email": "scavio.dev@gmail.com",
     "url": "https://scavio.dev"
   },
   "repository": {
