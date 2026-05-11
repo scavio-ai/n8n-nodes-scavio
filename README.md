@@ -1,6 +1,6 @@
 # n8n-nodes-scavio
 
-This is an n8n community node. It lets you use [Scavio](https://scavio.dev) — a real-time search API for Google, Amazon, Walmart, YouTube, and Reddit — in your n8n workflows.
+This is an n8n community node. It lets you use [Scavio](https://scavio.dev) — a real-time search API for Google, Amazon, Walmart, YouTube, Reddit, and TikTok — in your n8n workflows.
 
 Scavio returns clean, structured JSON from organic search across the major discovery surfaces. Use it to power product research, sentiment monitoring, AI agent retrieval, lead enrichment, and content workflows.
 
@@ -21,6 +21,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | Walmart | Search Products, Get Product |
 | YouTube | Search, Get Metadata |
 | Reddit | Search Posts, Get Post |
+| TikTok | Get Profile, Get User Posts, Get Video, Get Video Comments, Get Comment Replies, Search Videos, Search Users, Get Hashtag, Get Hashtag Videos, Get User Followers, Get User Followings |
 | Account | Get Usage |
 
 ## Credentials
