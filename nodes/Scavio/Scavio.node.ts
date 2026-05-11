@@ -5,6 +5,7 @@ import { amazonOperations, amazonFields } from './descriptions/AmazonDescription
 import { walmartOperations, walmartFields } from './descriptions/WalmartDescription';
 import { youtubeOperations, youtubeFields } from './descriptions/YouTubeDescription';
 import { redditOperations, redditFields } from './descriptions/RedditDescription';
+import { tiktokOperations, tiktokFields } from './descriptions/TikTokDescription';
 import { accountOperations, accountFields } from './descriptions/AccountDescription';
 
 export class Scavio implements INodeType {
@@ -15,7 +16,7 @@ export class Scavio implements INodeType {
 		group: ['transform'],
 		version: 1,
 		subtitle: '={{ $parameter["operation"] + ": " + $parameter["resource"] }}',
-		description: 'Real-time search across Google, Amazon, Walmart, YouTube, and Reddit',
+		description: 'Real-time search across Google, Amazon, Walmart, YouTube, Reddit, and TikTok',
 		defaults: { name: 'Scavio' },
 		inputs: ['main'],
 		outputs: ['main'],
@@ -39,6 +40,7 @@ export class Scavio implements INodeType {
 					{ name: 'Amazon', value: 'amazon' },
 					{ name: 'Google', value: 'google' },
 					{ name: 'Reddit', value: 'reddit' },
+					{ name: 'TikTok', value: 'tiktok' },
 					{ name: 'Walmart', value: 'walmart' },
 					{ name: 'YouTube', value: 'youtube' },
 				],
@@ -54,6 +56,8 @@ export class Scavio implements INodeType {
 			...youtubeFields,
 			...redditOperations,
 			...redditFields,
+			...tiktokOperations,
+			...tiktokFields,
 			...accountOperations,
 			...accountFields,
 		],

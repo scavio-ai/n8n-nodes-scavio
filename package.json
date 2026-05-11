@@ -1,7 +1,7 @@
 {
   "name": "n8n-nodes-scavio",
   "version": "0.1.1",
-  "description": "n8n community node for Scavio — real-time search across Google, Amazon, Walmart, YouTube, and Reddit returning structured JSON.",
+  "description": "n8n community node for Scavio — real-time search across Google, Amazon, Walmart, YouTube, Reddit, and TikTok returning structured JSON.",
   "keywords": [
     "n8n-community-node-package",
     "scavio",
@@ -11,6 +11,7 @@
     "walmart",
     "youtube",
     "reddit",
+    "tiktok",
     "serp",
     "ai"
   ],
