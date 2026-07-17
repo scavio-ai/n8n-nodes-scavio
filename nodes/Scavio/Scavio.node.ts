@@ -1,3 +1,4 @@
+import { NodeConnectionTypes } from 'n8n-workflow';
 import type { INodeType, INodeTypeDescription } from 'n8n-workflow';
 
 import { googleOperations, googleFields } from './descriptions/GoogleDescription';
@@ -20,8 +21,8 @@ export class Scavio implements INodeType {
 		description:
 			'Real-time search across Google, Amazon, Walmart, YouTube, Reddit, TikTok, and Instagram',
 		defaults: { name: 'Scavio' },
-		inputs: ['main'],
-		outputs: ['main'],
+		inputs: [NodeConnectionTypes.Main],
+		outputs: [NodeConnectionTypes.Main],
 		usableAsTool: true,
 		credentials: [{ name: 'scavioApi', required: true }],
 		requestDefaults: {

@@ -2,6 +2,7 @@ import type {
 	IAuthenticateGeneric,
 	ICredentialTestRequest,
 	ICredentialType,
+	Icon,
 	INodeProperties,
 } from 'n8n-workflow';
 
@@ -9,6 +10,8 @@ export class ScavioApi implements ICredentialType {
 	name = 'scavioApi';
 
 	displayName = 'Scavio API';
+
+	icon: Icon = 'file:scavio.svg';
 
 	documentationUrl = 'https://scavio.dev/docs/quickstart';
 
