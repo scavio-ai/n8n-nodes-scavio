@@ -1,6 +1,6 @@
 # n8n-nodes-scavio
 
-This is an n8n community node. It lets you use [Scavio](https://scavio.dev) — a real-time search API for Google, Amazon, Walmart, YouTube, Reddit, TikTok, Instagram, Twitter, and LinkedIn — in your n8n workflows.
+This is an n8n community node. It lets you use [Scavio](https://scavio.dev) — a real-time search API for Google, Amazon, Walmart, YouTube, Reddit, TikTok, Instagram, X, and LinkedIn — in your n8n workflows.
 
 Scavio returns clean, structured JSON from organic search across the major discovery surfaces. Use it to power product research, sentiment monitoring, AI agent retrieval, lead enrichment, and content workflows.
 
@@ -23,7 +23,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | Reddit | Search Posts, Get Search Suggestions, Get Post, Get Post Comments, Get Comment Replies, Get Subreddit, Get Subreddit Posts, Get User, Get User Posts, Get User Comments, Get Popular, Get Trending |
 | TikTok | Get Profile, Get User Posts, Get Video, Get Video Comments, Get Comment Replies, Search Videos, Search Users, Get Hashtag, Get Hashtag Videos, Get User Followers, Get User Followings |
 | Instagram | Get Profile, Get User Posts, Get User Reels, Get User Tagged, Get User Stories, Get Post, Get Post Comments, Get Comment Replies, Search Users, Search Hashtags, Get User Followers, Get User Followings |
-| Twitter | Search, Get Tweet, Get Tweet Comments, Get Tweet Retweeters, Get User, Get User Tweets, Get User Replies, Get User Media, Get User Followers, Get User Followings, Get Trending |
+| X | Search, Get Tweet, Get Tweet Comments, Get Tweet Retweeters, Get User, Get User Tweets, Get User Replies, Get User Media, Get User Followers, Get User Followings, Get Trending |
 | LinkedIn | Get Person, Get Person About, Get Person Posts, Get Person Contact, Get Company, Get Company Posts, Get Company People, Get Company Jobs, Search People, Search Jobs, Search Posts, Get Job, Get Post, Get Post Comments |
 | Account | Get Usage |
 
@@ -84,6 +84,6 @@ The credential test calls `GET /api/v1/usage` (free) so you get instant feedback
 - [Amazon Product API](https://scavio.dev/amazon-product-api) and [Walmart Product API](https://scavio.dev/walmart-product-api) — product search and details
 - [YouTube API](https://scavio.dev/youtube-transcript-api), [TikTok API](https://scavio.dev/tiktok-api), and [Instagram API](https://scavio.dev/instagram-api) — video and social media data
 - [Reddit API](https://scavio.dev/reddit-api) — posts and threaded comments
-- [Twitter API](https://scavio.dev/twitter-api) and [LinkedIn API](https://scavio.dev/linkedin-api) — tweets, profiles, companies, jobs, and posts
+- [X API](https://scavio.dev/x-api) and [LinkedIn API](https://scavio.dev/linkedin-api) — tweets, profiles, companies, jobs, and posts
 
 Get a free [API key](https://dashboard.scavio.dev/sign-up) and explore the [documentation](https://scavio.dev/docs/introduction).

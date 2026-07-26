@@ -1,96 +1,96 @@
 import type { INodeProperties } from 'n8n-workflow';
 
-export const twitterOperations: INodeProperties[] = [
+export const xOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
 		noDataExpression: true,
-		displayOptions: { show: { resource: ['twitter'] } },
+		displayOptions: { show: { resource: ['x'] } },
 		options: [
 			{
 				name: 'Get Trending',
 				value: 'trending',
-				action: 'Get twitter trending topics',
+				action: 'Get X trending topics',
 				description: 'Get trending topics for a country',
-				routing: { request: { method: 'POST', url: '/api/v1/twitter/trending' } },
+				routing: { request: { method: 'POST', url: '/api/v1/x/trending' } },
 			},
 			{
 				name: 'Get Tweet',
 				value: 'tweet',
 				action: 'Get a tweet',
 				description: 'Get full details for a single tweet',
-				routing: { request: { method: 'POST', url: '/api/v1/twitter/tweet' } },
+				routing: { request: { method: 'POST', url: '/api/v1/x/tweet' } },
 			},
 			{
 				name: 'Get Tweet Comments',
 				value: 'tweetComments',
 				action: 'Get tweet comments',
 				description: 'Get replies to a tweet, ranked or chronological',
-				routing: { request: { method: 'POST', url: '/api/v1/twitter/tweet/comments' } },
+				routing: { request: { method: 'POST', url: '/api/v1/x/tweet/comments' } },
 			},
 			{
 				name: 'Get Tweet Retweeters',
 				value: 'tweetRetweeters',
 				action: 'Get tweet retweeters',
 				description: 'Get the users who retweeted a tweet',
-				routing: { request: { method: 'POST', url: '/api/v1/twitter/tweet/retweeters' } },
+				routing: { request: { method: 'POST', url: '/api/v1/x/tweet/retweeters' } },
 			},
 			{
 				name: 'Get User',
 				value: 'user',
-				action: 'Get a twitter user',
+				action: 'Get an X user',
 				description: 'Get profile details for a user',
-				routing: { request: { method: 'POST', url: '/api/v1/twitter/user' } },
+				routing: { request: { method: 'POST', url: '/api/v1/x/user' } },
 			},
 			{
 				name: 'Get User Followers',
 				value: 'userFollowers',
-				action: 'Get twitter user followers',
+				action: 'Get X user followers',
 				description: "Get a user's followers",
-				routing: { request: { method: 'POST', url: '/api/v1/twitter/user/followers' } },
+				routing: { request: { method: 'POST', url: '/api/v1/x/user/followers' } },
 			},
 			{
 				name: 'Get User Followings',
 				value: 'userFollowings',
-				action: 'Get twitter user followings',
+				action: 'Get X user followings',
 				description: 'Get the accounts a user follows',
-				routing: { request: { method: 'POST', url: '/api/v1/twitter/user/followings' } },
+				routing: { request: { method: 'POST', url: '/api/v1/x/user/followings' } },
 			},
 			{
 				name: 'Get User Media',
 				value: 'userMedia',
-				action: 'Get twitter user media',
+				action: 'Get X user media',
 				description: "Get a user's media tweets",
-				routing: { request: { method: 'POST', url: '/api/v1/twitter/user/media' } },
+				routing: { request: { method: 'POST', url: '/api/v1/x/user/media' } },
 			},
 			{
 				name: 'Get User Replies',
 				value: 'userReplies',
-				action: 'Get twitter user replies',
+				action: 'Get X user replies',
 				description: "Get a user's tweets and replies",
-				routing: { request: { method: 'POST', url: '/api/v1/twitter/user/replies' } },
+				routing: { request: { method: 'POST', url: '/api/v1/x/user/replies' } },
 			},
 			{
 				name: 'Get User Tweets',
 				value: 'userTweets',
-				action: 'Get twitter user tweets',
+				action: 'Get X user tweets',
 				description: "Get a user's tweets",
-				routing: { request: { method: 'POST', url: '/api/v1/twitter/user/tweets' } },
+				routing: { request: { method: 'POST', url: '/api/v1/x/user/tweets' } },
 			},
 			{
 				name: 'Search',
 				value: 'search',
-				action: 'Search twitter',
+				action: 'Search X',
 				description: 'Search tweets and people',
-				routing: { request: { method: 'POST', url: '/api/v1/twitter/search' } },
+				routing: { request: { method: 'POST', url: '/api/v1/x/search' } },
 			},
 		],
 		default: 'search',
 	},
 ];
 
-export const twitterFields: INodeProperties[] = [
+export const xFields: INodeProperties[] = [
 	// ── Search keyword (search) ──
 	{
 		displayName: 'Search',
@@ -99,9 +99,9 @@ export const twitterFields: INodeProperties[] = [
 		required: true,
 		default: '',
 		placeholder: 'artificial intelligence',
-		displayOptions: { show: { resource: ['twitter'], operation: ['search'] } },
+		displayOptions: { show: { resource: ['x'], operation: ['search'] } },
 		routing: { request: { body: { search: '={{ $value }}' } } },
-		description: 'Twitter search query',
+		description: 'X search query',
 	},
 
 	// ── Shared tweet_id (tweet, tweetComments, tweetRetweeters) ──
@@ -113,7 +113,7 @@ export const twitterFields: INodeProperties[] = [
 		default: '',
 		placeholder: '1808168603721650364',
 		displayOptions: {
-			show: { resource: ['twitter'], operation: ['tweet', 'tweetComments', 'tweetRetweeters'] },
+			show: { resource: ['x'], operation: ['tweet', 'tweetComments', 'tweetRetweeters'] },
 		},
 		routing: { request: { body: { tweet_id: '={{ $value }}' } } },
 		description: 'The numeric ID of the tweet',
@@ -129,7 +129,7 @@ export const twitterFields: INodeProperties[] = [
 		placeholder: 'elonmusk',
 		displayOptions: {
 			show: {
-				resource: ['twitter'],
+				resource: ['x'],
 				operation: [
 					'user',
 					'userTweets',
@@ -141,7 +141,7 @@ export const twitterFields: INodeProperties[] = [
 			},
 		},
 		routing: { request: { body: { screen_name: '={{ $value }}' } } },
-		description: 'A Twitter handle without the leading @',
+		description: 'An X handle without the leading @',
 	},
 
 	// ── Country (trending) ──
@@ -151,7 +151,7 @@ export const twitterFields: INodeProperties[] = [
 		type: 'string',
 		default: 'UnitedStates',
 		placeholder: 'UnitedStates',
-		displayOptions: { show: { resource: ['twitter'], operation: ['trending'] } },
+		displayOptions: { show: { resource: ['x'], operation: ['trending'] } },
 		routing: { request: { body: { country: '={{ $value }}' } } },
 		description: 'Country name to get trending topics for (default UnitedStates)',
 	},
@@ -163,7 +163,7 @@ export const twitterFields: INodeProperties[] = [
 		type: 'collection',
 		placeholder: 'Add Option',
 		default: {},
-		displayOptions: { show: { resource: ['twitter'], operation: ['search'] } },
+		displayOptions: { show: { resource: ['x'], operation: ['search'] } },
 		options: [
 			{
 				displayName: 'Cursor',
@@ -198,7 +198,7 @@ export const twitterFields: INodeProperties[] = [
 		type: 'collection',
 		placeholder: 'Add Option',
 		default: {},
-		displayOptions: { show: { resource: ['twitter'], operation: ['tweetComments'] } },
+		displayOptions: { show: { resource: ['x'], operation: ['tweetComments'] } },
 		options: [
 			{
 				displayName: 'Cursor',
@@ -231,7 +231,7 @@ export const twitterFields: INodeProperties[] = [
 		default: {},
 		displayOptions: {
 			show: {
-				resource: ['twitter'],
+				resource: ['x'],
 				operation: [
 					'tweetRetweeters',
 					'userTweets',

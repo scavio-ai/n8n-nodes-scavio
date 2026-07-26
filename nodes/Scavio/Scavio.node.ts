@@ -8,7 +8,7 @@ import { youtubeOperations, youtubeFields } from './descriptions/YouTubeDescript
 import { redditOperations, redditFields } from './descriptions/RedditDescription';
 import { tiktokOperations, tiktokFields } from './descriptions/TikTokDescription';
 import { instagramOperations, instagramFields } from './descriptions/InstagramDescription';
-import { twitterOperations, twitterFields } from './descriptions/TwitterDescription';
+import { xOperations, xFields } from './descriptions/XDescription';
 import { linkedinOperations, linkedinFields } from './descriptions/LinkedInDescription';
 import { accountOperations, accountFields } from './descriptions/AccountDescription';
 
@@ -21,7 +21,7 @@ export class Scavio implements INodeType {
 		version: 1,
 		subtitle: '={{ $parameter["operation"] + ": " + $parameter["resource"] }}',
 		description:
-			'Real-time search across Google, Amazon, Walmart, YouTube, Reddit, TikTok, Instagram, Twitter, and LinkedIn',
+			'Real-time search across Google, Amazon, Walmart, YouTube, Reddit, TikTok, Instagram, X, and LinkedIn',
 		defaults: { name: 'Scavio' },
 		inputs: [NodeConnectionTypes.Main],
 		outputs: [NodeConnectionTypes.Main],
@@ -48,8 +48,8 @@ export class Scavio implements INodeType {
 					{ name: 'LinkedIn', value: 'linkedin' },
 					{ name: 'Reddit', value: 'reddit' },
 					{ name: 'TikTok', value: 'tiktok' },
-					{ name: 'Twitter', value: 'twitter' },
 					{ name: 'Walmart', value: 'walmart' },
+					{ name: 'X', value: 'x' },
 					{ name: 'YouTube', value: 'youtube' },
 				],
 				default: 'google',
@@ -68,8 +68,8 @@ export class Scavio implements INodeType {
 			...tiktokFields,
 			...instagramOperations,
 			...instagramFields,
-			...twitterOperations,
-			...twitterFields,
+			...xOperations,
+			...xFields,
 			...linkedinOperations,
 			...linkedinFields,
 			...accountOperations,
