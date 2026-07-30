@@ -25,7 +25,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | TikTok Shop | Search Products, Get Search Suggestions, Get Product, Get Product Reviews, Get Categories, Get Category Products, Get Shop Products, Resolve URL |
 | Instagram | Get Profile, Get User Posts, Get User Reels, Get User Tagged, Get User Stories, Get Post, Get Post Comments, Get Comment Replies, Search Users, Search Hashtags, Get User Followers, Get User Followings |
 | X | Search, Get Tweet, Get Tweet Comments, Get Tweet Retweeters, Get User, Get User Tweets, Get User Replies, Get User Media, Get User Followers, Get User Followings, Get Trending |
-| LinkedIn | Get Person, Get Person About, Get Person Posts, Get Person Contact, Get Company, Get Company Posts, Get Company People, Get Company Jobs, Search People, Search Jobs, Search Posts, Get Job, Get Post, Get Post Comments |
+| LinkedIn | Get Person, Get Person About, Get Person Posts, Get Company, Get Company Posts, Search Jobs, Get Job, Get Post, Get Post Comments |
 | Account | Get Usage |
 
 Two things to know about TikTok Shop before you build on it:

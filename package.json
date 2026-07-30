@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-scavio",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "n8n community node for Scavio — real-time search across Google, Amazon, Walmart, YouTube, Reddit, TikTok, TikTok Shop, Instagram, X, and LinkedIn returning structured JSON.",
   "keywords": [
     "n8n-community-node-package",
