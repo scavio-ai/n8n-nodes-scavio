@@ -29,7 +29,7 @@ export const linkedinOperations: INodeProperties[] = [
 				name: 'Get Company Posts',
 				value: 'companyPosts',
 				action: 'Get linked in company posts',
-				description: "Get a company's recent posts, up to 50",
+				description: "Get a company's recent posts, 50 per page",
 				routing: { request: { method: 'POST', url: '/api/v1/linkedin/company/posts' } },
 			},
 			{
@@ -57,7 +57,7 @@ export const linkedinOperations: INodeProperties[] = [
 				name: 'Get Person Posts',
 				value: 'personPosts',
 				action: 'Get linked in person posts',
-				description: "Get a member's recent posts, up to 50",
+				description: "Get a member's posts, comments, or reactions, 50 per page",
 				routing: { request: { method: 'POST', url: '/api/v1/linkedin/person/posts' } },
 			},
 			{
@@ -78,7 +78,7 @@ export const linkedinOperations: INodeProperties[] = [
 				name: 'Search Jobs',
 				value: 'searchJobs',
 				action: 'Search linked in jobs',
-				description: 'Search job listings by keyword and optional location',
+				description: 'Search job listings by keyword and optional location, 25 per page',
 				routing: { request: { method: 'POST', url: '/api/v1/linkedin/search/jobs' } },
 			},
 		],
@@ -159,6 +159,59 @@ export const linkedinFields: INodeProperties[] = [
 		description: 'Keyword to search for. Use a company name to approximate a per-company job listing.',
 	},
 
+	// -- Additional Options: Person Posts (feed type + paging) --
+	{
+		displayName: 'Additional Options',
+		name: 'additionalOptions',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
+		displayOptions: { show: { resource: ['linkedin'], operation: ['personPosts'] } },
+		options: [
+			{
+				displayName: 'Cursor',
+				name: 'cursor',
+				type: 'string',
+				default: '',
+				description: 'Next_cursor from a previous response, to fetch the following page',
+				routing: { request: { body: { cursor: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Feed Type',
+				name: 'type',
+				type: 'options',
+				default: 'posts',
+				description: 'Which feed to return',
+				options: [
+					{ name: 'Posts', value: 'posts', description: "The member's own posts" },
+					{ name: 'Comments', value: 'comments', description: 'Posts the member commented on' },
+					{ name: 'Reactions', value: 'reactions', description: 'Posts the member reacted to' },
+				],
+				routing: { request: { body: { type: '={{ $value }}' } } },
+			},
+		],
+	},
+
+	// -- Additional Options: Company Posts (paging) --
+	{
+		displayName: 'Additional Options',
+		name: 'additionalOptions',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
+		displayOptions: { show: { resource: ['linkedin'], operation: ['companyPosts'] } },
+		options: [
+			{
+				displayName: 'Cursor',
+				name: 'cursor',
+				type: 'string',
+				default: '',
+				description: 'Next_cursor from a previous response, to fetch the following page',
+				routing: { request: { body: { cursor: '={{ $value }}' } } },
+			},
+		],
+	},
+
 	// -- Additional Options: Search Jobs --
 	{
 		displayName: 'Additional Options',
@@ -168,6 +221,14 @@ export const linkedinFields: INodeProperties[] = [
 		default: {},
 		displayOptions: { show: { resource: ['linkedin'], operation: ['searchJobs'] } },
 		options: [
+			{
+				displayName: 'Cursor',
+				name: 'cursor',
+				type: 'string',
+				default: '',
+				description: 'Next_cursor from a previous response, to fetch the following page',
+				routing: { request: { body: { cursor: '={{ $value }}' } } },
+			},
 			{
 				displayName: 'Location',
 				name: 'location',
@@ -195,7 +256,7 @@ export const linkedinFields: INodeProperties[] = [
 				type: 'number',
 				default: 1,
 				typeOptions: { minValue: 1 },
-				description: 'Page number, 10 comments per page',
+				description: 'Page number. Page size varies, so keep going until a page is empty.',
 				routing: { request: { body: { page: '={{ $value }}' } } },
 			},
 		],
