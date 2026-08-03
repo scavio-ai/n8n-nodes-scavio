@@ -1,7 +1,10 @@
 import type { INodeProperties } from 'n8n-workflow';
 
 // The provider retired the linkedin/web/* namespace this node was built on. The
-// nine operations below run on web_v2 and cost 1 credit each. Five operations
+// nine operations below run on web_v2. Credit cost is not uniform: Get Person,
+// Get Person About, Get Company and Get Post cost 1; Get Person Posts, Get
+// Company Posts, Search Jobs and Get Post Comments cost 10 per page; Get Job
+// costs 30. Five operations
 // were dropped from the dropdown - Get Person Contact, Get Company People, Get
 // Company Jobs, Search People and Search Posts - because their upstream is gone
 // and the API answers them with 410; offering a broken choice in a visual node
