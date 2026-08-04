@@ -26,7 +26,8 @@ export const redditOperations: INodeProperties[] = [
 				name: 'Get Post',
 				value: 'post',
 				action: 'Get a reddit post',
-				description: "Fetch a Reddit post's metadata and full comment thread",
+				description:
+					"Fetch a Reddit post's metadata. Comments are a separate call, use Get Post Comments.",
 				routing: { request: { method: 'POST', url: '/api/v1/reddit/post' } },
 			},
 			{
@@ -128,7 +129,20 @@ export const redditFields: INodeProperties[] = [
 		description: 'Reddit search query',
 	},
 
-	// ── Post URL (post) ──
+	// ── Post lookup (post) ──
+	{
+		displayName: 'Lookup By',
+		name: 'postLookup',
+		type: 'options',
+		noDataExpression: true,
+		default: 'url',
+		displayOptions: { show: { resource: ['reddit'], operation: ['post'] } },
+		options: [
+			{ name: 'Post ID', value: 'post_id' },
+			{ name: 'Post URL', value: 'url' },
+		],
+		description: 'Whether to identify the post by its ID or by its full URL',
+	},
 	{
 		displayName: 'Post URL',
 		name: 'url',
@@ -136,9 +150,24 @@ export const redditFields: INodeProperties[] = [
 		required: true,
 		default: '',
 		placeholder: 'https://www.reddit.com/r/programming/comments/abc123/example/',
-		displayOptions: { show: { resource: ['reddit'], operation: ['post'] } },
+		displayOptions: {
+			show: { resource: ['reddit'], operation: ['post'], postLookup: ['url'] },
+		},
 		routing: { request: { body: { url: '={{ $value }}' } } },
 		description: 'Full Reddit post URL (typically returned by Search Posts)',
+	},
+	{
+		displayName: 'Post ID',
+		name: 'post_id',
+		type: 'string',
+		required: true,
+		default: '',
+		placeholder: 't3_1v6ngaf',
+		displayOptions: {
+			show: { resource: ['reddit'], operation: ['post'], postLookup: ['post_id'] },
+		},
+		routing: { request: { body: { post_id: '={{ $value }}' } } },
+		description: 'Post fullname (t3_...) or bare ID, as returned in post_id by Search Posts',
 	},
 
 	// ── Shared post_id (postComments, commentReplies) ──

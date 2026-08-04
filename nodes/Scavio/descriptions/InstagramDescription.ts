@@ -263,7 +263,7 @@ export const instagramFields: INodeProperties[] = [
 		description: 'Search keyword',
 	},
 
-	// ── Additional Options: userPosts + userReels + userTagged + userFollowers + userFollowings ──
+	// ── Additional Options: userPosts + userReels + userTagged ──
 	{
 		displayName: 'Additional Options',
 		name: 'additionalOptions',
@@ -273,7 +273,7 @@ export const instagramFields: INodeProperties[] = [
 		displayOptions: {
 			show: {
 				resource: ['instagram'],
-				operation: ['userPosts', 'userReels', 'userTagged', 'userFollowers', 'userFollowings'],
+				operation: ['userPosts', 'userReels', 'userTagged'],
 			},
 		},
 		options: [
@@ -292,6 +292,40 @@ export const instagramFields: INodeProperties[] = [
 				default: 12,
 				typeOptions: { minValue: 1, maxValue: 50 },
 				description: 'Number of items to return (1-50)',
+				routing: { request: { body: { count: '={{ $value }}' } } },
+			},
+		],
+	},
+
+	// ── Additional Options: userFollowers + userFollowings ──
+	{
+		displayName: 'Additional Options',
+		name: 'additionalOptions',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
+		displayOptions: {
+			show: {
+				resource: ['instagram'],
+				operation: ['userFollowers', 'userFollowings'],
+			},
+		},
+		options: [
+			{
+				displayName: 'Cursor',
+				name: 'cursor',
+				type: 'string',
+				default: '',
+				description: 'Pagination cursor returned from a previous response',
+				routing: { request: { body: { cursor: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Count',
+				name: 'count',
+				type: 'number',
+				default: 12,
+				typeOptions: { minValue: 1, maxValue: 100 },
+				description: 'Number of users to return (1-100)',
 				routing: { request: { body: { count: '={{ $value }}' } } },
 			},
 		],
