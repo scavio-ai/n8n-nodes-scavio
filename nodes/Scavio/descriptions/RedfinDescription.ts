@@ -1,0 +1,338 @@
+import type { INodeProperties } from 'n8n-workflow';
+
+export const redfinOperations: INodeProperties[] = [
+	{
+		displayName: 'Operation',
+		name: 'operation',
+		type: 'options',
+		noDataExpression: true,
+		displayOptions: { show: { resource: ['redfin'] } },
+		options: [
+			{
+				name: 'Get Market Stats',
+				value: 'market',
+				action: 'Get redfin market stats',
+				description:
+					'Get housing-market stats for a region: median list and sale price, price per sqft, sale-to-list ratio, average offers and days on market, year-over-year movement, the 0-100 compete score, live inventory by property type, median price and active listings per bedroom count',
+				routing: { request: { method: 'POST', url: '/api/v1/redfin/market' } },
+			},
+			{
+				name: 'Get Property',
+				value: 'property',
+				action: 'Get a redfin property',
+				description:
+					'Get one listing in full: price, Redfin Estimate and rental estimate, complete MLS fact sheet, price and tax history, listing agents, open houses, schools, climate risk, walkability, permits, zoning, comparable sales and photos',
+				routing: { request: { method: 'POST', url: '/api/v1/redfin/property' } },
+			},
+			{
+				name: 'Search Listings',
+				value: 'search',
+				action: 'Search redfin listings',
+				description:
+					'Search listings and return price, price per sqft, beds, baths, living area, lot size, year built, coordinates, listing remarks and full photo galleries, up to 350 per page. The days_on_market field always comes back null.',
+				routing: { request: { method: 'POST', url: '/api/v1/redfin/search' } },
+			},
+		],
+		default: 'search',
+	},
+];
+
+export const redfinFields: INodeProperties[] = [
+	// -- Region identity, shared by Search Listings / Get Market Stats --
+	{
+		displayName: 'Region By',
+		name: 'regionLookup',
+		type: 'options',
+		noDataExpression: true,
+		default: 'location',
+		displayOptions: { show: { resource: ['redfin'], operation: ['market', 'search'] } },
+		options: [
+			{ name: 'Region ID and Type', value: 'region_id' },
+			{ name: 'Region URL or ZIP', value: 'location' },
+		],
+		description:
+			'Whether to address the region by a redfin.com URL or ZIP, or by its numeric region ID and type',
+	},
+	{
+		displayName: 'Location',
+		name: 'location',
+		type: 'string',
+		required: true,
+		default: '',
+		placeholder: 'https://www.redfin.com/city/30749/TX/Austin',
+		displayOptions: {
+			show: { resource: ['redfin'], operation: ['market', 'search'], regionLookup: ['location'] },
+		},
+		routing: { request: { body: { location: '={{ $value }}' } } },
+		description:
+			'A redfin.com region URL (/city/, /neighborhood/, /county/ or /zipcode/) or a bare 5-digit ZIP. City NAMES are not accepted: Redfin blocks its own name lookup for us, so resolve the region on redfin.com and paste the URL.',
+	},
+	{
+		displayName: 'Region ID',
+		name: 'region_id',
+		type: 'number',
+		required: true,
+		default: 0,
+		displayOptions: {
+			show: { resource: ['redfin'], operation: ['market', 'search'], regionLookup: ['region_id'] },
+		},
+		routing: { request: { body: { region_id: '={{ $value }}' } } },
+		description:
+			"Redfin's own region ID, taken from a redfin.com region URL. It is NOT a ZIP code: they are different number spaces, and a ZIP here resolves to some other city rather than failing.",
+	},
+	{
+		displayName: 'Region Type',
+		name: 'region_type',
+		type: 'options',
+		required: true,
+		default: 6,
+		displayOptions: {
+			show: { resource: ['redfin'], operation: ['market', 'search'], regionLookup: ['region_id'] },
+		},
+		options: [
+			{ name: 'Neighborhood', value: 1 },
+			{ name: 'ZIP', value: 2 },
+			{ name: 'County', value: 5 },
+			{ name: 'City', value: 6 },
+		],
+		routing: { request: { body: { region_type: '={{ $value }}' } } },
+		description:
+			'What kind of region the Region ID refers to. It must always be sent together with Region ID.',
+	},
+
+	// -- Get Property --
+	{
+		displayName: 'Property ID',
+		name: 'property_id',
+		type: 'string',
+		required: true,
+		default: '',
+		placeholder: 'https://www.redfin.com/TX/Austin/1234-Main-St-78701/home/12345678',
+		displayOptions: { show: { resource: ['redfin'], operation: ['property'] } },
+		routing: { request: { body: { property_id: '={{ $value }}' } } },
+		description: 'Redfin property ID, or any redfin.com listing URL carrying one',
+	},
+
+	// -- Search Listings --
+	{
+		displayName: 'Listing Status',
+		name: 'listing_status',
+		type: 'options',
+		default: 'for_sale',
+		displayOptions: { show: { resource: ['redfin'], operation: ['search'] } },
+		options: [
+			{ name: 'For Rent', value: 'for_rent' },
+			{ name: 'For Sale', value: 'for_sale' },
+			{ name: 'Sold', value: 'sold' },
+		],
+		routing: { request: { body: { listing_status: '={{ $value }}' } } },
+		description: 'Which listings to return',
+	},
+	{
+		displayName: 'Sold Within Days',
+		name: 'sold_within_days',
+		type: 'number',
+		default: 90,
+		typeOptions: { minValue: 1 },
+		displayOptions: {
+			show: { resource: ['redfin'], operation: ['search'], listing_status: ['sold'] },
+		},
+		routing: { request: { body: { sold_within_days: '={{ $value }}' } } },
+		description:
+			'How far back sold listings may go. It only widens what Listing Status already chose, so it is rejected unless Listing Status is Sold.',
+	},
+	{
+		displayName: 'Additional Options',
+		name: 'additionalOptions',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
+		displayOptions: { show: { resource: ['redfin'], operation: ['search'] } },
+		options: [
+			{
+				displayName: 'Has Pool',
+				name: 'has_pool',
+				type: 'boolean',
+				default: false,
+				description: 'Whether to return only listings that have a pool',
+				routing: { request: { body: { has_pool: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Limit',
+				name: 'resultLimit',
+				type: 'number',
+				default: 100,
+				typeOptions: { minValue: 1, maxValue: 350 },
+				description: 'How many listings to return per page, 1-350',
+				routing: { request: { body: { limit: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Max Beds',
+				name: 'beds_max',
+				type: 'number',
+				default: 0,
+				typeOptions: { minValue: 0 },
+				description: 'Maximum number of bedrooms, whole numbers only',
+				routing: { request: { body: { beds_max: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Max Days on Market',
+				name: 'max_days_on_market',
+				type: 'number',
+				default: 0,
+				typeOptions: { minValue: 0 },
+				description:
+					'Upper bound on days on market. It cannot be combined with Min Days on Market, because Redfin expresses both through a single param.',
+				routing: { request: { body: { max_days_on_market: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Max HOA',
+				name: 'max_hoa',
+				type: 'number',
+				default: 0,
+				typeOptions: { minValue: 0 },
+				description: 'Maximum monthly HOA dues in USD',
+				routing: { request: { body: { max_hoa: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Max Price',
+				name: 'max_price',
+				type: 'number',
+				default: 0,
+				typeOptions: { minValue: 0 },
+				description:
+					'Maximum price in USD, or maximum monthly rent when Listing Status is For Rent',
+				routing: { request: { body: { max_price: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Max Sqft',
+				name: 'sqft_max',
+				type: 'number',
+				default: 0,
+				typeOptions: { minValue: 0 },
+				description: 'Maximum living area in square feet',
+				routing: { request: { body: { sqft_max: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Max Year Built',
+				name: 'year_built_max',
+				type: 'number',
+				default: 0,
+				typeOptions: { minValue: 0 },
+				description: 'Newest year built to include',
+				routing: { request: { body: { year_built_max: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Min Baths',
+				name: 'baths_min',
+				type: 'number',
+				default: 0,
+				typeOptions: { minValue: 0 },
+				description:
+					'Minimum number of bathrooms, WHOLE baths only. Every numeric filter is truncated into the query, so 1.5 is rejected rather than silently becoming 1.',
+				routing: { request: { body: { baths_min: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Min Beds',
+				name: 'beds_min',
+				type: 'number',
+				default: 0,
+				typeOptions: { minValue: 0 },
+				description: 'Minimum number of bedrooms, whole numbers only',
+				routing: { request: { body: { beds_min: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Min Days on Market',
+				name: 'min_days_on_market',
+				type: 'number',
+				default: 0,
+				typeOptions: { minValue: 0 },
+				description:
+					'Lower bound on days on market. It cannot be combined with Max Days on Market, because Redfin expresses both through a single param.',
+				routing: { request: { body: { min_days_on_market: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Min Lot Size',
+				name: 'lot_size_min',
+				type: 'number',
+				default: 0,
+				typeOptions: { minValue: 0 },
+				description: 'Minimum lot size in square feet',
+				routing: { request: { body: { lot_size_min: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Min Price',
+				name: 'min_price',
+				type: 'number',
+				default: 0,
+				typeOptions: { minValue: 0 },
+				description:
+					'Minimum price in USD, or minimum monthly rent when Listing Status is For Rent',
+				routing: { request: { body: { min_price: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Min Sqft',
+				name: 'sqft_min',
+				type: 'number',
+				default: 0,
+				typeOptions: { minValue: 0 },
+				description: 'Minimum living area in square feet',
+				routing: { request: { body: { sqft_min: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Min Year Built',
+				name: 'year_built_min',
+				type: 'number',
+				default: 0,
+				typeOptions: { minValue: 0 },
+				description: 'Oldest year built to include',
+				routing: { request: { body: { year_built_min: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Page',
+				name: 'page',
+				type: 'number',
+				default: 1,
+				typeOptions: { minValue: 1 },
+				description: 'Result page to fetch',
+				routing: { request: { body: { page: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Property Type',
+				name: 'property_type',
+				type: 'options',
+				default: 'house',
+				options: [
+					{ name: 'Co Op', value: 'co_op' },
+					{ name: 'Condo', value: 'condo' },
+					{ name: 'House', value: 'house' },
+					{ name: 'Land', value: 'land' },
+					{ name: 'Multi Family', value: 'multi_family' },
+					{ name: 'Other', value: 'other' },
+					{ name: 'Townhouse', value: 'townhouse' },
+				],
+				description: 'Property class to restrict the search to',
+				routing: { request: { body: { property_type: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Sort',
+				name: 'sort',
+				type: 'options',
+				default: 'recommended',
+				options: [
+					{ name: 'Newest', value: 'newest' },
+					{ name: 'Oldest', value: 'oldest' },
+					{ name: 'Price High to Low', value: 'price_high' },
+					{ name: 'Price Low to High', value: 'price_low' },
+					{ name: 'Price per Sqft High to Low', value: 'price_per_sqft_high' },
+					{ name: 'Price per Sqft Low to High', value: 'price_per_sqft_low' },
+					{ name: 'Recommended', value: 'recommended' },
+					{ name: 'Sqft High to Low', value: 'sqft_high' },
+					{ name: 'Sqft Low to High', value: 'sqft_low' },
+				],
+				description: 'Order the listings are returned in',
+				routing: { request: { body: { sort: '={{ $value }}' } } },
+			},
+		],
+	},
+];
