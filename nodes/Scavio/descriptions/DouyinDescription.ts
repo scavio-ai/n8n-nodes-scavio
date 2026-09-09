@@ -213,7 +213,7 @@ export const douyinOperations: INodeProperties[] = [
 export const douyinFields: INodeProperties[] = [
 	// -- Shared aweme_id (getVideo, getVideoComments, getCommentReplies, getVideoStatistics, getRelated) --
 	{
-		displayName: 'Video ID (aweme_id)',
+		displayName: 'Video ID (Aweme_id)',
 		name: 'aweme_id',
 		type: 'string',
 		required: true,
@@ -231,7 +231,7 @@ export const douyinFields: INodeProperties[] = [
 
 	// -- aweme_ids for statistics (comma-separated) --
 	{
-		displayName: 'Video IDs (aweme_ids)',
+		displayName: 'Video IDs (Aweme_ids)',
 		name: 'aweme_ids',
 		type: 'string',
 		required: true,
@@ -241,7 +241,7 @@ export const douyinFields: INodeProperties[] = [
 			show: { resource: ['douyin'], operation: ['getVideoStatistics'] },
 		},
 		routing: { request: { body: { aweme_ids: '={{ $value }}' } } },
-		description: 'One or more Douyin video IDs, comma separated',
+		description: 'One or more Douyin video IDs, comma-separated',
 	},
 
 	// -- Share URL (getVideoByShareUrl) --

@@ -57,7 +57,7 @@ export const twitchFields: INodeProperties[] = [
 			},
 		},
 		routing: { request: { body: { handle: '={{ $value }}' } } },
-		description: 'Twitch username, @handle, or a twitch.tv/<user> URL',
+		description: 'Twitch username, @handle, or a twitch.tv/&lt;user&gt; URL',
 	},
 
 	// ── Clip slug (getClip) ──
@@ -70,7 +70,7 @@ export const twitchFields: INodeProperties[] = [
 		placeholder: 'DeliciousDelightfulPicklesWOOP',
 		displayOptions: { show: { resource: ['twitch'], operation: ['getClip'] } },
 		routing: { request: { body: { clip: '={{ $value }}' } } },
-		description: 'Clip slug or clip URL (clips.twitch.tv/<slug> or twitch.tv/<channel>/clip/<slug>)',
+		description: 'Clip slug or clip URL (clips.twitch.tv/&lt;slug&gt; or twitch.tv/&lt;channel&gt;/clip/&lt;slug&gt;)',
 	},
 
 	// ── Additional Options: getUserVideos ──

@@ -22,6 +22,13 @@ export const linkedinOperations: INodeProperties[] = [
 		displayOptions: { show: { resource: ['linkedin'] } },
 		options: [
 			{
+				name: 'Get Ad Detail',
+				value: 'getAdDetail',
+				action: 'Get linked in ad detail',
+				description: 'Get full detail for a single LinkedIn ad including advertiser, creative, and targeting',
+				routing: { request: { method: 'POST', url: '/api/v1/linkedin/ads/detail' } },
+			},
+			{
 				name: 'Get Company',
 				value: 'company',
 				action: 'Get a linked in company',
@@ -78,13 +85,6 @@ export const linkedinOperations: INodeProperties[] = [
 				routing: { request: { method: 'POST', url: '/api/v1/linkedin/post/comments' } },
 			},
 			{
-				name: 'Search Jobs',
-				value: 'searchJobs',
-				action: 'Search linked in jobs',
-				description: 'Search job listings by keyword and optional location, 25 per page',
-				routing: { request: { method: 'POST', url: '/api/v1/linkedin/search/jobs' } },
-			},
-			{
 				name: 'Search Ads',
 				value: 'searchAds',
 				action: 'Search linked in ads',
@@ -92,11 +92,11 @@ export const linkedinOperations: INodeProperties[] = [
 				routing: { request: { method: 'POST', url: '/api/v1/linkedin/ads/search' } },
 			},
 			{
-				name: 'Get Ad Detail',
-				value: 'getAdDetail',
-				action: 'Get linked in ad detail',
-				description: 'Get full detail for a single LinkedIn ad including advertiser, creative, and targeting',
-				routing: { request: { method: 'POST', url: '/api/v1/linkedin/ads/detail' } },
+				name: 'Search Jobs',
+				value: 'searchJobs',
+				action: 'Search linked in jobs',
+				description: 'Search job listings by keyword and optional location, 25 per page',
+				routing: { request: { method: 'POST', url: '/api/v1/linkedin/search/jobs' } },
 			},
 		],
 		default: 'person',
@@ -288,7 +288,7 @@ export const linkedinFields: INodeProperties[] = [
 		placeholder: '1564460026',
 		displayOptions: { show: { resource: ['linkedin'], operation: ['getAdDetail'] } },
 		routing: { request: { body: { ad_id: '={{ $value }}' } } },
-		description: "The ad's numeric ID, as carried by every search result. Provide ad_id or url.",
+		description: 'The ad\'s numeric ID, as carried by every search result. Provide ad_id or URL.',
 	},
 	{
 		displayName: 'Ad URL',
