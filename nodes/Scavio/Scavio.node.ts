@@ -46,6 +46,7 @@ import { legistarOperations, legistarFields } from './descriptions/LegistarDescr
 import { pinterestOperations, pinterestFields } from './descriptions/PinterestDescription';
 import { twitchOperations, twitchFields } from './descriptions/TwitchDescription';
 import { weiboOperations, weiboFields } from './descriptions/WeiboDescription';
+import { adsIntelOperations, adsIntelFields } from './descriptions/AdsIntelDescription';
 
 export class Scavio implements INodeType {
 	description: INodeTypeDescription = {
@@ -77,6 +78,7 @@ export class Scavio implements INodeType {
 				noDataExpression: true,
 				options: [
 					{ name: 'Account', value: 'account' },
+					{ name: 'Ads Intel (Cross-Platform)', value: 'adsIntel' },
 					{ name: 'Airbnb', value: 'airbnb' },
 					{ name: 'AliExpress', value: 'aliexpress' },
 					{ name: 'Amazon', value: 'amazon' },
@@ -187,6 +189,8 @@ export class Scavio implements INodeType {
 			...googleAdsFields,
 			...metaAdsOperations,
 			...metaAdsFields,
+			...adsIntelOperations,
+			...adsIntelFields,
 			...aliexpressOperations,
 			...aliexpressFields,
 			...douyinOperations,
