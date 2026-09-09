@@ -74,6 +74,13 @@ export const tiktokOperations: INodeProperties[] = [
 				routing: { request: { method: 'POST', url: '/api/v1/tiktok/video/comments' } },
 			},
 			{
+				name: 'Get Video Transcript',
+				value: 'getVideoTranscript',
+				action: 'Get tiktok video transcript',
+				description: 'Get the spoken-word transcript of a TikTok video as timestamped segments and full text',
+				routing: { request: { method: 'POST', url: '/api/v1/tiktok/video/transcript' } },
+			},
+			{
 				name: 'Search Users',
 				value: 'searchUsers',
 				action: 'Search tiktok users',
@@ -144,7 +151,7 @@ export const tiktokFields: INodeProperties[] = [
 		displayOptions: {
 			show: {
 				resource: ['tiktok'],
-				operation: ['getVideo', 'getVideoComments', 'getCommentReplies'],
+				operation: ['getVideo', 'getVideoComments', 'getCommentReplies', 'getVideoTranscript'],
 			},
 		},
 		routing: { request: { body: { video_id: '={{ $value }}' } } },
@@ -397,6 +404,39 @@ export const tiktokFields: INodeProperties[] = [
 				typeOptions: { minValue: 1, maxValue: 30 },
 				description: 'Number of videos to return (1-30)',
 				routing: { request: { body: { count: '={{ $value }}' } } },
+			},
+		],
+	},
+
+	// ── Get Video Transcript: optional URL (alternative to video_id) ──
+	{
+		displayName: 'Video URL',
+		name: 'url',
+		type: 'string',
+		default: '',
+		placeholder: 'https://www.tiktok.com/@user/video/7123456789012345678',
+		displayOptions: { show: { resource: ['tiktok'], operation: ['getVideoTranscript'] } },
+		routing: { request: { body: { url: '={{ $value }}' } } },
+		description: 'TikTok video URL or share link. Alternative to Video ID -- provide one or the other.',
+	},
+
+	// ── Get Video Transcript: additional options ──
+	{
+		displayName: 'Additional Options',
+		name: 'additionalOptions',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
+		displayOptions: { show: { resource: ['tiktok'], operation: ['getVideoTranscript'] } },
+		options: [
+			{
+				displayName: 'Language',
+				name: 'language',
+				type: 'string',
+				default: '',
+				placeholder: 'en',
+				description: 'Preferred transcript language (2-letter code). Defaults to the original spoken language.',
+				routing: { request: { body: { language: '={{ $value }}' } } },
 			},
 		],
 	},
