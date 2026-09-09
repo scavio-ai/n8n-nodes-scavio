@@ -1,0 +1,985 @@
+import type { INodeProperties } from 'n8n-workflow';
+
+export const weiboOperations: INodeProperties[] = [
+	{
+		displayName: 'Operation',
+		name: 'operation',
+		type: 'options',
+		noDataExpression: true,
+		displayOptions: { show: { resource: ['weibo'] } },
+		options: [
+			{
+				name: 'Get Channel Feed',
+				value: 'channelFeed',
+				action: 'Get weibo channel feed',
+				description: 'Popular content within a named channel',
+				routing: { request: { method: 'POST', url: '/api/v1/weibo/channel-feed' } },
+			},
+			{
+				name: 'Get Entertainment Ranking',
+				value: 'rankingEntertainment',
+				action: 'Get weibo entertainment ranking',
+				description: 'The entertainment ranking board',
+				routing: { request: { method: 'POST', url: '/api/v1/weibo/rankings/entertainment' } },
+			},
+			{
+				name: 'Get Hot Ranking Timeline',
+				value: 'rankingHotTimeline',
+				action: 'Get weibo hot ranking timeline',
+				description: 'Trending posts over a time window',
+				routing: { request: { method: 'POST', url: '/api/v1/weibo/rankings/hot-timeline' } },
+			},
+			{
+				name: 'Get Hot Search',
+				value: 'hotSearch',
+				action: 'Get weibo hot search',
+				description: 'The current hot search board',
+				routing: { request: { method: 'POST', url: '/api/v1/weibo/hot-search' } },
+			},
+			{
+				name: 'Get Hot Search Index',
+				value: 'hotSearchIndex',
+				action: 'Get weibo hot search index',
+				description: 'The top hot search entries',
+				routing: { request: { method: 'POST', url: '/api/v1/weibo/hot-search/index' } },
+			},
+			{
+				name: 'Get Life Ranking',
+				value: 'rankingLife',
+				action: 'Get weibo life ranking',
+				description: 'The lifestyle ranking board',
+				routing: { request: { method: 'POST', url: '/api/v1/weibo/rankings/life' } },
+			},
+			{
+				name: 'Get Post',
+				value: 'post',
+				action: 'Get a weibo post',
+				description: 'Full detail for a single post by id',
+				routing: { request: { method: 'POST', url: '/api/v1/weibo/post' } },
+			},
+			{
+				name: 'Get Post Comments',
+				value: 'postComments',
+				action: 'Get weibo post comments',
+				description: 'Top-level comments on a post',
+				routing: { request: { method: 'POST', url: '/api/v1/weibo/post/comments' } },
+			},
+			{
+				name: 'Get Post Likes',
+				value: 'postLikes',
+				action: 'Get weibo post likes',
+				description: 'Accounts that liked a post',
+				routing: { request: { method: 'POST', url: '/api/v1/weibo/post/likes' } },
+			},
+			{
+				name: 'Get Post Reposts',
+				value: 'postReposts',
+				action: 'Get weibo post reposts',
+				description: 'Reposts of a post',
+				routing: { request: { method: 'POST', url: '/api/v1/weibo/post/reposts' } },
+			},
+			{
+				name: 'Get Post Sub-Comments',
+				value: 'postSubComments',
+				action: 'Get weibo post sub comments',
+				description: "Replies under a post's comments",
+				routing: { request: { method: 'POST', url: '/api/v1/weibo/post/sub-comments' } },
+			},
+			{
+				name: 'Get Recommend Timeline',
+				value: 'recommendTimeline',
+				action: 'Get weibo recommend timeline',
+				description: 'The recommended home timeline',
+				routing: { request: { method: 'POST', url: '/api/v1/weibo/user/recommend-timeline' } },
+			},
+			{
+				name: 'Get Social Ranking',
+				value: 'rankingSocial',
+				action: 'Get weibo social ranking',
+				description: 'The social ranking board',
+				routing: { request: { method: 'POST', url: '/api/v1/weibo/rankings/social' } },
+			},
+			{
+				name: 'Get User Fans',
+				value: 'userFans',
+				action: 'Get weibo user fans',
+				description: "A user's followers",
+				routing: { request: { method: 'POST', url: '/api/v1/weibo/user/fans' } },
+			},
+			{
+				name: 'Get User Following',
+				value: 'userFollowing',
+				action: 'Get weibo user following',
+				description: 'Accounts a user follows',
+				routing: { request: { method: 'POST', url: '/api/v1/weibo/user/following' } },
+			},
+			{
+				name: 'Get User Info',
+				value: 'userInfo',
+				action: 'Get weibo user info',
+				description: 'Profile details for a user by id or handle',
+				routing: { request: { method: 'POST', url: '/api/v1/weibo/user/info' } },
+			},
+			{
+				name: 'Get User Info Detail',
+				value: 'userInfoDetail',
+				action: 'Get weibo user info detail',
+				description: 'Extended profile details for a user',
+				routing: { request: { method: 'POST', url: '/api/v1/weibo/user/info-detail' } },
+			},
+			{
+				name: 'Get User Original Posts',
+				value: 'userOriginalPosts',
+				action: 'Get weibo user original posts',
+				description: "A user's original (non-repost) posts",
+				routing: { request: { method: 'POST', url: '/api/v1/weibo/user/original-posts' } },
+			},
+			{
+				name: 'Get User Posts',
+				value: 'userPosts',
+				action: 'Get weibo user posts',
+				description: "A user's posts with optional detail level",
+				routing: { request: { method: 'POST', url: '/api/v1/weibo/user/posts' } },
+			},
+			{
+				name: 'Get User Video Collection',
+				value: 'userVideoCollection',
+				action: 'Get weibo user video collection',
+				description: 'Videos inside a collection folder',
+				routing: { request: { method: 'POST', url: '/api/v1/weibo/user/video-collection' } },
+			},
+			{
+				name: 'Get User Video Collections',
+				value: 'userVideoCollections',
+				action: 'Get weibo user video collections',
+				description: "A user's video collection folders",
+				routing: { request: { method: 'POST', url: '/api/v1/weibo/user/video-collections' } },
+			},
+			{
+				name: 'Get User Videos',
+				value: 'userVideos',
+				action: 'Get weibo user videos',
+				description: "A user's published videos",
+				routing: { request: { method: 'POST', url: '/api/v1/weibo/user/videos' } },
+			},
+			{
+				name: 'Search Advanced',
+				value: 'searchAdvanced',
+				action: 'Search weibo advanced',
+				description: 'Keyword search with type and time filters',
+				routing: { request: { method: 'POST', url: '/api/v1/weibo/search/advanced' } },
+			},
+			{
+				name: 'Search AI',
+				value: 'searchAi',
+				action: 'Search weibo with ai',
+				description: 'AI-assisted answer for a query',
+				routing: { request: { method: 'POST', url: '/api/v1/weibo/search/ai' } },
+			},
+			{
+				name: 'Search Images',
+				value: 'searchPics',
+				action: 'Search weibo images',
+				description: 'Image posts matching a keyword',
+				routing: { request: { method: 'POST', url: '/api/v1/weibo/search/pics' } },
+			},
+			{
+				name: 'Search Realtime',
+				value: 'searchRealtime',
+				action: 'Search weibo realtime',
+				description: 'Newest posts matching a keyword',
+				routing: { request: { method: 'POST', url: '/api/v1/weibo/search/realtime' } },
+			},
+			{
+				name: 'Search Similar',
+				value: 'searchSimilar',
+				action: 'Search weibo similar',
+				description: 'Related search terms and accounts for a keyword',
+				routing: { request: { method: 'POST', url: '/api/v1/weibo/search/similar' } },
+			},
+			{
+				name: 'Search Topics',
+				value: 'searchTopics',
+				action: 'Search weibo topics',
+				description: 'Topics matching a keyword',
+				routing: { request: { method: 'POST', url: '/api/v1/weibo/search/topics' } },
+			},
+			{
+				name: 'Search User Posts',
+				value: 'searchUserPosts',
+				action: 'Search weibo user posts',
+				description: "Search within one user's posts",
+				routing: { request: { method: 'POST', url: '/api/v1/weibo/user/search-posts' } },
+			},
+			{
+				name: 'Search Users',
+				value: 'searchUsers',
+				action: 'Search weibo users',
+				description: 'Users matching a keyword and filters',
+				routing: { request: { method: 'POST', url: '/api/v1/weibo/search/users' } },
+			},
+			{
+				name: 'Search Videos',
+				value: 'searchVideos',
+				action: 'Search weibo videos',
+				description: 'Videos matching a keyword',
+				routing: { request: { method: 'POST', url: '/api/v1/weibo/search/videos' } },
+			},
+		],
+		default: 'userInfo',
+	},
+];
+
+export const weiboFields: INodeProperties[] = [
+	// -- User Info: uid or custom handle --
+	{
+		displayName: 'User ID',
+		name: 'uid',
+		type: 'string',
+		default: '',
+		placeholder: '7277477906',
+		displayOptions: { show: { resource: ['weibo'], operation: ['userInfo'] } },
+		routing: { request: { body: { uid: '={{ $value }}' } } },
+		description: 'Numeric user id. Either uid or Custom Handle is required.',
+	},
+	{
+		displayName: 'Custom Handle',
+		name: 'custom',
+		type: 'string',
+		default: '',
+		placeholder: 'shuqi',
+		displayOptions: { show: { resource: ['weibo'], operation: ['userInfo'] } },
+		routing: { request: { body: { custom: '={{ $value }}' } } },
+		description: 'Custom profile handle. Either uid or Custom Handle is required.',
+	},
+
+	// -- Shared uid for user operations --
+	{
+		displayName: 'User ID',
+		name: 'uid',
+		type: 'string',
+		required: true,
+		default: '',
+		placeholder: '7277477906',
+		displayOptions: {
+			show: {
+				resource: ['weibo'],
+				operation: [
+					'userInfoDetail',
+					'userPosts',
+					'userOriginalPosts',
+					'userFans',
+					'userFollowing',
+					'userVideos',
+					'userVideoCollections',
+					'searchUserPosts',
+				],
+			},
+		},
+		routing: { request: { body: { uid: '={{ $value }}' } } },
+		description: 'Numeric Weibo user id',
+	},
+
+	// -- Shared post id --
+	{
+		displayName: 'Post ID',
+		name: 'id',
+		type: 'string',
+		required: true,
+		default: '',
+		placeholder: '5092682368025584',
+		displayOptions: {
+			show: {
+				resource: ['weibo'],
+				operation: ['post', 'postComments', 'postSubComments', 'postLikes', 'postReposts'],
+			},
+		},
+		routing: { request: { body: { id: '={{ $value }}' } } },
+		description: 'Weibo post id',
+	},
+
+	// -- Video Collection: cid --
+	{
+		displayName: 'Collection ID',
+		name: 'cid',
+		type: 'string',
+		required: true,
+		default: '',
+		placeholder: '4883992307236954',
+		displayOptions: { show: { resource: ['weibo'], operation: ['userVideoCollection'] } },
+		routing: { request: { body: { cid: '={{ $value }}' } } },
+		description: 'Video collection id',
+	},
+
+	// -- Search Advanced: q --
+	{
+		displayName: 'Keyword',
+		name: 'q',
+		type: 'string',
+		required: true,
+		default: '',
+		placeholder: 'yu7',
+		displayOptions: { show: { resource: ['weibo'], operation: ['searchAdvanced'] } },
+		routing: { request: { body: { q: '={{ $value }}' } } },
+		description: 'Search keyword',
+	},
+
+	// -- Shared query for search operations --
+	{
+		displayName: 'Query',
+		name: 'query',
+		type: 'string',
+		required: true,
+		default: '',
+		placeholder: 'yu7',
+		displayOptions: {
+			show: {
+				resource: ['weibo'],
+				operation: ['searchRealtime', 'searchVideos', 'searchTopics', 'searchPics', 'searchAi'],
+			},
+		},
+		routing: { request: { body: { query: '={{ $value }}' } } },
+		description: 'Search keyword',
+	},
+
+	// -- Search Users: query (optional) --
+	{
+		displayName: 'Query',
+		name: 'query',
+		type: 'string',
+		default: '',
+		placeholder: 'yu7',
+		displayOptions: { show: { resource: ['weibo'], operation: ['searchUsers'] } },
+		routing: { request: { body: { query: '={{ $value }}' } } },
+		description: 'Search keyword',
+	},
+
+	// -- Search Similar: keyword --
+	{
+		displayName: 'Keyword',
+		name: 'keyword',
+		type: 'string',
+		required: true,
+		default: '',
+		placeholder: '#微博奇遇记#',
+		displayOptions: { show: { resource: ['weibo'], operation: ['searchSimilar'] } },
+		routing: { request: { body: { keyword: '={{ $value }}' } } },
+		description: 'Search keyword',
+	},
+
+	// -- Hot Ranking Timeline: ranking_type --
+	{
+		displayName: 'Ranking Type',
+		name: 'ranking_type',
+		type: 'string',
+		required: true,
+		default: 'hour',
+		placeholder: 'hour',
+		displayOptions: { show: { resource: ['weibo'], operation: ['rankingHotTimeline'] } },
+		routing: { request: { body: { ranking_type: '={{ $value }}' } } },
+		description: 'Time window, e.g. "hour" or "day"',
+	},
+
+	// -- Additional Options: userPosts --
+	{
+		displayName: 'Additional Options',
+		name: 'additionalOptions',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
+		displayOptions: { show: { resource: ['weibo'], operation: ['userPosts'] } },
+		options: [
+			{
+				displayName: 'Page',
+				name: 'page',
+				type: 'number',
+				default: 1,
+				typeOptions: { minValue: 1, maxValue: 500 },
+				routing: { request: { body: { page: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Feature',
+				name: 'feature',
+				type: 'number',
+				default: 0,
+				typeOptions: { minValue: 0, maxValue: 3 },
+				description: 'Detail level, 0-3',
+				routing: { request: { body: { feature: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Since ID',
+				name: 'since_id',
+				type: 'string',
+				default: '',
+				description: 'Pagination cursor from a previous response',
+				routing: { request: { body: { since_id: '={{ $value }}' } } },
+			},
+		],
+	},
+
+	// -- Additional Options: userOriginalPosts --
+	{
+		displayName: 'Additional Options',
+		name: 'additionalOptions',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
+		displayOptions: { show: { resource: ['weibo'], operation: ['userOriginalPosts'] } },
+		options: [
+			{
+				displayName: 'Page',
+				name: 'page',
+				type: 'number',
+				default: 1,
+				typeOptions: { minValue: 1, maxValue: 500 },
+				routing: { request: { body: { page: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Since ID',
+				name: 'since_id',
+				type: 'string',
+				default: '',
+				description: 'Pagination cursor from a previous response',
+				routing: { request: { body: { since_id: '={{ $value }}' } } },
+			},
+		],
+	},
+
+	// -- Additional Options: userFans, userFollowing --
+	{
+		displayName: 'Additional Options',
+		name: 'additionalOptions',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
+		displayOptions: {
+			show: { resource: ['weibo'], operation: ['userFans', 'userFollowing'] },
+		},
+		options: [
+			{
+				displayName: 'Page',
+				name: 'page',
+				type: 'number',
+				default: 0,
+				typeOptions: { minValue: 0, maxValue: 500 },
+				routing: { request: { body: { page: '={{ $value }}' } } },
+			},
+		],
+	},
+
+	// -- Additional Options: userVideos --
+	{
+		displayName: 'Additional Options',
+		name: 'additionalOptions',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
+		displayOptions: { show: { resource: ['weibo'], operation: ['userVideos'] } },
+		options: [
+			{
+				displayName: 'Cursor',
+				name: 'cursor',
+				type: 'string',
+				default: '',
+				description: 'Pagination cursor from a previous response',
+				routing: { request: { body: { cursor: '={{ $value }}' } } },
+			},
+		],
+	},
+
+	// -- Additional Options: userVideoCollection --
+	{
+		displayName: 'Additional Options',
+		name: 'additionalOptions',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
+		displayOptions: { show: { resource: ['weibo'], operation: ['userVideoCollection'] } },
+		options: [
+			{
+				displayName: 'Cursor',
+				name: 'cursor',
+				type: 'string',
+				default: '',
+				description: 'Pagination cursor from a previous response',
+				routing: { request: { body: { cursor: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Tab Code',
+				name: 'tab_code',
+				type: 'number',
+				default: 0,
+				routing: { request: { body: { tab_code: '={{ $value }}' } } },
+			},
+		],
+	},
+
+	// -- Additional Options: searchUserPosts --
+	{
+		displayName: 'Additional Options',
+		name: 'additionalOptions',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
+		displayOptions: { show: { resource: ['weibo'], operation: ['searchUserPosts'] } },
+		options: [
+			{
+				displayName: 'Keyword',
+				name: 'q',
+				type: 'string',
+				default: '',
+				description: "Keyword to match within the user's posts",
+				routing: { request: { body: { q: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Page',
+				name: 'page',
+				type: 'number',
+				default: 1,
+				typeOptions: { minValue: 1, maxValue: 500 },
+				routing: { request: { body: { page: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Start Time',
+				name: 'starttime',
+				type: 'number',
+				default: 0,
+				description: 'Unix start time',
+				routing: { request: { body: { starttime: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'End Time',
+				name: 'endtime',
+				type: 'number',
+				default: 0,
+				description: 'Unix end time',
+				routing: { request: { body: { endtime: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Has Original',
+				name: 'hasori',
+				type: 'number',
+				default: 0,
+				typeOptions: { minValue: 0, maxValue: 1 },
+				routing: { request: { body: { hasori: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Has Repost',
+				name: 'hasret',
+				type: 'number',
+				default: 0,
+				typeOptions: { minValue: 0, maxValue: 1 },
+				routing: { request: { body: { hasret: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Has Text',
+				name: 'hastext',
+				type: 'number',
+				default: 0,
+				typeOptions: { minValue: 0, maxValue: 1 },
+				routing: { request: { body: { hastext: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Has Picture',
+				name: 'haspic',
+				type: 'number',
+				default: 0,
+				typeOptions: { minValue: 0, maxValue: 1 },
+				routing: { request: { body: { haspic: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Has Video',
+				name: 'hasvideo',
+				type: 'number',
+				default: 0,
+				typeOptions: { minValue: 0, maxValue: 1 },
+				routing: { request: { body: { hasvideo: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Has Music',
+				name: 'hasmusic',
+				type: 'number',
+				default: 0,
+				typeOptions: { minValue: 0, maxValue: 1 },
+				routing: { request: { body: { hasmusic: '={{ $value }}' } } },
+			},
+		],
+	},
+
+	// -- Additional Options: recommendTimeline --
+	{
+		displayName: 'Additional Options',
+		name: 'additionalOptions',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
+		displayOptions: { show: { resource: ['weibo'], operation: ['recommendTimeline'] } },
+		options: [
+			{
+				displayName: 'Refresh',
+				name: 'refresh',
+				type: 'number',
+				default: 0,
+				routing: { request: { body: { refresh: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Group ID',
+				name: 'group_id',
+				type: 'string',
+				default: '',
+				routing: { request: { body: { group_id: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Container ID',
+				name: 'containerid',
+				type: 'string',
+				default: '',
+				routing: { request: { body: { containerid: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Max ID',
+				name: 'max_id',
+				type: 'string',
+				default: '',
+				description: 'Pagination cursor from a previous response',
+				routing: { request: { body: { max_id: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Count',
+				name: 'count',
+				type: 'number',
+				default: 20,
+				typeOptions: { minValue: 1, maxValue: 50 },
+				routing: { request: { body: { count: '={{ $value }}' } } },
+			},
+		],
+	},
+
+	// -- Additional Options: post --
+	{
+		displayName: 'Additional Options',
+		name: 'additionalOptions',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
+		displayOptions: { show: { resource: ['weibo'], operation: ['post'] } },
+		options: [
+			{
+				displayName: 'Get Long Text',
+				name: 'is_get_long_text',
+				type: 'string',
+				default: '',
+				description: 'Return full long-form text ("true"/"false")',
+				routing: { request: { body: { is_get_long_text: '={{ $value }}' } } },
+			},
+		],
+	},
+
+	// -- Additional Options: postComments, postSubComments --
+	{
+		displayName: 'Additional Options',
+		name: 'additionalOptions',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
+		displayOptions: {
+			show: { resource: ['weibo'], operation: ['postComments', 'postSubComments'] },
+		},
+		options: [
+			{
+				displayName: 'Count',
+				name: 'count',
+				type: 'number',
+				default: 20,
+				typeOptions: { minValue: 1, maxValue: 50 },
+				routing: { request: { body: { count: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Max ID',
+				name: 'max_id',
+				type: 'string',
+				default: '',
+				description: 'Pagination cursor from a previous response',
+				routing: { request: { body: { max_id: '={{ $value }}' } } },
+			},
+		],
+	},
+
+	// -- Additional Options: postLikes --
+	{
+		displayName: 'Additional Options',
+		name: 'additionalOptions',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
+		displayOptions: { show: { resource: ['weibo'], operation: ['postLikes'] } },
+		options: [
+			{
+				displayName: 'Attitude Type',
+				name: 'attitude_type',
+				type: 'string',
+				default: '',
+				routing: { request: { body: { attitude_type: '={{ $value }}' } } },
+			},
+		],
+	},
+
+	// -- Additional Options: postReposts --
+	{
+		displayName: 'Additional Options',
+		name: 'additionalOptions',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
+		displayOptions: { show: { resource: ['weibo'], operation: ['postReposts'] } },
+		options: [
+			{
+				displayName: 'Max ID',
+				name: 'max_id',
+				type: 'string',
+				default: '',
+				description: 'Pagination cursor from a previous response',
+				routing: { request: { body: { max_id: '={{ $value }}' } } },
+			},
+		],
+	},
+
+	// -- Additional Options: searchAdvanced --
+	{
+		displayName: 'Additional Options',
+		name: 'additionalOptions',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
+		displayOptions: { show: { resource: ['weibo'], operation: ['searchAdvanced'] } },
+		options: [
+			{
+				displayName: 'Search Type',
+				name: 'search_type',
+				type: 'string',
+				default: '',
+				description: 'e.g. "hot", "realtime", "video"',
+				routing: { request: { body: { search_type: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Include Type',
+				name: 'include_type',
+				type: 'string',
+				default: '',
+				description: 'e.g. "pic", "video", "article"',
+				routing: { request: { body: { include_type: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Time Scope',
+				name: 'timescope',
+				type: 'string',
+				default: '',
+				description: 'e.g. "custom:2025-09-01-0:2025-09-08-23"',
+				routing: { request: { body: { timescope: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Page',
+				name: 'page',
+				type: 'number',
+				default: 1,
+				typeOptions: { minValue: 1, maxValue: 50 },
+				routing: { request: { body: { page: '={{ $value }}' } } },
+			},
+		],
+	},
+
+	// -- Additional Options: searchRealtime, searchTopics, searchPics --
+	{
+		displayName: 'Additional Options',
+		name: 'additionalOptions',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
+		displayOptions: {
+			show: {
+				resource: ['weibo'],
+				operation: ['searchRealtime', 'searchTopics', 'searchPics'],
+			},
+		},
+		options: [
+			{
+				displayName: 'Page',
+				name: 'page',
+				type: 'number',
+				default: 1,
+				typeOptions: { minValue: 1, maxValue: 50 },
+				routing: { request: { body: { page: '={{ $value }}' } } },
+			},
+		],
+	},
+
+	// -- Additional Options: searchVideos --
+	{
+		displayName: 'Additional Options',
+		name: 'additionalOptions',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
+		displayOptions: { show: { resource: ['weibo'], operation: ['searchVideos'] } },
+		options: [
+			{
+				displayName: 'Mode',
+				name: 'mode',
+				type: 'string',
+				default: '',
+				description: '"hot" or "all"',
+				routing: { request: { body: { mode: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Page',
+				name: 'page',
+				type: 'number',
+				default: 1,
+				typeOptions: { minValue: 1, maxValue: 50 },
+				routing: { request: { body: { page: '={{ $value }}' } } },
+			},
+		],
+	},
+
+	// -- Additional Options: searchUsers --
+	{
+		displayName: 'Additional Options',
+		name: 'additionalOptions',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
+		displayOptions: { show: { resource: ['weibo'], operation: ['searchUsers'] } },
+		options: [
+			{
+				displayName: 'Page',
+				name: 'page',
+				type: 'number',
+				default: 1,
+				typeOptions: { minValue: 1, maxValue: 50 },
+				routing: { request: { body: { page: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Region',
+				name: 'region',
+				type: 'string',
+				default: '',
+				description: 'e.g. "custom:11:1"',
+				routing: { request: { body: { region: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Auth',
+				name: 'auth',
+				type: 'string',
+				default: '',
+				description: 'e.g. "org_vip"',
+				routing: { request: { body: { auth: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Gender',
+				name: 'gender',
+				type: 'string',
+				default: '',
+				description: '"man" or "woman"',
+				routing: { request: { body: { gender: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Age',
+				name: 'age',
+				type: 'string',
+				default: '',
+				description: 'e.g. "22y"',
+				routing: { request: { body: { age: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Nickname',
+				name: 'nickname',
+				type: 'string',
+				default: '',
+				routing: { request: { body: { nickname: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Tag',
+				name: 'tag',
+				type: 'string',
+				default: '',
+				routing: { request: { body: { tag: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'School',
+				name: 'school',
+				type: 'string',
+				default: '',
+				routing: { request: { body: { school: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Work',
+				name: 'work',
+				type: 'string',
+				default: '',
+				routing: { request: { body: { work: '={{ $value }}' } } },
+			},
+		],
+	},
+
+	// -- Additional Options: rankingHotTimeline --
+	{
+		displayName: 'Additional Options',
+		name: 'additionalOptions',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
+		displayOptions: { show: { resource: ['weibo'], operation: ['rankingHotTimeline'] } },
+		options: [
+			{
+				displayName: 'Since ID',
+				name: 'since_id',
+				type: 'string',
+				default: '',
+				routing: { request: { body: { since_id: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Max ID',
+				name: 'max_id',
+				type: 'string',
+				default: '',
+				routing: { request: { body: { max_id: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Count',
+				name: 'count',
+				type: 'number',
+				default: 20,
+				typeOptions: { minValue: 1, maxValue: 50 },
+				routing: { request: { body: { count: '={{ $value }}' } } },
+			},
+		],
+	},
+
+	// -- Additional Options: channelFeed --
+	{
+		displayName: 'Additional Options',
+		name: 'additionalOptions',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
+		displayOptions: { show: { resource: ['weibo'], operation: ['channelFeed'] } },
+		options: [
+			{
+				displayName: 'Channel Name',
+				name: 'channel_name',
+				type: 'string',
+				default: '',
+				placeholder: '热门',
+				routing: { request: { body: { channel_name: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Page',
+				name: 'page',
+				type: 'number',
+				default: 1,
+				typeOptions: { minValue: 1, maxValue: 100 },
+				routing: { request: { body: { page: '={{ $value }}' } } },
+			},
+		],
+	},
+];

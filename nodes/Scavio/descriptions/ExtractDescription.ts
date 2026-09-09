@@ -16,6 +16,14 @@ export const extractOperations: INodeProperties[] = [
 					'Read any URL and get it back as raw HTML, readability Markdown or plain text, alongside the format, mode and content_length it came back with. Mode sets the price: Normal and Advanced cost 1 credit, Ultra costs 2. Nothing is charged unless the extraction succeeds, so a dead link, bot wall or timeout is free.',
 				routing: { request: { method: 'POST', url: '/api/v1/extract' } },
 			},
+			{
+				name: 'Screenshot',
+				value: 'screenshot',
+				action: 'Capture a web page screenshot',
+				description:
+					'Give any public URL and get back a screenshot of the page as a PNG, returned inline as a base64 data URI',
+				routing: { request: { method: 'POST', url: '/api/v1/extract/screenshot' } },
+			},
 		],
 		default: 'extract',
 	},
@@ -86,5 +94,44 @@ export const extractFields: INodeProperties[] = [
 		routing: { request: { body: { mode: '={{ $value }}' } } },
 		description:
 			'Fetch strategy, and the only thing that moves the price. Normal and Advanced cost 1 credit each, Ultra costs 2. Billing happens only on a successful extraction, so a dead link, bot wall or timeout costs nothing.',
+	},
+
+	// ── Screenshot fields ──
+	{
+		displayName: 'URL',
+		name: 'url',
+		type: 'string',
+		required: true,
+		default: '',
+		placeholder: 'https://example.com',
+		displayOptions: { show: { resource: ['extract'], operation: ['screenshot'] } },
+		routing: { request: { body: { url: '={{ $value }}' } } },
+		description: 'The page to capture. HTTP(S) only, a bare host is upgraded to HTTPS.',
+	},
+	{
+		displayName: 'Mode',
+		name: 'mode',
+		type: 'options',
+		default: 'normal',
+		displayOptions: { show: { resource: ['extract'], operation: ['screenshot'] } },
+		options: [
+			{
+				name: 'Advanced',
+				value: 'advanced',
+				description: 'Waits longer for JavaScript-built pages to finish painting',
+			},
+			{
+				name: 'Normal',
+				value: 'normal',
+				description: 'Works for most sites',
+			},
+			{
+				name: 'Ultra',
+				value: 'ultra',
+				description: 'Reaches the hardest anti-bot sites, costs more credits',
+			},
+		],
+		routing: { request: { body: { mode: '={{ $value }}' } } },
+		description: 'Capture tier. Normal works for most sites; advanced waits longer for JS pages; ultra reaches hard anti-bot sites.',
 	},
 ];

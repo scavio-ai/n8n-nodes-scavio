@@ -37,6 +37,15 @@ import { googleAdsOperations, googleAdsFields } from './descriptions/GoogleAdsDe
 import { metaAdsOperations, metaAdsFields } from './descriptions/MetaAdsDescription';
 import { extractOperations, extractFields } from './descriptions/ExtractDescription';
 import { accountOperations, accountFields } from './descriptions/AccountDescription';
+import { aliexpressOperations, aliexpressFields } from './descriptions/AliExpressDescription';
+import { douyinOperations, douyinFields } from './descriptions/DouyinDescription';
+import { etsyOperations, etsyFields } from './descriptions/EtsyDescription';
+import { facebookOperations, facebookFields } from './descriptions/FacebookDescription';
+import { githubOperations, githubFields } from './descriptions/GitHubDescription';
+import { legistarOperations, legistarFields } from './descriptions/LegistarDescription';
+import { pinterestOperations, pinterestFields } from './descriptions/PinterestDescription';
+import { twitchOperations, twitchFields } from './descriptions/TwitchDescription';
+import { weiboOperations, weiboFields } from './descriptions/WeiboDescription';
 
 export class Scavio implements INodeType {
 	description: INodeTypeDescription = {
@@ -47,7 +56,7 @@ export class Scavio implements INodeType {
 		version: 1,
 		subtitle: '={{ $parameter["operation"] + ": " + $parameter["resource"] }}',
 		description:
-			'Real-time structured data from Google, Amazon, Walmart, eBay, Target, Home Depot, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Threads, Kuaishou, Zillow, Redfin, Booking.com, Airbnb, Tripadvisor, Yelp, Indeed, Glassdoor, the App Store, Google Play, SEC EDGAR, Companies House, G2, Capterra, ad libraries, and any URL',
+			'Real-time structured data from Google, Amazon, Walmart, eBay, Target, Home Depot, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Facebook, Pinterest, Threads, Kuaishou, Douyin, Weibo, Twitch, GitHub, Etsy, AliExpress, Zillow, Redfin, Booking.com, Airbnb, Tripadvisor, Yelp, Indeed, Glassdoor, the App Store, Google Play, SEC EDGAR, Companies House, Legistar, G2, Capterra, ad libraries, and any URL',
 		defaults: { name: 'Scavio' },
 		inputs: [NodeConnectionTypes.Main],
 		outputs: [NodeConnectionTypes.Main],
@@ -69,14 +78,19 @@ export class Scavio implements INodeType {
 				options: [
 					{ name: 'Account', value: 'account' },
 					{ name: 'Airbnb', value: 'airbnb' },
+					{ name: 'AliExpress', value: 'aliexpress' },
 					{ name: 'Amazon', value: 'amazon' },
 					{ name: 'Apple App Store', value: 'appStore' },
 					{ name: 'Booking.com', value: 'booking' },
 					{ name: 'Capterra (Software Reviews)', value: 'capterra' },
 					{ name: 'Companies House (UK)', value: 'companiesHouse' },
+					{ name: 'Douyin (China)', value: 'douyin' },
 					{ name: 'eBay', value: 'ebay' },
+					{ name: 'Etsy', value: 'etsy' },
 					{ name: 'Extract (Any URL)', value: 'extract' },
+					{ name: 'Facebook', value: 'facebook' },
 					{ name: 'G2 (Software Reviews)', value: 'g2' },
+					{ name: 'GitHub', value: 'github' },
 					{ name: 'Glassdoor', value: 'glassdoor' },
 					{ name: 'Google', value: 'google' },
 					{ name: 'Google Ads Transparency', value: 'googleAds' },
@@ -85,8 +99,10 @@ export class Scavio implements INodeType {
 					{ name: 'Indeed', value: 'indeed' },
 					{ name: 'Instagram', value: 'instagram' },
 					{ name: 'Kuaishou (China)', value: 'kuaishou' },
+					{ name: 'Legistar (Municipal)', value: 'legistar' },
 					{ name: 'LinkedIn', value: 'linkedin' },
 					{ name: 'Meta Ad Library', value: 'metaAds' },
+					{ name: 'Pinterest', value: 'pinterest' },
 					{ name: 'Reddit', value: 'reddit' },
 					{ name: 'Redfin', value: 'redfin' },
 					{ name: 'SEC EDGAR', value: 'sec' },
@@ -99,7 +115,9 @@ export class Scavio implements INodeType {
 					{ name: 'TikTok', value: 'tiktok' },
 					{ name: 'TikTok Shop', value: 'tiktokShop' },
 					{ name: 'Tripadvisor', value: 'tripadvisor' },
+					{ name: 'Twitch', value: 'twitch' },
 					{ name: 'Walmart', value: 'walmart' },
+					{ name: 'Weibo (China)', value: 'weibo' },
 					{ name: 'X', value: 'x' },
 					{ name: 'Yelp', value: 'yelp' },
 					{ name: 'YouTube', value: 'youtube' },
@@ -169,6 +187,24 @@ export class Scavio implements INodeType {
 			...googleAdsFields,
 			...metaAdsOperations,
 			...metaAdsFields,
+			...aliexpressOperations,
+			...aliexpressFields,
+			...douyinOperations,
+			...douyinFields,
+			...etsyOperations,
+			...etsyFields,
+			...facebookOperations,
+			...facebookFields,
+			...githubOperations,
+			...githubFields,
+			...legistarOperations,
+			...legistarFields,
+			...pinterestOperations,
+			...pinterestFields,
+			...twitchOperations,
+			...twitchFields,
+			...weiboOperations,
+			...weiboFields,
 			...extractOperations,
 			...extractFields,
 			...accountOperations,
