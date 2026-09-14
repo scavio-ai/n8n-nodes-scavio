@@ -361,7 +361,7 @@ export const weiboFields: INodeProperties[] = [
 		type: 'string',
 		required: true,
 		default: '',
-		placeholder: '#微博奇遇记#',
+		placeholder: '#travel#',
 		displayOptions: { show: { resource: ['weibo'], operation: ['searchSimilar'] } },
 		routing: { request: { body: { keyword: '={{ $value }}' } } },
 		description: 'Search keyword',
@@ -969,7 +969,7 @@ export const weiboFields: INodeProperties[] = [
 				name: 'channel_name',
 				type: 'string',
 				default: '',
-				placeholder: '热门',
+				placeholder: 'trending',
 				routing: { request: { body: { channel_name: '={{ $value }}' } } },
 			},
 			{
