@@ -48,7 +48,7 @@ export const douyinOperations: INodeProperties[] = [
 				name: 'Get Live Room',
 				value: 'getLiveRoom',
 				action: 'Get a douyin live room',
-				description: 'Get live room detail by web_rid or URL. Costs 1 credit.',
+				description: 'Get live room detail (title, status, viewers, stream URLs, anchor) by web_rid or live.douyin.com URL. Costs 1 credit.',
 				routing: { request: { method: 'POST', url: '/api/v1/douyin/live/room' } },
 			},
 			{
@@ -180,8 +180,8 @@ export const douyinOperations: INodeProperties[] = [
 			{
 				name: 'Search Live',
 				value: 'searchLive',
-				action: 'Search douyin live streams',
-				description: 'Search Douyin live streams by keyword. Costs 10 credits.',
+				action: 'Search douyin live rooms by creator',
+				description: 'Find live rooms by creator nickname or Douyin ID, with live status, room ID and stream title. Costs 10 credits.',
 				routing: { request: { method: 'POST', url: '/api/v1/douyin/search/live' } },
 			},
 			{
@@ -400,7 +400,6 @@ export const douyinFields: INodeProperties[] = [
 					'searchVideos',
 					'searchUsers',
 					'searchMusic',
-					'searchLive',
 					'searchHashtags',
 				],
 			},
@@ -631,7 +630,6 @@ export const douyinFields: INodeProperties[] = [
 					'searchVideos',
 					'searchUsers',
 					'searchMusic',
-					'searchLive',
 					'searchHashtags',
 				],
 			},
@@ -673,24 +671,33 @@ export const douyinFields: INodeProperties[] = [
 		],
 	},
 
-	// -- Additional Options: live room (danmaku_type) --
+	// -- Live search: matches creators, not stream topics; cursor-only paging --
+	{
+		displayName: 'Creator',
+		name: 'keyword',
+		type: 'string',
+		required: true,
+		default: '',
+		placeholder: 'e.g. creator nickname or Douyin ID',
+		displayOptions: { show: { resource: ['douyin'], operation: ['searchLive'] } },
+		routing: { request: { body: { keyword: '={{ $value }}' } } },
+		description: 'Creator nickname or Douyin ID, 200 characters max',
+	},
 	{
 		displayName: 'Additional Options',
 		name: 'additionalOptions',
 		type: 'collection',
 		placeholder: 'Add Option',
 		default: {},
-		displayOptions: {
-			show: { resource: ['douyin'], operation: ['getLiveRoom'] },
-		},
+		displayOptions: { show: { resource: ['douyin'], operation: ['searchLive'] } },
 		options: [
 			{
-				displayName: 'Danmaku Type',
-				name: 'danmaku_type',
-				type: 'string',
-				default: '',
-				description: 'Danmaku (bullet comment) type filter',
-				routing: { request: { body: { danmaku_type: '={{ $value }}' } } },
+				displayName: 'Cursor',
+				name: 'cursor',
+				type: 'number',
+				default: 0,
+				description: 'Pagination cursor from a previous response',
+				routing: { request: { body: { cursor: '={{ $value }}' } } },
 			},
 		],
 	},

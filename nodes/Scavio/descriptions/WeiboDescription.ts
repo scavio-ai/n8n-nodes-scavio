@@ -9,13 +9,6 @@ export const weiboOperations: INodeProperties[] = [
 		displayOptions: { show: { resource: ['weibo'] } },
 		options: [
 			{
-				name: 'Get Channel Feed',
-				value: 'channelFeed',
-				action: 'Get weibo channel feed',
-				description: 'Popular content within a named channel',
-				routing: { request: { method: 'POST', url: '/api/v1/weibo/channel-feed' } },
-			},
-			{
 				name: 'Get Entertainment Ranking',
 				value: 'rankingEntertainment',
 				action: 'Get weibo entertainment ranking',
@@ -951,34 +944,6 @@ export const weiboFields: INodeProperties[] = [
 				default: 20,
 				typeOptions: { minValue: 1, maxValue: 50 },
 				routing: { request: { body: { count: '={{ $value }}' } } },
-			},
-		],
-	},
-
-	// -- Additional Options: channelFeed --
-	{
-		displayName: 'Additional Options',
-		name: 'additionalOptions',
-		type: 'collection',
-		placeholder: 'Add Option',
-		default: {},
-		displayOptions: { show: { resource: ['weibo'], operation: ['channelFeed'] } },
-		options: [
-			{
-				displayName: 'Channel Name',
-				name: 'channel_name',
-				type: 'string',
-				default: '',
-				placeholder: 'trending',
-				routing: { request: { body: { channel_name: '={{ $value }}' } } },
-			},
-			{
-				displayName: 'Page',
-				name: 'page',
-				type: 'number',
-				default: 1,
-				typeOptions: { minValue: 1, maxValue: 100 },
-				routing: { request: { body: { page: '={{ $value }}' } } },
 			},
 		],
 	},
