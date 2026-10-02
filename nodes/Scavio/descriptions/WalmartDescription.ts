@@ -29,8 +29,9 @@ export const walmartOperations: INodeProperties[] = [
 				value: 'product',
 				action: 'Get a walmart product',
 				description:
-					'Get full product detail: price, rating, images, specifications, availability and seller. Costs 1 credit.',
-				routing: { request: { method: 'POST', url: '/api/v1/walmart/product' } },
+					'Get full product detail: price, rating, images, specifications, availability and seller. Costs 1 credit, or 2 when targeted at one store with Store ID and Delivery ZIP.',
+				// Store-targeted calls take 10-60s; give them room.
+				routing: { request: { method: 'POST', url: '/api/v1/walmart/product', timeout: 120000 } },
 			},
 			{
 				name: 'Get Reviews',
@@ -57,12 +58,21 @@ export const walmartOperations: INodeProperties[] = [
 				routing: { request: { method: 'POST', url: '/api/v1/walmart/seller-products' } },
 			},
 			{
+				name: 'Get Stores',
+				value: 'stores',
+				action: 'Get walmart stores near a zip code',
+				description:
+					'List the Walmart stores near a US ZIP code or Canadian postal code, nearest first, with store_id, distance, address, coordinates and hours. Use a store_id with Search Products or Get Product to target that store. Costs 1 credit.',
+				routing: { request: { method: 'POST', url: '/api/v1/walmart/stores' } },
+			},
+			{
 				name: 'Search Products',
 				value: 'search',
 				action: 'Search walmart products',
 				description:
-					'Search Walmart and return structured product rows plus products_count and location. Costs 1 credit on walmart.com and walmart.ca, 2 on walmart.com.mx.',
-				routing: { request: { method: 'POST', url: '/api/v1/walmart/search' } },
+					'Search Walmart and return structured product rows plus products_count and location. Costs 1 credit on walmart.com and walmart.ca, 2 on walmart.com.mx, and 2 when targeted at one store with Store ID and Delivery ZIP.',
+				// Store-targeted calls take 10-60s; give them room.
+				routing: { request: { method: 'POST', url: '/api/v1/walmart/search', timeout: 120000 } },
 			},
 		],
 		default: 'search',
@@ -86,6 +96,44 @@ const WALMART_DOMAINS = [
 		description: 'Mexican storefront, 2 credits per call',
 	},
 ];
+
+// Store targeting runs on walmart.com and walmart.ca only.
+const WALMART_STORE_DOMAINS = [
+	{
+		name: 'Walmart.ca (Canada)',
+		value: 'ca',
+		description: 'Canadian storefront; ZIP fields take a postal code such as M5V 2T6',
+	},
+	{
+		name: 'Walmart.com (United States)',
+		value: 'com',
+		description: 'United States storefront; ZIP fields take a 5-digit ZIP',
+	},
+];
+
+// Store ID + Delivery ZIP, offered on Search Products and Get Product. Kept as
+// two constants so each lands in its alphabetical slot in the option lists.
+const WALMART_DELIVERY_ZIP_OPTION: INodeProperties = {
+	displayName: 'Delivery ZIP',
+	name: 'delivery_zip',
+	type: 'string',
+	default: '',
+	placeholder: '50036',
+	description:
+		'Shopper postal code: a 5-digit US ZIP, or a Canadian postal code such as M5V 2T6 on walmart.ca. Must be set together with Store ID. Store-targeted requests cost 2 credits and take 10-60 seconds, so keep a generous timeout.',
+	routing: { request: { body: { delivery_zip: '={{ $value }}' } } },
+};
+
+const WALMART_STORE_ID_OPTION: INodeProperties = {
+	displayName: 'Store ID',
+	name: 'store_id',
+	type: 'string',
+	default: '',
+	placeholder: '1389',
+	description:
+		'Walmart store to target, from the Get Stores operation on the same domain. Must be set together with Delivery ZIP. Works on walmart.com and walmart.ca only. The store used is echoed in data.location.',
+	routing: { request: { body: { store_id: '={{ $value }}' } } },
+};
 
 const WALMART_SORTS = [
 	{ name: 'Best Match', value: 'best_match' },
@@ -131,6 +179,20 @@ export const walmartFields: INodeProperties[] = [
 			'Walmart item ID (usItemId), the trailing numeric string on a walmart.com/ip/ product URL',
 	},
 
+	// ── ZIP / postal code (stores) ──
+	{
+		displayName: 'ZIP / Postal Code',
+		name: 'zipcode',
+		type: 'string',
+		required: true,
+		default: '',
+		placeholder: '50036',
+		displayOptions: { show: { resource: ['walmart'], operation: ['stores'] } },
+		routing: { request: { body: { zipcode: '={{ $value }}' } } },
+		description:
+			'A 5-digit US ZIP, or a Canadian postal code such as M5V 2T6 when Domain is Walmart.ca',
+	},
+
 	// ── Category ID (category) ──
 	{
 		displayName: 'Category ID',
@@ -170,6 +232,7 @@ export const walmartFields: INodeProperties[] = [
 		default: {},
 		displayOptions: { show: { resource: ['walmart'], operation: ['search'] } },
 		options: [
+			WALMART_DELIVERY_ZIP_OPTION,
 			{
 				displayName: 'Domain',
 				name: 'domain',
@@ -232,6 +295,53 @@ export const walmartFields: INodeProperties[] = [
 				options: WALMART_SORTS,
 				description: 'Result sort order',
 				routing: { request: { body: { sort_by: '={{ $value }}' } } },
+			},
+			WALMART_STORE_ID_OPTION,
+		],
+	},
+
+	// ── Additional Options: Get Product ──
+	{
+		displayName: 'Additional Options',
+		name: 'additionalOptions',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
+		displayOptions: { show: { resource: ['walmart'], operation: ['product'] } },
+		options: [
+			WALMART_DELIVERY_ZIP_OPTION,
+			{
+				displayName: 'Domain',
+				name: 'domain',
+				type: 'options',
+				default: 'com',
+				options: WALMART_STORE_DOMAINS,
+				description:
+					'Walmart storefront. Walmart.ca is only available together with Store ID and Delivery ZIP.',
+				routing: { request: { body: { domain: '={{ $value }}' } } },
+			},
+			WALMART_STORE_ID_OPTION,
+		],
+	},
+
+	// ── Additional Options: Get Stores ──
+	{
+		displayName: 'Additional Options',
+		name: 'additionalOptions',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
+		displayOptions: { show: { resource: ['walmart'], operation: ['stores'] } },
+		options: [
+			{
+				displayName: 'Domain',
+				name: 'domain',
+				type: 'options',
+				default: 'com',
+				options: WALMART_STORE_DOMAINS,
+				description:
+					'Which Walmart to list stores for. Use the returned store_id with the same domain on Search Products or Get Product.',
+				routing: { request: { body: { domain: '={{ $value }}' } } },
 			},
 		],
 	},

@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev) — a real-time structured-data API for search, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 33 resources and 190 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 43 resources and 314 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -20,7 +20,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | --- | --- | --- |
 | [Google](https://scavio.dev/docs/search-api) | 1 | Search, AI Mode, Maps Search, Maps Place Details, Maps Reviews, Shopping Search, Shopping Product, Shopping Product Stores, Flights Search, Hotels Search, Hotels Detail, News Search, Trends, Trending Now |
 | [Amazon](https://scavio.dev/docs/amazon-product) | 1 | Search Products, Get Product, Get Offers |
-| [Walmart](https://scavio.dev/docs/walmart-api) | 1, or 2 on walmart.com.mx | Search Products, Get Product, Get Reviews, Get Category Products, Get Buy Box Offer, Get Seller, Get Seller Products |
+| [Walmart](https://scavio.dev/docs/walmart-api) | 1, or 2 on walmart.com.mx or when targeting one store | Search Products, Get Product, Get Reviews, Get Category Products, Get Buy Box Offer, Get Seller, Get Seller Products, [Get Stores](https://scavio.dev/docs/walmart-stores) |
 | [eBay](https://scavio.dev/docs/ebay-search) | 1 | Search Listings, Get Listing, Get Seller Profile |
 | [Target](https://scavio.dev/docs/target-search) | 1 | Search Products, Get Category Products, Get Product, Get Reviews |
 | [Home Depot](https://scavio.dev/docs/home-depot-search) | 2 | Search Products, Get Product, Get Reviews |
@@ -76,6 +76,15 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract) | 1 normal, 1 advanced, 2 ultra | Extract Page |
 | Account | Free | Get Usage |
+
+## What changed in 0.16.0
+
+**Walmart store targeting is back, and Walmart gained a Get Stores operation.** This reverses the 0.13.0 note below that `Delivery ZIP` and `Store ID` were gone.
+
+- **Get Stores** takes a `ZIP / Postal Code` (a 5-digit US ZIP, or a Canadian postal code such as `M5V 2T6` with `Domain` set to Walmart.ca) and returns the nearby stores, nearest first, with `store_id`, distance, address, coordinates and hours. 1 credit.
+- **Search Products** and **Get Product** accept `Delivery ZIP` and `Store ID` under Additional Options. Set both together, with a `store_id` from Get Stores on the same domain, to get that one store's assortment, price and availability. The store used is echoed in `data.location`. Store-targeted calls cost 2 credits and take 10-60 seconds; the node allows them up to 120 seconds. walmart.com and walmart.ca only.
+- **Get Product** accepts `Domain` (Walmart.com or Walmart.ca). Walmart.ca is only available together with `Store ID` and `Delivery ZIP`.
+- `Device` remains retired.
 
 ## What changed in 0.13.0
 
