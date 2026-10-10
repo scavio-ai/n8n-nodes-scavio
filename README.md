@@ -66,7 +66,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Google Play](https://scavio.dev/docs/google-play-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Apps, Get App, Get Reviews |
 | [G2 (Software Reviews)](https://scavio.dev/docs/g2-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 5 | Search Products, Get Product, Get Reviews |
 | [Capterra (Software Reviews)](https://scavio.dev/docs/capterra-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Products, Get Product, Get Reviews |
-| Trustpilot | 2 | Search Businesses, Get Business Profile, Get Reviews, Get Categories, Get Category Businesses, Get Review |
+| [Trustpilot](https://scavio.dev/docs/trustpilot-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Businesses, Get Business Profile, Get Reviews, Get Categories, Get Category Businesses, Get Review |
 
 ### Ad libraries, filings, and any URL
 
@@ -297,7 +297,7 @@ The credential test calls `GET /api/v1/usage` (free) so you get instant feedback
 - Zillow, Redfin, Booking.com, Airbnb and Tripadvisor — listings, properties, stays, and reviews
 - Yelp, Indeed and Glassdoor — local businesses, job postings, employer reviews, and salaries
 - Apple App Store, Google Play, G2 and Capterra — app and software listings with reviews
-- Trustpilot — business profiles, TrustScores, filtered reviews, and category rankings
+- [Trustpilot](https://scavio.dev/trustpilot-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — business profiles, TrustScores, filtered reviews, and category rankings
 - Google Ads Transparency and Meta Ad Library — live competitor ad creatives
 - SEC EDGAR and Companies House — filings, XBRL financials, officers, and company registers
 - [Extract](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — any URL as HTML, Markdown, or plain text
