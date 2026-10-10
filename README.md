@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev) — a real-time structured-data API for search, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 43 resources and 314 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 44 resources and 327 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -24,6 +24,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [eBay](https://scavio.dev/docs/ebay-search) | 1 | Search Listings, Get Listing, Get Seller Profile |
 | [Target](https://scavio.dev/docs/target-search) | 1 | Search Products, Get Category Products, Get Product, Get Reviews |
 | [Home Depot](https://scavio.dev/docs/home-depot-search) | 2 | Search Products, Get Product, Get Reviews |
+| Costco | 1; Get Warehouse Prices, Get Availability and Get Gas Prices scale with the number of warehouses | Search Products, Get Category Products, Get Categories, Get Products, Get Warehouse Prices, Get Availability, Get Reviews, Get Warehouses, Get Gas Prices, Get Coupon Book, Get Deals, Find Clearance Items, Get Search Suggestions |
 
 ### Social and video
 
@@ -76,6 +77,20 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract) | 1 normal, 1 advanced, 2 ultra | Extract Page |
 | Account | Free | Get Usage |
+
+## What changed in 0.17.0
+
+**New resource: Costco, 13 operations.** Nothing else changed.
+
+- **Search Products**, **Get Category Products** and **Get Deals** share one set of filters: sort, brands, price range, minimum rating, on-sale, in-stock, page and page size. Set `Warehouse ID` to add that warehouse's in-store price, stock status and price code to every result.
+- **Get Warehouse Prices** compares the online price with the in-warehouse price for up to 20 items at up to 10 warehouses: discount, final price, promotion start and end dates, per-order and per-member limits and price code. 1 credit for up to 9 warehouses, 2 at 10.
+- **Get Availability** returns in-warehouse stock status for one item at up to 10 warehouses, plus pickup and same-day delivery. Status only, never quantities. 1 credit per 5 warehouses.
+- **Get Gas Prices** returns regular, premium and diesel prices near a ZIP code or coordinates, or at specific warehouses. By location 1 credit (2 on Costco.ca); by warehouse IDs 1 credit per 5 warehouses (2 per warehouse on Costco.ca).
+- **Get Coupon Book** returns the current member coupon book as data: item number, amount off, final price, scope, limits and valid dates. United States only, no parameters.
+- **Find Clearance Items** scans a query or category at one warehouse for markdown price codes: `.97` clearance and `.00`/`.88` manager markdown by default, `.49`/`.79`/`.89` special buy on request. The codes are the member-community decode; Costco does not publish them, and only items Costco lists online are covered.
+- **Get Products**, **Get Reviews**, **Get Categories**, **Get Warehouses** and **Get Search Suggestions** round out the catalog. Get Warehouses costs 2 credits on Costco.ca.
+- `Item IDs`, `Warehouse IDs` and `Brands` take comma-separated values.
+- `Country` is United States (default) or Canada everywhere except Get Coupon Book. Search Products, Get Products and Get Warehouses also accept the United Kingdom, Australia, Mexico, Japan, South Korea and Taiwan, with keyword, sort and paging only.
 
 ## What changed in 0.16.0
 

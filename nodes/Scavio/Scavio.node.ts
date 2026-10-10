@@ -16,6 +16,7 @@ import { kuaishouOperations, kuaishouFields } from './descriptions/KuaishouDescr
 import { ebayOperations, ebayFields } from './descriptions/EbayDescription';
 import { targetOperations, targetFields } from './descriptions/TargetDescription';
 import { homeDepotOperations, homeDepotFields } from './descriptions/HomeDepotDescription';
+import { costcoOperations, costcoFields } from './descriptions/CostcoDescription';
 import { zillowOperations, zillowFields } from './descriptions/ZillowDescription';
 import { bookingOperations, bookingFields } from './descriptions/BookingDescription';
 import { tripadvisorOperations, tripadvisorFields } from './descriptions/TripadvisorDescription';
@@ -57,7 +58,7 @@ export class Scavio implements INodeType {
 		version: 1,
 		subtitle: '={{ $parameter["operation"] + ": " + $parameter["resource"] }}',
 		description:
-			'Real-time structured data from Google, Amazon, Walmart, eBay, Target, Home Depot, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Facebook, Pinterest, Threads, Kuaishou, Douyin, Weibo, Twitch, GitHub, Etsy, AliExpress, Zillow, Redfin, Booking.com, Airbnb, Tripadvisor, Yelp, Indeed, Glassdoor, the App Store, Google Play, SEC EDGAR, Companies House, Legistar, G2, Capterra, ad libraries, and any URL',
+			'Real-time structured data from Google, Amazon, Walmart, eBay, Target, Home Depot, Costco, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Facebook, Pinterest, Threads, Kuaishou, Douyin, Weibo, Twitch, GitHub, Etsy, AliExpress, Zillow, Redfin, Booking.com, Airbnb, Tripadvisor, Yelp, Indeed, Glassdoor, the App Store, Google Play, SEC EDGAR, Companies House, Legistar, G2, Capterra, ad libraries, and any URL',
 		defaults: { name: 'Scavio' },
 		inputs: [NodeConnectionTypes.Main],
 		outputs: [NodeConnectionTypes.Main],
@@ -86,6 +87,7 @@ export class Scavio implements INodeType {
 					{ name: 'Booking.com', value: 'booking' },
 					{ name: 'Capterra (Software Reviews)', value: 'capterra' },
 					{ name: 'Companies House (UK)', value: 'companiesHouse' },
+					{ name: 'Costco', value: 'costco' },
 					{ name: 'Douyin (China)', value: 'douyin' },
 					{ name: 'eBay', value: 'ebay' },
 					{ name: 'Etsy', value: 'etsy' },
@@ -139,6 +141,8 @@ export class Scavio implements INodeType {
 			...targetFields,
 			...homeDepotOperations,
 			...homeDepotFields,
+			...costcoOperations,
+			...costcoFields,
 			...youtubeOperations,
 			...youtubeFields,
 			...redditOperations,
