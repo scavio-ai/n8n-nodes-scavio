@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 45 resources and 333 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 47 resources and 346 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -46,6 +46,8 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | --- | --- | --- |
 | [Zillow](https://scavio.dev/docs/zillow-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Listings, Get Property, Get Agent Reviews |
 | [Redfin](https://scavio.dev/docs/redfin-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Listings, Get Property, Get Market Stats |
+| Realtor.com | 1 | Search Listings, Get Property, Get Location Suggestions, Get Market Stats, Search Agents, Get Agent Profile |
+| Rightmove (UK) | 1 | Look Up Locations, Search Listings, Get Property, Get Sold Prices, Get Sold Property, Search Agents, Get Agent Branch |
 | [Booking.com](https://scavio.dev/docs/booking-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Properties, Get Hotel, Get Hotel Reviews |
 | [Airbnb](https://scavio.dev/docs/airbnb-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Stays, Get Listing, Get Reviews |
 | [Tripadvisor](https://scavio.dev/docs/tripadvisor-locations?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Resolve Location IDs, Search Locations, Get Location, Get Reviews |
@@ -78,6 +80,18 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra | Extract Page |
 | Account | Free | Get Usage |
+
+## What changed in 0.19.0
+
+**Two new resources: Realtor.com, 6 operations, and Rightmove (UK), 7 operations, 1 credit each.** Nothing else changed.
+
+- **Realtor.com Search Listings** covers for-sale (default; includes pending and contingent, as on the site), pending, for-rent and sold listings. Pick `Search By`: a location (city, county, ZIP, state or neighborhood), coordinates plus a 0.1-50 mile radius, or one agent's listings. Filters for price, beds, baths, square feet, lot size, year built, garage, HOA, property types, listed / sold / price-cut within N days, `Keywords` matched in the listing text (comma-separated, up to 10), new construction, foreclosures and open houses, with 10 sorts. **Up to 200 listings per call** (`Page Size`, default 50). A search reaches its first 10,000 results, so `Page` x `Page Size` may not exceed 10,000; slice big areas by price band, property type or radius.
+- **Sold prices are null in US non-disclosure states** (Texas, Utah, Wyoming, Alaska, Idaho, Kansas, Louisiana, Mississippi, Montana, New Mexico, North Dakota and parts of Missouri). Sold dates still come back.
+- **Realtor.com Get Property** takes a property ID or a realtor.com URL (`Look Up By`) and returns price and tax history, three home value estimates with history and forecast, schools, flood / wildfire / noise risk, the listing agent and a mortgage estimate. Estimates, schools and risk can be null for land or new construction. **Get Location Suggestions** returns the `slug_id` that **Get Market Stats** takes (median list, sold and rent price, days on market, year-over-year change, by property type). **Search Agents** finds agents by city, ZIP code or name (one of the three, up to 50 per page); **Get Agent Profile** returns one agent with every review and four sub-ratings.
+- **Rightmove Search Listings** covers UK property for sale or to rent. Pick `Search By`: a `location_id` from **Look Up Locations**, a place name (resolved to its first match and echoed back), or an agent branch. Filters for price (GBP; monthly rent on To Rent), beds, baths, property types, must-haves, exclusions, tenure, added within 1-14 days, under offer, radius, furnishing and let type, with 4 sorts. 24 per page, **up to 42 pages (about 1,000 listings) per search**. **There is no keyword filter on Rightmove**; match on `summary` and `key_features` in the results instead.
+- **Rightmove Get Sold Prices** returns 25 addresses per page in England and Wales, each with its full sale history since 1995, plus an area summary; filter by property type, tenure, sold within 1-30 years and radius, up to 40 pages. **Get Sold Property** returns one address's every sale and its archived last listing. **Get Property** returns a live listing in full (tenure and lease, council tax band, service charge, EPC, floorplans, nearest stations); live listings carry no price history. **Search Agents** (20 branches per page, up to 50 pages) and **Get Agent Branch** (by branch ID or profile URL) round it out.
+- `Property Types`, `Must Have`, `Exclude` and `Furnishing` are multi-selects; Realtor.com `Keywords` takes comma-separated values.
+- An unknown property, agent, sold address or branch ID answers 404 naming what was not found, and is billed like a normal call. A removed Rightmove listing is a billed 404 too.
 
 ## What changed in 0.18.0
 
@@ -157,6 +171,8 @@ Five resources are keyed by identifiers that only exist inside the target site's
 | SEC EDGAR | Look Up Company | A ticker into a CIK (both fields accept either spelling, but the lookup is the reliable path) |
 | Companies House | Search Companies | A company name into a company number |
 | Google Ads Transparency | Find Advertisers | A brand name into an `advertiser_id` |
+| Rightmove | Look Up Locations | A place, outcode, postcode or station into the `location_id` Search Listings and Search Agents take (a place name also works, resolved to its first match) |
+| Realtor.com | Get Location Suggestions | A partial place name into the `slug_id` Get Market Stats takes |
 
 Kuaishou has the same shape for share links: **Resolve Share Link** turns a Kuaishou share URL into the user ID every other Kuaishou operation takes.
 
@@ -164,7 +180,7 @@ Kuaishou has the same shape for share links: **Resolve Share Link** turns a Kuai
 
 Do not assume an operation pages. Several deliberately do not, and the node only exposes a paging field where one really exists.
 
-- **Page number**: Walmart Search / Reviews / Category, eBay Search, Target Search / Category, Home Depot Search / Reviews, Zillow Search, Redfin Search, Booking Search, Airbnb Search / Reviews, Tripadvisor Search / Reviews, Yelp Search / Reviews, Indeed Search / Company Reviews, Glassdoor Salaries, App Store Reviews, SEC Filings / Search, Companies House Search / Officers / Filing History, G2 Search / Reviews, Capterra Reviews, Trustpilot Search / Reviews / Category Businesses.
+- **Page number**: Walmart Search / Reviews / Category, eBay Search, Target Search / Category, Home Depot Search / Reviews, Zillow Search, Redfin Search, Booking Search, Airbnb Search / Reviews, Tripadvisor Search / Reviews, Yelp Search / Reviews, Indeed Search / Company Reviews, Glassdoor Salaries, App Store Reviews, SEC Filings / Search, Companies House Search / Officers / Filing History, G2 Search / Reviews, Capterra Reviews, Trustpilot Search / Reviews / Category Businesses, Realtor.com Search / Agents, Rightmove Search / Sold / Agents.
 - **Cursor**: Threads User Posts / User Replies / Post Comments, all cursor-paginated Kuaishou operations, Airbnb Search, Google Play Reviews, Google Ads Search, Meta Ads Search / Advertiser Ads.
 - **No pagination at all**: every detail operation, plus **App Store Search** (raise `Limit`, up to 200 — every offset spelling is ignored), **Google Play Search** (one shelf of about 30 apps), **Capterra Search** (fixed at 20 results; `?page=2` returns identical rows), **Walmart Get Seller Products** (about 40 items), and **Glassdoor Get Reviews** (see below).
 - **Airbnb Search takes either `Page` or `Pagination Cursor`, never both** — a request carrying both is rejected. The cursor wins.
@@ -179,6 +195,7 @@ Do not assume an operation pages. Several deliberately do not, and the node only
 - **Yelp Get Reviews page 1 is redundant.** It re-fetches the document Get Business already returned and costs another 2 credits. Start at page 2.
 - **Capterra and Tripadvisor page 1 of reviews are already inside the detail call.** Use Get Reviews to page past it.
 - **Trustpilot Get Reviews stops at page 10, 200 reviews per filter combination.** Different stars x language x date range combinations are separate sets, so slice to go deeper. Get Business Profile already carries the 20 newest reviews in its `Language`, so skip Get Reviews page 1 when that is all you need.
+- **Realtor.com Search stops at 10,000 results per query** and **Rightmove stops at 42 search pages, 40 sold pages and 50 agent pages.** Slice by price band, property type or a smaller area to reach more.
 - **Home Depot search page size is fixed at 12** and reviews are 30 per page; asking past `total_pages` is a 404.
 
 ### Silent-wrong-answer traps
@@ -186,6 +203,8 @@ Do not assume an operation pages. Several deliberately do not, and the node only
 These sites answer 200 with the wrong data rather than erroring, so the node closes the enum where it can. Where a value is a passthrough, treat an unexpected result as unfiltered rather than empty.
 
 - **Zillow**: a bare ZIP works alone but cannot be combined with a filter or a sort — Zillow geolocates that request shape and answers about another city. Use the city name there. On `Listing Status = For Rent`, `Min Price` / `Max Price` mean **monthly rent**.
+- **Realtor.com**: on Sold, `sold_price` is null in US non-disclosure states (Texas and the others listed under 0.19.0) while `sold_date` is set. A null price there means undisclosed, not an error.
+- **Rightmove**: there is no keyword filter, so the node offers none. Get Property on a live listing carries no price history; use Get Sold Property for an address's past sales.
 - **Redfin**: city names are not accepted on `Location`. Pass a redfin.com region URL (`/city/`, `/neighborhood/`, `/county/`, `/zipcode/`) or `Region ID` + `Region Type` together. `days_on_market` is always null on responses — do not build on it.
 - **Booking.com**: `Check-In Date` and `Check-Out Date` must be sent together, or Booking prices its own default range and returns real prices for dates you never asked for. A search with neither destination nor destination ID returns Booking's homepage, costs a credit, and returns nothing.
 - **Airbnb**: a dateless search defaults to +30 days / 5 nights and A/B tests both the window and the prices — the response flags this as `dates_are_defaulted`. **Get Listing has no price field**; nightly rates are search-only.
@@ -295,6 +314,7 @@ The credential test calls `GET /api/v1/usage` (free) so you get instant feedback
 - [X API](https://scavio.dev/x-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) and [LinkedIn API](https://scavio.dev/linkedin-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — tweets, profiles, companies, jobs, and posts
 - Threads and Kuaishou — profiles, feeds, comments, and search
 - Zillow, Redfin, Booking.com, Airbnb and Tripadvisor — listings, properties, stays, and reviews
+- Realtor.com and Rightmove — US and UK listings, sold prices, property detail, market stats, and agents
 - Yelp, Indeed and Glassdoor — local businesses, job postings, employer reviews, and salaries
 - Apple App Store, Google Play, G2 and Capterra — app and software listings with reviews
 - [Trustpilot](https://scavio.dev/trustpilot-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — business profiles, TrustScores, filtered reviews, and category rankings

@@ -28,6 +28,8 @@ import { appStoreOperations, appStoreFields } from './descriptions/AppStoreDescr
 import { googlePlayOperations, googlePlayFields } from './descriptions/GooglePlayDescription';
 import { secOperations, secFields } from './descriptions/SecDescription';
 import { redfinOperations, redfinFields } from './descriptions/RedfinDescription';
+import { realtorOperations, realtorFields } from './descriptions/RealtorDescription';
+import { rightmoveOperations, rightmoveFields } from './descriptions/RightmoveDescription';
 import {
 	companiesHouseOperations,
 	companiesHouseFields,
@@ -60,7 +62,7 @@ export class Scavio implements INodeType {
 		version: 1,
 		subtitle: '={{ $parameter["operation"] + ": " + $parameter["resource"] }}',
 		description:
-			'Real-time structured data from Google, Amazon, Walmart, eBay, Target, Home Depot, Costco, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Facebook, Pinterest, Threads, Kuaishou, Douyin, Weibo, Twitch, GitHub, Etsy, AliExpress, Zillow, Redfin, Booking.com, Airbnb, Tripadvisor, Yelp, Indeed, Glassdoor, the App Store, Google Play, SEC EDGAR, Companies House, Legistar, G2, Capterra, Trustpilot, ad libraries, and any URL',
+			'Real-time structured data from Google, Amazon, Walmart, eBay, Target, Home Depot, Costco, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Facebook, Pinterest, Threads, Kuaishou, Douyin, Weibo, Twitch, GitHub, Etsy, AliExpress, Zillow, Redfin, Realtor.com, Rightmove, Booking.com, Airbnb, Tripadvisor, Yelp, Indeed, Glassdoor, the App Store, Google Play, SEC EDGAR, Companies House, Legistar, G2, Capterra, Trustpilot, ad libraries, and any URL',
 		defaults: { name: 'Scavio' },
 		inputs: [NodeConnectionTypes.Main],
 		outputs: [NodeConnectionTypes.Main],
@@ -111,8 +113,10 @@ export class Scavio implements INodeType {
 					{ name: 'LinkedIn', value: 'linkedin' },
 					{ name: 'Meta Ad Library', value: 'metaAds' },
 					{ name: 'Pinterest', value: 'pinterest' },
+					{ name: 'Realtor.com', value: 'realtor' },
 					{ name: 'Reddit', value: 'reddit' },
 					{ name: 'Redfin', value: 'redfin' },
+					{ name: 'Rightmove (UK)', value: 'rightmove' },
 					{ name: 'SEC EDGAR', value: 'sec' },
 					{ name: 'Target', value: 'target' },
 					// Threads is Meta's brand name, not a plural noun. Singularizing it to
@@ -170,6 +174,10 @@ export class Scavio implements INodeType {
 			...zillowFields,
 			...redfinOperations,
 			...redfinFields,
+			...realtorOperations,
+			...realtorFields,
+			...rightmoveOperations,
+			...rightmoveFields,
 			...bookingOperations,
 			...bookingFields,
 			...airbnbOperations,

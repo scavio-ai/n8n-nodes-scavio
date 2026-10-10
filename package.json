@@ -1,7 +1,7 @@
 {
   "name": "n8n-nodes-scavio",
-  "version": "0.18.0",
-  "description": "n8n community node for Scavio — real-time structured JSON from Google, Amazon, Walmart, eBay, Target, Home Depot, Costco, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Threads, Kuaishou, Zillow, Redfin, Booking.com, Airbnb, Tripadvisor, Yelp, Indeed, Glassdoor, App Store, Google Play, SEC EDGAR, Companies House, G2, Capterra, Trustpilot, ad libraries, and any URL.",
+  "version": "0.19.0",
+  "description": "n8n community node for Scavio — real-time structured JSON from Google, Amazon, Walmart, eBay, Target, Home Depot, Costco, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Threads, Kuaishou, Zillow, Redfin, Realtor.com, Rightmove, Booking.com, Airbnb, Tripadvisor, Yelp, Indeed, Glassdoor, App Store, Google Play, SEC EDGAR, Companies House, G2, Capterra, Trustpilot, ad libraries, and any URL.",
   "keywords": [
     "n8n-community-node-package",
     "scavio",
@@ -11,6 +11,9 @@
     "walmart",
     "costco",
     "trustpilot",
+    "realtor",
+    "rightmove",
+    "real-estate",
     "youtube",
     "reddit",
     "tiktok",
