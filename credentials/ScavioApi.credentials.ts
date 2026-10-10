@@ -13,7 +13,7 @@ export class ScavioApi implements ICredentialType {
 
 	icon: Icon = 'file:scavio.svg';
 
-	documentationUrl = 'https://scavio.dev/docs/quickstart';
+	documentationUrl = 'https://scavio.dev/docs/quickstart?utm_source=n8n-node&utm_medium=package&utm_campaign=readme';
 
 	properties: INodeProperties[] = [
 		{
@@ -23,7 +23,7 @@ export class ScavioApi implements ICredentialType {
 			typeOptions: { password: true },
 			default: '',
 			required: true,
-			description: 'Your Scavio API key. Get one at https://dashboard.scavio.dev.',
+			description: 'Your Scavio API key. Get one at https://dashboard.scavio.dev/sign-up?utm_source=n8n-node&utm_medium=package&utm_campaign=readme.',
 		},
 	];
 

@@ -48,6 +48,7 @@ import { pinterestOperations, pinterestFields } from './descriptions/PinterestDe
 import { twitchOperations, twitchFields } from './descriptions/TwitchDescription';
 import { weiboOperations, weiboFields } from './descriptions/WeiboDescription';
 import { adsIntelOperations, adsIntelFields } from './descriptions/AdsIntelDescription';
+import { NODE_PACKAGE_VERSION } from './version';
 
 export class Scavio implements INodeType {
 	description: INodeTypeDescription = {
@@ -69,6 +70,8 @@ export class Scavio implements INodeType {
 			headers: {
 				'Content-Type': 'application/json',
 				Accept: 'application/json',
+				'User-Agent': `n8n-nodes-scavio/${NODE_PACKAGE_VERSION}`,
+				'X-Client-Source': 'n8n-nodes-scavio',
 			},
 		},
 		properties: [

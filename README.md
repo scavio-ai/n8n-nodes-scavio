@@ -1,6 +1,6 @@
 # n8n-nodes-scavio
 
-This is an n8n community node. It lets you use [Scavio](https://scavio.dev) — a real-time structured-data API for search, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
+This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
 Scavio returns clean, structured JSON from 44 resources and 327 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
@@ -18,65 +18,69 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 
 | Resource | Credits | Operations |
 | --- | --- | --- |
-| [Google](https://scavio.dev/docs/search-api) | 1 | Search, AI Mode, Maps Search, Maps Place Details, Maps Reviews, Shopping Search, Shopping Product, Shopping Product Stores, Flights Search, Hotels Search, Hotels Detail, News Search, Trends, Trending Now |
-| [Amazon](https://scavio.dev/docs/amazon-product) | 1 | Search Products, Get Product, Get Offers |
-| [Walmart](https://scavio.dev/docs/walmart-api) | 1, or 2 on walmart.com.mx or when targeting one store | Search Products, Get Product, Get Reviews, Get Category Products, Get Buy Box Offer, Get Seller, Get Seller Products, [Get Stores](https://scavio.dev/docs/walmart-stores) |
-| [eBay](https://scavio.dev/docs/ebay-search) | 1 | Search Listings, Get Listing, Get Seller Profile |
-| [Target](https://scavio.dev/docs/target-search) | 1 | Search Products, Get Category Products, Get Product, Get Reviews |
-| [Home Depot](https://scavio.dev/docs/home-depot-search) | 2 | Search Products, Get Product, Get Reviews |
-| [Costco](https://scavio.dev/docs/costco-search) | 1; Get Warehouse Prices, Get Availability and Get Gas Prices scale with the number of warehouses | Search Products, Get Category Products, Get Categories, Get Products, Get Warehouse Prices, Get Availability, Get Reviews, Get Warehouses, Get Gas Prices, Get Coupon Book, Get Deals, Find Clearance Items, Get Search Suggestions |
+| [Google](https://scavio.dev/docs/search-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search, AI Mode, Maps Search, Maps Place Details, Maps Reviews, Shopping Search, Shopping Product, Shopping Product Stores, Flights Search, Hotels Search, Hotels Detail, News Search, Trends, Trending Now |
+| [Amazon](https://scavio.dev/docs/amazon-product?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Offers |
+| [Walmart](https://scavio.dev/docs/walmart-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1, or 2 on walmart.com.mx or when targeting one store | Search Products, Get Product, Get Reviews, Get Category Products, Get Buy Box Offer, Get Seller, Get Seller Products, [Get Stores](https://scavio.dev/docs/walmart-stores?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) |
+| [eBay](https://scavio.dev/docs/ebay-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Listings, Get Listing, Get Seller Profile |
+| [Target](https://scavio.dev/docs/target-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Product, Get Reviews |
+| [Home Depot](https://scavio.dev/docs/home-depot-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Products, Get Product, Get Reviews |
+| [Costco](https://scavio.dev/docs/costco-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Get Warehouse Prices, Get Availability and Get Gas Prices scale with the number of warehouses | Search Products, Get Category Products, Get Categories, Get Products, Get Warehouse Prices, Get Availability, Get Reviews, Get Warehouses, Get Gas Prices, Get Coupon Book, Get Deals, Find Clearance Items, Get Search Suggestions |
 
 ### Social and video
 
 | Resource | Credits | Operations |
 | --- | --- | --- |
-| [YouTube](https://scavio.dev/docs/youtube-api) | 1 | Search, Search Shorts, Search Channels, Get Suggestions, Get Video, Get Metadata, Get Comments, Get Comment Replies, Get Transcript, Get Related, Get Channel, Get Channel Videos, Get Channel Shorts, Get Channel Community, Resolve Channel, Get Streams |
-| [Reddit](https://scavio.dev/docs/reddit-api) | 1 | Search Posts, Get Search Suggestions, Get Post, Get Post Comments, Get Comment Replies, Get Subreddit, Get Subreddit Posts, Get User, Get User Posts, Get User Comments, Get Popular, Get Trending |
-| [TikTok](https://scavio.dev/docs/tiktok-api) | 1 | Get Profile, Get User Posts, Get Video, Get Video Comments, Get Comment Replies, Search Videos, Search Users, Get Hashtag, Get Hashtag Videos, Get User Followers, Get User Followings |
-| [TikTok Shop](https://scavio.dev/docs/tiktok-shop-search) | 1 | Search Products, Get Search Suggestions, Get Product, Get Product Reviews, Get Categories, Get Category Products, Get Shop Products, Resolve URL |
-| [Instagram](https://scavio.dev/docs/instagram-api) | 1 | Get Profile, Get User Posts, Get User Reels, Get User Tagged, Get User Stories, Get Post, Get Post Comments, Get Comment Replies, Search Users, Search Hashtags, Get User Followers, Get User Followings |
-| [X](https://scavio.dev/docs/x-search) | 1 | Search, Get Tweet, Get Tweet Comments, Get Tweet Retweeters, Get User, Get User Tweets, Get User Replies, Get User Media, Get User Followers, Get User Followings, Get Trending |
-| [LinkedIn](https://scavio.dev/docs/linkedin-person) | 1, 10, or 30 by operation | Get Person, Get Person About, Get Person Posts, Get Company, Get Company Posts, Search Jobs, Get Job, Get Post, Get Post Comments |
-| [Threads](https://scavio.dev/docs/threads-profile) | 2 by user ID, 4 by username | Get Profile, Get User Posts, Get User Replies, Get Post, Get Post Comments, Search Users |
-| [Kuaishou (China)](https://scavio.dev/docs/kuaishou-profile) | 1, 2, 10, or 40 by operation | Get Profile, Get User Posts, Get User Live Status, Resolve Share Link, Get Video, Get Video Comments, Get Comment Replies, Get Videos Batch, Search All, Search Videos, Search Users, Search Live Streams, Get Tag Feed, Get Trending |
+| [YouTube](https://scavio.dev/docs/youtube-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search, Search Shorts, Search Channels, Get Suggestions, Get Video, Get Metadata, Get Comments, Get Comment Replies, Get Transcript, Get Related, Get Channel, Get Channel Videos, Get Channel Shorts, Get Channel Community, Resolve Channel, Get Streams |
+| [Reddit](https://scavio.dev/docs/reddit-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Posts, Get Search Suggestions, Get Post, Get Post Comments, Get Comment Replies, Get Subreddit, Get Subreddit Posts, Get User, Get User Posts, Get User Comments, Get Popular, Get Trending |
+| [TikTok](https://scavio.dev/docs/tiktok-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Get Profile, Get User Posts, Get Video, Get Video Comments, Get Comment Replies, Search Videos, Search Users, Get Hashtag, Get Hashtag Videos, Get User Followers, Get User Followings |
+| [TikTok Shop](https://scavio.dev/docs/tiktok-shop-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Search Suggestions, Get Product, Get Product Reviews, Get Categories, Get Category Products, Get Shop Products, Resolve URL |
+| [Instagram](https://scavio.dev/docs/instagram-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Get Profile, Get User Posts, Get User Reels, Get User Tagged, Get User Stories, Get Post, Get Post Comments, Get Comment Replies, Search Users, Search Hashtags, Get User Followers, Get User Followings |
+| [X](https://scavio.dev/docs/x-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search, Get Tweet, Get Tweet Comments, Get Tweet Retweeters, Get User, Get User Tweets, Get User Replies, Get User Media, Get User Followers, Get User Followings, Get Trending |
+| [LinkedIn](https://scavio.dev/docs/linkedin-person?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1, 10, or 30 by operation | Get Person, Get Person About, Get Person Posts, Get Company, Get Company Posts, Search Jobs, Get Job, Get Post, Get Post Comments |
+| [Threads](https://scavio.dev/docs/threads-profile?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 by user ID, 4 by username | Get Profile, Get User Posts, Get User Replies, Get Post, Get Post Comments, Search Users |
+| [Kuaishou (China)](https://scavio.dev/docs/kuaishou-profile?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1, 2, 10, or 40 by operation | Get Profile, Get User Posts, Get User Live Status, Resolve Share Link, Get Video, Get Video Comments, Get Comment Replies, Get Videos Batch, Search All, Search Videos, Search Users, Search Live Streams, Get Tag Feed, Get Trending |
 
 ### Real estate and travel
 
 | Resource | Credits | Operations |
 | --- | --- | --- |
-| [Zillow](https://scavio.dev/docs/zillow-search) | 1 | Search Listings, Get Property, Get Agent Reviews |
-| [Redfin](https://scavio.dev/docs/redfin-search) | 1 | Search Listings, Get Property, Get Market Stats |
-| [Booking.com](https://scavio.dev/docs/booking-search) | 1 | Search Properties, Get Hotel, Get Hotel Reviews |
-| [Airbnb](https://scavio.dev/docs/airbnb-search) | 1 | Search Stays, Get Listing, Get Reviews |
-| [Tripadvisor](https://scavio.dev/docs/tripadvisor-locations) | 2 | Resolve Location IDs, Search Locations, Get Location, Get Reviews |
+| [Zillow](https://scavio.dev/docs/zillow-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Listings, Get Property, Get Agent Reviews |
+| [Redfin](https://scavio.dev/docs/redfin-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Listings, Get Property, Get Market Stats |
+| [Booking.com](https://scavio.dev/docs/booking-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Properties, Get Hotel, Get Hotel Reviews |
+| [Airbnb](https://scavio.dev/docs/airbnb-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Stays, Get Listing, Get Reviews |
+| [Tripadvisor](https://scavio.dev/docs/tripadvisor-locations?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Resolve Location IDs, Search Locations, Get Location, Get Reviews |
 
 ### Local, jobs, and employers
 
 | Resource | Credits | Operations |
 | --- | --- | --- |
-| [Yelp](https://scavio.dev/docs/yelp-search) | 2 | Search Businesses, Get Business, Get Reviews |
-| [Indeed](https://scavio.dev/docs/indeed-search) | 2 | Search Jobs, Get Job, Get Company, Get Company Reviews |
-| [Glassdoor](https://scavio.dev/docs/glassdoor-companies) | 1 | Search Companies, Get Company Profile, Get Reviews, Get Salaries |
+| [Yelp](https://scavio.dev/docs/yelp-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Businesses, Get Business, Get Reviews |
+| [Indeed](https://scavio.dev/docs/indeed-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Jobs, Get Job, Get Company, Get Company Reviews |
+| [Glassdoor](https://scavio.dev/docs/glassdoor-companies?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company Profile, Get Reviews, Get Salaries |
 
 ### App stores and software reviews
 
 | Resource | Credits | Operations |
 | --- | --- | --- |
-| [Apple App Store](https://scavio.dev/docs/app-store-search) | 1 | Search Apps, Get App, Get Reviews |
-| [Google Play](https://scavio.dev/docs/google-play-search) | 2 | Search Apps, Get App, Get Reviews |
-| [G2 (Software Reviews)](https://scavio.dev/docs/g2-search) | 5 | Search Products, Get Product, Get Reviews |
-| [Capterra (Software Reviews)](https://scavio.dev/docs/capterra-search) | 2 | Search Products, Get Product, Get Reviews |
+| [Apple App Store](https://scavio.dev/docs/app-store-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Apps, Get App, Get Reviews |
+| [Google Play](https://scavio.dev/docs/google-play-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Apps, Get App, Get Reviews |
+| [G2 (Software Reviews)](https://scavio.dev/docs/g2-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 5 | Search Products, Get Product, Get Reviews |
+| [Capterra (Software Reviews)](https://scavio.dev/docs/capterra-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Products, Get Product, Get Reviews |
 
 ### Ad libraries, filings, and any URL
 
 | Resource | Credits | Operations |
 | --- | --- | --- |
-| [Google Ads Transparency](https://scavio.dev/docs/google-ads-advertisers) | 1 | Find Advertisers, Search Ads, Get Creative |
-| [Meta Ad Library](https://scavio.dev/docs/meta-ads-search) | 1 | Search Ad Library, Get Advertiser Ads, Get Ad |
-| [SEC EDGAR](https://scavio.dev/docs/sec-edgar-lookup) | 1 | Look Up Company, Get Company Profile, Get Filings, Get XBRL Concept, Get XBRL Facts Index, Search Filings Full Text |
-| [Companies House (UK)](https://scavio.dev/docs/companies-house-search) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
-| [Extract (Any URL)](https://scavio.dev/docs/extract) | 1 normal, 1 advanced, 2 ultra | Extract Page |
+| [Google Ads Transparency](https://scavio.dev/docs/google-ads-advertisers?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Find Advertisers, Search Ads, Get Creative |
+| [Meta Ad Library](https://scavio.dev/docs/meta-ads-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Ad Library, Get Advertiser Ads, Get Ad |
+| [SEC EDGAR](https://scavio.dev/docs/sec-edgar-lookup?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Look Up Company, Get Company Profile, Get Filings, Get XBRL Concept, Get XBRL Facts Index, Search Filings Full Text |
+| [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
+| [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra | Extract Page |
 | Account | Free | Get Usage |
+
+## What changed in 0.17.1
+
+Every request now identifies the node with `User-Agent: n8n-nodes-scavio/<version>` and `X-Client-Source: n8n-nodes-scavio`. No operation, parameter or output changed.
 
 ## What changed in 0.17.0
 
@@ -221,33 +225,33 @@ Ready-to-use workflow templates built on this node. Find them in the [n8n templa
 
 | Template | What it does | Product |
 | --- | --- | --- |
-| **Google Keyword Rank Tracker** | Daily organic rank tracking for your keywords into Google Sheets | [Google Search](https://scavio.dev/docs/search-api) |
-| **YouTube Top Video Tracker** | Daily Slack digest of the top videos per keyword | [YouTube](https://scavio.dev/docs/youtube-api) |
-| **Amazon Price-Drop Alerts** | Email alerts when a watched Amazon product hits your target price | [Amazon](https://scavio.dev/docs/amazon-product) |
-| **Walmart Price-Drop Alerts** | Email alerts when a watched Walmart product hits your target price | [Walmart](https://scavio.dev/docs/walmart-product) |
-| **Reddit Brand Monitor** | Daily email digest of new Reddit mentions | [Reddit](https://scavio.dev/docs/reddit-api) |
-| **Instagram Competitor Monitor** | Track competitor Instagram posts and follower growth into Sheets | [Instagram](https://scavio.dev/docs/instagram-user-posts) |
-| **TikTok Competitor Monitor** | Alert and log when tracked TikTok accounts post | [TikTok](https://scavio.dev/docs/tiktok-user-posts) |
-| **TikTok Creator Analytics** | Track creator video performance over time | [TikTok](https://scavio.dev/docs/tiktok-api) |
-| **TikTok Hashtag Trends** | Log trending videos per hashtag | [TikTok](https://scavio.dev/docs/tiktok-hashtag-videos) |
-| **Instagram Engagement Rate Checker** | Weekly engagement rate per handle into Google Sheets | [Instagram](https://scavio.dev/docs/instagram-api) |
-| **Instagram Top Posts Ranker** | Rank a handle's recent posts by engagement | [Instagram](https://scavio.dev/docs/instagram-user-posts) |
-| **Instagram Reels Performance Tracker** | Rank reels by views with average reach | [Instagram](https://scavio.dev/docs/instagram-user-reels) |
-| **Instagram New-Post Alerts** | Email the moment a watched handle posts | [Instagram](https://scavio.dev/docs/instagram-user-posts) |
-| **Instagram Bio and Link Change Alerts** | Slack alert when a creator edits their bio or links | [Instagram](https://scavio.dev/docs/instagram-api) |
-| **TikTok Engagement Rate Checker** | Weekly engagement rate per handle into Google Sheets | [TikTok](https://scavio.dev/docs/tiktok-api) |
-| **TikTok Top Videos Ranker** | Rank a handle's recent videos by views | [TikTok](https://scavio.dev/docs/tiktok-user-posts) |
-| **TikTok Bio and Link Change Alerts** | Slack alert when a creator edits their bio or link | [TikTok](https://scavio.dev/docs/tiktok-profile) |
-| **TikTok Brand Deal and Collab Tracker** | Email when a creator starts a new brand collab | [TikTok](https://scavio.dev/docs/tiktok-user-posts) |
-| **TikTok New-Video Alerts** | Email the moment a watched handle posts a video | [TikTok](https://scavio.dev/docs/tiktok-user-posts) |
-| **Local Lead Finder** | Score local businesses with no website or weak reviews | [Google Maps](https://scavio.dev/docs/search-api) |
-| **Google AI Overview Citation Tracker** | Slack alert when your brand gains or loses an AI Overview citation | [Google Search](https://scavio.dev/docs/search-api) |
+| **Google Keyword Rank Tracker** | Daily organic rank tracking for your keywords into Google Sheets | [Google Search](https://scavio.dev/docs/search-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) |
+| **YouTube Top Video Tracker** | Daily Slack digest of the top videos per keyword | [YouTube](https://scavio.dev/docs/youtube-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) |
+| **Amazon Price-Drop Alerts** | Email alerts when a watched Amazon product hits your target price | [Amazon](https://scavio.dev/docs/amazon-product?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) |
+| **Walmart Price-Drop Alerts** | Email alerts when a watched Walmart product hits your target price | [Walmart](https://scavio.dev/docs/walmart-product?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) |
+| **Reddit Brand Monitor** | Daily email digest of new Reddit mentions | [Reddit](https://scavio.dev/docs/reddit-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) |
+| **Instagram Competitor Monitor** | Track competitor Instagram posts and follower growth into Sheets | [Instagram](https://scavio.dev/docs/instagram-user-posts?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) |
+| **TikTok Competitor Monitor** | Alert and log when tracked TikTok accounts post | [TikTok](https://scavio.dev/docs/tiktok-user-posts?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) |
+| **TikTok Creator Analytics** | Track creator video performance over time | [TikTok](https://scavio.dev/docs/tiktok-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) |
+| **TikTok Hashtag Trends** | Log trending videos per hashtag | [TikTok](https://scavio.dev/docs/tiktok-hashtag-videos?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) |
+| **Instagram Engagement Rate Checker** | Weekly engagement rate per handle into Google Sheets | [Instagram](https://scavio.dev/docs/instagram-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) |
+| **Instagram Top Posts Ranker** | Rank a handle's recent posts by engagement | [Instagram](https://scavio.dev/docs/instagram-user-posts?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) |
+| **Instagram Reels Performance Tracker** | Rank reels by views with average reach | [Instagram](https://scavio.dev/docs/instagram-user-reels?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) |
+| **Instagram New-Post Alerts** | Email the moment a watched handle posts | [Instagram](https://scavio.dev/docs/instagram-user-posts?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) |
+| **Instagram Bio and Link Change Alerts** | Slack alert when a creator edits their bio or links | [Instagram](https://scavio.dev/docs/instagram-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) |
+| **TikTok Engagement Rate Checker** | Weekly engagement rate per handle into Google Sheets | [TikTok](https://scavio.dev/docs/tiktok-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) |
+| **TikTok Top Videos Ranker** | Rank a handle's recent videos by views | [TikTok](https://scavio.dev/docs/tiktok-user-posts?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) |
+| **TikTok Bio and Link Change Alerts** | Slack alert when a creator edits their bio or link | [TikTok](https://scavio.dev/docs/tiktok-profile?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) |
+| **TikTok Brand Deal and Collab Tracker** | Email when a creator starts a new brand collab | [TikTok](https://scavio.dev/docs/tiktok-user-posts?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) |
+| **TikTok New-Video Alerts** | Email the moment a watched handle posts a video | [TikTok](https://scavio.dev/docs/tiktok-user-posts?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) |
+| **Local Lead Finder** | Score local businesses with no website or weak reviews | [Google Maps](https://scavio.dev/docs/search-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) |
+| **Google AI Overview Citation Tracker** | Slack alert when your brand gains or loses an AI Overview citation | [Google Search](https://scavio.dev/docs/search-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) |
 
-Get a free API key at [dashboard.scavio.dev/sign-up](https://dashboard.scavio.dev/sign-up) — 50 credits to start.
+Get a free API key at [dashboard.scavio.dev/sign-up](https://dashboard.scavio.dev/sign-up?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — 50 credits to start.
 
 ## Credentials
 
-You need a Scavio API key. Sign up at [scavio.dev](https://scavio.dev), grab your key from the dashboard, and paste it into the `Scavio API` credential in n8n.
+You need a Scavio API key. Sign up at [scavio.dev](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme), grab your key from the dashboard, and paste it into the `Scavio API` credential in n8n.
 
 The credential test calls `GET /api/v1/usage` (free) so you get instant feedback that your key works.
 
@@ -259,28 +263,28 @@ The credential test calls `GET /api/v1/usage` (free) so you get instant feedback
 
 ## Resources
 
-- [Scavio docs](https://scavio.dev/docs/introduction)
-- [Scavio dashboard](https://dashboard.scavio.dev/sign-up)
-- [Compare Scavio vs alternatives](https://scavio.dev/compare)
+- [Scavio docs](https://scavio.dev/docs/introduction?utm_source=n8n-node&utm_medium=package&utm_campaign=readme)
+- [Scavio dashboard](https://dashboard.scavio.dev/sign-up?utm_source=n8n-node&utm_medium=package&utm_campaign=readme)
+- [Compare Scavio vs alternatives](https://scavio.dev/compare?utm_source=n8n-node&utm_medium=package&utm_campaign=readme)
 - [n8n community nodes documentation](https://docs.n8n.io/integrations/community-nodes/)
 
 
 ## About Scavio
 
-[Scavio](https://scavio.dev) is a unified [search API for AI agents](https://scavio.dev/search-api-for-ai-agents) — one API key, structured JSON, no scraping or proxies. A real-time [Tavily alternative](https://scavio.dev/alternatives/tavily) and [SerpAPI alternative](https://scavio.dev/alternatives/serpapi) with data from:
+[Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) is a unified [search API for AI agents](https://scavio.dev/search-api-for-ai-agents?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — one API key, structured JSON, no scraping or proxies. A real-time [Tavily alternative](https://scavio.dev/alternatives/tavily?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) and [SerpAPI alternative](https://scavio.dev/alternatives/serpapi?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) with data from:
 
-- [Google Search API](https://scavio.dev/google-search-api) — SERP results, news, images, maps, and knowledge graph
-- [Amazon Product API](https://scavio.dev/amazon-product-api) and [Walmart Product API](https://scavio.dev/walmart-product-api) — product search, details, reviews, categories, and sellers
-- eBay, Target, Home Depot and [Costco](https://scavio.dev/costco-api) — marketplace listings, product detail, and customer reviews
-- [YouTube API](https://scavio.dev/youtube-transcript-api), [TikTok API](https://scavio.dev/tiktok-api), and [Instagram API](https://scavio.dev/instagram-api) — video and social media data
-- [Reddit API](https://scavio.dev/reddit-api) — posts and threaded comments
-- [X API](https://scavio.dev/x-api) and [LinkedIn API](https://scavio.dev/linkedin-api) — tweets, profiles, companies, jobs, and posts
+- [Google Search API](https://scavio.dev/google-search-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — SERP results, news, images, maps, and knowledge graph
+- [Amazon Product API](https://scavio.dev/amazon-product-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) and [Walmart Product API](https://scavio.dev/walmart-product-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — product search, details, reviews, categories, and sellers
+- eBay, Target, Home Depot and [Costco](https://scavio.dev/costco-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — marketplace listings, product detail, and customer reviews
+- [YouTube API](https://scavio.dev/youtube-transcript-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme), [TikTok API](https://scavio.dev/tiktok-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme), and [Instagram API](https://scavio.dev/instagram-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — video and social media data
+- [Reddit API](https://scavio.dev/reddit-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — posts and threaded comments
+- [X API](https://scavio.dev/x-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) and [LinkedIn API](https://scavio.dev/linkedin-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — tweets, profiles, companies, jobs, and posts
 - Threads and Kuaishou — profiles, feeds, comments, and search
 - Zillow, Redfin, Booking.com, Airbnb and Tripadvisor — listings, properties, stays, and reviews
 - Yelp, Indeed and Glassdoor — local businesses, job postings, employer reviews, and salaries
 - Apple App Store, Google Play, G2 and Capterra — app and software listings with reviews
 - Google Ads Transparency and Meta Ad Library — live competitor ad creatives
 - SEC EDGAR and Companies House — filings, XBRL financials, officers, and company registers
-- [Extract](https://scavio.dev/docs/extract) — any URL as HTML, Markdown, or plain text
+- [Extract](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — any URL as HTML, Markdown, or plain text
 
-Get a free [API key](https://dashboard.scavio.dev/sign-up) and explore the [documentation](https://scavio.dev/docs/introduction).
+Get a free [API key](https://dashboard.scavio.dev/sign-up?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) and explore the [documentation](https://scavio.dev/docs/introduction?utm_source=n8n-node&utm_medium=package&utm_campaign=readme).
