@@ -24,7 +24,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [eBay](https://scavio.dev/docs/ebay-search) | 1 | Search Listings, Get Listing, Get Seller Profile |
 | [Target](https://scavio.dev/docs/target-search) | 1 | Search Products, Get Category Products, Get Product, Get Reviews |
 | [Home Depot](https://scavio.dev/docs/home-depot-search) | 2 | Search Products, Get Product, Get Reviews |
-| Costco | 1; Get Warehouse Prices, Get Availability and Get Gas Prices scale with the number of warehouses | Search Products, Get Category Products, Get Categories, Get Products, Get Warehouse Prices, Get Availability, Get Reviews, Get Warehouses, Get Gas Prices, Get Coupon Book, Get Deals, Find Clearance Items, Get Search Suggestions |
+| [Costco](https://scavio.dev/docs/costco-search) | 1; Get Warehouse Prices, Get Availability and Get Gas Prices scale with the number of warehouses | Search Products, Get Category Products, Get Categories, Get Products, Get Warehouse Prices, Get Availability, Get Reviews, Get Warehouses, Get Gas Prices, Get Coupon Book, Get Deals, Find Clearance Items, Get Search Suggestions |
 
 ### Social and video
 
@@ -271,7 +271,7 @@ The credential test calls `GET /api/v1/usage` (free) so you get instant feedback
 
 - [Google Search API](https://scavio.dev/google-search-api) — SERP results, news, images, maps, and knowledge graph
 - [Amazon Product API](https://scavio.dev/amazon-product-api) and [Walmart Product API](https://scavio.dev/walmart-product-api) — product search, details, reviews, categories, and sellers
-- eBay, Target and Home Depot — marketplace listings, product detail, and customer reviews
+- eBay, Target, Home Depot and [Costco](https://scavio.dev/costco-api) — marketplace listings, product detail, and customer reviews
 - [YouTube API](https://scavio.dev/youtube-transcript-api), [TikTok API](https://scavio.dev/tiktok-api), and [Instagram API](https://scavio.dev/instagram-api) — video and social media data
 - [Reddit API](https://scavio.dev/reddit-api) — posts and threaded comments
 - [X API](https://scavio.dev/x-api) and [LinkedIn API](https://scavio.dev/linkedin-api) — tweets, profiles, companies, jobs, and posts
