@@ -34,6 +34,7 @@ import {
 } from './descriptions/CompaniesHouseDescription';
 import { g2Operations, g2Fields } from './descriptions/G2Description';
 import { capterraOperations, capterraFields } from './descriptions/CapterraDescription';
+import { trustpilotOperations, trustpilotFields } from './descriptions/TrustpilotDescription';
 import { googleAdsOperations, googleAdsFields } from './descriptions/GoogleAdsDescription';
 import { metaAdsOperations, metaAdsFields } from './descriptions/MetaAdsDescription';
 import { extractOperations, extractFields } from './descriptions/ExtractDescription';
@@ -59,7 +60,7 @@ export class Scavio implements INodeType {
 		version: 1,
 		subtitle: '={{ $parameter["operation"] + ": " + $parameter["resource"] }}',
 		description:
-			'Real-time structured data from Google, Amazon, Walmart, eBay, Target, Home Depot, Costco, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Facebook, Pinterest, Threads, Kuaishou, Douyin, Weibo, Twitch, GitHub, Etsy, AliExpress, Zillow, Redfin, Booking.com, Airbnb, Tripadvisor, Yelp, Indeed, Glassdoor, the App Store, Google Play, SEC EDGAR, Companies House, Legistar, G2, Capterra, ad libraries, and any URL',
+			'Real-time structured data from Google, Amazon, Walmart, eBay, Target, Home Depot, Costco, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Facebook, Pinterest, Threads, Kuaishou, Douyin, Weibo, Twitch, GitHub, Etsy, AliExpress, Zillow, Redfin, Booking.com, Airbnb, Tripadvisor, Yelp, Indeed, Glassdoor, the App Store, Google Play, SEC EDGAR, Companies House, Legistar, G2, Capterra, Trustpilot, ad libraries, and any URL',
 		defaults: { name: 'Scavio' },
 		inputs: [NodeConnectionTypes.Main],
 		outputs: [NodeConnectionTypes.Main],
@@ -122,6 +123,7 @@ export class Scavio implements INodeType {
 					{ name: 'TikTok', value: 'tiktok' },
 					{ name: 'TikTok Shop', value: 'tiktokShop' },
 					{ name: 'Tripadvisor', value: 'tripadvisor' },
+					{ name: 'Trustpilot', value: 'trustpilot' },
 					{ name: 'Twitch', value: 'twitch' },
 					{ name: 'Walmart', value: 'walmart' },
 					{ name: 'Weibo (China)', value: 'weibo' },
@@ -192,6 +194,8 @@ export class Scavio implements INodeType {
 			...g2Fields,
 			...capterraOperations,
 			...capterraFields,
+			...trustpilotOperations,
+			...trustpilotFields,
 			...googleAdsOperations,
 			...googleAdsFields,
 			...metaAdsOperations,

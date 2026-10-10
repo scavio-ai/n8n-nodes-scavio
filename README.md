@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 44 resources and 327 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 45 resources and 333 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -58,7 +58,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Indeed](https://scavio.dev/docs/indeed-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Jobs, Get Job, Get Company, Get Company Reviews |
 | [Glassdoor](https://scavio.dev/docs/glassdoor-companies?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company Profile, Get Reviews, Get Salaries |
 
-### App stores and software reviews
+### App stores, software, and business reviews
 
 | Resource | Credits | Operations |
 | --- | --- | --- |
@@ -66,6 +66,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Google Play](https://scavio.dev/docs/google-play-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Apps, Get App, Get Reviews |
 | [G2 (Software Reviews)](https://scavio.dev/docs/g2-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 5 | Search Products, Get Product, Get Reviews |
 | [Capterra (Software Reviews)](https://scavio.dev/docs/capterra-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Products, Get Product, Get Reviews |
+| Trustpilot | 2 | Search Businesses, Get Business Profile, Get Reviews, Get Categories, Get Category Businesses, Get Review |
 
 ### Ad libraries, filings, and any URL
 
@@ -77,6 +78,18 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra | Extract Page |
 | Account | Free | Get Usage |
+
+## What changed in 0.18.0
+
+**New resource: Trustpilot, 6 operations, 2 credits each.** Nothing else changed.
+
+- **Search Businesses** finds businesses by keyword in one country, up to 100 per page: name, domain, TrustScore, stars, review count, categories, website and address. Email and phone appear only when the business published them.
+- **Get Business Profile** takes a domain or a Trustpilot URL (pick with `Look Up By`) and returns the whole profile: rating distribution, review languages, claimed and verification status, contact details, reply rate and days to reply on negative reviews, consumer alerts, similar businesses and the 20 newest reviews. The AI summary and topics come back in `Language` (default `en`) when Trustpilot has them for that language, null or empty otherwise.
+- **Get Reviews** returns 20 reviews per page, filtered by stars, language (default all), date range, topics, text search, verified only and with replies, sorted by recency or relevance. `total_filtered` counts every match, so a date range doubles as review velocity. **Trustpilot serves up to 10 pages (200 reviews) per filter combination**; slice by stars, language, date range, topics or text search to reach more. `max_page` in the response says how far the current combination goes.
+- **Get Categories** returns the full category tree (22 top-level categories and their subcategories), or the categories matching a name. **Get Category Businesses** ranks businesses in one category and country, 20 per page, with sort, `Min TrustScore` (3.0+, 4.0+ or 4.5+) and claimed-only filters. Trustpilot applies `Min TrustScore` to the star rating, which rounds the TrustScore, so a 3.8 passes 4.0+.
+- **Get Review** returns one review by its 24-character `review_id`, with the business reply and the business it is about.
+- `Stars` and `Topics` take comma-separated values. Topic IDs come from Get Business Profile's `topics`.
+- An unknown domain, review ID or category ID answers 404 naming what was not found, and is billed like a normal call. There is no TrustScore history and no reviewer-profile operation.
 
 ## What changed in 0.17.1
 
@@ -151,7 +164,7 @@ Kuaishou has the same shape for share links: **Resolve Share Link** turns a Kuai
 
 Do not assume an operation pages. Several deliberately do not, and the node only exposes a paging field where one really exists.
 
-- **Page number**: Walmart Search / Reviews / Category, eBay Search, Target Search / Category, Home Depot Search / Reviews, Zillow Search, Redfin Search, Booking Search, Airbnb Search / Reviews, Tripadvisor Search / Reviews, Yelp Search / Reviews, Indeed Search / Company Reviews, Glassdoor Salaries, App Store Reviews, SEC Filings / Search, Companies House Search / Officers / Filing History, G2 Search / Reviews, Capterra Reviews.
+- **Page number**: Walmart Search / Reviews / Category, eBay Search, Target Search / Category, Home Depot Search / Reviews, Zillow Search, Redfin Search, Booking Search, Airbnb Search / Reviews, Tripadvisor Search / Reviews, Yelp Search / Reviews, Indeed Search / Company Reviews, Glassdoor Salaries, App Store Reviews, SEC Filings / Search, Companies House Search / Officers / Filing History, G2 Search / Reviews, Capterra Reviews, Trustpilot Search / Reviews / Category Businesses.
 - **Cursor**: Threads User Posts / User Replies / Post Comments, all cursor-paginated Kuaishou operations, Airbnb Search, Google Play Reviews, Google Ads Search, Meta Ads Search / Advertiser Ads.
 - **No pagination at all**: every detail operation, plus **App Store Search** (raise `Limit`, up to 200 — every offset spelling is ignored), **Google Play Search** (one shelf of about 30 apps), **Capterra Search** (fixed at 20 results; `?page=2` returns identical rows), **Walmart Get Seller Products** (about 40 items), and **Glassdoor Get Reviews** (see below).
 - **Airbnb Search takes either `Page` or `Pagination Cursor`, never both** — a request carrying both is rejected. The cursor wins.
@@ -165,6 +178,7 @@ Do not assume an operation pages. Several deliberately do not, and the node only
 - **Target is slow, not expensive.** Product about 4s, search about 9s, category about 37s, reviews about 40s, and a 502-then-retry was seen at 105s. Budget timeouts accordingly. **Get Reviews returns 8 review bodies maximum** regardless of `review_count`; `Max Review Bodies` only trims. `seller_*` is null for first-party stock, which is most of Target — null means "sold by Target", not "unknown".
 - **Yelp Get Reviews page 1 is redundant.** It re-fetches the document Get Business already returned and costs another 2 credits. Start at page 2.
 - **Capterra and Tripadvisor page 1 of reviews are already inside the detail call.** Use Get Reviews to page past it.
+- **Trustpilot Get Reviews stops at page 10, 200 reviews per filter combination.** Different stars x language x date range combinations are separate sets, so slice to go deeper. Get Business Profile already carries the 20 newest reviews in its `Language`, so skip Get Reviews page 1 when that is all you need.
 - **Home Depot search page size is fixed at 12** and reviews are 30 per page; asking past `total_pages` is a 404.
 
 ### Silent-wrong-answer traps
@@ -283,6 +297,7 @@ The credential test calls `GET /api/v1/usage` (free) so you get instant feedback
 - Zillow, Redfin, Booking.com, Airbnb and Tripadvisor — listings, properties, stays, and reviews
 - Yelp, Indeed and Glassdoor — local businesses, job postings, employer reviews, and salaries
 - Apple App Store, Google Play, G2 and Capterra — app and software listings with reviews
+- Trustpilot — business profiles, TrustScores, filtered reviews, and category rankings
 - Google Ads Transparency and Meta Ad Library — live competitor ad creatives
 - SEC EDGAR and Companies House — filings, XBRL financials, officers, and company registers
 - [Extract](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — any URL as HTML, Markdown, or plain text
