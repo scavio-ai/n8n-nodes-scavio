@@ -51,6 +51,22 @@ export const youtubeOperations: INodeProperties[] = [
 				routing: { request: { method: 'POST', url: '/api/v1/youtube/comments' } },
 			},
 			{
+				name: 'Get Community Post',
+				value: 'communityPost',
+				action: 'Get a you tube community post',
+				description:
+					'A single YouTube community post: text, author, likes, comment count, attached images, and a comments_cursor for Get Community Post Comments. Costs 1 credit.',
+				routing: { request: { method: 'POST', url: '/api/v1/youtube/community/post' } },
+			},
+			{
+				name: 'Get Community Post Comments',
+				value: 'communityPostComments',
+				action: 'Get you tube community post comments',
+				description:
+					'Comments on a YouTube community post, with likes, reply counts and pagination. Costs 1 credit.',
+				routing: { request: { method: 'POST', url: '/api/v1/youtube/community/post/comments' } },
+			},
+			{
 				name: 'Get Metadata',
 				value: 'metadata',
 				action: 'Get you tube video metadata',
@@ -82,7 +98,7 @@ export const youtubeOperations: INodeProperties[] = [
 				name: 'Get Transcript',
 				value: 'transcript',
 				action: 'Get a you tube video transcript',
-				description: 'Get the transcript or timed subtitles for a YouTube video',
+				description: 'Get the transcript or timed subtitles for a YouTube video. Costs 5 credits.',
 				routing: { request: { method: 'POST', url: '/api/v1/youtube/transcript' } },
 			},
 			{
@@ -426,6 +442,38 @@ export const youtubeFields: INodeProperties[] = [
 				type: 'string',
 				default: '',
 				description: 'Pagination cursor returned from a previous response',
+				routing: { request: { body: { cursor: '={{ $value }}' } } },
+			},
+		],
+	},
+
+	// ── Post ID (communityPost, communityPostComments) ──
+	{
+		displayName: 'Post ID',
+		name: 'post_id',
+		type: 'string',
+		required: true,
+		default: '',
+		placeholder: 'Ugkx_PqHZYEoCCP7e8WIOrh-1HCvtKoFMzVp',
+		displayOptions: { show: { resource: ['youtube'], operation: ['communityPost', 'communityPostComments'] } },
+		routing: { request: { body: { post_id: '={{ $value }}' } } },
+		description: 'Community post ID or post URL',
+	},
+	// ── Additional Options: Get Community Post Comments ──
+	{
+		displayName: 'Additional Options',
+		name: 'additionalOptions',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
+		displayOptions: { show: { resource: ['youtube'], operation: ['communityPostComments'] } },
+		options: [
+			{
+				displayName: 'Cursor',
+				name: 'cursor',
+				type: 'string',
+				default: '',
+				description: 'The next_cursor from the previous page, or comments_cursor from Get Community Post',
 				routing: { request: { body: { cursor: '={{ $value }}' } } },
 			},
 		],

@@ -9,6 +9,22 @@ export const xOperations: INodeProperties[] = [
 		displayOptions: { show: { resource: ['x'] } },
 		options: [
 			{
+				name: 'Get Community',
+				value: 'community',
+				action: 'Get an X community',
+				description:
+					'An X Community: name, description, creation date, member count, topic and rules. Costs 1 credit.',
+				routing: { request: { method: 'POST', url: '/api/v1/x/community' } },
+			},
+			{
+				name: 'Get Community Tweets',
+				value: 'communityTweets',
+				action: 'Get X community tweets',
+				description:
+					'Posts in an X Community, by relevance or recency, with pagination. Costs 1 credit.',
+				routing: { request: { method: 'POST', url: '/api/v1/x/community/tweets' } },
+			},
+			{
 				name: 'Get Trending',
 				value: 'trending',
 				action: 'Get X trending topics',
@@ -84,6 +100,14 @@ export const xOperations: INodeProperties[] = [
 				action: 'Search X',
 				description: 'Search tweets and people',
 				routing: { request: { method: 'POST', url: '/api/v1/x/search' } },
+			},
+			{
+				name: 'Search Communities',
+				value: 'searchCommunities',
+				action: 'Search X communities',
+				description:
+					'Find X Communities by keyword, with member counts, topic and NSFW flag. Costs 1 credit.',
+				routing: { request: { method: 'POST', url: '/api/v1/x/search/communities' } },
 			},
 		],
 		default: 'search',
@@ -250,6 +274,81 @@ export const xFields: INodeProperties[] = [
 				default: '',
 				description: 'Pagination cursor returned from a previous response',
 				routing: { request: { body: { cursor: '={{ $value }}' } } },
+			},
+		],
+	},
+
+	// ── Keyword (searchCommunities) ──
+	{
+		displayName: 'Keyword',
+		name: 'keyword',
+		type: 'string',
+		required: true,
+		default: '',
+		placeholder: 'crypto',
+		displayOptions: { show: { resource: ['x'], operation: ['searchCommunities'] } },
+		routing: { request: { body: { keyword: '={{ $value }}' } } },
+		description: 'Community search keyword',
+	},
+	// ── Community ID (community, communityTweets) ──
+	{
+		displayName: 'Community ID',
+		name: 'community_id',
+		type: 'string',
+		required: true,
+		default: '',
+		placeholder: '1508567430188126209',
+		displayOptions: { show: { resource: ['x'], operation: ['community', 'communityTweets'] } },
+		routing: { request: { body: { community_id: '={{ $value }}' } } },
+		description: 'The numeric X Community ID (community_id from Search Communities)',
+	},
+	// ── Additional Options: Search Communities ──
+	{
+		displayName: 'Additional Options',
+		name: 'additionalOptions',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
+		displayOptions: { show: { resource: ['x'], operation: ['searchCommunities'] } },
+		options: [
+			{
+				displayName: 'Cursor',
+				name: 'cursor',
+				type: 'string',
+				default: '',
+				description: 'Pagination cursor returned from a previous response',
+				routing: { request: { body: { cursor: '={{ $value }}' } } },
+			},
+		],
+	},
+	// ── Additional Options: Get Community Tweets ──
+	{
+		displayName: 'Additional Options',
+		name: 'additionalOptions',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
+		displayOptions: { show: { resource: ['x'], operation: ['communityTweets'] } },
+		options: [
+			{
+				displayName: 'Cursor',
+				name: 'cursor',
+				type: 'string',
+				default: '',
+				description: 'Pagination cursor returned from a previous response',
+				routing: { request: { body: { cursor: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Ranking',
+				name: 'ranking',
+				type: 'options',
+				default: 'Relevance',
+				options: [
+					{ name: 'Recency', value: 'Recency' },
+					{ name: 'Relevance', value: 'Relevance' },
+				],
+				description: 'Order posts by relevance or recency',
+				routing: { request: { body: { ranking: '={{ $value }}' } } },
 			},
 		],
 	},

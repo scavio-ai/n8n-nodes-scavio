@@ -39,6 +39,38 @@ export const tiktokOperations: INodeProperties[] = [
 				routing: { request: { method: 'POST', url: '/api/v1/tiktok/hashtag/videos' } },
 			},
 			{
+				name: 'Get Music',
+				value: 'getMusic',
+				action: 'Get a tiktok sound',
+				description:
+					'A TikTok sound by ID: title, artist, album, duration, how many videos use it, original or commercial, play URL, cover and chart rank when charting. Costs 1 credit.',
+				routing: { request: { method: 'POST', url: '/api/v1/tiktok/music' } },
+			},
+			{
+				name: 'Get Music Chart',
+				value: 'getMusicChart',
+				action: 'Get the tiktok sound chart',
+				description:
+					'TikTok\'s Top 50 or Viral 50 sound chart with each sound\'s details and trend. One global chart, no region filter. Costs 1 credit.',
+				routing: { request: { method: 'POST', url: '/api/v1/tiktok/music/chart' } },
+			},
+			{
+				name: 'Get Music Videos',
+				value: 'getMusicVideos',
+				action: 'Get tiktok sound videos',
+				description:
+					'Videos that use a TikTok sound, about 14 per page (Count is ignored upstream). Costs 1 credit.',
+				routing: { request: { method: 'POST', url: '/api/v1/tiktok/music/videos' } },
+			},
+			{
+				name: 'Get Playlist Videos',
+				value: 'getPlaylistVideos',
+				action: 'Get tiktok playlist videos',
+				description:
+					'The videos in a TikTok playlist, with pagination. Costs 1 credit.',
+				routing: { request: { method: 'POST', url: '/api/v1/tiktok/playlist/videos' } },
+			},
+			{
 				name: 'Get Profile',
 				value: 'getProfile',
 				action: 'Get a tiktok profile',
@@ -46,11 +78,43 @@ export const tiktokOperations: INodeProperties[] = [
 				routing: { request: { method: 'POST', url: '/api/v1/tiktok/profile' } },
 			},
 			{
+				name: 'Get Search Suggestions',
+				value: 'getSearchSuggestions',
+				action: 'Get tiktok search suggestions',
+				description:
+					'TikTok search autocomplete suggestions for a keyword. Long-tail keywords can return none, still billed. Costs 1 credit.',
+				routing: { request: { method: 'POST', url: '/api/v1/tiktok/search/suggestions' } },
+			},
+			{
+				name: 'Get Similar Creators',
+				value: 'getUserSimilar',
+				action: 'Get similar tiktok creators',
+				description:
+					'Creators similar to a TikTok user, about 30 per page, with follower, following, video and like counts, bio and verification. Costs 1 credit.',
+				routing: { request: { method: 'POST', url: '/api/v1/tiktok/user/similar' } },
+			},
+			{
 				name: 'Get Top Ads',
 				value: 'getTopAds',
 				action: 'Get tiktok top ads',
 				description: 'Get the top-performing ads on TikTok, optionally filtered by industry and country',
 				routing: { request: { method: 'POST', url: '/api/v1/tiktok/ads/top' } },
+			},
+			{
+				name: 'Get Trending Searches',
+				value: 'getTrendingSearches',
+				action: 'Get tiktok trending searches',
+				description:
+					'The search terms trending on TikTok now, about 90 per call, US-weighted, no region filter. Costs 1 credit.',
+				routing: { request: { method: 'POST', url: '/api/v1/tiktok/trending/searches' } },
+			},
+			{
+				name: 'Get Trending Videos',
+				value: 'getTrendingVideos',
+				action: 'Get tiktok trending videos',
+				description:
+					'A sample of videos trending on TikTok now, with author, stats, sound and hashtags. About 6 videos per call whatever Count says; run again for a fresh sample. No region filter. Costs 1 credit.',
+				routing: { request: { method: 'POST', url: '/api/v1/tiktok/trending/videos' } },
 			},
 			{
 				name: 'Get User Followers',
@@ -67,11 +131,35 @@ export const tiktokOperations: INodeProperties[] = [
 				routing: { request: { method: 'POST', url: '/api/v1/tiktok/user/followings' } },
 			},
 			{
+				name: 'Get User Live Status',
+				value: 'getUserLive',
+				action: 'Get tiktok user live status',
+				description:
+					'Whether a TikTok user is live now: user, live room status (2 = live, 4 = not live), title, start time and viewer counts. An unknown username is a billed 404. Costs 1 credit.',
+				routing: { request: { method: 'POST', url: '/api/v1/tiktok/user/live' } },
+			},
+			{
+				name: 'Get User Playlists',
+				value: 'getUserPlaylists',
+				action: 'Get tiktok user playlists',
+				description:
+					'A TikTok user\'s playlists (series): playlist ID, name, video count and cover. Accounts without playlists return an empty list. Costs 1 credit.',
+				routing: { request: { method: 'POST', url: '/api/v1/tiktok/user/playlists' } },
+			},
+			{
 				name: 'Get User Posts',
 				value: 'getUserPosts',
 				action: 'Get tiktok user posts',
 				description: "List a TikTok user's videos",
 				routing: { request: { method: 'POST', url: '/api/v1/tiktok/user/posts' } },
+			},
+			{
+				name: 'Get User Region',
+				value: 'getUserRegion',
+				action: 'Get tiktok user region',
+				description:
+					'The region a TikTok account is registered in (ISO country code, not nationality), plus its user ID and sec_user_id. An unknown username is a 404 and is not billed. Costs 1 credit.',
+				routing: { request: { method: 'POST', url: '/api/v1/tiktok/user/region' } },
 			},
 			{
 				name: 'Get Video',
@@ -100,6 +188,14 @@ export const tiktokOperations: INodeProperties[] = [
 				action: 'Search tiktok ads',
 				description: 'Search ads running on TikTok by keyword or industry',
 				routing: { request: { method: 'POST', url: '/api/v1/tiktok/ads/search' } },
+			},
+			{
+				name: 'Search Music',
+				value: 'searchMusic',
+				action: 'Search tiktok sounds',
+				description:
+					'Search TikTok sounds by keyword: ID, title, artist, duration, usage count and play URL. Costs 1 credit.',
+				routing: { request: { method: 'POST', url: '/api/v1/tiktok/search/music' } },
 			},
 			{
 				name: 'Search Users',
@@ -154,7 +250,13 @@ export const tiktokFields: INodeProperties[] = [
 		displayOptions: {
 			show: {
 				resource: ['tiktok'],
-				operation: ['getUserPosts', 'getUserFollowers', 'getUserFollowings'],
+				operation: [
+					'getUserPosts',
+					'getUserFollowers',
+					'getUserFollowings',
+					'getUserSimilar',
+					'getUserPlaylists',
+				],
 			},
 		},
 		routing: { request: { body: { sec_user_id: '={{ $value }}' } } },
@@ -201,7 +303,10 @@ export const tiktokFields: INodeProperties[] = [
 		default: '',
 		placeholder: 'cooking recipes',
 		displayOptions: {
-			show: { resource: ['tiktok'], operation: ['searchVideos', 'searchUsers'] },
+			show: {
+				resource: ['tiktok'],
+				operation: ['searchVideos', 'searchUsers', 'getSearchSuggestions', 'searchMusic'],
+			},
 		},
 		routing: { request: { body: { keyword: '={{ $value }}' } } },
 		description: 'Search keyword',
@@ -659,6 +764,209 @@ export const tiktokFields: INodeProperties[] = [
 				default: 50,
 				description: 'Max number of results to return',
 				routing: { request: { body: { limit: '={{ $value }}' } } },
+			},
+		],
+	},
+
+	// ── Music ID (getMusic, getMusicVideos) ──
+	{
+		displayName: 'Music ID',
+		name: 'music_id',
+		type: 'string',
+		required: true,
+		default: '',
+		placeholder: '7364498342501435408',
+		displayOptions: { show: { resource: ['tiktok'], operation: ['getMusic', 'getMusicVideos'] } },
+		routing: { request: { body: { music_id: '={{ $value }}' } } },
+		description: 'The sound\'s numeric ID (music id_str from a video, Search Music or Get Music Chart)',
+	},
+	// ── Playlist ID (getPlaylistVideos) ──
+	{
+		displayName: 'Playlist ID',
+		name: 'playlist_id',
+		type: 'string',
+		required: true,
+		default: '',
+		placeholder: '7596415294902389534',
+		displayOptions: { show: { resource: ['tiktok'], operation: ['getPlaylistVideos'] } },
+		routing: { request: { body: { playlist_id: '={{ $value }}' } } },
+		description: 'The playlist\'s numeric ID (mixId from Get User Playlists)',
+	},
+	// ── Username (getUserLive, getUserRegion) ──
+	{
+		displayName: 'Username',
+		name: 'username',
+		type: 'string',
+		required: true,
+		default: '',
+		placeholder: 'mrbeast',
+		displayOptions: { show: { resource: ['tiktok'], operation: ['getUserLive', 'getUserRegion'] } },
+		routing: { request: { body: { username: '={{ $value }}' } } },
+		description: 'TikTok username, with or without the @',
+	},
+	// ── Chart (getMusicChart) ──
+	{
+		displayName: 'Chart',
+		name: 'chart',
+		type: 'options',
+		default: 'top',
+		options: [
+			{ name: 'Top 50', value: 'top' },
+			{ name: 'Viral 50', value: 'viral' },
+		],
+		displayOptions: { show: { resource: ['tiktok'], operation: ['getMusicChart'] } },
+		routing: { request: { body: { chart: '={{ $value }}' } } },
+		description: 'Which sound chart to return',
+	},
+	// ── Additional Options: Get Trending Videos ──
+	{
+		displayName: 'Additional Options',
+		name: 'additionalOptions',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
+		displayOptions: { show: { resource: ['tiktok'], operation: ['getTrendingVideos'] } },
+		options: [
+			{
+				displayName: 'Count',
+				name: 'count',
+				type: 'number',
+				default: 15,
+				typeOptions: { minValue: 1, maxValue: 15 },
+				description: 'Requested videos (1-15). About 6 come back per call whatever is set.',
+				routing: { request: { body: { count: '={{ $value }}' } } },
+			},
+		],
+	},
+	// ── Additional Options: Get Music Videos ──
+	{
+		displayName: 'Additional Options',
+		name: 'additionalOptions',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
+		displayOptions: { show: { resource: ['tiktok'], operation: ['getMusicVideos'] } },
+		options: [
+			{
+				displayName: 'Cursor',
+				name: 'cursor',
+				type: 'string',
+				default: '',
+				description: 'Pagination cursor (data.cursor) from the previous page',
+				routing: { request: { body: { cursor: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Count',
+				name: 'count',
+				type: 'number',
+				default: 10,
+				typeOptions: { minValue: 1, maxValue: 30 },
+				description: 'Videos per page (1-30). Ignored upstream; pages hold about 14.',
+				routing: { request: { body: { count: '={{ $value }}' } } },
+			},
+		],
+	},
+	// ── Additional Options: Search Music ──
+	{
+		displayName: 'Additional Options',
+		name: 'additionalOptions',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
+		displayOptions: { show: { resource: ['tiktok'], operation: ['searchMusic'] } },
+		options: [
+			{
+				displayName: 'Cursor',
+				name: 'cursor',
+				type: 'string',
+				default: '',
+				description: 'Pagination offset (data.cursor) from the previous page',
+				routing: { request: { body: { cursor: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Count',
+				name: 'count',
+				type: 'number',
+				default: 20,
+				typeOptions: { minValue: 1, maxValue: 20 },
+				description: 'Sounds per page (1-20)',
+				routing: { request: { body: { count: '={{ $value }}' } } },
+			},
+		],
+	},
+	// ── Additional Options: Get Music Chart ──
+	{
+		displayName: 'Additional Options',
+		name: 'additionalOptions',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
+		displayOptions: { show: { resource: ['tiktok'], operation: ['getMusicChart'] } },
+		options: [
+			{
+				displayName: 'Cursor',
+				name: 'cursor',
+				type: 'string',
+				default: '',
+				description: 'Pagination cursor (data.cursor) from the previous page',
+				routing: { request: { body: { cursor: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Count',
+				name: 'count',
+				type: 'number',
+				default: 50,
+				typeOptions: { minValue: 1, maxValue: 50 },
+				description: 'Sounds per page (1-50)',
+				routing: { request: { body: { count: '={{ $value }}' } } },
+			},
+		],
+	},
+	// ── Additional Options: Get Similar Creators ──
+	{
+		displayName: 'Additional Options',
+		name: 'additionalOptions',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
+		displayOptions: { show: { resource: ['tiktok'], operation: ['getUserSimilar'] } },
+		options: [
+			{
+				displayName: 'Page Token',
+				name: 'page_token',
+				type: 'string',
+				typeOptions: { password: true },
+				default: '',
+				description: 'The next_page_token from the previous response',
+				routing: { request: { body: { page_token: '={{ $value }}' } } },
+			},
+		],
+	},
+	// ── Additional Options: Get User Playlists, Get Playlist Videos ──
+	{
+		displayName: 'Additional Options',
+		name: 'additionalOptions',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
+		displayOptions: { show: { resource: ['tiktok'], operation: ['getUserPlaylists', 'getPlaylistVideos'] } },
+		options: [
+			{
+				displayName: 'Cursor',
+				name: 'cursor',
+				type: 'string',
+				default: '',
+				description: 'Pagination cursor (data.cursor) from the previous page',
+				routing: { request: { body: { cursor: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Count',
+				name: 'count',
+				type: 'number',
+				default: 30,
+				typeOptions: { minValue: 1, maxValue: 30 },
+				description: 'Items per page (1-30)',
+				routing: { request: { body: { count: '={{ $value }}' } } },
 			},
 		],
 	},

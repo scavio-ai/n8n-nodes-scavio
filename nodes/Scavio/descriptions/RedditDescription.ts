@@ -87,11 +87,27 @@ export const redditOperations: INodeProperties[] = [
 				routing: { request: { method: 'POST', url: '/api/v1/reddit/user/posts' } },
 			},
 			{
+				name: 'Search Comments',
+				value: 'searchComments',
+				action: 'Search reddit comments',
+				description:
+					'Search Reddit comments by keyword. Each result carries the comment text, author, score and date, plus the post and subreddit it was left on. Costs 1 credit.',
+				routing: { request: { method: 'POST', url: '/api/v1/reddit/search/comments' } },
+			},
+			{
 				name: 'Search Posts',
 				value: 'search',
 				action: 'Search reddit posts',
 				description: 'Search Reddit and return matching posts',
 				routing: { request: { method: 'POST', url: '/api/v1/reddit/search' } },
+			},
+			{
+				name: 'Search Subreddits',
+				value: 'searchSubreddits',
+				action: 'Search subreddits',
+				description:
+					'Find subreddits by keyword, with subscriber counts, descriptions and NSFW flags. Costs 1 credit.',
+				routing: { request: { method: 'POST', url: '/api/v1/reddit/search/subreddits' } },
 			},
 		],
 		default: 'search',
@@ -124,7 +140,12 @@ export const redditFields: INodeProperties[] = [
 		required: true,
 		default: '',
 		placeholder: 'n8n automation',
-		displayOptions: { show: { resource: ['reddit'], operation: ['search', 'suggestions'] } },
+		displayOptions: {
+			show: {
+				resource: ['reddit'],
+				operation: ['search', 'suggestions', 'searchComments', 'searchSubreddits'],
+			},
+		},
 		routing: { request: { body: { query: '={{ $value }}' } } },
 		description: 'Reddit search query',
 	},
@@ -366,6 +387,59 @@ export const redditFields: INodeProperties[] = [
 				type: 'string',
 				default: '',
 				description: 'Pagination cursor returned from a previous response',
+				routing: { request: { body: { cursor: '={{ $value }}' } } },
+			},
+		],
+	},
+
+	// ── Additional Options: Search Comments ──
+	{
+		displayName: 'Additional Options',
+		name: 'additionalOptions',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
+		displayOptions: { show: { resource: ['reddit'], operation: ['searchComments'] } },
+		options: [
+			{
+				displayName: 'Cursor',
+				name: 'cursor',
+				type: 'string',
+				default: '',
+				description: 'The next_cursor from the previous response',
+				routing: { request: { body: { cursor: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Sort',
+				name: 'sort',
+				type: 'options',
+				default: 'RELEVANCE',
+				options: [
+					{ name: 'Hot', value: 'HOT' },
+					{ name: 'New', value: 'NEW' },
+					{ name: 'Relevance', value: 'RELEVANCE' },
+					{ name: 'Top', value: 'TOP' },
+				],
+				description: 'Sort order for comment results',
+				routing: { request: { body: { sort: '={{ $value }}' } } },
+			},
+		],
+	},
+	// ── Additional Options: Search Subreddits ──
+	{
+		displayName: 'Additional Options',
+		name: 'additionalOptions',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
+		displayOptions: { show: { resource: ['reddit'], operation: ['searchSubreddits'] } },
+		options: [
+			{
+				displayName: 'Cursor',
+				name: 'cursor',
+				type: 'string',
+				default: '',
+				description: 'The next_cursor from the previous response',
 				routing: { request: { body: { cursor: '={{ $value }}' } } },
 			},
 		],
