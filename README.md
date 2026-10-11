@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 48 resources and 370 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 48 resources and 377 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -79,8 +79,21 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Meta Ad Library](https://scavio.dev/docs/meta-ads-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Ad Library, Get Advertiser Ads, Get Ad |
 | [SEC EDGAR](https://scavio.dev/docs/sec-edgar-lookup?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Look Up Company, Get Company Profile, Get Filings, Get XBRL Concept, Get XBRL Facts Index, Search Filings Full Text |
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
-| [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra | Extract Page |
+| [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.22.0
+
+**Extract gained 7 operations: map a website, crawl it, and extract a list of URLs in one job.** Extract Page behaves as before; only its Mode option wording changed. Nothing else changed.
+
+- **Map Website** returns a site's page URLs from its sitemaps and its start page, deduplicated, with optional `Search` text, include / exclude path globs, subdomains and a link cap (`Max Links`, sent as `limit`; API default 1,000; Free 500, PAYG 1,000, paid plans 5,000). Each link says whether it came from the sitemap or the page, with `lastmod` when the sitemap has one; `total_found` and `truncated` say whether there were more. 1 credit.
+- **Start Crawl** extracts same-site pages breadth-first from one URL within `Max Pages` (API default 100), `Max Depth` (0-10, default 3) and path globs, and returns a job ID. URLs under the start path are crawled first. **Start Batch** extracts a list of URLs (one per line or comma-separated) as one job; invalid URLs are listed in the response and never billed.
+- **Billing is per successful page** at the Extract price for the mode: Normal 1 credit, Advanced (renders JavaScript) 1, Ultra (the hardest pages) 2. Failed and skipped pages are free. Credits are taken page by page and a job stops cleanly with `stopped_reason: insufficient_credits` if the balance runs out.
+- **Plan limits** (max pages per crawl / active jobs / URLs per batch): Free 10/1/10, PAYG 100/1/50, Project 500/2/100, Bootstrap 2,000/3/500, Startup 5,000/5/1,000, Growth 10,000/10/1,000. Starting a job past your active-job limit returns 429 with `Retry-After`.
+- **Get Crawl Status / Get Batch Status** return progress (discovered, queued, succeeded, failed, skipped), credits used and the page results paged with `next_cursor` (`Results Per Page` 1-100, API default 25), optionally filtered by status or without content. **Cancel Crawl / Cancel Batch** stop a job; results so far stay available, and a finished job answers 409. Status and cancel are free. Results are kept for 3 days after a job finishes (2 MB per page, 250 MB per job); a job runs for at most 6 hours.
+- **Wait for Completion** (off by default) on Start Crawl and Start Batch polls the job inside the node, every `Poll Interval` seconds (default 5) for up to `Max Wait` seconds (default 300, max 600), then returns the status and first page of results. If the wait runs out, the latest status comes back with `wait.timed_out: true` instead of an error; carry on with Get Status. The start response's fields, including `webhook_secret`, are kept under `created`. Large jobs are better run with the toggle off plus a Wait node, or a webhook.
+- **robots.txt is always obeyed** for crawl and map. Batch reads each URL like Extract Page.
+- **Webhook URL** (optional) receives a signed POST when a job completes, fails or is cancelled, retried after 30 seconds and 5 minutes. Verify the `Scavio-Signature: t=<unix>,v1=<hex>` header: HMAC-SHA256 of `<t>.<raw body>` with the `webhook_secret` returned once by the start operation. `Idempotency Key` makes a repeated start within 24 hours return the original job.
 
 ## What changed in 0.21.0
 
