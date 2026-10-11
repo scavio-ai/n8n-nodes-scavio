@@ -31,6 +31,10 @@ import { redfinOperations, redfinFields } from './descriptions/RedfinDescription
 import { realtorOperations, realtorFields } from './descriptions/RealtorDescription';
 import { rightmoveOperations, rightmoveFields } from './descriptions/RightmoveDescription';
 import {
+	mercadoLibreOperations,
+	mercadoLibreFields,
+} from './descriptions/MercadoLibreDescription';
+import {
 	companiesHouseOperations,
 	companiesHouseFields,
 } from './descriptions/CompaniesHouseDescription';
@@ -62,7 +66,7 @@ export class Scavio implements INodeType {
 		version: 1,
 		subtitle: '={{ $parameter["operation"] + ": " + $parameter["resource"] }}',
 		description:
-			'Real-time structured data from Google, Amazon, Walmart, eBay, Target, Home Depot, Costco, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Facebook, Pinterest, Threads, Kuaishou, Douyin, Weibo, Twitch, GitHub, Etsy, AliExpress, Zillow, Redfin, Realtor.com, Rightmove, Booking.com, Airbnb, Tripadvisor, Yelp, Indeed, Glassdoor, the App Store, Google Play, SEC EDGAR, Companies House, Legistar, G2, Capterra, Trustpilot, ad libraries, and any URL',
+			'Real-time structured data from Google, Amazon, Walmart, eBay, Target, Home Depot, Costco, Mercado Libre, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Facebook, Pinterest, Threads, Kuaishou, Douyin, Weibo, Twitch, GitHub, Etsy, AliExpress, Zillow, Redfin, Realtor.com, Rightmove, Booking.com, Airbnb, Tripadvisor, Yelp, Indeed, Glassdoor, the App Store, Google Play, SEC EDGAR, Companies House, Legistar, G2, Capterra, Trustpilot, ad libraries, and any URL',
 		defaults: { name: 'Scavio' },
 		inputs: [NodeConnectionTypes.Main],
 		outputs: [NodeConnectionTypes.Main],
@@ -111,6 +115,7 @@ export class Scavio implements INodeType {
 					{ name: 'Kuaishou (China)', value: 'kuaishou' },
 					{ name: 'Legistar (Municipal)', value: 'legistar' },
 					{ name: 'LinkedIn', value: 'linkedin' },
+					{ name: 'Mercado Libre', value: 'mercadoLibre' },
 					{ name: 'Meta Ad Library', value: 'metaAds' },
 					{ name: 'Pinterest', value: 'pinterest' },
 					{ name: 'Realtor.com', value: 'realtor' },
@@ -152,6 +157,8 @@ export class Scavio implements INodeType {
 			...homeDepotFields,
 			...costcoOperations,
 			...costcoFields,
+			...mercadoLibreOperations,
+			...mercadoLibreFields,
 			...youtubeOperations,
 			...youtubeFields,
 			...redditOperations,

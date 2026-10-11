@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 47 resources and 346 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 48 resources and 351 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -25,6 +25,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Target](https://scavio.dev/docs/target-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Product, Get Reviews |
 | [Home Depot](https://scavio.dev/docs/home-depot-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Products, Get Product, Get Reviews |
 | [Costco](https://scavio.dev/docs/costco-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Get Warehouse Prices, Get Availability and Get Gas Prices scale with the number of warehouses | Search Products, Get Category Products, Get Categories, Get Products, Get Warehouse Prices, Get Availability, Get Reviews, Get Warehouses, Get Gas Prices, Get Coupon Book, Get Deals, Find Clearance Items, Get Search Suggestions |
+| Mercado Libre (MX, BR, AR, CO) | 2; Get Reviews 1 | Search Listings, Get Product, Get Reviews, Get Questions, Get Best Sellers |
 
 ### Social and video
 
@@ -80,6 +81,16 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra | Extract Page |
 | Account | Free | Get Usage |
+
+## What changed in 0.20.0
+
+**New resource: Mercado Libre, 5 operations, 2 credits each (Get Reviews 1).** Plus one description fix on Realtor.com.
+
+- **Search Listings** covers Mercado Libre in Mexico, Argentina and Colombia, and Mercado Livre in Brazil (`Country`; Chile is not supported). Pick `Search By`: keywords, a numeric seller ID (combines with keywords, filters, sort and paging), or a seller's public nickname (their first page of listings, unfiltered, plus the seller ID to go further). Filters for condition, min / max price in the local currency, minimum discount, free shipping, Full fulfillment, official stores and interest-free installments; sort by relevance or price only (Mercado Libre has no newest or best-selling sort). **About 48 listings per page and up to 42 pages, about 2,000 results per query**; slice by price range, condition or seller to reach more. Rows carry price, list price and discount, installments, shipping flags, a sponsored flag, rating, units sold as a range ("+500") and catalog IDs; seller name appears only where Mercado Libre shows it on the card.
+- **Get Product** takes a catalog product ID, an item (listing) ID or a URL (`Look Up By`) and returns price, promotions, the buy-box seller with reputation, stock, shipping, variations, specs, the star distribution and categories. Only the buy-box seller is returned; the full list of sellers on a product is not available.
+- **Get Reviews** returns 15 reviews per page, with an optional `Stars` filter (1 credit). Reviews translated by Mercado Libre keep the original text. **Get Questions** returns buyer questions with the seller's answers (answers are dated, questions are not); page with `Offset` from `next_offset`. **Get Best Sellers** returns the top 20 in a category for Mexico, Argentina or Colombia; **not available for Brazil**, and the category ID prefix must match the country.
+- Brazil and Argentina may apply a "new" condition on their own for some queries; the response lists it in `auto_applied_filters`. A query with no results is an empty, billed 200. An unknown product, item or seller nickname answers 404 naming what was not found, billed like a normal call; so does a listing with no public questions.
+- **Realtor.com `Keywords`**: the description now says what the filter does: a listing must match **all** the keywords, so each one narrows the results (one Portland search: `workshop` 421, `garage` 2,764, both together 338). Behaviour is unchanged.
 
 ## What changed in 0.19.0
 
@@ -162,7 +173,7 @@ Read these before you build. They are measured behaviours, not guesses.
 
 ### Start with a lookup
 
-Five resources are keyed by identifiers that only exist inside the target site's own URLs. Each has a lookup operation — start there, then chain the ID it returns.
+Several resources are keyed by identifiers that only exist inside the target site's own URLs. Each has a lookup operation — start there, then chain the ID it returns.
 
 | Resource | Start here | It resolves |
 | --- | --- | --- |
@@ -173,6 +184,7 @@ Five resources are keyed by identifiers that only exist inside the target site's
 | Google Ads Transparency | Find Advertisers | A brand name into an `advertiser_id` |
 | Rightmove | Look Up Locations | A place, outcode, postcode or station into the `location_id` Search Listings and Search Agents take (a place name also works, resolved to its first match) |
 | Realtor.com | Get Location Suggestions | A partial place name into the `slug_id` Get Market Stats takes |
+| Mercado Libre | Search Listings | Keywords or a seller nickname into the `product_id`, `item_id`, `seller_id` and `category_id` the other operations take |
 
 Kuaishou has the same shape for share links: **Resolve Share Link** turns a Kuaishou share URL into the user ID every other Kuaishou operation takes.
 
@@ -180,8 +192,8 @@ Kuaishou has the same shape for share links: **Resolve Share Link** turns a Kuai
 
 Do not assume an operation pages. Several deliberately do not, and the node only exposes a paging field where one really exists.
 
-- **Page number**: Walmart Search / Reviews / Category, eBay Search, Target Search / Category, Home Depot Search / Reviews, Zillow Search, Redfin Search, Booking Search, Airbnb Search / Reviews, Tripadvisor Search / Reviews, Yelp Search / Reviews, Indeed Search / Company Reviews, Glassdoor Salaries, App Store Reviews, SEC Filings / Search, Companies House Search / Officers / Filing History, G2 Search / Reviews, Capterra Reviews, Trustpilot Search / Reviews / Category Businesses, Realtor.com Search / Agents, Rightmove Search / Sold / Agents.
-- **Cursor**: Threads User Posts / User Replies / Post Comments, all cursor-paginated Kuaishou operations, Airbnb Search, Google Play Reviews, Google Ads Search, Meta Ads Search / Advertiser Ads.
+- **Page number**: Walmart Search / Reviews / Category, eBay Search, Target Search / Category, Home Depot Search / Reviews, Zillow Search, Redfin Search, Booking Search, Airbnb Search / Reviews, Tripadvisor Search / Reviews, Yelp Search / Reviews, Indeed Search / Company Reviews, Glassdoor Salaries, App Store Reviews, SEC Filings / Search, Companies House Search / Officers / Filing History, G2 Search / Reviews, Capterra Reviews, Trustpilot Search / Reviews / Category Businesses, Realtor.com Search / Agents, Rightmove Search / Sold / Agents, Mercado Libre Search / Reviews.
+- **Cursor**: Threads User Posts / User Replies / Post Comments, all cursor-paginated Kuaishou operations, Airbnb Search, Google Play Reviews, Google Ads Search, Meta Ads Search / Advertiser Ads. Mercado Libre Get Questions pages by `Offset` (`next_offset` from the previous page).
 - **No pagination at all**: every detail operation, plus **App Store Search** (raise `Limit`, up to 200 — every offset spelling is ignored), **Google Play Search** (one shelf of about 30 apps), **Capterra Search** (fixed at 20 results; `?page=2` returns identical rows), **Walmart Get Seller Products** (about 40 items), and **Glassdoor Get Reviews** (see below).
 - **Airbnb Search takes either `Page` or `Pagination Cursor`, never both** — a request carrying both is rejected. The cursor wins.
 - **Google Play's reviews cursor is opaque, single-use, and encodes the sort.** Send it back with the same `Sort` it came from.
@@ -196,6 +208,7 @@ Do not assume an operation pages. Several deliberately do not, and the node only
 - **Capterra and Tripadvisor page 1 of reviews are already inside the detail call.** Use Get Reviews to page past it.
 - **Trustpilot Get Reviews stops at page 10, 200 reviews per filter combination.** Different stars x language x date range combinations are separate sets, so slice to go deeper. Get Business Profile already carries the 20 newest reviews in its `Language`, so skip Get Reviews page 1 when that is all you need.
 - **Realtor.com Search stops at 10,000 results per query** and **Rightmove stops at 42 search pages, 40 sold pages and 50 agent pages.** Slice by price band, property type or a smaller area to reach more.
+- **Mercado Libre Search stops at 42 pages of about 48, about 2,000 results per query.** Slice by price range, condition or seller. Get Product is the slowest call, up to about 10 seconds.
 - **Home Depot search page size is fixed at 12** and reviews are 30 per page; asking past `total_pages` is a 404.
 
 ### Silent-wrong-answer traps
@@ -204,6 +217,7 @@ These sites answer 200 with the wrong data rather than erroring, so the node clo
 
 - **Zillow**: a bare ZIP works alone but cannot be combined with a filter or a sort — Zillow geolocates that request shape and answers about another city. Use the city name there. On `Listing Status = For Rent`, `Min Price` / `Max Price` mean **monthly rent**.
 - **Realtor.com**: on Sold, `sold_price` is null in US non-disclosure states (Texas and the others listed under 0.19.0) while `sold_date` is set. A null price there means undisclosed, not an error.
+- **Mercado Libre**: a query can be narrowed to a category, brand or line by Mercado Libre itself, and Brazil and Argentina may apply a "new" condition on their own. Check `auto_applied_filters` before treating a result set as complete. Units sold are ranges ("+500"), never exact counts.
 - **Rightmove**: there is no keyword filter, so the node offers none. Get Property on a live listing carries no price history; use Get Sold Property for an address's past sales.
 - **Redfin**: city names are not accepted on `Location`. Pass a redfin.com region URL (`/city/`, `/neighborhood/`, `/county/`, `/zipcode/`) or `Region ID` + `Region Type` together. `days_on_market` is always null on responses — do not build on it.
 - **Booking.com**: `Check-In Date` and `Check-Out Date` must be sent together, or Booking prices its own default range and returns real prices for dates you never asked for. A search with neither destination nor destination ID returns Booking's homepage, costs a credit, and returns nothing.
@@ -308,6 +322,7 @@ The credential test calls `GET /api/v1/usage` (free) so you get instant feedback
 
 - [Google Search API](https://scavio.dev/google-search-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — SERP results, news, images, maps, and knowledge graph
 - [Amazon Product API](https://scavio.dev/amazon-product-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) and [Walmart Product API](https://scavio.dev/walmart-product-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — product search, details, reviews, categories, and sellers
+- Mercado Libre (Mexico, Brazil, Argentina, Colombia) — listings, product detail, reviews, buyer questions, and best sellers
 - eBay, Target, Home Depot and [Costco](https://scavio.dev/costco-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — marketplace listings, product detail, and customer reviews
 - [YouTube API](https://scavio.dev/youtube-transcript-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme), [TikTok API](https://scavio.dev/tiktok-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme), and [Instagram API](https://scavio.dev/instagram-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — video and social media data
 - [Reddit API](https://scavio.dev/reddit-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — posts and threaded comments

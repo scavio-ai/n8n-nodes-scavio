@@ -369,7 +369,7 @@ export const realtorFields: INodeProperties[] = [
 				default: '',
 				placeholder: 'workshop, detached garage',
 				description:
-					'Only listings whose listing text matches these keywords. Separate with commas, up to 10, 60 characters each.',
+					'Only listings whose listing text matches all of these keywords: each one narrows the results further, it does not widen them. Separate with commas, up to 10, 60 characters each.',
 				routing: { send: { type: 'body', property: 'keywords', value: splitList } },
 			},
 			numberOption(
