@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 48 resources and 377 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 48 resources and 385 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -35,7 +35,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Reddit](https://scavio.dev/docs/reddit-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Posts, Get Search Suggestions, Get Post, Get Post Comments, Get Comment Replies, Get Subreddit, Get Subreddit Posts, Get User, Get User Posts, Get User Comments, Get Popular, Get Trending, Search Comments, Search Subreddits |
 | [TikTok](https://scavio.dev/docs/tiktok-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Get Profile, Get User Posts, Get Video, Get Video Comments, Get Comment Replies, Search Videos, Search Users, Get Hashtag, Get Hashtag Videos, Get User Followers, Get User Followings, Get Trending Searches, Get Trending Videos, Get Search Suggestions, Get Music, Get Music Videos, Search Music, Get Music Chart, Get Similar Creators, Get User Playlists, Get Playlist Videos, Get User Live Status, Get User Region |
 | [TikTok Shop](https://scavio.dev/docs/tiktok-shop-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Search Suggestions, Get Product, Get Product Reviews, Get Categories, Get Category Products, Get Shop Products, Resolve URL |
-| [Instagram](https://scavio.dev/docs/instagram-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Get Profile, Get User Posts, Get User Reels, Get User Tagged, Get User Stories, Get Post, Get Post Comments, Get Comment Replies, Search Users, Search Hashtags, Get User Followers, Get User Followings |
+| [Instagram](https://scavio.dev/docs/instagram-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1-2: Get Profile, Get User Reels, Get User Tagged and Get Music Posts 1, the rest 2 | Get Profile, Get User Posts, Get User Reels, Get User Tagged, Get User Stories, Get User Highlights, Get Highlight Stories, Get Similar Accounts, Get Post, Get Post Comments, Get Comment Replies, Get Post Likers, Search Users, Search Hashtags, Search Reels, Search Music, Get Music Posts, Search Locations, Get User Followers, Get User Followings |
 | [X](https://scavio.dev/docs/x-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search, Get Tweet, Get Tweet Comments, Get Tweet Retweeters, Get User, Get User Tweets, Get User Replies, Get User Media, Get User Followers, Get User Followings, Get Trending, Search Communities, Get Community, Get Community Tweets |
 | [LinkedIn](https://scavio.dev/docs/linkedin-person?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1, 10, or 30 by operation | Get Person, Get Person About, Get Person Posts, Get Company, Get Company Posts, Search Jobs, Get Job, Get Post, Get Post Comments |
 | [Threads](https://scavio.dev/docs/threads-profile?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 by user ID, 4 by username | Get Profile, Get User Posts, Get User Replies, Get Post, Get Post Comments, Search Users |
@@ -81,6 +81,15 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.23.0
+
+**Instagram now costs 1-2 credits per call instead of 8-10, and gained 8 operations.** No field or operation was renamed; existing Instagram nodes keep running and simply cost less.
+
+- **Prices.** Get Profile 1 credit. Get User Reels and Get User Tagged 1 (2 the first time a username is looked up). Get User Posts, Get User Stories, Get Post, Get Post Comments, Get Comment Replies, Get User Followers and Get User Followings 2 per call or page. Search Users and Search Hashtags 2, or 8 when you send a `Cursor`. Any Instagram call can occasionally cost more, up to 10, when a request needs extra work; the response's `credits_used` is the exact charge.
+- **Stories and highlights.** Get User Highlights lists a user's story highlights (ID, title, cover, item count); Get Highlight Stories returns every story in one highlight with image and video URLs. 2 credits each.
+- **Discovery.** Search Reels (keyword, cursor-paginated), Search Music (song or artist, returns the `Music ID` Get Music Posts takes), Get Music Posts (the Reels that use a track plus its total reel count, 1 credit per page), Search Locations (place ID, name, address, coordinates) and Get Similar Accounts (most creator accounts; some brand accounts return none). 2 credits each unless stated.
+- **Engagement.** Get Post Likers returns up to about 1,000 accounts that liked a post, plus its total like count, by `Shortcode` or `URL`. 2 credits.
 
 ## What changed in 0.22.0
 
