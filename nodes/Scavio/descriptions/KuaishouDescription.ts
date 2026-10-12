@@ -1,7 +1,6 @@
 import type { INodeProperties } from 'n8n-workflow';
 
-// Kuaishou (China), kuaishou.com only. The upstream does NOT serve Kwai
-// international: a real kwai.com photo id comes back as an empty envelope, so
+// Kuaishou (China), kuaishou.com only. Kwai international is NOT served: a real kwai.com photo id comes back as an empty envelope, so
 // nothing on this resource may be labelled "Kwai".
 //
 // Credit cost is PER OPERATION, never flat. Get Profile and the four search
@@ -163,7 +162,7 @@ export const kuaishouFields: INodeProperties[] = [
 		displayOptions: { show: { resource: ['kuaishou'], operation: ['userResolve'] } },
 		routing: { request: { body: { share_link: '={{ $value }}' } } },
 		description:
-			'A kuaishou.com or v.kuaishou.com share link. Kwai international links are not served by the upstream and answer with an empty envelope.',
+			'A kuaishou.com or v.kuaishou.com share link. Kwai international links are not supported and answer with an empty envelope.',
 	},
 
 	// -- Video lookup (video): photo_id or url, one of the two is required --

@@ -13,7 +13,7 @@ export const glassdoorOperations: INodeProperties[] = [
 				value: 'company',
 				action: 'Get a glassdoor company profile',
 				description:
-					'Employer profile: ratings, star distribution, CEO approval, size and revenue bands, awards, the five server-rendered reviews, plus reviews_url and salaries_url. Chain those two back into Get Reviews and Get Salaries as the Glassdoor URL to halve the upstream fetches. Costs 1 credit.',
+					'Employer profile: ratings, star distribution, CEO approval, size and revenue bands, awards, the five server-rendered reviews, plus reviews_url and salaries_url. Chain those two back into Get Reviews and Get Salaries as the Glassdoor URL to halve the lookups. Costs 1 credit.',
 				routing: { request: { method: 'POST', url: '/api/v1/glassdoor/company' } },
 			},
 			{
@@ -48,7 +48,7 @@ export const glassdoorOperations: INodeProperties[] = [
 export const glassdoorFields: INodeProperties[] = [
 	{
 		displayName:
-			'Glassdoor is render-gated and slow. A call typically takes 40 to 90 seconds and a failing one can run about 3 minutes before it answers 502, so raise this node timeout and retry on 502.',
+			'Glassdoor is slow. A call typically takes 40 to 90 seconds and a failing one can run about 3 minutes before it answers 502, so raise this node timeout and retry on 502.',
 		name: 'glassdoorLatencyNotice',
 		type: 'notice',
 		default: '',
@@ -118,7 +118,7 @@ export const glassdoorFields: INodeProperties[] = [
 		},
 		routing: { request: { body: { url: '={{ $value }}' } } },
 		description:
-			'Any glassdoor.com employer URL, /Overview/, /Reviews/ or /Salary/. On Get Reviews and Get Salaries, pass back the reviews_url or salaries_url that Get Company Profile returned: addressing those two by employer ID costs two upstream fetches instead of one. Other hosts are rejected.',
+			'Any glassdoor.com employer URL, /Overview/, /Reviews/ or /Salary/. On Get Reviews and Get Salaries, pass back the reviews_url or salaries_url that Get Company Profile returned: addressing those two by employer ID costs two lookups instead of one. Other hosts are rejected.',
 	},
 
 	// -- Additional Options: Get Company Profile --

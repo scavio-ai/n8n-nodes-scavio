@@ -82,6 +82,10 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
 
+## What changed in 0.23.1
+
+- Field descriptions say what each operation returns. No price, parameter or behavior changed.
+
 ## What changed in 0.23.0
 
 **Instagram now costs 1-2 credits per call instead of 8-10, and gained 8 operations.** No field or operation was renamed; existing Instagram nodes keep running and simply cost less.
@@ -233,7 +237,7 @@ Do not assume an operation pages. Several deliberately do not, and the node only
 
 ### Slow, gated, or expensive surfaces
 
-- **Glassdoor is render-gated, slow, and flaky.** Per-attempt success was measured at 48% and per-call at 87%. A call typically takes 40 to 90 seconds; a failing one can run about 3 minutes before it answers 502. Raise the node timeout and retry on 502. **Get Reviews is capped at three reviews per response** by Glassdoor's login wall — there is deliberately no page field. Move the window with `Category` and `Employment Status`, and read `filtered_review_count` to see how many match. Addressing Get Reviews or Get Salaries by `Employer ID` needs an extra lookup; passing the `reviews_url` / `salaries_url` that Get Company Profile returns is the single-fetch path.
+- **Glassdoor is slow and flaky.** Per-attempt success was measured at 48% and per-call at 87%. A call typically takes 40 to 90 seconds; a failing one can run about 3 minutes before it answers 502. Raise the node timeout and retry on 502. **Get Reviews is capped at three reviews per response** by Glassdoor's login wall — there is deliberately no page field. Move the window with `Category` and `Employment Status`, and read `filtered_review_count` to see how many match. Addressing Get Reviews or Get Salaries by `Employer ID` needs an extra lookup; passing the `reviews_url` / `salaries_url` that Get Company Profile returns is the single-fetch path.
 - **G2 is 5 credits, the highest on the node, and a blocked page bills you.** A blocked G2 page arrives as a billed 502. Retries are deliberately conservative. Get Product carries no review text — call Get Reviews for that.
 - **Target is slow, not expensive.** Product about 4s, search about 9s, category about 37s, reviews about 40s, and a 502-then-retry was seen at 105s. Budget timeouts accordingly. **Get Reviews returns 8 review bodies maximum** regardless of `review_count`; `Max Review Bodies` only trims. `seller_*` is null for first-party stock, which is most of Target — null means "sold by Target", not "unknown".
 - **Yelp Get Reviews page 1 is redundant.** It re-fetches the document Get Business already returned and costs another 2 credits. Start at page 2.

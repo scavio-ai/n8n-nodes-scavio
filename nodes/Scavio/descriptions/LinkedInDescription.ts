@@ -6,7 +6,7 @@ import type { INodeProperties } from 'n8n-workflow';
 // Company Posts, Search Jobs and Get Post Comments cost 10 per page; Get Job
 // costs 30. Five operations
 // were dropped from the dropdown - Get Person Contact, Get Company People, Get
-// Company Jobs, Search People and Search Posts - because their upstream is gone
+// Company Jobs, Search People and Search Posts - because they are retired
 // and the API answers them with 410; offering a broken choice in a visual node
 // is worse than not offering it.
 //

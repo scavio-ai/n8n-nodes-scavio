@@ -378,11 +378,11 @@ export const extractFields: INodeProperties[] = [
 			{
 				name: 'Ultra',
 				value: 'ultra',
-				description: 'Reaches the hardest anti-bot sites, costs more credits',
+				description: 'Reaches the hardest pages, costs more credits',
 			},
 		],
 		routing: { request: { body: { mode: '={{ $value }}' } } },
-		description: 'Capture tier. Normal works for most sites; advanced waits longer for JS pages; ultra reaches hard anti-bot sites.',
+		description: 'Capture tier. Normal works for most sites; advanced waits longer for JS pages; ultra reaches the hardest pages.',
 	},
 
 	// ── Map Website ──

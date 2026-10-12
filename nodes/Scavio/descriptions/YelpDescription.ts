@@ -77,7 +77,7 @@ export const yelpFields: INodeProperties[] = [
 		},
 		routing: { request: { body: { location: '={{ $value }}' } } },
 		description:
-			'City, address or postcode the search is centred on. Yelp geolocates a location-less search off the proxy exit, so the same request would answer about a different metro from run to run.',
+			'City, address or postcode the search is centred on. Without it Yelp picks a location itself, so the same request would answer about a different metro from run to run.',
 	},
 	{
 		displayName: 'Search URL',

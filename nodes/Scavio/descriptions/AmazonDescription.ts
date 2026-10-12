@@ -1,6 +1,6 @@
 import type { INodeProperties } from 'n8n-workflow';
 
-// Amazon moved to a new upstream provider and the API now returns a normalized
+// Amazon changed and the API now returns a normalized
 // shape instead of a raw provider passthrough. Params that disappeared with it:
 //
 // - sort_by: the marketplace accepts every sort value and ignores all of them.

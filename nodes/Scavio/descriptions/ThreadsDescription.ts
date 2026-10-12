@@ -84,7 +84,7 @@ export const threadsFields: INodeProperties[] = [
 			},
 		],
 		description:
-			'Whether to address the user by numeric user ID or by handle. A handle costs 4 credits instead of 2 because it needs a second upstream lookup first, so pass the user ID whenever you already have it.',
+			'Whether to address the user by numeric user ID or by handle. A handle costs 4 credits instead of 2 because it needs a second lookup first, so pass the user ID whenever you already have it.',
 	},
 	{
 		displayName: 'User ID',

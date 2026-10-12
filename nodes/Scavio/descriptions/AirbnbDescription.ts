@@ -129,7 +129,7 @@ export const airbnbFields: INodeProperties[] = [
 				default: 'USD',
 				placeholder: 'EUR',
 				description:
-					'ISO 4217 currency the prices come back in. Without one Airbnb prices off the proxy exit and two identical requests disagree, so the transport sends USD.',
+					'ISO 4217 currency the prices come back in. Without one Airbnb picks a currency itself and two identical requests can disagree, so the transport sends USD.',
 				routing: { request: { body: { currency: '={{ $value }}' } } },
 			},
 			{

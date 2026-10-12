@@ -47,7 +47,7 @@ export const targetOperations: INodeProperties[] = [
 				value: 'search',
 				action: 'Search target products',
 				description:
-					'Search Target.com, the US retailer, for products with prices, ratings, badges and promotions. Calls take around 9 seconds because Target is reached through a headless browser. A null seller means the item is sold by Target itself; only Target Plus marketplace rows name a vendor. Costs 1 credit.',
+					'Search Target.com, the US retailer, for products with prices, ratings, badges and promotions. Calls take around 9 seconds. A null seller means the item is sold by Target itself; only Target Plus marketplace rows name a vendor. Costs 1 credit.',
 				routing: { request: { method: 'POST', url: '/api/v1/target/search' } },
 			},
 		],

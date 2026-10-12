@@ -230,7 +230,7 @@ export const ebayFields: INodeProperties[] = [
 				type: 'options',
 				default: 'best_match',
 				description:
-					'Result sort order. Distance sorts are deliberately absent because they rank against our proxy exit rather than your location.',
+					'Result sort order. Distance sorts are deliberately absent because they would not rank by your location.',
 				options: [
 					{ name: 'Best Match', value: 'best_match' },
 					{ name: 'Ending Soonest', value: 'ending_soonest' },
