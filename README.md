@@ -84,6 +84,10 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
 
+## What changed in 0.25.3
+
+- ChatGPT Prompt operation description now says 2 credits, matching the notice above the form.
+
 ## What changed in 0.25.2
 
 - ChatGPT Prompt now costs 2 credits per answered prompt. Gemini stays at 5.

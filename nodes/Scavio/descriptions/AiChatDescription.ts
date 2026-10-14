@@ -40,7 +40,7 @@ export const chatgptOperations: INodeProperties[] = [
 				value: 'prompt',
 				action: 'Get a chatgpt answer',
 				description:
-					'Send a prompt to ChatGPT and get the answer it gives: the full Markdown answer, every page it cites with title, publisher and date, the web searches it ran, and the products it recommended. For AI visibility and brand monitoring. Costs 5 credits.',
+					'Send a prompt to ChatGPT and get the answer it gives: the full Markdown answer, every page it cites with title, publisher and date, the web searches it ran, and the products it recommended. For AI visibility and brand monitoring. Costs 2 credits.',
 				routing: {
 					request: { method: 'POST', url: '/api/v1/chatgpt/prompt', timeout: PROMPT_TIMEOUT_MS },
 				},
