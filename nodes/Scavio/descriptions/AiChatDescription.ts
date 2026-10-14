@@ -5,9 +5,9 @@ import type { INodeProperties } from 'n8n-workflow';
 
 const PROMPT_TIMEOUT_MS = 120000;
 
-const latencyNotice = (resource: string): INodeProperties => ({
+const latencyNotice = (resource: string, credits: string): INodeProperties => ({
 	displayName:
-		'Answers typically take 10-40 seconds. 5 credits per answered prompt; a failed prompt is not charged. On a 503, wait for the Retry-After header and retry.',
+		`Answers typically take 10-40 seconds. ${credits} per answered prompt; a failed prompt is not charged. On a 503, wait for the Retry-After header and retry.`,
 	name: `${resource}LatencyNotice`,
 	type: 'notice',
 	default: '',
@@ -51,7 +51,7 @@ export const chatgptOperations: INodeProperties[] = [
 ];
 
 export const chatgptFields: INodeProperties[] = [
-	latencyNotice('chatgpt'),
+	latencyNotice('chatgpt', '1 credit'),
 	promptField('chatgpt', 1024, 'ChatGPT'),
 	{
 		displayName: 'Additional Options',
@@ -116,6 +116,6 @@ export const geminiOperations: INodeProperties[] = [
 ];
 
 export const geminiFields: INodeProperties[] = [
-	latencyNotice('gemini'),
+	latencyNotice('gemini', '5 credits'),
 	promptField('gemini', 4000, 'Gemini'),
 ];

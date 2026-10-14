@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-scavio",
-  "version": "0.25.0",
+  "version": "0.25.1",
   "description": "n8n community node for Scavio — real-time structured JSON from Google, ChatGPT, Gemini, Amazon, Walmart, eBay, Target, Home Depot, Costco, Mercado Libre, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Threads, Kuaishou, Zillow, Redfin, Realtor.com, Rightmove, Booking.com, Airbnb, Tripadvisor, Yelp, Indeed, Glassdoor, App Store, Google Play, SEC EDGAR, Companies House, G2, Capterra, Trustpilot, ad libraries, any URL, and whole websites (map, crawl, batch extract).",
   "keywords": [
     "n8n-community-node-package",
