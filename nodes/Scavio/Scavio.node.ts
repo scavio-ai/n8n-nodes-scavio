@@ -41,6 +41,12 @@ import {
 import { g2Operations, g2Fields } from './descriptions/G2Description';
 import { capterraOperations, capterraFields } from './descriptions/CapterraDescription';
 import { trustpilotOperations, trustpilotFields } from './descriptions/TrustpilotDescription';
+import {
+	chatgptOperations,
+	chatgptFields,
+	geminiOperations,
+	geminiFields,
+} from './descriptions/AiChatDescription';
 import { googleAdsOperations, googleAdsFields } from './descriptions/GoogleAdsDescription';
 import { metaAdsOperations, metaAdsFields } from './descriptions/MetaAdsDescription';
 import { extractOperations, extractFields } from './descriptions/ExtractDescription';
@@ -66,7 +72,7 @@ export class Scavio implements INodeType {
 		version: 1,
 		subtitle: '={{ $parameter["operation"] + ": " + $parameter["resource"] }}',
 		description:
-			'Real-time structured data from Google, Amazon, Walmart, eBay, Target, Home Depot, Costco, Mercado Libre, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Facebook, Pinterest, Threads, Kuaishou, Douyin, Weibo, Twitch, GitHub, Etsy, AliExpress, Zillow, Redfin, Realtor.com, Rightmove, Booking.com, Airbnb, Tripadvisor, Yelp, Indeed, Glassdoor, the App Store, Google Play, SEC EDGAR, Companies House, Legistar, G2, Capterra, Trustpilot, ad libraries, and any URL',
+			'Real-time structured data from Google, ChatGPT, Gemini, Amazon, Walmart, eBay, Target, Home Depot, Costco, Mercado Libre, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Facebook, Pinterest, Threads, Kuaishou, Douyin, Weibo, Twitch, GitHub, Etsy, AliExpress, Zillow, Redfin, Realtor.com, Rightmove, Booking.com, Airbnb, Tripadvisor, Yelp, Indeed, Glassdoor, the App Store, Google Play, SEC EDGAR, Companies House, Legistar, G2, Capterra, Trustpilot, ad libraries, and any URL',
 		defaults: { name: 'Scavio' },
 		inputs: [NodeConnectionTypes.Main],
 		outputs: [NodeConnectionTypes.Main],
@@ -96,6 +102,7 @@ export class Scavio implements INodeType {
 					{ name: 'Apple App Store', value: 'appStore' },
 					{ name: 'Booking.com', value: 'booking' },
 					{ name: 'Capterra (Software Reviews)', value: 'capterra' },
+					{ name: 'ChatGPT', value: 'chatgpt' },
 					{ name: 'Companies House (UK)', value: 'companiesHouse' },
 					{ name: 'Costco', value: 'costco' },
 					{ name: 'Douyin (China)', value: 'douyin' },
@@ -104,6 +111,7 @@ export class Scavio implements INodeType {
 					{ name: 'Extract (Any URL)', value: 'extract' },
 					{ name: 'Facebook', value: 'facebook' },
 					{ name: 'G2 (Software Reviews)', value: 'g2' },
+					{ name: 'Gemini', value: 'gemini' },
 					{ name: 'GitHub', value: 'github' },
 					{ name: 'Glassdoor', value: 'glassdoor' },
 					{ name: 'Google', value: 'google' },
@@ -211,6 +219,10 @@ export class Scavio implements INodeType {
 			...capterraFields,
 			...trustpilotOperations,
 			...trustpilotFields,
+			...chatgptOperations,
+			...chatgptFields,
+			...geminiOperations,
+			...geminiFields,
 			...googleAdsOperations,
 			...googleAdsFields,
 			...metaAdsOperations,

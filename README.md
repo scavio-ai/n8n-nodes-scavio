@@ -1,8 +1,8 @@
 # n8n-nodes-scavio
 
-This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
+This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 48 resources and 385 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 50 resources and 387 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -19,6 +19,8 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | Resource | Credits | Operations |
 | --- | --- | --- |
 | [Google](https://scavio.dev/docs/search-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search, Custom Search (CSE Format), AI Mode, Maps Search, Maps Place Details, Maps Reviews, Shopping Search, Shopping Product, Shopping Product Stores, Flights Search, Hotels Search, Hotels Detail, News Search, Trends, Trending Now |
+| [ChatGPT](https://scavio.dev/docs/chatgpt-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 5 | Prompt |
+| [Gemini](https://scavio.dev/docs/gemini-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 5 | Prompt |
 | [Amazon](https://scavio.dev/docs/amazon-product?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Offers |
 | [Walmart](https://scavio.dev/docs/walmart-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1, or 2 on walmart.com.mx or when targeting one store | Search Products, Get Product, Get Reviews, Get Category Products, Get Buy Box Offer, Get Seller, Get Seller Products, [Get Stores](https://scavio.dev/docs/walmart-stores?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) |
 | [eBay](https://scavio.dev/docs/ebay-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Listings, Get Listing, Get Seller Profile |
@@ -81,6 +83,12 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.25.0
+
+- **New resources: ChatGPT and Gemini, one Prompt operation each, 5 credits.** Send a prompt and get the answer the assistant gives, for tracking which brands and pages AI assistants recommend. Both return one shape: `answer.markdown`, `sources[]` (ChatGPT adds title, publisher and date to each), `search_queries[]` (the web searches ChatGPT ran) and `shopping[]` (the products the answer recommends).
+- ChatGPT takes a prompt up to 1024 characters plus optional `Model` (default `auto`), `Country` (default `us`) and `Include HTML`. Gemini takes a prompt up to 4000 characters.
+- Answers typically take 10-40 seconds; both operations carry a 120-second request timeout. A failed prompt is not charged. A 503 means capacity is busy: wait for `Retry-After` and retry.
 
 ## What changed in 0.24.0
 
@@ -372,6 +380,7 @@ The credential test calls `GET /api/v1/usage` (free) so you get instant feedback
 - [Realtor.com](https://scavio.dev/realtor-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) and [Rightmove](https://scavio.dev/rightmove-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — US and UK listings, sold prices (England and Wales for Rightmove), property detail, market stats, and agents
 - Yelp, Indeed and Glassdoor — local businesses, job postings, employer reviews, and salaries
 - Apple App Store, Google Play, G2 and Capterra — app and software listings with reviews
+- ChatGPT and Gemini — the answer an AI assistant gives to a prompt, with cited sources and recommended products
 - [Trustpilot](https://scavio.dev/trustpilot-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — business profiles, TrustScores, filtered reviews, and category rankings
 - Google Ads Transparency and Meta Ad Library — live competitor ad creatives
 - SEC EDGAR and Companies House — filings, XBRL financials, officers, and company registers
