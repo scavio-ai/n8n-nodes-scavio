@@ -51,7 +51,7 @@ export const chatgptOperations: INodeProperties[] = [
 ];
 
 export const chatgptFields: INodeProperties[] = [
-	latencyNotice('chatgpt', '1 credit'),
+	latencyNotice('chatgpt', '2 credits'),
 	promptField('chatgpt', 1024, 'ChatGPT'),
 	{
 		displayName: 'Additional Options',
