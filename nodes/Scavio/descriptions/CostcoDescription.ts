@@ -173,7 +173,7 @@ export const costcoOperations: INodeProperties[] = [
 				value: 'clearance',
 				action: 'Find costco clearance items',
 				description:
-					'Scan a query or category at one warehouse and return the items whose in-warehouse price carries a markdown code: .97 clearance and .00/.88 manager markdown by default, .49/.79/.89 special buy on request. The codes are the member-community decode; Costco does not publish them, and only items Costco lists online are covered. Costs 1 credit.',
+					'Scan a query or category at one warehouse and return the items whose in-warehouse price carries a markdown code: .97 clearance and .00/.88 manager markdown by default, .49/.79/.89 special buy on request. The codes are the member-community decode; Costco does not publish them, and only items Costco lists online are covered. Costs 2 credits in the United States at any page count, 1 on Costco.ca.',
 				routing: { request: { method: 'POST', url: '/api/v1/costco/clearance', timeout: 120000 } },
 			},
 			{
@@ -199,7 +199,7 @@ export const costcoOperations: INodeProperties[] = [
 				value: 'category',
 				action: 'Get costco category products',
 				description:
-					'Products in a Costco category, with the same sort, filters and per-warehouse pricing as search. Costs 1 credit.',
+					'Products in a Costco category, with the same sort, filters and per-warehouse pricing as search. Costs 2 credits in the United States, 1 on Costco.ca.',
 				routing: { request: { method: 'POST', url: '/api/v1/costco/category' } },
 			},
 			{
@@ -215,7 +215,7 @@ export const costcoOperations: INodeProperties[] = [
 				value: 'deals',
 				action: 'Get costco deals',
 				description:
-					'Costco deal feeds: new items, while supplies last, treasure hunt, member favorites, online-only and everything on sale, with the same filters and optional per-warehouse pricing as search. Costs 1 credit.',
+					'Costco deal feeds: new items, while supplies last, treasure hunt, member favorites, online-only and everything on sale, with the same filters and optional per-warehouse pricing as search. Costs 2 credits in the United States, 1 on Costco.ca.',
 				routing: { request: { method: 'POST', url: '/api/v1/costco/deals' } },
 			},
 			{
@@ -271,7 +271,7 @@ export const costcoOperations: INodeProperties[] = [
 				value: 'search',
 				action: 'Search costco products',
 				description:
-					"Search Costco by keyword or item number: online price and original price, ratings, member-only and stock flags, promotions and facets. Set Warehouse ID to add that warehouse's in-store price, stock and price code to every result. Costs 1 credit.",
+					"Search Costco by keyword or item number: online price and original price, ratings, member-only and stock flags, promotions and facets. Set Warehouse ID to add that warehouse's in-store price, stock and price code to every result. Costs 2 credits in the United States, 1 elsewhere.",
 				routing: { request: { method: 'POST', url: '/api/v1/costco/search' } },
 			},
 		],
