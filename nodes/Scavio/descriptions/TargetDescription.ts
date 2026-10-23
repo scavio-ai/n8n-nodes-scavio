@@ -43,6 +43,14 @@ export const targetOperations: INodeProperties[] = [
 				routing: { request: { method: 'POST', url: '/api/v1/target/reviews' } },
 			},
 			{
+				name: 'Get Store Availability',
+				value: 'availability',
+				action: 'Get target store availability',
+				description:
+					'In-store stock for one Target.com product at every Target store near a ZIP code: units, in-store, pickup, curbside and ship-to-store status, distance, address and hours. Up to 20 stores. Costs 1 credit.',
+				routing: { request: { method: 'POST', url: '/api/v1/target/availability' } },
+			},
+			{
 				name: 'Search Products',
 				value: 'search',
 				action: 'Search target products',
@@ -90,7 +98,7 @@ export const targetFields: INodeProperties[] = [
 		required: true,
 		default: '',
 		placeholder: '87381098',
-		displayOptions: { show: { resource: ['target'], operation: ['product', 'reviews'] } },
+		displayOptions: { show: { resource: ['target'], operation: ['product', 'reviews', 'availability'] } },
 		routing: { request: { body: { tcin: '={{ $value }}' } } },
 		description:
 			'Target catalogue item number. A child TCIN is answered by its variation parent, with the child present under variants.',
@@ -138,7 +146,7 @@ export const targetFields: INodeProperties[] = [
 				type: 'string',
 				default: '3991',
 				description:
-					'Target store the results are priced and stocked against. Unlike Walmart this is a real request param, so the store is your choice; it defaults to 3991.',
+					'Target store the results are priced against. Unlike Walmart this is a real request param, so the store is your choice; it defaults to 3991. For in-store stock use Get Store Availability.',
 				routing: { request: { body: { store_id: '={{ $value }}' } } },
 			},
 		],
@@ -159,7 +167,7 @@ export const targetFields: INodeProperties[] = [
 				type: 'string',
 				default: '3991',
 				description:
-					'Target store the product is priced and stocked against. Unlike Walmart this is a real request param, so the store is your choice; it defaults to 3991.',
+					'Target store the product is priced against. Unlike Walmart this is a real request param, so the store is your choice; it defaults to 3991. For in-store stock use Get Store Availability.',
 				routing: { request: { body: { store_id: '={{ $value }}' } } },
 			},
 		],
@@ -191,6 +199,46 @@ export const targetFields: INodeProperties[] = [
 				default: '3991',
 				description:
 					'Target store the reviews are read against. Unlike Walmart this is a real request param, so the store is your choice; it defaults to 3991.',
+				routing: { request: { body: { store_id: '={{ $value }}' } } },
+			},
+		],
+	},
+
+	// ── Get Store Availability ──
+	{
+		displayName: 'ZIP Code',
+		name: 'zip',
+		type: 'string',
+		required: true,
+		default: '',
+		placeholder: '79407',
+		displayOptions: { show: { resource: ['target'], operation: ['availability'] } },
+		routing: { request: { body: { zip: '={{ $value }}' } } },
+		description: '5-digit US ZIP code to search around',
+	},
+	{
+		displayName: 'Additional Options',
+		name: 'additionalOptions',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
+		displayOptions: { show: { resource: ['target'], operation: ['availability'] } },
+		options: [
+			{
+				displayName: 'Radius (Miles)',
+				name: 'radius',
+				type: 'number',
+				default: 25,
+				typeOptions: { minValue: 1, maxValue: 100 },
+				description: 'Search radius around the ZIP code. Up to 20 stores are returned.',
+				routing: { request: { body: { radius: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Store ID',
+				name: 'store_id',
+				type: 'string',
+				default: '',
+				description: 'Return only this Target store. It must be within the radius of the ZIP code.',
 				routing: { request: { body: { store_id: '={{ $value }}' } } },
 			},
 		],
