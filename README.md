@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 50 resources and 388 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 52 resources and 393 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -27,6 +27,8 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Target](https://scavio.dev/docs/target-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Product, Get Reviews, [Get Store Availability](https://scavio.dev/docs/target-availability?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) |
 | [Home Depot](https://scavio.dev/docs/home-depot-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Products, Get Product, Get Reviews |
 | [Costco](https://scavio.dev/docs/costco-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Search Products, Get Category Products, Get Deals and Find Clearance Items 2 in the United States; Get Warehouse Prices, Get Availability and Get Gas Prices scale with the number of warehouses | Search Products, Get Category Products, Get Categories, Get Products, Get Warehouse Prices, Get Availability, Get Reviews, Get Warehouses, Get Gas Prices, Get Coupon Book, Get Deals, Find Clearance Items, Get Search Suggestions |
+| [HEB](https://scavio.dev/docs/heb-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Products, Get Product, Get Stores |
+| [Kroger](https://scavio.dev/docs/kroger-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Products, Get Product |
 | [Mercado Libre (MX, BR, AR, CO)](https://scavio.dev/docs/mercadolibre-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Reviews 1 | Search Listings, Get Product, Get Reviews, Get Questions, Get Best Sellers |
 
 ### Social and video
@@ -83,6 +85,13 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.26.1
+
+**New resources: HEB (3 operations) and Kroger (2 operations), 2 credits each.**
+
+- **HEB** (Texas grocery chain): Search Products, Get Product (nutrition, ingredients, coupons, similar products) and Get Stores (by ZIP or city: address, hours, pharmacy, fulfillment channels). Pass `product_url` from search or `slug` + `product_id`.
+- **Kroger** (operates Kroger, Ralphs, Fred Meyer, Harris Teeter, King Soopers, Fry's): Search Products and Get Product (nutrition facts, allergens, dietary flags, aisle location, stock, rating distribution). Pass `product_url` from search or `upc`.
 
 ## What changed in 0.26.0
 

@@ -17,6 +17,8 @@ import { ebayOperations, ebayFields } from './descriptions/EbayDescription';
 import { targetOperations, targetFields } from './descriptions/TargetDescription';
 import { homeDepotOperations, homeDepotFields } from './descriptions/HomeDepotDescription';
 import { costcoOperations, costcoFields } from './descriptions/CostcoDescription';
+import { hebOperations, hebFields } from './descriptions/HebDescription';
+import { krogerOperations, krogerFields } from './descriptions/KrogerDescription';
 import { zillowOperations, zillowFields } from './descriptions/ZillowDescription';
 import { bookingOperations, bookingFields } from './descriptions/BookingDescription';
 import { tripadvisorOperations, tripadvisorFields } from './descriptions/TripadvisorDescription';
@@ -72,7 +74,7 @@ export class Scavio implements INodeType {
 		version: 1,
 		subtitle: '={{ $parameter["operation"] + ": " + $parameter["resource"] }}',
 		description:
-			'Real-time structured data from Google, ChatGPT, Gemini, Amazon, Walmart, eBay, Target, Home Depot, Costco, Mercado Libre, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Facebook, Pinterest, Threads, Kuaishou, Douyin, Weibo, Twitch, GitHub, Etsy, AliExpress, Zillow, Redfin, Realtor.com, Rightmove, Booking.com, Airbnb, Tripadvisor, Yelp, Indeed, Glassdoor, the App Store, Google Play, SEC EDGAR, Companies House, Legistar, G2, Capterra, Trustpilot, ad libraries, and any URL',
+			'Real-time structured data from Google, ChatGPT, Gemini, Amazon, Walmart, eBay, Target, Home Depot, Costco, HEB, Kroger, Mercado Libre, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Facebook, Pinterest, Threads, Kuaishou, Douyin, Weibo, Twitch, GitHub, Etsy, AliExpress, Zillow, Redfin, Realtor.com, Rightmove, Booking.com, Airbnb, Tripadvisor, Yelp, Indeed, Glassdoor, the App Store, Google Play, SEC EDGAR, Companies House, Legistar, G2, Capterra, Trustpilot, ad libraries, and any URL',
 		defaults: { name: 'Scavio' },
 		inputs: [NodeConnectionTypes.Main],
 		outputs: [NodeConnectionTypes.Main],
@@ -117,9 +119,11 @@ export class Scavio implements INodeType {
 					{ name: 'Google', value: 'google' },
 					{ name: 'Google Ads Transparency', value: 'googleAds' },
 					{ name: 'Google Play', value: 'googlePlay' },
+					{ name: 'HEB', value: 'heb' },
 					{ name: 'Home Depot', value: 'homeDepot' },
 					{ name: 'Indeed', value: 'indeed' },
 					{ name: 'Instagram', value: 'instagram' },
+					{ name: 'Kroger', value: 'kroger' },
 					{ name: 'Kuaishou (China)', value: 'kuaishou' },
 					{ name: 'Legistar (Municipal)', value: 'legistar' },
 					{ name: 'LinkedIn', value: 'linkedin' },
@@ -165,6 +169,10 @@ export class Scavio implements INodeType {
 			...homeDepotFields,
 			...costcoOperations,
 			...costcoFields,
+			...hebOperations,
+			...hebFields,
+			...krogerOperations,
+			...krogerFields,
 			...mercadoLibreOperations,
 			...mercadoLibreFields,
 			...youtubeOperations,
