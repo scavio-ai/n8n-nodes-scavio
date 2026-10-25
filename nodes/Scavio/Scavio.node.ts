@@ -19,6 +19,7 @@ import { homeDepotOperations, homeDepotFields } from './descriptions/HomeDepotDe
 import { costcoOperations, costcoFields } from './descriptions/CostcoDescription';
 import { hebOperations, hebFields } from './descriptions/HebDescription';
 import { krogerOperations, krogerFields } from './descriptions/KrogerDescription';
+import { decathlonOperations, decathlonFields } from './descriptions/DecathlonDescription';
 import { zillowOperations, zillowFields } from './descriptions/ZillowDescription';
 import { bookingOperations, bookingFields } from './descriptions/BookingDescription';
 import { tripadvisorOperations, tripadvisorFields } from './descriptions/TripadvisorDescription';
@@ -74,7 +75,7 @@ export class Scavio implements INodeType {
 		version: 1,
 		subtitle: '={{ $parameter["operation"] + ": " + $parameter["resource"] }}',
 		description:
-			'Real-time structured data from Google, ChatGPT, Gemini, Amazon, Walmart, eBay, Target, Home Depot, Costco, HEB, Kroger, Mercado Libre, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Facebook, Pinterest, Threads, Kuaishou, Douyin, Weibo, Twitch, GitHub, Etsy, AliExpress, Zillow, Redfin, Realtor.com, Rightmove, Booking.com, Airbnb, Tripadvisor, Yelp, Indeed, Glassdoor, the App Store, Google Play, SEC EDGAR, Companies House, Legistar, G2, Capterra, Trustpilot, ad libraries, and any URL',
+			'Real-time structured data from Google, ChatGPT, Gemini, Amazon, Walmart, eBay, Target, Home Depot, Costco, HEB, Kroger, Decathlon, Mercado Libre, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Facebook, Pinterest, Threads, Kuaishou, Douyin, Weibo, Twitch, GitHub, Etsy, AliExpress, Zillow, Redfin, Realtor.com, Rightmove, Booking.com, Airbnb, Tripadvisor, Yelp, Indeed, Glassdoor, the App Store, Google Play, SEC EDGAR, Companies House, Legistar, G2, Capterra, Trustpilot, ad libraries, and any URL',
 		defaults: { name: 'Scavio' },
 		inputs: [NodeConnectionTypes.Main],
 		outputs: [NodeConnectionTypes.Main],
@@ -107,6 +108,7 @@ export class Scavio implements INodeType {
 					{ name: 'ChatGPT', value: 'chatgpt' },
 					{ name: 'Companies House (UK)', value: 'companiesHouse' },
 					{ name: 'Costco', value: 'costco' },
+					{ name: 'Decathlon', value: 'decathlon' },
 					{ name: 'Douyin (China)', value: 'douyin' },
 					{ name: 'eBay', value: 'ebay' },
 					{ name: 'Etsy', value: 'etsy' },
@@ -173,6 +175,8 @@ export class Scavio implements INodeType {
 			...hebFields,
 			...krogerOperations,
 			...krogerFields,
+			...decathlonOperations,
+			...decathlonFields,
 			...mercadoLibreOperations,
 			...mercadoLibreFields,
 			...youtubeOperations,
