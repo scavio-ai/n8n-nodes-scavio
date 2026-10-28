@@ -86,6 +86,12 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
 
+## What changed in 0.26.3
+
+- **HEB store targeting:** Search Products and Get Product take an optional **Store ID** (Additional Options), the `store_number` from Get Stores (e.g. `441`). Prices, stock, aisle location and search assortment then come from that store, echoed in `data.store`. With a Store ID, Get Product needs only `product_id` (no slug). US only, still 2 credits.
+- HEB Search Products **Page Size** now applies (default 60).
+- Includes the Decathlon Search + Get Product operations from 0.26.2, whose npm publish did not complete.
+
 ## What changed in 0.26.1
 
 **New resources: HEB (3 operations) and Kroger (2 operations), 2 credits each.**

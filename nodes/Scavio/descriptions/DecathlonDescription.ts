@@ -84,7 +84,7 @@ export const decathlonFields: INodeProperties[] = [
 		placeholder: '123456',
 		displayOptions: { show: { resource: ['decathlon'], operation: ['product'] } },
 		routing: { request: { body: { product_id: '={{ $value }}' } } },
-		description: 'Decathlon numeric product ID (from the /p/{slug}/{id}/... URL pattern)',
+		description: 'Decathlon numeric product ID, the number after the slug in a /p/ product URL',
 	},
 	{
 		displayName: 'Country',

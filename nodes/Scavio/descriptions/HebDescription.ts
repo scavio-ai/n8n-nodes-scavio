@@ -13,7 +13,7 @@ export const hebOperations: INodeProperties[] = [
 				value: 'product',
 				action: 'Get an heb product',
 				description:
-					'Full HEB product detail: nutrition facts (serving size, calories, nutrients with daily values), ingredients, description, images, similar products, coupons, EBT/SNAP eligibility, breadcrumbs, aisle location. Pass product_url or slug + product_id. Costs 2 credits.',
+					'Full HEB product detail: nutrition facts (serving size, calories, nutrients with daily values), ingredients, description, images, similar products, coupons, EBT/SNAP eligibility, breadcrumbs, aisle location. Pass product_url or slug + product_id, or product_id alone with a Store ID (price, stock and aisle from that store). Costs 2 credits.',
 				routing: { request: { method: 'POST', url: '/api/v1/heb/product' } },
 			},
 			{
@@ -29,7 +29,7 @@ export const hebOperations: INodeProperties[] = [
 				value: 'search',
 				action: 'Search heb products',
 				description:
-					'Search HEB grocery products by keyword. Returns price (cents), list price, sale status, unit price, size, UPC, stock, EBT/SNAP eligibility, category, aisle location and product URL. Costs 2 credits.',
+					'Search HEB grocery products by keyword. Returns price (cents), list price, sale status, unit price, size, UPC, stock, EBT/SNAP eligibility, category, aisle location and product URL. Set a Store ID for prices, stock and assortment from one store. Costs 2 credits.',
 				routing: { request: { method: 'POST', url: '/api/v1/heb/search' } },
 			},
 		],
@@ -71,7 +71,8 @@ export const hebFields: INodeProperties[] = [
 		placeholder: '931316',
 		displayOptions: { show: { resource: ['heb'], operation: ['product'] } },
 		routing: { request: { body: { product_id: '={{ $value }}' } } },
-		description: 'HEB product ID (numeric ID at the end of a product URL). Requires slug.',
+		description:
+			'HEB product ID (numeric ID at the end of a product URL). Requires slug, unless Store ID is set.',
 	},
 	{
 		displayName: 'Slug',
@@ -81,7 +82,8 @@ export const hebFields: INodeProperties[] = [
 		placeholder: 'central-market-organics-whole-milk-1-gal',
 		displayOptions: { show: { resource: ['heb'], operation: ['product'] } },
 		routing: { request: { body: { slug: '={{ $value }}' } } },
-		description: 'Product slug (readable part of the URL). Required with product_id.',
+		description:
+			'Product slug (readable part of the URL). Required with product_id, unless Store ID is set.',
 	},
 
 	// -- Get Stores --
@@ -128,10 +130,42 @@ export const hebFields: INodeProperties[] = [
 				displayName: 'Page Size',
 				name: 'page_size',
 				type: 'number',
-				default: 30,
+				default: 60,
 				typeOptions: { minValue: 1, maxValue: 60 },
 				description: 'Results per page, max 60',
 				routing: { request: { body: { page_size: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Store ID',
+				name: 'store_id',
+				type: 'string',
+				default: '',
+				placeholder: '441',
+				description:
+					"HEB store number from Get Stores (field store_number). Prices, stock, aisle location and assortment come from that store and the store used is echoed in data.store. US only. Leave unset for HEB's default store.",
+				routing: { request: { body: { store_id: '={{ $value }}' } } },
+			},
+		],
+	},
+
+	// -- Additional Options: Get Product --
+	{
+		displayName: 'Additional Options',
+		name: 'additionalOptions',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
+		displayOptions: { show: { resource: ['heb'], operation: ['product'] } },
+		options: [
+			{
+				displayName: 'Store ID',
+				name: 'store_id',
+				type: 'string',
+				default: '',
+				placeholder: '441',
+				description:
+					"HEB store number from Get Stores (field store_number). Price, stock and aisle location come from that store and the store used is echoed in data.store. US only. Leave unset for HEB's default store.",
+				routing: { request: { body: { store_id: '={{ $value }}' } } },
 			},
 		],
 	},
