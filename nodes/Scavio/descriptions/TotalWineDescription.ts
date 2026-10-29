@@ -13,7 +13,7 @@ export const totalWineOperations: INodeProperties[] = [
 				value: 'stores',
 				action: 'Find total wine stores',
 				description:
-					'Total Wine stores near a ZIP code or city, nearest first: store ID, address, phone, coordinates, distance in miles and delivery availability. Costs 2 credits.',
+					'Total Wine stores near a ZIP code or city, nearest first: store ID, address, phone, coordinates, distance in miles and delivery availability. Costs 10 credits.',
 				routing: { request: { method: 'POST', url: '/api/v1/totalwine/stores' } },
 			},
 			{
@@ -21,7 +21,7 @@ export const totalWineOperations: INodeProperties[] = [
 				value: 'product',
 				action: 'Get a total wine product',
 				description:
-					'One Total Wine product at one store: price (cents), units in stock, aisle, bay, shelf, last restock date, ABV, taste profile and breadcrumbs. Costs 2 credits.',
+					'One Total Wine product at one store: price (cents), units in stock, aisle, bay, shelf, last restock date, ABV, taste profile and breadcrumbs. Costs 10 credits.',
 				routing: { request: { method: 'POST', url: '/api/v1/totalwine/product' } },
 			},
 			{
@@ -29,7 +29,7 @@ export const totalWineOperations: INodeProperties[] = [
 				value: 'search',
 				action: 'Search total wine products',
 				description:
-					"Search Total Wine at one store: that store's price (cents), units in stock, purchase limit, aisle, rating and pickup/delivery availability. Costs 2 credits.",
+					"Search Total Wine at one store: that store's price (cents), units in stock, purchase limit, aisle, rating and pickup/delivery availability. Costs 10 credits.",
 				routing: { request: { method: 'POST', url: '/api/v1/totalwine/search' } },
 			},
 		],

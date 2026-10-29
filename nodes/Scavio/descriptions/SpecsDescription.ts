@@ -13,7 +13,7 @@ export const specsOperations: INodeProperties[] = [
 				value: 'stores',
 				action: 'Find specs stores',
 				description:
-					"Spec's stores in a Texas region: store ID, name, status, address, phone, coordinates and opening hours. Costs 1 credit.",
+					"Spec's stores in a Texas region: store ID, name, status, address, phone, coordinates and opening hours. Costs 5 credits.",
 				routing: { request: { method: 'POST', url: '/api/v1/specs/stores' } },
 			},
 			{
@@ -21,7 +21,7 @@ export const specsOperations: INodeProperties[] = [
 				value: 'product',
 				action: 'Get a specs product',
 				description:
-					"One Spec's product with every store's price and stock (about 200 stores) plus the online price, ABV, origin and tasting notes. Costs 1 credit.",
+					"One Spec's product with every store's price and stock (about 200 stores) plus the online price, ABV, origin and tasting notes. Costs 5 credits.",
 				routing: { request: { method: 'POST', url: '/api/v1/specs/product' } },
 			},
 			{
@@ -29,7 +29,7 @@ export const specsOperations: INodeProperties[] = [
 				value: 'search',
 				action: 'Search specs products',
 				description:
-					"Search Spec's: online price (cents), case price and quantity, promo and Keyclub flags, stock, size, SKU, UPC and slug. Costs 1 credit.",
+					"Search Spec's: online price (cents), case price and quantity, promo and Keyclub flags, stock, size, SKU, UPC and slug. Costs 5 credits.",
 				routing: { request: { method: 'POST', url: '/api/v1/specs/search' } },
 			},
 		],
