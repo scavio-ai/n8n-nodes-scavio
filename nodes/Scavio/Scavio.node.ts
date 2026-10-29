@@ -20,6 +20,8 @@ import { costcoOperations, costcoFields } from './descriptions/CostcoDescription
 import { hebOperations, hebFields } from './descriptions/HebDescription';
 import { krogerOperations, krogerFields } from './descriptions/KrogerDescription';
 import { decathlonOperations, decathlonFields } from './descriptions/DecathlonDescription';
+import { totalWineOperations, totalWineFields } from './descriptions/TotalWineDescription';
+import { specsOperations, specsFields } from './descriptions/SpecsDescription';
 import { zillowOperations, zillowFields } from './descriptions/ZillowDescription';
 import { bookingOperations, bookingFields } from './descriptions/BookingDescription';
 import { tripadvisorOperations, tripadvisorFields } from './descriptions/TripadvisorDescription';
@@ -75,7 +77,7 @@ export class Scavio implements INodeType {
 		version: 1,
 		subtitle: '={{ $parameter["operation"] + ": " + $parameter["resource"] }}',
 		description:
-			'Real-time structured data from Google, ChatGPT, Gemini, Amazon, Walmart, eBay, Target, Home Depot, Costco, HEB, Kroger, Decathlon, Mercado Libre, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Facebook, Pinterest, Threads, Kuaishou, Douyin, Weibo, Twitch, GitHub, Etsy, AliExpress, Zillow, Redfin, Realtor.com, Rightmove, Booking.com, Airbnb, Tripadvisor, Yelp, Indeed, Glassdoor, the App Store, Google Play, SEC EDGAR, Companies House, Legistar, G2, Capterra, Trustpilot, ad libraries, and any URL',
+			'Real-time structured data from Google, ChatGPT, Gemini, Amazon, Walmart, eBay, Target, Home Depot, Costco, HEB, Kroger, Decathlon, Total Wine, Spec\'s, Mercado Libre, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Facebook, Pinterest, Threads, Kuaishou, Douyin, Weibo, Twitch, GitHub, Etsy, AliExpress, Zillow, Redfin, Realtor.com, Rightmove, Booking.com, Airbnb, Tripadvisor, Yelp, Indeed, Glassdoor, the App Store, Google Play, SEC EDGAR, Companies House, Legistar, G2, Capterra, Trustpilot, ad libraries, and any URL',
 		defaults: { name: 'Scavio' },
 		inputs: [NodeConnectionTypes.Main],
 		outputs: [NodeConnectionTypes.Main],
@@ -137,14 +139,18 @@ export class Scavio implements INodeType {
 					{ name: 'Redfin', value: 'redfin' },
 					{ name: 'Rightmove (UK)', value: 'rightmove' },
 					{ name: 'SEC EDGAR', value: 'sec' },
+					// Spec's is the retailer's brand name, not a plural noun, and `specs` is
+					// frozen once saved in user workflows.
+					// eslint-disable-next-line n8n-nodes-base/node-param-resource-with-plural-option
+					{ name: "Spec's", value: 'specs' },
 					{ name: 'Target', value: 'target' },
 					// Threads is Meta's brand name, not a plural noun. Singularizing it to
 					// "Thread" would misname the product, and the `threads` value is frozen
 					// because it is saved inside user workflows.
-					// eslint-disable-next-line n8n-nodes-base/node-param-resource-with-plural-option
 					{ name: 'Threads', value: 'threads' },
 					{ name: 'TikTok', value: 'tiktok' },
 					{ name: 'TikTok Shop', value: 'tiktokShop' },
+					{ name: 'Total Wine', value: 'totalWine' },
 					{ name: 'Tripadvisor', value: 'tripadvisor' },
 					{ name: 'Trustpilot', value: 'trustpilot' },
 					{ name: 'Twitch', value: 'twitch' },
@@ -177,6 +183,10 @@ export class Scavio implements INodeType {
 			...krogerFields,
 			...decathlonOperations,
 			...decathlonFields,
+			...totalWineOperations,
+			...totalWineFields,
+			...specsOperations,
+			...specsFields,
 			...mercadoLibreOperations,
 			...mercadoLibreFields,
 			...youtubeOperations,
