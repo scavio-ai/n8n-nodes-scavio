@@ -13,7 +13,7 @@ export const glassdoorOperations: INodeProperties[] = [
 				value: 'company',
 				action: 'Get a glassdoor company profile',
 				description:
-					'Employer profile: ratings, star distribution, CEO approval, size and revenue bands, awards, the five server-rendered reviews, plus reviews_url and salaries_url. Chain those two back into Get Reviews and Get Salaries as the Glassdoor URL to halve the lookups. Costs 1 credit.',
+					'Employer profile: ratings, star distribution, CEO approval, size and revenue bands, awards, the five server-rendered reviews, plus reviews_url and salaries_url. Chain those two back into Get Reviews and Get Salaries as the Glassdoor URL to halve the lookups. Costs 2 credits.',
 				routing: { request: { method: 'POST', url: '/api/v1/glassdoor/company' } },
 			},
 			{
@@ -21,7 +21,7 @@ export const glassdoorOperations: INodeProperties[] = [
 				value: 'reviews',
 				action: 'Get glassdoor reviews',
 				description:
-					'Up to THREE reviews per call: Glassdoor caps it there behind its login wall. Each carries per-axis scores, pros, cons, advice, job title, location, employment status and any employer response, alongside full rating statistics and per-job-title review counts. There is no page parameter, so move the window with Category and Employment Status and read filtered_review_count to see how many match. Costs 1 credit.',
+					'Up to THREE reviews per call: Glassdoor caps it there behind its login wall. Each carries per-axis scores, pros, cons, advice, job title, location, employment status and any employer response, alongside full rating statistics and per-job-title review counts. There is no page parameter, so move the window with Category and Employment Status and read filtered_review_count to see how many match. Costs 2 credits.',
 				routing: { request: { method: 'POST', url: '/api/v1/glassdoor/reviews' } },
 			},
 			{
@@ -29,7 +29,7 @@ export const glassdoorOperations: INodeProperties[] = [
 				value: 'salaries',
 				action: 'Get glassdoor salaries',
 				description:
-					'Salaries by job title, 10 titles per page: base-pay and total-pay percentiles P10-P90 with medians called out, sample counts, currency, pay period and last-reported date. These are Glassdoor estimates for the title, not individual reported salaries. Costs 1 credit.',
+					'Salaries by job title, 10 titles per page: base-pay and total-pay percentiles P10-P90 with medians called out, sample counts, currency, pay period and last-reported date. These are Glassdoor estimates for the title, not individual reported salaries. Costs 2 credits.',
 				routing: { request: { method: 'POST', url: '/api/v1/glassdoor/salaries' } },
 			},
 			{
@@ -37,7 +37,7 @@ export const glassdoorOperations: INodeProperties[] = [
 				value: 'companies',
 				action: 'Search glassdoor companies',
 				description:
-					'Start here. Resolves a company name to the employer ID that Get Company Profile, Get Reviews and Get Salaries all need, ranked by Glassdoor and de-duplicated. Costs 1 credit.',
+					'Start here. Resolves a company name to the employer ID that Get Company Profile, Get Reviews and Get Salaries all need, ranked by Glassdoor and de-duplicated. Costs 2 credits.',
 				routing: { request: { method: 'POST', url: '/api/v1/glassdoor/companies' } },
 			},
 		],
@@ -48,7 +48,7 @@ export const glassdoorOperations: INodeProperties[] = [
 export const glassdoorFields: INodeProperties[] = [
 	{
 		displayName:
-			'Glassdoor is slow. A call typically takes 40 to 90 seconds and a failing one can run about 3 minutes before it answers 502, so raise this node timeout and retry on 502.',
+			'A Glassdoor call usually answers in a few seconds, but a failing one can take up to two minutes before it answers 502, so keep a generous node timeout and retry on 502.',
 		name: 'glassdoorLatencyNotice',
 		type: 'notice',
 		default: '',
