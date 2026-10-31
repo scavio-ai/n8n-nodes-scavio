@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 52 resources and 393 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 58 resources and 420 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -30,6 +30,10 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [HEB](https://scavio.dev/docs/heb-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Products, Get Product, Get Stores |
 | [Kroger](https://scavio.dev/docs/kroger-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Products, Get Product |
 | [Spec's](https://scavio.dev/docs/specs-product?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 5 | Search Products, Get Product, Find Stores |
+| [Lowe's](https://scavio.dev/docs/lowes-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Reviews 1 | Search Products, Get Product, Find Stores, Get Reviews |
+| [Sam's Club](https://scavio.dev/docs/samsclub-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Find Clubs, Get Instant Savings, Get Category Products, Get Reviews |
+| [Canadian Tire](https://scavio.dev/docs/canadiantire-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Find Stores, Get Availability, Find Clearance Items, Get Deals |
+| [Dollar General](https://scavio.dev/docs/dollargeneral-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Find Stores, Get Deals, Get Coupons |
 | [Mercado Libre (MX, BR, AR, CO)](https://scavio.dev/docs/mercadolibre-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Reviews 1 | Search Listings, Get Product, Get Reviews, Get Questions, Get Best Sellers |
 
 ### Social and video
@@ -86,6 +90,16 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.29.0
+
+**New resources: Lowe's, Sam's Club, Canadian Tire and Dollar General, 21 operations.** Each returns prices and stock for the one store or club you choose. Nothing else changed.
+
+- **Lowe's** (2 credits; Get Reviews 1): Search Products, Get Product, Find Stores and Get Reviews. Search and Get Product take a required **Store ID** and that store's **ZIP code**, both from Find Stores. Turn on **On Sale Only** in Search Products for the store's deals. Get Product adds on-hand stock per fulfillment method, stock at nearby stores, and aisle and bay.
+- **Sam's Club** (1 credit): Search Products, Get Product, Find Clubs, Get Instant Savings, Get Category Products and Get Reviews. Search, Instant Savings and Category Products price a nearby club chosen by location (echoed in `club`); for a specific club, use Get Product with a **Club ID** from Find Clubs. Clearance is category `1150109`. `available_quantity` is capped at 8 (8 means 8 or more).
+- **Canadian Tire** (1 credit): Search Products, Get Product, Find Stores, Get Availability, Find Clearance Items and Get Deals. Every operation except Find Stores takes a required **Store ID**. Get Availability prices and stocks up to 50 SKUs at one store in one call. Find Stores locates by postal code or coordinates, and with a SKU adds each store's stock and aisle for it. Prices differ by store and province, including Quebec.
+- **Dollar General** (1 credit): Search Products, Get Product, Find Stores, Get Deals and Get Coupons. Find Stores with a **UPC** returns that product's unit count at up to 25 nearby stores in one call. Get Deals reads On Sale or Clearance (clearance items carry the current price only, no was-price). Get Coupons lists the current digital coupons.
+- Canadian Tire and Dollar General return a rating and review count, not review text.
 
 ## What changed in 0.28.1
 
