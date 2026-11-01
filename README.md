@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 58 resources and 420 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 64 resources and 440 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -34,6 +34,12 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Sam's Club](https://scavio.dev/docs/samsclub-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Find Clubs, Get Instant Savings, Get Category Products, Get Reviews |
 | [Canadian Tire](https://scavio.dev/docs/canadiantire-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Find Stores, Get Availability, Find Clearance Items, Get Deals |
 | [Dollar General](https://scavio.dev/docs/dollargeneral-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Find Stores, Get Deals, Get Coupons |
+| [Sephora](https://scavio.dev/docs/sephora-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Product |
+| [Ulta Beauty](https://scavio.dev/docs/ulta-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Product, Get Store Availability |
+| [ALDI](https://scavio.dev/docs/aldi-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Find Stores |
+| [Micro Center](https://scavio.dev/docs/microcenter-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Stores 1 | Search Products, Get Product, Get Stores |
+| [Walgreens](https://scavio.dev/docs/walgreens-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Store Stock 4 | Search Products, Get Product, Find Stores, Get Store Stock |
+| [CVS](https://scavio.dev/docs/cvs-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Store Stock |
 | [Mercado Libre (MX, BR, AR, CO)](https://scavio.dev/docs/mercadolibre-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Reviews 1 | Search Listings, Get Product, Get Reviews, Get Questions, Get Best Sellers |
 
 ### Social and video
@@ -90,6 +96,17 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.30.0
+
+**New resources: Sephora, Ulta Beauty, ALDI, Micro Center, Walgreens and CVS, 20 operations.** Nothing else changed.
+
+- **Sephora** (1 credit): Search Products, Get Category Products and Get Product. Get Product takes a **Product URL** (faster) or a **Product ID** and returns every shade or size as a SKU with price and stock, plus a summary of what reviews say with pro and con sentiment counts. It carries no review text. Set a **ZIP Code** in Search Products for same-day delivery eligibility.
+- **Ulta Beauty** (1 credit): Search Products, Get Category Products, Get Product and Get Store Availability. Get Store Availability reports in stock or out of stock for one shade or size at the 10 stores nearest a ZIP code, not unit counts. Search and category pages carry sponsored placements that can repeat across pages; dedupe by `product_id`.
+- **ALDI** (1 credit): Search Products, Get Product and Find Stores. Prices are per store and per **Shopping Mode**: In Store (the shelf price, default), Pickup or Delivery (online prices, often higher). Pass a **Store ID** from Find Stores, or a **ZIP Code** to use the nearest store. ALDI has no product ratings.
+- **Micro Center** (2 credits; Get Stores 1): Search Products, Get Product and Get Stores. Stock is per 3-digit **Store ID** from Get Stores; leave it empty for the web store (029), which lists shippable items only. Stock counts are capped at 25+ (`quantity_capped`). Get Product adds open-box units and an in-stock yes/no for every store.
+- **Walgreens** (2 credits; Get Store Stock 4): Search Products, Get Product, Find Stores and Get Store Stock. Prices are national. Get Store Stock returns one product's unit count at up to 20 stores in one call.
+- **CVS** (1 credit): Search Products, Get Product and Get Store Stock. There is no store locator: the store number is on every cvs.com store page. Search stock defaults to store 7019 (New York) and prices are the same at every store. Get Store Stock checks up to 20 SKUs at one store. Get Product can take 10-30 seconds or more; it carries a 120-second request timeout.
 
 ## What changed in 0.29.0
 

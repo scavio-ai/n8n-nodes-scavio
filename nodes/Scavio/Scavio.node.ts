@@ -31,6 +31,12 @@ import {
 	dollarGeneralOperations,
 	dollarGeneralFields,
 } from './descriptions/DollarGeneralDescription';
+import { sephoraOperations, sephoraFields } from './descriptions/SephoraDescription';
+import { ultaOperations, ultaFields } from './descriptions/UltaDescription';
+import { aldiOperations, aldiFields } from './descriptions/AldiDescription';
+import { microCenterOperations, microCenterFields } from './descriptions/MicroCenterDescription';
+import { walgreensOperations, walgreensFields } from './descriptions/WalgreensDescription';
+import { cvsOperations, cvsFields } from './descriptions/CvsDescription';
 import { zillowOperations, zillowFields } from './descriptions/ZillowDescription';
 import { bookingOperations, bookingFields } from './descriptions/BookingDescription';
 import { tripadvisorOperations, tripadvisorFields } from './descriptions/TripadvisorDescription';
@@ -86,7 +92,7 @@ export class Scavio implements INodeType {
 		version: 1,
 		subtitle: '={{ $parameter["operation"] + ": " + $parameter["resource"] }}',
 		description:
-			'Real-time structured data from Google, ChatGPT, Gemini, Amazon, Walmart, eBay, Target, Home Depot, Costco, HEB, Kroger, Decathlon, Spec\'s, Lowe\'s, Sam\'s Club, Canadian Tire, Dollar General, Mercado Libre, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Facebook, Pinterest, Threads, Kuaishou, Douyin, Weibo, Twitch, GitHub, Etsy, AliExpress, Zillow, Redfin, Realtor.com, Rightmove, Booking.com, Airbnb, Tripadvisor, Yelp, Indeed, Glassdoor, the App Store, Google Play, SEC EDGAR, Companies House, Legistar, G2, Capterra, Trustpilot, ad libraries, and any URL',
+			'Real-time structured data from Google, ChatGPT, Gemini, Amazon, Walmart, eBay, Target, Home Depot, Costco, HEB, Kroger, Decathlon, Spec\'s, Lowe\'s, Sam\'s Club, Canadian Tire, Dollar General, Sephora, Ulta Beauty, ALDI, Micro Center, Walgreens, CVS, Mercado Libre, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Facebook, Pinterest, Threads, Kuaishou, Douyin, Weibo, Twitch, GitHub, Etsy, AliExpress, Zillow, Redfin, Realtor.com, Rightmove, Booking.com, Airbnb, Tripadvisor, Yelp, Indeed, Glassdoor, the App Store, Google Play, SEC EDGAR, Companies House, Legistar, G2, Capterra, Trustpilot, ad libraries, and any URL',
 		defaults: { name: 'Scavio' },
 		inputs: [NodeConnectionTypes.Main],
 		outputs: [NodeConnectionTypes.Main],
@@ -111,6 +117,7 @@ export class Scavio implements INodeType {
 					{ name: 'Account', value: 'account' },
 					{ name: 'Ads Intel (Cross-Platform)', value: 'adsIntel' },
 					{ name: 'Airbnb', value: 'airbnb' },
+					{ name: 'ALDI', value: 'aldi' },
 					{ name: 'AliExpress', value: 'aliexpress' },
 					{ name: 'Amazon', value: 'amazon' },
 					{ name: 'Apple App Store', value: 'appStore' },
@@ -120,6 +127,11 @@ export class Scavio implements INodeType {
 					{ name: 'ChatGPT', value: 'chatgpt' },
 					{ name: 'Companies House (UK)', value: 'companiesHouse' },
 					{ name: 'Costco', value: 'costco' },
+					// CVS is the retailer's brand name, not a plural noun, and `cvs` is
+					// frozen once saved in user workflows. The rule reports only the first
+					// plural-looking option in this list, so the disable lives here.
+					// eslint-disable-next-line n8n-nodes-base/node-param-resource-with-plural-option
+					{ name: 'CVS', value: 'cvs' },
 					{ name: 'Decathlon', value: 'decathlon' },
 					{ name: 'Dollar General', value: 'dollarGeneral' },
 					{ name: 'Douyin (China)', value: 'douyin' },
@@ -143,12 +155,11 @@ export class Scavio implements INodeType {
 					{ name: 'Legistar (Municipal)', value: 'legistar' },
 					{ name: 'LinkedIn', value: 'linkedin' },
 					// Lowe's is the retailer's brand name, not a plural noun, and `lowes` is
-					// frozen once saved in user workflows. The rule reports only the first
-					// plural-looking option in this list, so the disable lives here.
-					// eslint-disable-next-line n8n-nodes-base/node-param-resource-with-plural-option
+					// frozen once saved in user workflows.
 					{ name: "Lowe's", value: 'lowes' },
 					{ name: 'Mercado Libre', value: 'mercadoLibre' },
 					{ name: 'Meta Ad Library', value: 'metaAds' },
+					{ name: 'Micro Center', value: 'microCenter' },
 					{ name: 'Pinterest', value: 'pinterest' },
 					{ name: 'Realtor.com', value: 'realtor' },
 					{ name: 'Reddit', value: 'reddit' },
@@ -156,6 +167,7 @@ export class Scavio implements INodeType {
 					{ name: 'Rightmove (UK)', value: 'rightmove' },
 					{ name: "Sam's Club", value: 'samsClub' },
 					{ name: 'SEC EDGAR', value: 'sec' },
+					{ name: 'Sephora', value: 'sephora' },
 					// Spec's is the retailer's brand name, not a plural noun, and `specs` is
 					// frozen once saved in user workflows.
 					{ name: "Spec's", value: 'specs' },
@@ -169,6 +181,8 @@ export class Scavio implements INodeType {
 					{ name: 'Tripadvisor', value: 'tripadvisor' },
 					{ name: 'Trustpilot', value: 'trustpilot' },
 					{ name: 'Twitch', value: 'twitch' },
+					{ name: 'Ulta Beauty', value: 'ulta' },
+					{ name: 'Walgreens', value: 'walgreens' },
 					{ name: 'Walmart', value: 'walmart' },
 					{ name: 'Weibo (China)', value: 'weibo' },
 					{ name: 'X', value: 'x' },
@@ -208,6 +222,18 @@ export class Scavio implements INodeType {
 			...canadianTireFields,
 			...dollarGeneralOperations,
 			...dollarGeneralFields,
+			...sephoraOperations,
+			...sephoraFields,
+			...ultaOperations,
+			...ultaFields,
+			...aldiOperations,
+			...aldiFields,
+			...microCenterOperations,
+			...microCenterFields,
+			...walgreensOperations,
+			...walgreensFields,
+			...cvsOperations,
+			...cvsFields,
 			...mercadoLibreOperations,
 			...mercadoLibreFields,
 			...youtubeOperations,
