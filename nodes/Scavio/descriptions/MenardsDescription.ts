@@ -35,7 +35,8 @@ export const menardsOperations: INodeProperties[] = [
 				action: 'Search menards products at a store',
 				description:
 					"Search menards.com at one store, 40 products a page: item ID, SKU, name, URL, image, price, everyday price, sale price, price type (regular, sale, clearance, minimum advertised), mail-in rebates, final price after rebates, and that store's stock quantity, stock message, pickup and delivery flags. Also total results and facets. Costs 2 credits.",
-				routing: { request: { method: 'POST', url: '/api/v1/menards/search' } },
+				// Usually a few seconds, but slow spells reach 30+ s; the API waits up to 40.
+				routing: { request: { method: 'POST', url: '/api/v1/menards/search', timeout: 60000 } },
 			},
 		],
 		default: 'product',
