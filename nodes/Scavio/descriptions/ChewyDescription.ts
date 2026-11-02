@@ -23,7 +23,7 @@ export const chewyOperations: INodeProperties[] = [
 				value: 'search',
 				action: 'Search chewy products',
 				description:
-					'Search Chewy by keyword or browse a category, 36 per page: one-time, offer and strike-through price, Autoship price and discount, first-Autoship price, discount and savings cap, MAP price, per-unit price, rating, rating count, in-stock flag, deal, new, exclusive and prescription flags, brand, image and URL. Sponsored listings are removed. When Chewy sends a keyword to a category page, redirect names that category and the results are its products. Costs 10 credits.',
+					'Search Chewy by keyword or browse a category, 36 per page: one-time, offer and strike-through price, Autoship price and discount, per-unit price, rating, rating count, in-stock flag, deal, new, exclusive and prescription flags, brand, image and URL. The first-Autoship price, discount and savings cap are filled only on Autoship-deal rows; Get Product always has them and MAP. Sponsored listings are removed. When Chewy sends a keyword to a category page, redirect names that category and the results are its products. Costs 10 credits.',
 				routing: { request: { method: 'POST', url: '/api/v1/chewy/search' } },
 			},
 		],
