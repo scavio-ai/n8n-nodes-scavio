@@ -97,6 +97,10 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
 
+## What changed in 0.30.1
+
+CVS Search Products: `same_day_delivery` is now always empty, as on Get Store Stock. CVS reports one same-day count per SKU whichever store is sent, so it was not the store's number.
+
 ## What changed in 0.30.0
 
 **New resources: Sephora, Ulta Beauty, ALDI, Micro Center, Walgreens and CVS, 20 operations.** Nothing else changed.

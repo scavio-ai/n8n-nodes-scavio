@@ -31,7 +31,7 @@ export const cvsOperations: INodeProperties[] = [
 				value: 'stock',
 				action: 'Get cvs store stock',
 				description:
-					'Units available at one CVS store for up to 20 SKUs: in store (on the shelf), pickup and ship (online stock, chain-wide); same-day units come from Search Products. An unknown SKU or store number reads as 0. Costs 1 credit.',
+					'Units available at one CVS store for up to 20 SKUs: in store (on the shelf), pickup and ship (online stock, chain-wide); same_day_delivery is always empty (CVS does not report it per store). An unknown SKU or store number reads as 0. Costs 1 credit.',
 				routing: { request: { method: 'POST', url: '/api/v1/cvs/stock' } },
 			},
 			{
@@ -39,7 +39,7 @@ export const cvsOperations: INodeProperties[] = [
 				value: 'search',
 				action: 'Search cvs products',
 				description:
-					'Search CVS front-store products (no pharmacy): product ID and SKU ID, name, brand, URL, regular and sale price, unit price, promotion text, rating, review count, size, image, ExtraBucks and manufacturer coupons, and units at one store in store, for pickup and for same-day delivery, plus brand, price and rating facets. Prices are the same at every store. Costs 1 credit.',
+					'Search CVS front-store products (no pharmacy): product ID and SKU ID, name, brand, URL, regular and sale price, unit price, promotion text, rating, review count, size, image, ExtraBucks and manufacturer coupons, and units at one store in store and for pickup, plus online ship stock and brand, price and rating facets. Prices are the same at every store. Costs 1 credit.',
 				routing: { request: { method: 'POST', url: '/api/v1/cvs/search' } },
 			},
 		],
