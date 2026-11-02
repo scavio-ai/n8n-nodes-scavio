@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 64 resources and 440 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 71 resources and 473 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -40,6 +40,13 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Micro Center](https://scavio.dev/docs/microcenter-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Stores 1 | Search Products, Get Product, Get Stores |
 | [Walgreens](https://scavio.dev/docs/walgreens-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Store Stock 4 | Search Products, Get Product, Find Stores, Get Store Stock |
 | [CVS](https://scavio.dev/docs/cvs-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Store Stock |
+| [Whole Foods Market](https://scavio.dev/docs/wholefoods-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Deals, Get Product, Find Stores, Get Store, Get Sales Flyer |
+| [Harbor Freight](https://scavio.dev/docs/harborfreight-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Find Clearance Items, Get Product, Get Prices, Find Stores, Get Availability, Get Reviews |
+| [PetSmart](https://scavio.dev/docs/petsmart-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Find Stores, Get Store Stock, Get Availability, Get Deals |
+| [Petco](https://scavio.dev/docs/petco-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Product, Find Stores, Get Store Inventory |
+| [iHerb](https://scavio.dev/docs/iherb-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Products, Get Product, Get Prices, Get Reviews |
+| [Chewy](https://scavio.dev/docs/chewy-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 10 | Search Products, Get Product |
+| [Menards](https://scavio.dev/docs/menards-product?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Get Product with a Store ID 2 | Get Product, Find Stores |
 | [Mercado Libre (MX, BR, AR, CO)](https://scavio.dev/docs/mercadolibre-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Reviews 1 | Search Listings, Get Product, Get Reviews, Get Questions, Get Best Sellers |
 
 ### Social and video
@@ -96,6 +103,18 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.31.0
+
+**New resources: Whole Foods Market, Harbor Freight, PetSmart, Petco, iHerb, Chewy and Menards, 33 operations.** Nothing else changed.
+
+- **Whole Foods Market** (1 credit): Search Products, Get Category Products, Get Deals, Get Product, Find Stores, Get Store and Get Sales Flyer. Prices are per store: pass a 5-digit **Store ID** from Find Stores (listings default to 10145, Austin). Each item carries the regular, sale and Prime member price. Get Product returns the in-store and online prices as two separate blocks, and only when a Store ID is set. No ratings, reviews, UPC or per-store unit stock. Search Products sorts by relevance or price only.
+- **Harbor Freight** (1 credit): Search Products, Find Clearance Items, Get Product, Get Prices, Find Stores, Get Availability and Get Reviews. Prices are national and include the sale price with its end date, the public coupon price, the Inside Track Club member price and the compare-at price. Get Prices checks up to 50 item numbers in one call. Get Availability reports a stock status per store (in_stock, limited, out_of_stock or not_carried) with the aisle, from a daily snapshot, not unit counts.
+- **PetSmart** (1 credit): Search Products, Get Product, Find Stores, Get Store Stock, Get Availability and Get Deals. Prices are national, with the Autoship first-order and recurring price on Get Product. Stock is a unit count per store: Get Store Stock checks up to 20 SKUs at one store, Get Availability up to 20 **store:SKU** pairs. Get Deals rows carry `on_sale`, because the Sale section also lists promotions that do not reduce the price.
+- **Petco** (1 credit): Search Products, Get Category Products, Get Product, Find Stores and Get Store Inventory. Prices are national, with the Repeat Delivery (autoship) price. Get Store Inventory takes `cat_entry_id` values from search or product results, not part numbers. Get Product and Get Category Products can take 10-30 seconds; both carry a 120-second request timeout.
+- **iHerb** (2 credits): Search Products, Get Product, Get Prices and Get Reviews. US store, USD, online only (no stores). Get Prices checks up to 50 product IDs in one call. Get Reviews is a summary: rating, star histogram and the top positive and top critical review, not a full review list.
+- **Chewy** (10 credits): Search Products and Get Product. One-time, Autoship and first-Autoship prices, MAP fields and ratings. A broad keyword can land on a category page; `redirect` then names the category. No stores.
+- **Menards** (1 credit; Get Product with a Store ID 2): Get Product and Find Stores. There is no search: look a product up by **Item ID** or URL. Get Product returns mail-in rebates such as the 11% rebate and the final price after rebates. A **Store ID** adds that store's stock quantity and aisle, costs 2 credits and can take 10-40 seconds; Get Product carries a 120-second request timeout.
 
 ## What changed in 0.30.1
 

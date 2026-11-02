@@ -37,6 +37,16 @@ import { aldiOperations, aldiFields } from './descriptions/AldiDescription';
 import { microCenterOperations, microCenterFields } from './descriptions/MicroCenterDescription';
 import { walgreensOperations, walgreensFields } from './descriptions/WalgreensDescription';
 import { cvsOperations, cvsFields } from './descriptions/CvsDescription';
+import { wholeFoodsOperations, wholeFoodsFields } from './descriptions/WholeFoodsDescription';
+import {
+	harborFreightOperations,
+	harborFreightFields,
+} from './descriptions/HarborFreightDescription';
+import { petsmartOperations, petsmartFields } from './descriptions/PetSmartDescription';
+import { petcoOperations, petcoFields } from './descriptions/PetcoDescription';
+import { iherbOperations, iherbFields } from './descriptions/IherbDescription';
+import { chewyOperations, chewyFields } from './descriptions/ChewyDescription';
+import { menardsOperations, menardsFields } from './descriptions/MenardsDescription';
 import { zillowOperations, zillowFields } from './descriptions/ZillowDescription';
 import { bookingOperations, bookingFields } from './descriptions/BookingDescription';
 import { tripadvisorOperations, tripadvisorFields } from './descriptions/TripadvisorDescription';
@@ -92,7 +102,7 @@ export class Scavio implements INodeType {
 		version: 1,
 		subtitle: '={{ $parameter["operation"] + ": " + $parameter["resource"] }}',
 		description:
-			'Real-time structured data from Google, ChatGPT, Gemini, Amazon, Walmart, eBay, Target, Home Depot, Costco, HEB, Kroger, Decathlon, Spec\'s, Lowe\'s, Sam\'s Club, Canadian Tire, Dollar General, Sephora, Ulta Beauty, ALDI, Micro Center, Walgreens, CVS, Mercado Libre, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Facebook, Pinterest, Threads, Kuaishou, Douyin, Weibo, Twitch, GitHub, Etsy, AliExpress, Zillow, Redfin, Realtor.com, Rightmove, Booking.com, Airbnb, Tripadvisor, Yelp, Indeed, Glassdoor, the App Store, Google Play, SEC EDGAR, Companies House, Legistar, G2, Capterra, Trustpilot, ad libraries, and any URL',
+			'Real-time structured data from Google, ChatGPT, Gemini, Amazon, Walmart, eBay, Target, Home Depot, Costco, HEB, Kroger, Decathlon, Spec\'s, Lowe\'s, Sam\'s Club, Canadian Tire, Dollar General, Sephora, Ulta Beauty, ALDI, Micro Center, Walgreens, CVS, Whole Foods Market, Harbor Freight, PetSmart, Petco, iHerb, Chewy, Menards, Mercado Libre, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Facebook, Pinterest, Threads, Kuaishou, Douyin, Weibo, Twitch, GitHub, Etsy, AliExpress, Zillow, Redfin, Realtor.com, Rightmove, Booking.com, Airbnb, Tripadvisor, Yelp, Indeed, Glassdoor, the App Store, Google Play, SEC EDGAR, Companies House, Legistar, G2, Capterra, Trustpilot, ad libraries, and any URL',
 		defaults: { name: 'Scavio' },
 		inputs: [NodeConnectionTypes.Main],
 		outputs: [NodeConnectionTypes.Main],
@@ -125,6 +135,7 @@ export class Scavio implements INodeType {
 					{ name: 'Canadian Tire', value: 'canadianTire' },
 					{ name: 'Capterra (Software Reviews)', value: 'capterra' },
 					{ name: 'ChatGPT', value: 'chatgpt' },
+					{ name: 'Chewy', value: 'chewy' },
 					{ name: 'Companies House (UK)', value: 'companiesHouse' },
 					{ name: 'Costco', value: 'costco' },
 					// CVS is the retailer's brand name, not a plural noun, and `cvs` is
@@ -146,8 +157,10 @@ export class Scavio implements INodeType {
 					{ name: 'Google', value: 'google' },
 					{ name: 'Google Ads Transparency', value: 'googleAds' },
 					{ name: 'Google Play', value: 'googlePlay' },
+					{ name: 'Harbor Freight', value: 'harborFreight' },
 					{ name: 'HEB', value: 'heb' },
 					{ name: 'Home Depot', value: 'homeDepot' },
+					{ name: 'iHerb', value: 'iherb' },
 					{ name: 'Indeed', value: 'indeed' },
 					{ name: 'Instagram', value: 'instagram' },
 					{ name: 'Kroger', value: 'kroger' },
@@ -157,9 +170,14 @@ export class Scavio implements INodeType {
 					// Lowe's is the retailer's brand name, not a plural noun, and `lowes` is
 					// frozen once saved in user workflows.
 					{ name: "Lowe's", value: 'lowes' },
+					// Menards is the retailer's brand name, not a plural noun, and `menards` is
+					// frozen once saved in user workflows.
+					{ name: 'Menards', value: 'menards' },
 					{ name: 'Mercado Libre', value: 'mercadoLibre' },
 					{ name: 'Meta Ad Library', value: 'metaAds' },
 					{ name: 'Micro Center', value: 'microCenter' },
+					{ name: 'Petco', value: 'petco' },
+					{ name: 'PetSmart', value: 'petsmart' },
 					{ name: 'Pinterest', value: 'pinterest' },
 					{ name: 'Realtor.com', value: 'realtor' },
 					{ name: 'Reddit', value: 'reddit' },
@@ -185,6 +203,9 @@ export class Scavio implements INodeType {
 					{ name: 'Walgreens', value: 'walgreens' },
 					{ name: 'Walmart', value: 'walmart' },
 					{ name: 'Weibo (China)', value: 'weibo' },
+					// Whole Foods is the retailer's brand name, not a plural noun, and
+					// `wholeFoods` is frozen once saved in user workflows.
+					{ name: 'Whole Foods Market', value: 'wholeFoods' },
 					{ name: 'X', value: 'x' },
 					{ name: 'Yelp', value: 'yelp' },
 					{ name: 'YouTube', value: 'youtube' },
@@ -234,6 +255,20 @@ export class Scavio implements INodeType {
 			...walgreensFields,
 			...cvsOperations,
 			...cvsFields,
+			...wholeFoodsOperations,
+			...wholeFoodsFields,
+			...harborFreightOperations,
+			...harborFreightFields,
+			...petsmartOperations,
+			...petsmartFields,
+			...petcoOperations,
+			...petcoFields,
+			...iherbOperations,
+			...iherbFields,
+			...chewyOperations,
+			...chewyFields,
+			...menardsOperations,
+			...menardsFields,
 			...mercadoLibreOperations,
 			...mercadoLibreFields,
 			...youtubeOperations,
