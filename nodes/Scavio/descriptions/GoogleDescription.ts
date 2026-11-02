@@ -882,7 +882,8 @@ export const googleFields: INodeProperties[] = [
 				type: 'string',
 				default: '',
 				placeholder: 'New York,New York,United States',
-				description: 'Canonical location name the search originates from',
+				description:
+					'Canonical location name the search originates from. Localizes the local pack only; turn on Web Results Only for organic results ranked for this location.',
 				routing: { request: { body: { location: '={{ $value }}' } } },
 			},
 			{
@@ -917,6 +918,15 @@ export const googleFields: INodeProperties[] = [
 					{ name: 'Last Year', value: 'last_year' },
 				],
 				routing: { request: { body: { time_period: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Web Results Only',
+				name: 'web_only',
+				type: 'boolean',
+				default: false,
+				description:
+					"Whether to return Google's Web results only: organic results ranked for Location, for local rank tracking. No local pack, ads, related questions or AI Overview; run the search again without it for the local pack.",
+				routing: { request: { body: { web_only: '={{ $value }}' } } },
 			},
 		],
 	},
