@@ -5,7 +5,10 @@ const show = (operation: string[], extra: Record<string, string[]> = {}) => ({
 });
 
 // The upstream page can take ~15 s and is retried once, so every route carries a 120s timeout.
-const request = (url: string) => ({ request: { method: 'POST' as const, url, timeout: 120000 } });
+// Get Reviews takes 20-60 s, up to about 100 s at 200 reviews, so it carries 150s.
+const request = (url: string, timeout = 120000) => ({
+	request: { method: 'POST' as const, url, timeout },
+});
 
 const LISTING_FIELDS =
 	'Each product has the same fields as a search result: style ID, URL, name, brand, image, current price and price range in dollars, original price range, percent off and on-sale flag, rating, review count, badges, a low-inventory flag, marketplace seller and every color. Also returns the total result count, page count, and the filter sidebar: each filter group with its options and product counts (groups with more than 100 options, such as Brand, list the 100 with the most products and give the full option_count).';
@@ -59,8 +62,16 @@ export const nordstromOperations: INodeProperties[] = [
 				value: 'product',
 				action: 'Get a nordstrom product',
 				description:
-					'One nordstrom.com (US) product by URL or style ID: name, brand, description, feature bullets, fit notes, final-sale flag, current, original and clearance price ranges, percent off, rating, review count, the star histogram, the size-fit distribution (too small to too big), the AI review summary when the site shows one, the most mentioned praised and criticized features with a quote each, breadcrumbs and images. Every color lists its images and every size as a SKU with SKU ID, size, size type, UPC, price, original price, percent off, price type (regular, clearance, promotion), in stock and the quantity available to ship. In stock means the SKU can be shipped or picked up in a store, so a SKU held only in a store reads in stock with quantity 0 (Get Availability lists its pickup stores). Includes the reviews shown on the product page (up to about 13), with the total review count. Costs 5 credits.',
+					'One nordstrom.com (US) product by URL or style ID: name, brand, description, feature bullets, fit notes, final-sale flag, current, original and clearance price ranges, percent off, rating, review count, the star histogram, the size-fit distribution (too small to too big), the AI review summary when the site shows one, the most mentioned praised and criticized features with a quote each, breadcrumbs and images. Every color lists its images and every size as a SKU with SKU ID, size, size type, UPC, price, original price, percent off, price type (regular, clearance, promotion), in stock and the quantity available to ship. In stock means the SKU can be shipped or picked up in a store, so a SKU held only in a store reads in stock with quantity 0 (Get Availability lists its pickup stores). Includes the reviews shown on the product page (up to about 13), with the total review count; Get Reviews returns the full review history. Costs 5 credits.',
 				routing: request('/api/v1/nordstrom/product'),
+			},
+			{
+				name: 'Get Reviews',
+				value: 'reviews',
+				action: 'Get nordstrom product reviews',
+				description:
+					"Customer reviews of one nordstrom.com (US) product by URL or style ID, up to 200 per call (default 60), sorted most helpful (default), most recent, highest rated or lowest rated, optionally filtered to star ratings, verified purchases, reviews with photos, or a text search. Returns the product's review summary (average rating, total reviews, star histogram, size rating 1 runs small to 5 runs big, width rating where the site has one, the most mentioned praised and criticized features with a quote each, and the count of rating-only reviews), the AI review summary when the site shows one, the number of reviews matching the filters (total_results), returned and has_more. Each review has ID, title, text, star rating, size rating, author, date, helpful votes, verified-purchase flag, reviewer badges, size and color purchased, the reviewer's height, weight, body type and usual sizes when given, and photos. Rating-only reviews are included with title and text null. Takes 20-60s, up to about 100s at 200 reviews. Costs 10 credits.",
+				routing: request('/api/v1/nordstrom/reviews', 150000),
 			},
 			{
 				name: 'Get Search Suggestions',
@@ -172,7 +183,8 @@ export const nordstromFields: INodeProperties[] = [
 			{ name: 'ZIP Code', value: 'zip' },
 		],
 		displayOptions: show(['stores']),
-		description: 'Find stores near a ZIP code or a latitude/longitude pair, or look them up by store number',
+		description:
+			'Find stores near a ZIP code or a latitude/longitude pair, or look them up by store number',
 	},
 	{
 		displayName: 'ZIP Code',
@@ -272,14 +284,14 @@ export const nordstromFields: INodeProperties[] = [
 		],
 	},
 
-	// -- Get Product / Get Availability --
+	// -- Get Product / Get Reviews / Get Availability --
 	{
 		displayName: 'Product URL',
 		name: 'url',
 		type: 'string',
 		default: '',
 		placeholder: 'https://www.nordstrom.com/s/betsy-and-adam-strapless-mixed-media-gown/8098974',
-		displayOptions: show(['product', 'availability']),
+		displayOptions: show(['product', 'reviews', 'availability']),
 		routing: { request: { body: { url: '={{ $value || undefined }}' } } },
 		description:
 			'Product URL on nordstrom.com (the URL of a search, category or brand result). Use this or Style ID.',
@@ -290,7 +302,7 @@ export const nordstromFields: INodeProperties[] = [
 		type: 'string',
 		default: '',
 		placeholder: '8098974',
-		displayOptions: show(['product', 'availability']),
+		displayOptions: show(['product', 'reviews', 'availability']),
 		routing: { request: { body: { style_id: '={{ $value || undefined }}' } } },
 		description:
 			'Nordstrom style ID, the number at the end of a product URL (the style_id of a search result). Used when Product URL is not given.',
@@ -305,5 +317,83 @@ export const nordstromFields: INodeProperties[] = [
 		routing: { request: { body: { sku_id: '={{ $value || undefined }}' } } },
 		description:
 			"Only this SKU (a product's colors[].skus[].sku_id). An ID that is not a SKU of the product is an error.",
+	},
+
+	// -- Get Reviews --
+	{
+		displayName: 'Additional Options',
+		name: 'reviewsOptions',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
+		displayOptions: show(['reviews']),
+		options: [
+			{
+				displayName: 'Max Reviews',
+				name: 'max_reviews',
+				type: 'number',
+				default: 60,
+				typeOptions: { minValue: 1, maxValue: 200 },
+				description:
+					'Reviews to return, 1-200. Defaults to 60. Larger values take longer (45-100s for 200).',
+				routing: { request: { body: { max_reviews: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Search Text',
+				name: 'search',
+				type: 'string',
+				default: '',
+				placeholder: 'wedding',
+				description:
+					"Only reviews mentioning this text (the review search box), 1-100 characters. Results come in Nordstrom's search order, so Sort cannot be set with it.",
+				routing: { request: { body: { search: '={{ $value || undefined }}' } } },
+			},
+			{
+				displayName: 'Sort',
+				name: 'sort',
+				type: 'options',
+				default: 'most_helpful',
+				options: [
+					{ name: 'Highest Rated', value: 'highest_rated' },
+					{ name: 'Lowest Rated', value: 'lowest_rated' },
+					{ name: 'Most Helpful', value: 'most_helpful' },
+					{ name: 'Most Recent', value: 'most_recent' },
+				],
+				description:
+					'Most helpful (default), most recent, highest rated or lowest rated. Cannot be combined with Search Text.',
+				routing: { request: { body: { sort: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Star Ratings',
+				name: 'stars',
+				type: 'multiOptions',
+				default: [],
+				options: [
+					{ name: '1 Star', value: 1 },
+					{ name: '2 Stars', value: 2 },
+					{ name: '3 Stars', value: 3 },
+					{ name: '4 Stars', value: 4 },
+					{ name: '5 Stars', value: 5 },
+				],
+				description: 'Only reviews with these star ratings, e.g. 1 and 2 for the critical ones',
+				routing: { request: { body: { stars: '={{ $value.length ? $value : undefined }}' } } },
+			},
+			{
+				displayName: 'Verified Purchases Only',
+				name: 'verified_only',
+				type: 'boolean',
+				default: false,
+				description: 'Whether to return only reviews from verified purchasers',
+				routing: { request: { body: { verified_only: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'With Photos Only',
+				name: 'with_photos',
+				type: 'boolean',
+				default: false,
+				description: 'Whether to return only reviews that include customer photos',
+				routing: { request: { body: { with_photos: '={{ $value }}' } } },
+			},
+		],
 	},
 ];

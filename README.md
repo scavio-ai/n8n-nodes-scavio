@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 72 resources and 481 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 72 resources and 482 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -47,7 +47,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [iHerb](https://scavio.dev/docs/iherb-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Products, Get Product, Get Prices, Get Reviews |
 | [Chewy](https://scavio.dev/docs/chewy-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 10 | Search Products, Get Product |
 | [Menards](https://scavio.dev/docs/menards-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | Search Products 2; Get Product 1, 2 with a Store ID; Find Stores 1 | Search Products, Get Product, Find Stores |
-| [Nordstrom](https://scavio.dev/docs/nordstrom-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 5; Get Availability 10 | Search Products, Get Product, Get Category Products, Get Brand Products, Find Stores, Get Availability, Get Search Suggestions |
+| [Nordstrom](https://scavio.dev/docs/nordstrom-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 5; Get Availability and Get Reviews 10 | Search Products, Get Product, Get Reviews, Get Category Products, Get Brand Products, Find Stores, Get Availability, Get Search Suggestions |
 | [Mercado Libre (MX, BR, AR, CO)](https://scavio.dev/docs/mercadolibre-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Reviews 1 | Search Listings, Get Product, Get Reviews, Get Questions, Get Best Sellers |
 
 ### Social and video
@@ -105,6 +105,14 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
 
+## What changed in 0.35.0
+
+**Nordstrom: Get Reviews (8 operations in total).** 10 credits. Nothing else changed.
+
+- **Get Reviews**: by **Product URL** or **Style ID**, a product's full review history, up to 200 per call (default 60). Sort by most helpful (default), most recent, highest rated or lowest rated; filter by star ratings, verified purchases, photos or a search text (search text cannot be combined with a sort). Returns the review summary (average rating, total reviews, histogram, size and width rating, praised and criticized features with a quote, rating-only count), the AI review summary, total results, returned and has_more. Rating-only reviews are included with title and text null. Get Product still returns only the reviews shown on the product page (up to about 13).
+
+Get Reviews takes 20-60 seconds (up to about 100 at 200 reviews), so it carries a 150-second request timeout; the other Nordstrom operations keep 120 seconds.
+
 ## What changed in 0.34.0
 
 **Nordstrom: 5 new operations (7 in total).** 5 credits each, Get Availability 10. Nothing else changed.
@@ -122,7 +130,7 @@ Every Nordstrom operation carries a 120-second request timeout.
 **New resource: Nordstrom, 2 operations, 5 credits each.** nordstrom.com, US site only. Nothing else changed.
 
 - **Search Products**: 24 products a page with style ID, brand, current and original price ranges, percent off, on-sale flag, rating, review count, badges, low-inventory flag, marketplace seller and colors. Sort by relevance, rating, price, newest or percent off.
-- **Get Product**: by **Product URL** or **Style ID**. Every color and size as a SKU with UPC, price, price type (regular, clearance, promotion), in stock (can be shipped or picked up in a store) and the quantity available to ship online, so a store-only SKU reads in stock with quantity 0; star histogram, size-fit distribution, praised and criticized features, and the reviews shown on the product page (up to about 13, with the total review count and histogram; no deeper review paging). An unknown style ID is an error.
+- **Get Product**: by **Product URL** or **Style ID**. Every color and size as a SKU with UPC, price, price type (regular, clearance, promotion), in stock (can be shipped or picked up in a store) and the quantity available to ship online, so a store-only SKU reads in stock with quantity 0; star histogram, size-fit distribution, praised and criticized features, and the reviews shown on the product page (up to about 13, with the total review count and histogram; Get Reviews, added in 0.35.0, returns the rest). An unknown style ID is an error.
 
 Both operations carry a 120-second request timeout.
 
