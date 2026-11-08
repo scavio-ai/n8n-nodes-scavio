@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 72 resources and 482 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 73 resources and 490 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -48,6 +48,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Chewy](https://scavio.dev/docs/chewy-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 10 | Search Products, Get Product |
 | [Menards](https://scavio.dev/docs/menards-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | Search Products 2; Get Product 1, 2 with a Store ID; Find Stores 1 | Search Products, Get Product, Find Stores |
 | [Nordstrom](https://scavio.dev/docs/nordstrom-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 5; Get Availability and Get Reviews 10 | Search Products, Get Product, Get Reviews, Get Category Products, Get Brand Products, Find Stores, Get Availability, Get Search Suggestions |
+| [Nordstrom Rack](https://scavio.dev/docs/nordstromrack-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 5; Get Availability and Get Reviews 10 | Search Products, Get Product, Get Reviews, Get Category Products, Get Brand Products, Find Stores, Get Availability, Get Search Suggestions |
 | [Mercado Libre (MX, BR, AR, CO)](https://scavio.dev/docs/mercadolibre-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Reviews 1 | Search Listings, Get Product, Get Reviews, Get Questions, Get Best Sellers |
 
 ### Social and video
@@ -104,6 +105,18 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.36.0
+
+**New resource: Nordstrom Rack, 8 operations.** nordstromrack.com, US site only, a separate resource from Nordstrom with the same operations, fields and credits: 5 each, Get Availability and Get Reviews 10. Nothing else changed.
+
+- **Get Category Products** takes Rack's /shop and /clearance paths: departments, deals, new arrivals, Clear the Rack (/clearance, /clearance/women/clothing) and flash events (/shop/flash lists the live events as subcategories, /shop/flash/event-7 opens one). There is no /browse on Rack.
+- **Get Brand Products** takes /brands/<slug> (/brands/adidas); Rack brand pages carry no brand ID.
+- Every product row carries the clearance price range, and during Clear the Rack a clearance item can carry an extra percent off on top: promotion_price_range is the price after it and promotion_percent_off the extra percent. No response carries event start or end dates.
+- **Find Stores** and **Get Availability** cover Rack stores only; pickup quantities are chain-wide.
+- **Get Reviews** returns Rack's own review pool, separate from nordstrom.com's.
+
+Every operation carries a 120-second request timeout; Get Reviews (15-60 seconds, up to about 100 at 200 reviews) carries 150 seconds.
 
 ## What changed in 0.35.0
 

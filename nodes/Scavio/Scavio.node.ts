@@ -48,6 +48,10 @@ import { iherbOperations, iherbFields } from './descriptions/IherbDescription';
 import { chewyOperations, chewyFields } from './descriptions/ChewyDescription';
 import { menardsOperations, menardsFields } from './descriptions/MenardsDescription';
 import { nordstromOperations, nordstromFields } from './descriptions/NordstromDescription';
+import {
+	nordstromRackOperations,
+	nordstromRackFields,
+} from './descriptions/NordstromRackDescription';
 import { zillowOperations, zillowFields } from './descriptions/ZillowDescription';
 import { bookingOperations, bookingFields } from './descriptions/BookingDescription';
 import { tripadvisorOperations, tripadvisorFields } from './descriptions/TripadvisorDescription';
@@ -103,7 +107,7 @@ export class Scavio implements INodeType {
 		version: 1,
 		subtitle: '={{ $parameter["operation"] + ": " + $parameter["resource"] }}',
 		description:
-			'Real-time structured data from Google, ChatGPT, Gemini, Amazon, Walmart, eBay, Target, Home Depot, Costco, HEB, Kroger, Decathlon, Spec\'s, Lowe\'s, Sam\'s Club, Canadian Tire, Dollar General, Sephora, Ulta Beauty, ALDI, Micro Center, Walgreens, CVS, Whole Foods Market, Harbor Freight, PetSmart, Petco, iHerb, Chewy, Menards, Nordstrom, Mercado Libre, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Facebook, Pinterest, Threads, Kuaishou, Douyin, Weibo, Twitch, GitHub, Etsy, AliExpress, Zillow, Redfin, Realtor.com, Rightmove, Booking.com, Airbnb, Tripadvisor, Yelp, Indeed, Glassdoor, the App Store, Google Play, SEC EDGAR, Companies House, Legistar, G2, Capterra, Trustpilot, ad libraries, and any URL',
+			'Real-time structured data from Google, ChatGPT, Gemini, Amazon, Walmart, eBay, Target, Home Depot, Costco, HEB, Kroger, Decathlon, Spec\'s, Lowe\'s, Sam\'s Club, Canadian Tire, Dollar General, Sephora, Ulta Beauty, ALDI, Micro Center, Walgreens, CVS, Whole Foods Market, Harbor Freight, PetSmart, Petco, iHerb, Chewy, Menards, Nordstrom, Nordstrom Rack, Mercado Libre, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Facebook, Pinterest, Threads, Kuaishou, Douyin, Weibo, Twitch, GitHub, Etsy, AliExpress, Zillow, Redfin, Realtor.com, Rightmove, Booking.com, Airbnb, Tripadvisor, Yelp, Indeed, Glassdoor, the App Store, Google Play, SEC EDGAR, Companies House, Legistar, G2, Capterra, Trustpilot, ad libraries, and any URL',
 		defaults: { name: 'Scavio' },
 		inputs: [NodeConnectionTypes.Main],
 		outputs: [NodeConnectionTypes.Main],
@@ -178,6 +182,7 @@ export class Scavio implements INodeType {
 					{ name: 'Meta Ad Library', value: 'metaAds' },
 					{ name: 'Micro Center', value: 'microCenter' },
 					{ name: 'Nordstrom', value: 'nordstrom' },
+					{ name: 'Nordstrom Rack', value: 'nordstromRack' },
 					{ name: 'Petco', value: 'petco' },
 					{ name: 'PetSmart', value: 'petsmart' },
 					{ name: 'Pinterest', value: 'pinterest' },
@@ -273,6 +278,8 @@ export class Scavio implements INodeType {
 			...menardsFields,
 			...nordstromOperations,
 			...nordstromFields,
+			...nordstromRackOperations,
+			...nordstromRackFields,
 			...mercadoLibreOperations,
 			...mercadoLibreFields,
 			...youtubeOperations,
