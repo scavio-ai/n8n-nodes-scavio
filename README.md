@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 73 resources and 490 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 74 resources and 499 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -49,6 +49,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Menards](https://scavio.dev/docs/menards-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | Search Products 2; Get Product 1, 2 with a Store ID; Find Stores 1 | Search Products, Get Product, Find Stores |
 | [Nordstrom](https://scavio.dev/docs/nordstrom-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 5; Get Availability and Get Reviews 10 | Search Products, Get Product, Get Reviews, Get Category Products, Get Brand Products, Find Stores, Get Availability, Get Search Suggestions |
 | [Nordstrom Rack](https://scavio.dev/docs/nordstromrack-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 5; Get Availability and Get Reviews 10 | Search Products, Get Product, Get Reviews, Get Category Products, Get Brand Products, Find Stores, Get Availability, Get Search Suggestions |
+| [Best Buy](https://scavio.dev/docs/bestbuy-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Category Products 3 on a pcmcat page; Get Deal of the Day 3; Find Stores and Get Search Suggestions 1 | Search Products, Get Product, Get Reviews, Get Category Products, Get Deal of the Day, Find Stores, Get Availability, Get Search Suggestions, Get Prices |
 | [Mercado Libre (MX, BR, AR, CO)](https://scavio.dev/docs/mercadolibre-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Reviews 1 | Search Listings, Get Product, Get Reviews, Get Questions, Get Best Sellers |
 
 ### Social and video
@@ -105,6 +106,18 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.37.0
+
+**New resource: Best Buy, 9 operations.** bestbuy.com, US site only. Credits: Search Products, Get Product, Get Reviews and Get Prices 2; Get Category Products 2 for an abcat ID and 3 for a pcmcat page; Get Deal of the Day 3; Find Stores and Get Search Suggestions 1; Get Availability 2 flat. Nothing else changed.
+
+- **Search Products** and **Get Category Products** return 18 organic products per page with filters for brand, on sale, clearance, open box and a price range (set Min Price and Max Price together). Sponsored tiles only with Include Sponsored.
+- **Get Product** returns every open-box offer by condition (fair, good, excellent) with savings against new and against the regular price, plus UPC, model and the full spec table.
+- **Get Availability** returns store pickup status at up to 8 stores (nearest a ZIP code, or the store IDs you pass): in_stock, limited, ship_to_store, out_of_stock, not_available_for_pickup or unknown. Quantity is set only for limited (Best Buy's "only N left") and is null for in_stock.
+- **Get Prices** takes up to 15 SKUs in one call, 2 credits whatever the count.
+- **Get Deal of the Day** takes no parameters: today's deal plus the more-deals row, up to 15 products.
+
+Every operation carries a 120-second request timeout.
 
 ## What changed in 0.36.0
 
