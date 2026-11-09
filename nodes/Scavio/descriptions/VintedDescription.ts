@@ -166,7 +166,7 @@ export const vintedFields: INodeProperties[] = [
 		displayOptions: show(ALL_OPERATIONS),
 		routing: { request: { body: { country: '={{ $value }}' } } },
 		description:
-			"Vinted country site. Category, condition and filter names come back in the site's language. The EU sites share one cross-border listing pool, priced in the site's currency; United Kingdom, United States and Australia are separate catalogs. Get Product with a URL uses the URL's own site.",
+			"Vinted country site. Category, condition and filter names come back in the site's language. Every site can show listings from sellers in other countries, with the price converted to the site's currency; the EU sites share one cross-border pool. Get Product returns the seller's own price and currency. Get Product with a URL uses the URL's own site.",
 	},
 
 	// -- Search Listings --

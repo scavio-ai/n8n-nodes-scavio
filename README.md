@@ -109,11 +109,15 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
 
+## What changed in 0.39.1
+
+**Vinted: corrected market wording.** The Country help text no longer says the United Kingdom, United States and Australia are separate catalogs: every Vinted site can show listings from sellers in other countries, with the price converted to the site's currency, and Get Product returns the seller's own price and currency. Get Filter Options with a Category ID now returns only that category's options (a server-side fix). No parameters changed.
+
 ## What changed in 0.39.0
 
 **New resource: Vinted, 9 operations, 1 credit each.** Every operation has a **Country** option covering the 27 Vinted country sites (France by default; United Kingdom, United States, Germany, Poland, Spain, Italy, the Netherlands, Australia and more). Category, condition and filter names come back in the site's language. Nothing else changed.
 
-- **Search Listings** returns 96 items per page, pages 1 to 10 (total_is_capped is true past 960 matches), with price, currency, service_fee (the Vinted fee the buyer pays on top of the price, formerly the Buyer Protection fee), total_price, brand, size, condition, favourites, photos and the seller ID. The EU sites share one cross-border listing pool, priced in the site's currency; United Kingdom (GBP), United States (USD) and Australia (AUD) are separate catalogs. Price sorts surface loosely matching cheap listings, so pair them with a category or price range.
+- **Search Listings** returns 96 items per page, pages 1 to 10 (total_is_capped is true past 960 matches), with price, currency, service_fee (the Vinted fee the buyer pays on top of the price, formerly the Buyer Protection fee), total_price, brand, size, condition, favourites, photos and the seller ID. Every site, United Kingdom (GBP), United States (USD) and Australia (AUD) included, can show listings from sellers in other countries, with the price converted to the site's currency; the EU sites share one cross-border pool. **Get Product** returns the seller's own price and currency. Price sorts surface loosely matching cheap listings, so pair them with a category or price range.
 - **Find Brands**, **Get Filter Options** and **Get Categories** return the IDs the Brand IDs, Condition, Size IDs, Color IDs, Material IDs and Category ID options of Search Listings take.
 - **Get Product** takes an Item ID or a Vinted item URL (the URL's own site wins) and is priced in the seller's currency.
 - **Get Seller**, **Get Seller Listings** and **Get Seller Feedback** take the member ID from a listing's seller. Seller data is limited to public, buyer-relevant fields; feedback carries no reviewer identity.
