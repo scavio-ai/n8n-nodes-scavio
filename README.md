@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 75 resources and 512 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 76 resources and 521 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -51,6 +51,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Nordstrom Rack](https://scavio.dev/docs/nordstromrack-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 5; Get Availability and Get Reviews 10 | Search Products, Get Product, Get Reviews, Get Category Products, Get Brand Products, Find Stores, Get Availability, Get Search Suggestions |
 | [Best Buy](https://scavio.dev/docs/bestbuy-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Category Products 3 on a pcmcat page; Get Deal of the Day 3; Find Stores and Get Search Suggestions 1 | Search Products, Get Product, Get Reviews, Get Category Products, Get Deal of the Day, Find Stores, Get Availability, Get Search Suggestions, Get Prices |
 | [TCGplayer](https://scavio.dev/docs/tcgplayer-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Listings, Get Price History, Get Recent Sales, Get Games, Get Sets, Get Price Guide, Get Search Suggestions, Get Trending Searches, Get Seller, Get Seller Feedback, Get Seller Products |
+| [Vinted (27 country sites)](https://scavio.dev/docs/vinted-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Listings, Get Product, Get Seller, Get Seller Listings, Get Seller Feedback, Find Brands, Get Search Suggestions, Get Filter Options, Get Categories |
 | [Mercado Libre (MX, BR, AR, CO)](https://scavio.dev/docs/mercadolibre-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Reviews 1 | Search Listings, Get Product, Get Reviews, Get Questions, Get Best Sellers |
 
 ### Social and video
@@ -107,6 +108,18 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.39.0
+
+**New resource: Vinted, 9 operations, 1 credit each.** Every operation has a **Country** option covering the 27 Vinted country sites (France by default; United Kingdom, United States, Germany, Poland, Spain, Italy, the Netherlands, Australia and more). Category, condition and filter names come back in the site's language. Nothing else changed.
+
+- **Search Listings** returns 96 items per page, pages 1 to 10 (total_is_capped is true past 960 matches), with price, currency, service_fee (the Vinted fee the buyer pays on top of the price, formerly the Buyer Protection fee), total_price, brand, size, condition, favourites, photos and the seller ID. The EU sites share one cross-border listing pool, priced in the site's currency; United Kingdom (GBP), United States (USD) and Australia (AUD) are separate catalogs. Price sorts surface loosely matching cheap listings, so pair them with a category or price range.
+- **Find Brands**, **Get Filter Options** and **Get Categories** return the IDs the Brand IDs, Condition, Size IDs, Color IDs, Material IDs and Category ID options of Search Listings take.
+- **Get Product** takes an Item ID or a Vinted item URL (the URL's own site wins) and is priced in the seller's currency.
+- **Get Seller**, **Get Seller Listings** and **Get Seller Feedback** take the member ID from a listing's seller. Seller data is limited to public, buyer-relevant fields; feedback carries no reviewer identity.
+- Live listings only: no sold-item search, shipping prices, pickup points or similar items.
+
+Every operation carries a 120-second request timeout.
 
 ## What changed in 0.38.0
 
