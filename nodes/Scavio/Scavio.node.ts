@@ -55,6 +55,7 @@ import {
 import { bestBuyOperations, bestBuyFields } from './descriptions/BestBuyDescription';
 import { tcgplayerOperations, tcgplayerFields } from './descriptions/TcgplayerDescription';
 import { vintedOperations, vintedFields } from './descriptions/VintedDescription';
+import { macysOperations, macysFields } from './descriptions/MacysDescription';
 import { zillowOperations, zillowFields } from './descriptions/ZillowDescription';
 import { bookingOperations, bookingFields } from './descriptions/BookingDescription';
 import { tripadvisorOperations, tripadvisorFields } from './descriptions/TripadvisorDescription';
@@ -110,7 +111,7 @@ export class Scavio implements INodeType {
 		version: 1,
 		subtitle: '={{ $parameter["operation"] + ": " + $parameter["resource"] }}',
 		description:
-			'Real-time structured data from Google, ChatGPT, Gemini, Amazon, Walmart, eBay, Target, Home Depot, Costco, HEB, Kroger, Decathlon, Spec\'s, Lowe\'s, Sam\'s Club, Canadian Tire, Dollar General, Sephora, Ulta Beauty, ALDI, Micro Center, Walgreens, CVS, Whole Foods Market, Harbor Freight, PetSmart, Petco, iHerb, Chewy, Menards, Nordstrom, Nordstrom Rack, Best Buy, TCGplayer, Vinted, Mercado Libre, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Facebook, Pinterest, Threads, Kuaishou, Douyin, Weibo, Twitch, GitHub, Etsy, AliExpress, Zillow, Redfin, Realtor.com, Rightmove, Booking.com, Airbnb, Tripadvisor, Yelp, Indeed, Glassdoor, the App Store, Google Play, SEC EDGAR, Companies House, Legistar, G2, Capterra, Trustpilot, ad libraries, and any URL',
+			'Real-time structured data from Google, ChatGPT, Gemini, Amazon, Walmart, eBay, Target, Home Depot, Costco, HEB, Kroger, Decathlon, Spec\'s, Lowe\'s, Sam\'s Club, Canadian Tire, Dollar General, Sephora, Ulta Beauty, ALDI, Micro Center, Walgreens, CVS, Whole Foods Market, Harbor Freight, PetSmart, Petco, iHerb, Chewy, Menards, Nordstrom, Nordstrom Rack, Best Buy, TCGplayer, Vinted, Macy\'s, Mercado Libre, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Facebook, Pinterest, Threads, Kuaishou, Douyin, Weibo, Twitch, GitHub, Etsy, AliExpress, Zillow, Redfin, Realtor.com, Rightmove, Booking.com, Airbnb, Tripadvisor, Yelp, Indeed, Glassdoor, the App Store, Google Play, SEC EDGAR, Companies House, Legistar, G2, Capterra, Trustpilot, ad libraries, and any URL',
 		defaults: { name: 'Scavio' },
 		inputs: [NodeConnectionTypes.Main],
 		outputs: [NodeConnectionTypes.Main],
@@ -179,6 +180,9 @@ export class Scavio implements INodeType {
 					// Lowe's is the retailer's brand name, not a plural noun, and `lowes` is
 					// frozen once saved in user workflows.
 					{ name: "Lowe's", value: 'lowes' },
+					// Macy's is the retailer's brand name; `macys` is frozen once saved in user
+					// workflows.
+					{ name: "Macy's", value: 'macys' },
 					// Menards is the retailer's brand name, not a plural noun, and `menards` is
 					// frozen once saved in user workflows.
 					{ name: 'Menards', value: 'menards' },
@@ -292,6 +296,8 @@ export class Scavio implements INodeType {
 			...tcgplayerFields,
 			...vintedOperations,
 			...vintedFields,
+			...macysOperations,
+			...macysFields,
 			...mercadoLibreOperations,
 			...mercadoLibreFields,
 			...youtubeOperations,
