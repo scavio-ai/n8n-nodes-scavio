@@ -57,6 +57,7 @@ import { tcgplayerOperations, tcgplayerFields } from './descriptions/TcgplayerDe
 import { vintedOperations, vintedFields } from './descriptions/VintedDescription';
 import { macysOperations, macysFields } from './descriptions/MacysDescription';
 import { saksOperations, saksFields } from './descriptions/SaksDescription';
+import { kohlsOperations, kohlsFields } from './descriptions/KohlsDescription';
 import { zillowOperations, zillowFields } from './descriptions/ZillowDescription';
 import { bookingOperations, bookingFields } from './descriptions/BookingDescription';
 import { tripadvisorOperations, tripadvisorFields } from './descriptions/TripadvisorDescription';
@@ -112,7 +113,7 @@ export class Scavio implements INodeType {
 		version: 1,
 		subtitle: '={{ $parameter["operation"] + ": " + $parameter["resource"] }}',
 		description:
-			'Real-time structured data from Google, ChatGPT, Gemini, Amazon, Walmart, eBay, Target, Home Depot, Costco, HEB, Kroger, Decathlon, Spec\'s, Lowe\'s, Sam\'s Club, Canadian Tire, Dollar General, Sephora, Ulta Beauty, ALDI, Micro Center, Walgreens, CVS, Whole Foods Market, Harbor Freight, PetSmart, Petco, iHerb, Chewy, Menards, Nordstrom, Nordstrom Rack, Best Buy, TCGplayer, Vinted, Macy\'s, Saks Fifth Avenue, Mercado Libre, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Facebook, Pinterest, Threads, Kuaishou, Douyin, Weibo, Twitch, GitHub, Etsy, AliExpress, Zillow, Redfin, Realtor.com, Rightmove, Booking.com, Airbnb, Tripadvisor, Yelp, Indeed, Glassdoor, the App Store, Google Play, SEC EDGAR, Companies House, Legistar, G2, Capterra, Trustpilot, ad libraries, and any URL',
+			'Real-time structured data from Google, ChatGPT, Gemini, Amazon, Walmart, eBay, Target, Home Depot, Costco, HEB, Kroger, Decathlon, Spec\'s, Lowe\'s, Sam\'s Club, Canadian Tire, Dollar General, Sephora, Ulta Beauty, ALDI, Micro Center, Walgreens, CVS, Whole Foods Market, Harbor Freight, PetSmart, Petco, iHerb, Chewy, Menards, Nordstrom, Nordstrom Rack, Best Buy, TCGplayer, Vinted, Macy\'s, Saks Fifth Avenue, Kohl\'s, Mercado Libre, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Facebook, Pinterest, Threads, Kuaishou, Douyin, Weibo, Twitch, GitHub, Etsy, AliExpress, Zillow, Redfin, Realtor.com, Rightmove, Booking.com, Airbnb, Tripadvisor, Yelp, Indeed, Glassdoor, the App Store, Google Play, SEC EDGAR, Companies House, Legistar, G2, Capterra, Trustpilot, ad libraries, and any URL',
 		defaults: { name: 'Scavio' },
 		inputs: [NodeConnectionTypes.Main],
 		outputs: [NodeConnectionTypes.Main],
@@ -174,6 +175,7 @@ export class Scavio implements INodeType {
 					{ name: 'iHerb', value: 'iherb' },
 					{ name: 'Indeed', value: 'indeed' },
 					{ name: 'Instagram', value: 'instagram' },
+					{ name: "Kohl's", value: 'kohls' },
 					{ name: 'Kroger', value: 'kroger' },
 					{ name: 'Kuaishou (China)', value: 'kuaishou' },
 					{ name: 'Legistar (Municipal)', value: 'legistar' },
@@ -302,6 +304,8 @@ export class Scavio implements INodeType {
 			...macysFields,
 			...saksOperations,
 			...saksFields,
+			...kohlsOperations,
+			...kohlsFields,
 			...mercadoLibreOperations,
 			...mercadoLibreFields,
 			...youtubeOperations,

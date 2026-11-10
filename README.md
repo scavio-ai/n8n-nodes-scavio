@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 78 resources and 539 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 79 resources and 548 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -53,6 +53,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [TCGplayer](https://scavio.dev/docs/tcgplayer-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Listings, Get Price History, Get Recent Sales, Get Games, Get Sets, Get Price Guide, Get Search Suggestions, Get Trending Searches, Get Seller, Get Seller Feedback, Get Seller Products |
 | [Macy's](https://scavio.dev/docs/macys-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Reviews, Get Category Products, Get Brand Products, Get Deals, Find Stores, Get Store Availability, Get Search Suggestions |
 | [Saks Fifth Avenue](https://scavio.dev/docs/saks-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Products, Get Product, Get Category Products, Get Brand Products, Get Deals, Find Stores, Get Store Availability, Get Search Suggestions, Get Designers |
+| [Kohl's](https://scavio.dev/docs/kohls-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Find Stores 1 | Search Products, Get Product, Get Category Products, Get Brand Products, Get Deals, Find Stores, Get Store Availability, Get Search Suggestions, Get Coupon Codes |
 | [Vinted (27 country sites)](https://scavio.dev/docs/vinted-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Listings, Get Product, Get Seller, Get Seller Listings, Get Seller Feedback, Find Brands, Get Search Suggestions, Get Filter Options, Get Categories |
 | [Mercado Libre (MX, BR, AR, CO)](https://scavio.dev/docs/mercadolibre-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Reviews 1 | Search Listings, Get Product, Get Reviews, Get Questions, Get Best Sellers |
 
@@ -110,6 +111,20 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.42.0
+
+**New resource: Kohl's, 9 operations, 2 credits each except Find Stores (1 credit).** kohls.com, US only, prices in USD. Nothing else changed.
+
+- **Search Products**, **Get Category Products**, **Get Brand Products** and **Get Deals** share one grid: 120 products per page with total and total_pages. Up to about 8 sponsored items stay in the list, flagged is_sponsored and counted in sponsored_count. Filter by Brand, Color, Size, On Sale Only, Clearance Only, or any facet value ID through Facet Filters (one per line). Price is a facet bucket ("Price:$25 to $50"), not a free min / max. Sorts include Percent Off and Highest Rated. Search returns corrected_query when the site autocorrects a keyword.
+- **Get Category Products** takes a kohls.com catalog path or URL that carries its CN= filter (a product's breadcrumbs[].url works).
+- **Get Deals** reads Clearance (default), Sale, items that earn Kohl's Cash now, or Sephora at Kohl's.
+- Prices carry price_label (sale, clearance, clearance+regular), percent_off, with_code_price (the price after a public offer code, with the code) and price_suppressed + price_note for cart-only prices.
+- **Get Product** takes a Product ID or URL, with an optional Store ID for that store's availability and price per variant. It returns Kohl's Cash earn and redeem windows and public offer codes when the product has them, and dept. Rating and review count only: review text is not available.
+- **Get Store Availability** takes a SKU (from Get Product), a ZIP code and optionally the department code; it returns real pickup_units and a stock_level at every store within about 50 miles.
+- **Get Coupon Codes** lists today's public Kohl's coupon codes. No price history: to track clearance prices, poll and store your own.
+
+Every operation carries a 120-second request timeout.
 
 ## What changed in 0.41.0
 
