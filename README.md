@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 80 resources and 557 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 80 resources and 559 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -54,7 +54,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Macy's](https://scavio.dev/docs/macys-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Reviews, Get Category Products, Get Brand Products, Get Deals, Find Stores, Get Store Availability, Get Search Suggestions |
 | [Saks Fifth Avenue](https://scavio.dev/docs/saks-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Products, Get Product, Get Category Products, Get Brand Products, Get Deals, Find Stores, Get Store Availability, Get Search Suggestions, Get Designers |
 | [Kohl's](https://scavio.dev/docs/kohls-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Find Stores 1 | Search Products, Get Product, Get Category Products, Get Brand Products, Get Deals, Find Stores, Get Store Availability, Get Search Suggestions, Get Coupon Codes |
-| [JCPenney](https://scavio.dev/docs/jcpenney-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Category Products, Get Brand Products, Get Deals, Find Stores, Get Store Availability, Get Search Suggestions, Get Coupon Codes |
+| [JCPenney](https://scavio.dev/docs/jcpenney-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Reviews, Get Questions, Get Category Products, Get Brand Products, Get Deals, Find Stores, Get Store Availability, Get Search Suggestions, Get Coupon Codes |
 | [Vinted (27 country sites)](https://scavio.dev/docs/vinted-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Listings, Get Product, Get Seller, Get Seller Listings, Get Seller Feedback, Find Brands, Get Search Suggestions, Get Filter Options, Get Categories |
 | [Mercado Libre (MX, BR, AR, CO)](https://scavio.dev/docs/mercadolibre-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Reviews 1 | Search Listings, Get Product, Get Reviews, Get Questions, Get Best Sellers |
 
@@ -113,6 +113,16 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
 
+## What changed in 0.44.0
+
+**JCPenney: Get Reviews and Get Questions, 1 credit each (11 operations).** Both take a Product ID or a Product URL. Nothing else changed.
+
+- **Get Reviews** returns real review text, up to 98 per call (default 38), sorted most recent (default), most helpful, highest or lowest rating, or relevance, optionally one star rating. total_reviews counts every language, displayed_reviews the English reviews JCPenney lists, matching_reviews those under the sort and filter. Each review carries verified_purchaser, incentivized, syndicated with syndication_source, photos, videos, secondary ratings (Quality, Value...) and the brand's response.
+- **Get Questions** returns up to 50 questions (default 10; no sort option) with every answer's author_type (brand, retailer for JCPenney staff, ai, customer) and ai_label (AI-Generated / AI-Assisted).
+- Reviewer age, gender and IP addresses are never returned.
+
+Both are slower than the other operations: usually 15-90 seconds, up to about 3 minutes, so they carry a 240-second request timeout. Failed calls are not charged.
+
 ## What changed in 0.43.0
 
 **New resource: JCPenney, 9 operations, 1 credit each.** jcpenney.com, US only (Puerto Rico stores included), prices in USD. Nothing else changed.
@@ -121,7 +131,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 - **Get Category Products** takes a jcpenney.com /g/ path or URL that carries its id=cat... A department page lists no products without a deal or another filter.
 - **Get Deals** reads Clearance (default), Sale, Black Friday deals, Big Buy, Limited Time Special, Best Value, Gotta Have It, Closeout or Buy 1 Get 1, or any Deal Label verbatim, optionally in one department.
 - Prices are product-level ranges (regular, sale and clearance min / max, percent_off, price_type) plus the after-coupon price and its code: JCPenney does not expose a price per size or color.
-- **Get Product** takes a Product ID, a URL or up to 20 Product IDs. Variants carry SKU, UPC, color, size and an online stock level (high / low / out), not a count. Rating and review count only: review text is not available.
+- **Get Product** takes a Product ID, a URL or up to 20 Product IDs. Variants carry SKU, UPC, color, size and an online stock level (high / low / out), not a count. Review text and Q&A arrived in 0.44.0 (Get Reviews, Get Questions).
 - **Get Store Availability** takes a SKU (from Get Product) and a ZIP code or coordinates; it returns real unit counts at the 5 nearest stores.
 - **Get Coupon Codes** lists today's public JCPenney coupon codes. No price history: to track clearance prices, poll and store your own.
 

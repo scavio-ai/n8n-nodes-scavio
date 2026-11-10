@@ -4,11 +4,12 @@ const show = (operation: string[], extra: Record<string, string[]> = {}) => ({
 	show: { resource: ['jcpenney'], operation, ...extra },
 });
 
-// JCPenney (jcpenney.com, US incl. Puerto Rico stores, USD), 9 operations, 1 credit each. Get
+// JCPenney (jcpenney.com, US incl. Puerto Rico stores, USD), 11 operations, 1 credit each. Get
 // Product takes a product ID, a URL or up to 20 product IDs; Get Category Products takes a /g/
 // path or URL that carries its id=cat...; Get Brand Products takes a brand name or URL; Get
-// Store Availability takes a SKU plus a ZIP code or coordinates. Every route carries a 120s
-// timeout.
+// Store Availability takes a SKU plus a ZIP code or coordinates; Get Reviews and Get Questions
+// take a product ID or URL. Every route carries a 120s timeout, except Get Reviews and Get
+// Questions: they usually take 15-90 s, up to about 3 minutes, so they carry 240s.
 const request = (url: string, timeout = 120000) => ({
 	request: { method: 'POST' as const, url, timeout },
 });
@@ -17,7 +18,7 @@ const request = (url: string, timeout = 120000) => ({
 const splitList = '={{ String($value).split(",").map(s => s.trim()).filter(Boolean) }}';
 
 const GRID =
-	"48 products per page (at most 25 pages = 1,200 items), each with ID, title, brand, URL, image, sku_id, price and price_max (current), regular_price and regular_price_max, price_type (sale, clearance, original), percent_off, deal_label (BIG BUY!, CLEARANCE...), coupon_price with coupon_code (the price after today's coupon), rating, review_count, badge (Only at JCP, NEW, Few Left), availability_label (Same Day Pickup, Online Only...), colors with their SKU IDs, and is_marketplace with the seller for third-party items. Also returns total, page, total_pages, the sort applied, applied_filters and every facet (ID, label and values with their value, count and a selected flag; any of them works in Other Filters). Prices are product-level ranges: JCPenney does not expose a price per size or color. Average rating and review count only: review text is not available. Prices in USD.";
+	"48 products per page (at most 25 pages = 1,200 items), each with ID, title, brand, URL, image, sku_id, price and price_max (current), regular_price and regular_price_max, price_type (sale, clearance, original), percent_off, deal_label (BIG BUY!, CLEARANCE...), coupon_price with coupon_code (the price after today's coupon), rating, review_count, badge (Only at JCP, NEW, Few Left), availability_label (Same Day Pickup, Online Only...), colors with their SKU IDs, and is_marketplace with the seller for third-party items. Also returns total, page, total_pages, the sort applied, applied_filters and every facet (ID, label and values with their value, count and a selected flag; any of them works in Other Filters). Prices are product-level ranges: JCPenney does not expose a price per size or color. Average rating and review count here; review text is Get Reviews. Prices in USD.";
 
 // Grid options shared by Search Products, Get Category Products, Get Brand Products and
 // Get Deals (Get Brand Products has no Brands filter: the page is one brand; Get Deals has
@@ -183,8 +184,24 @@ export const jcpenneyOperations: INodeProperties[] = [
 				value: 'product',
 				action: 'Get a jcpenney product',
 				description:
-					'One jcpenney.com product by ID or URL, or up to 20 by Product IDs in one call: title, brand, description, features, category and breadcrumbs, product and item type, images, average rating, review_count, question and answer counts (review text is not available), the price block (regular, sale and clearance min / max ranges, percent off, price type, deal label, the after-coupon price with its coupon code, and when the price window starts and ends), channel (Omnichannel / OnlineOnly), in-store pickup, marketplace flag, and every variant: SKU, UPC, color, size, all options, status, max per order and online_stock (high, low or out; single product only, a level, not a count). Prices are product-level ranges: JCPenney does not expose a price per size or color. A variants[].sku is what Get Store Availability takes. An unknown ID is an error; unknown IDs in a batch are listed in not_found. Costs 1 credit.',
+					'One jcpenney.com product by ID or URL, or up to 20 by Product IDs in one call: title, brand, description, features, category and breadcrumbs, product and item type, images, average rating, review_count, question and answer counts (review text and Q&A: Get Reviews and Get Questions), the price block (regular, sale and clearance min / max ranges, percent off, price type, deal label, the after-coupon price with its coupon code, and when the price window starts and ends), channel (Omnichannel / OnlineOnly), in-store pickup, marketplace flag, and every variant: SKU, UPC, color, size, all options, status, max per order and online_stock (high, low or out; single product only, a level, not a count). Prices are product-level ranges: JCPenney does not expose a price per size or color. A variants[].sku is what Get Store Availability takes. An unknown ID is an error; unknown IDs in a batch are listed in not_found. Costs 1 credit.',
 				routing: request('/api/v1/jcpenney/product'),
+			},
+			{
+				name: 'Get Questions',
+				value: 'questions',
+				action: 'Get jcpenney product questions',
+				description:
+					"Customer questions and every answer for one jcpenney.com (US) product by ID or URL, up to 50 questions per call (default 10), newest answers first (JCPenney's order; there is no sort option). Returns total_questions and total_answers. Each question has ID, question, details, author, submitted_at, answer_count and helpful_votes; each answer has ID, text, author, author_type (brand for the manufacturer's product experts, retailer for JCPenney staff, ai for AI-generated answers, customer), ai_label (AI-Generated / AI-Assisted when JCPenney labels it), is_best_answer, submitted_at and helpful / unhelpful votes. Answerer IPs are never returned. Slower than the other JCPenney operations: usually 15-90s, up to about 3 minutes; failed calls are not charged. A product with no questions returns an empty list; an unknown product is an error. Costs 1 credit.",
+				routing: request('/api/v1/jcpenney/questions', 240000),
+			},
+			{
+				name: 'Get Reviews',
+				value: 'reviews',
+				action: 'Get jcpenney product reviews',
+				description:
+					"Real customer review text of one jcpenney.com (US) product by ID or URL, up to 98 per call (default 38), sorted most recent (default), most helpful, highest or lowest rating, or relevance, optionally only one star rating. Returns the product's review statistics: total_reviews (every language), displayed_reviews (the English reviews JCPenney lists and pages through, often fewer than total_reviews), average_rating, rating_distribution (1-5), recommended_percent, secondary_ratings_averages (Quality, Value, Apparel...), photo_count, and matching_reviews for the sort and filter. Each review has ID, rating, title, text, author nickname, location, submitted_at and updated_at, recommended, helpful and unhelpful votes, verified_purchaser and incentivized badges, syndicated with syndication_source (the brand site it came from, e.g. sharkninja.com), customer photos and videos, secondary ratings, the brand's public response (name, department, text, date) and the original product name. Reviewer age, gender and IP are never returned. Slower than the other JCPenney operations: usually 15-90s, up to about 3 minutes; failed calls are not charged. A product with no reviews returns an empty list; an unknown product is an error. Costs 1 credit.",
+				routing: request('/api/v1/jcpenney/reviews', 240000),
 			},
 			{
 				name: 'Get Search Suggestions',
@@ -420,6 +437,102 @@ export const jcpenneyFields: INodeProperties[] = [
 		},
 		description:
 			'Up to 20 product IDs, separated by commas, in one call (still 1 credit). Unknown IDs are listed in not_found. Batch results carry no online stock.',
+	},
+
+	// -- Get Reviews / Get Questions --
+	{
+		displayName: 'Product ID',
+		name: 'product_id',
+		type: 'string',
+		default: '',
+		placeholder: 'ppr5008604049',
+		displayOptions: show(['reviews', 'questions']),
+		routing: { request: { body: { product_id: '={{ $value || undefined }}' } } },
+		description:
+			"A JCPenney product ID (ppr / ppm / pp + digits): a search result's ID, the last part of a product URL. Use this or Product URL.",
+	},
+	{
+		displayName: 'Product URL',
+		name: 'url',
+		type: 'string',
+		default: '',
+		placeholder:
+			'https://www.jcpenney.com/p/st-johns-bay-womens-mid-rise-straight-leg-jean/ppr5008604049',
+		displayOptions: show(['reviews', 'questions']),
+		routing: { request: { body: { url: '={{ $value || undefined }}' } } },
+		description:
+			'A jcpenney.com product URL (its product ID is used). Used when Product ID is not given.',
+	},
+	{
+		displayName: 'Additional Options',
+		name: 'reviewsOptions',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
+		displayOptions: show(['reviews']),
+		options: [
+			{
+				displayName: 'Max Reviews',
+				name: 'max_reviews',
+				type: 'number',
+				default: 38,
+				typeOptions: { minValue: 8, maxValue: 98 },
+				description:
+					'Reviews to return, 8-98. Defaults to 38. JCPenney loads 8, then 30 more per page, so 8, 38, 68 and 98 are the natural sizes; larger values take longer.',
+				routing: { request: { body: { max_reviews: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Rating',
+				name: 'rating',
+				type: 'options',
+				default: 5,
+				options: [
+					{ name: '1 Star', value: 1 },
+					{ name: '2 Stars', value: 2 },
+					{ name: '3 Stars', value: 3 },
+					{ name: '4 Stars', value: 4 },
+					{ name: '5 Stars', value: 5 },
+				],
+				description:
+					'Only reviews with this star rating. A rating nobody gave returns an empty list.',
+				routing: { request: { body: { rating: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Sort',
+				name: 'sort',
+				type: 'options',
+				default: 'most_recent',
+				options: [
+					{ name: 'Highest Rating', value: 'highest_rating' },
+					{ name: 'Lowest Rating', value: 'lowest_rating' },
+					{ name: 'Most Helpful', value: 'most_helpful' },
+					{ name: 'Most Recent', value: 'most_recent' },
+					{ name: 'Relevance', value: 'relevance' },
+				],
+				description:
+					"Most recent (default), most helpful, highest or lowest rating, or relevance: the review list's own sort menu",
+				routing: { request: { body: { sort: '={{ $value }}' } } },
+			},
+		],
+	},
+	{
+		displayName: 'Additional Options',
+		name: 'questionsOptions',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
+		displayOptions: show(['questions']),
+		options: [
+			{
+				displayName: 'Max Questions',
+				name: 'max_questions',
+				type: 'number',
+				default: 10,
+				typeOptions: { minValue: 10, maxValue: 50 },
+				description: 'Questions to return, 10-50 (10 per page). Defaults to 10.',
+				routing: { request: { body: { max_questions: '={{ $value }}' } } },
+			},
+		],
 	},
 
 	// -- Get Store Availability --
