@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 81 resources and 568 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 82 resources and 578 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -56,6 +56,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Kohl's](https://scavio.dev/docs/kohls-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Find Stores 1 | Search Products, Get Product, Get Category Products, Get Brand Products, Get Deals, Find Stores, Get Store Availability, Get Search Suggestions, Get Coupon Codes |
 | [JCPenney](https://scavio.dev/docs/jcpenney-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Reviews, Get Questions, Get Category Products, Get Brand Products, Get Deals, Find Stores, Get Store Availability, Get Search Suggestions, Get Coupon Codes |
 | [Dick's Sporting Goods](https://scavio.dev/docs/dicks-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Get Product and Get Reviews 2 | Search Products, Get Product, Get Products Summary, Get Reviews, Get Category Products, Get Brand Products, Get Deals, Get Store Availability, Get Search Suggestions |
+| [Foot Locker (13 storefronts)](https://scavio.dev/docs/footlocker-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Category Products, Get Brand Products, Get Deals, Get Release Calendar, Find Stores, Get Store Availability, Get Reviews, Get Questions |
 | [Vinted (27 country sites)](https://scavio.dev/docs/vinted-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Listings, Get Product, Get Seller, Get Seller Listings, Get Seller Feedback, Find Brands, Get Search Suggestions, Get Filter Options, Get Categories |
 | [Mercado Libre (MX, BR, AR, CO)](https://scavio.dev/docs/mercadolibre-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Reviews 1 | Search Listings, Get Product, Get Reviews, Get Questions, Get Best Sellers |
 
@@ -113,6 +114,20 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.46.0
+
+**New resource: Foot Locker, 10 operations, 1 credit each.** Nothing else changed.
+
+- **Country** picks the storefront for Search Products, Get Product, Get Category Products, Get Brand Products and Get Deals: United States (footlocker.com, USD, default), Canada (CAD; Language English or French), United Kingdom (GBP), Germany, France, Italy, Spain, Netherlands, Belgium (Language Dutch or French), Austria, Ireland (EUR), Australia (AUD) or New Zealand (NZD). Titles come in the storefront's language, prices in its currency.
+- **Search Products**, **Get Category Products**, **Get Brand Products** and **Get Deals** share one grid: 48 items per page with total and total_pages, sorted by relevance, price, new arrivals, top rated, name or brand. Filter by Brands (comma-separated, any case), Genders, Colors, Price Ranges, On Sale Only or any facet through Other Filters (JSON), e.g. {"mensShoesSize": "10.0"}. Listings can be a few hours old: data_as_of says when each one was built. A bare brand keyword (nike, hoka) returns that brand's listing, reported as redirected_to.
+- **Get Deals** reads Sale (every storefront), Foot Locker Exclusives (US and Canada) or the items a promo code applies to.
+- **Get Product** lists every colorway with its price and every size with available, ship, pickup and stores_available (a store count, not units): availability is yes / no, Foot Locker publishes no unit counts. European storefronts add lowest_price_30d.
+- **Get Release Calendar** (US, Canada, UK) is the release calendar as monitoring data: launch date and time, retail price (not in the UK), colorway, style code, heat level, size run and reservation windows where the storefront runs them. Nothing here enters, reserves or buys a release.
+- **Find Stores**, **Get Store Availability** (which nearby Foot Locker stores show a product or one size as available, yes / no), **Get Reviews** and **Get Questions** are US only. Foot Locker banner stores only (no Kids Foot Locker or Champs).
+- No search suggestions, member (FLX) prices, price history or checkout: to track prices, poll and store your own.
+
+Get Reviews and Get Questions usually take 25-90 seconds, up to about 3-4 minutes, so they carry a 240-second request timeout; every other operation carries 120 seconds. Failed calls are not charged; unknown SKUs, categories and brands are a charged error.
 
 ## What changed in 0.45.0
 
