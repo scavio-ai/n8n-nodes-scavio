@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 82 resources and 578 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 83 resources and 583 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -57,6 +57,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [JCPenney](https://scavio.dev/docs/jcpenney-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Reviews, Get Questions, Get Category Products, Get Brand Products, Get Deals, Find Stores, Get Store Availability, Get Search Suggestions, Get Coupon Codes |
 | [Dick's Sporting Goods](https://scavio.dev/docs/dicks-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Get Product and Get Reviews 2 | Search Products, Get Product, Get Products Summary, Get Reviews, Get Category Products, Get Brand Products, Get Deals, Get Store Availability, Get Search Suggestions |
 | [Foot Locker (13 storefronts)](https://scavio.dev/docs/footlocker-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Category Products, Get Brand Products, Get Deals, Get Release Calendar, Find Stores, Get Store Availability, Get Reviews, Get Questions |
+| [Fanatics merchandise (8 storefronts + 4 US league stores)](https://scavio.dev/docs/fanatics-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Browse Listing, Get Deals, Get Reviews |
 | [Vinted (27 country sites)](https://scavio.dev/docs/vinted-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Listings, Get Product, Get Seller, Get Seller Listings, Get Seller Feedback, Find Brands, Get Search Suggestions, Get Filter Options, Get Categories |
 | [Mercado Libre (MX, BR, AR, CO)](https://scavio.dev/docs/mercadolibre-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Reviews 1 | Search Listings, Get Product, Get Reviews, Get Questions, Get Best Sellers |
 
@@ -114,6 +115,20 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.47.0
+
+**New resource: Fanatics, 5 operations, 1 credit each.** Merchandise and product data (jerseys, hats, fan gear, collectibles), not sportsbook odds. Nothing else changed.
+
+- **Country** picks the storefront for Search Products, Get Product, Browse Listing and Get Deals: United States (fanatics.com, USD, default), United Kingdom (GBP), Germany, France, Spain, Italy (EUR), Japan (JPY) or Canada (CAD; Language English or French). Titles come in the storefront's language, prices in its currency. **League Store** (US) reads NFL Shop, MLB Shop, NHL Shop or MLS Store; the same product IDs work on every store.
+- **Search Products**, **Browse Listing** and **Get Deals** share one grid: 24, 48 or 72 items per page (default 72) with total (the US site counts at most 9000: total_capped), sorted by top sellers, price or newest. Facet values feed Other Filters (JSON) as {filter: value}; facet IDs feed Browse Listing (team, player, department, brand, collection). Price Band and On Sale Only are on Browse Listing (no price bands in Japan). data_as_of says when Fanatics built each listing; misspellings come back as corrected_query.
+- Each item carries price, regular_price, sale_price, clearance_price, with_code_price (the price with the site-wide promo code shown on the page) and price_label.
+- **Get Product** lists every size with stock_level (low / out: a level, never a unit count), ship-by and delivery estimates, the current promo code, personalization fields with the team roster (prices already include personalization), and jersey assurance / authentic flags.
+- **Get Deals** reads Sale, Clearance or Under 25 (not in Japan), optionally for one league, team, department or brand.
+- **Get Reviews** (US only) returns real text with 4 sorts and a star filter (1-50, default 10), fit / quality / value and the site's own AI-written summary. Fanatics pools reviews across a style, so check each review's product_id.
+- No search suggestions, store locator or store stock, Q&A, FanCash, member pricing, unit counts, price history or checkout: to track jersey sale prices, poll and store your own.
+
+Get Reviews usually takes 20-90 seconds, up to about 4 minutes, so it carries a 300-second request timeout; every other operation carries 120 seconds. Failed calls are not charged; unknown products are a charged error.
 
 ## What changed in 0.46.0
 
