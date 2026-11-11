@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 80 resources and 559 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 81 resources and 568 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -55,6 +55,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Saks Fifth Avenue](https://scavio.dev/docs/saks-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Products, Get Product, Get Category Products, Get Brand Products, Get Deals, Find Stores, Get Store Availability, Get Search Suggestions, Get Designers |
 | [Kohl's](https://scavio.dev/docs/kohls-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Find Stores 1 | Search Products, Get Product, Get Category Products, Get Brand Products, Get Deals, Find Stores, Get Store Availability, Get Search Suggestions, Get Coupon Codes |
 | [JCPenney](https://scavio.dev/docs/jcpenney-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Reviews, Get Questions, Get Category Products, Get Brand Products, Get Deals, Find Stores, Get Store Availability, Get Search Suggestions, Get Coupon Codes |
+| [Dick's Sporting Goods](https://scavio.dev/docs/dicks-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Get Product and Get Reviews 2 | Search Products, Get Product, Get Products Summary, Get Reviews, Get Category Products, Get Brand Products, Get Deals, Get Store Availability, Get Search Suggestions |
 | [Vinted (27 country sites)](https://scavio.dev/docs/vinted-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Listings, Get Product, Get Seller, Get Seller Listings, Get Seller Feedback, Find Brands, Get Search Suggestions, Get Filter Options, Get Categories |
 | [Mercado Libre (MX, BR, AR, CO)](https://scavio.dev/docs/mercadolibre-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Reviews 1 | Search Listings, Get Product, Get Reviews, Get Questions, Get Best Sellers |
 
@@ -112,6 +113,19 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.45.0
+
+**New resource: Dick's Sporting Goods, 9 operations, 1 credit each except Get Product and Get Reviews (2 credits).** dickssportinggoods.com, US only, prices in USD. Nothing else changed.
+
+- **Search Products**, **Get Category Products**, **Get Brand Products** and **Get Deals** share one grid: 48 items per page by default, up to 144 (Page Size), with total and total_pages, sorted by relevance, top sellers, savings, price, featured, new arrivals or brand A-Z. Filter by Brands (comma-separated), an approximate Min / Max Price, or any facet through Other Filters (JSON), e.g. {"5495": "Men's"}. Search returns did_you_mean for a misspelled query and follows keywords Dick's sends to a landing page (clearance, golf balls), reported as redirected_to. Merchandised items are flagged is_pinned and can make page 1 a few items longer than Page Size. scheduled_prices are the retailer's own planned price windows and can change: not a forecast or price history.
+- **Get Category Products** takes a /f/ or /c/ path, a URL or a category ID. **Get Deals** reads Clearance (default), Sale or This Week's Deals.
+- **Get Product** lists every SKU with its own price, list price, percent off, is_clearance, online units, UPC and buyable flag: prices differ per size and color. **Get Products Summary** is the cheap style-level check for up to 5 product IDs.
+- **Get Reviews** returns the 15 newest reviews with full text plus rating stats and distribution: no paging, sort or star filter, and questions and answers are counts only.
+- **Get Store Availability** takes SKUs (from Get Product) and a ZIP code or coordinates; it returns unit counts at up to 100 DICK'S, Golf Galaxy or Public Lands stores with address, phone, hours and distance. There is no standalone store locator, and an unknown SKU reads 0 everywhere.
+- No price history: to track clearance prices, poll and store your own.
+
+Get Product and Get Reviews usually take 20-75 seconds, up to about 2.5 minutes, so they carry a 240-second request timeout; every other operation carries 120 seconds. Failed calls are not charged.
 
 ## What changed in 0.44.0
 
