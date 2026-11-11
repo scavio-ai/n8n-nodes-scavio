@@ -31,7 +31,7 @@ const COUNTRY_OPTIONS = [
 ];
 
 const GRID =
-	"Items with ID (for Get Product and Get Reviews), title, brand, URL, image, price (current), regular_price, sale_price, clearance_price, with_code_price and code_percent_off (the price with the site's current promo code, when it applies), price_label (none, coupon or clearance), percent_off, top_seller, customizable, ready_to_ship, ship_by, est_delivery, urgency signals and is_sponsored. Also returns total (the US site counts at most 9000: total_capped is true when the real number is 9000 or more), page, page_size, total_pages, the sort, every facet (ID, label, values with label, filter, value and count: any of them works in Other Filters), country, language, currency, site and data_as_of (when Fanatics built the page; listings can be a few minutes old).";
+	"Items with ID (for Get Product and Get Reviews), title, brand, URL, image, price (current), regular_price, sale_price, clearance_price, with_code_price and code_percent_off (the price with the site's current promo code, when it applies), price_label (none, coupon or clearance; coupon means coupon-eligible, a null with_code_price means the code does not apply), percent_off, top_seller, customizable, ready_to_ship, ship_by, est_delivery, urgency signals and is_sponsored. Also returns total (the US site counts at most 9000: total_capped is true when the real number is 9000 or more), page, page_size, total_pages, the sort, every facet (ID, label, values with label, filter, value and count: any of them works in Other Filters), country, language, currency, site and data_as_of (when Fanatics built the page; listings can be a few minutes old).";
 
 const CHARGE =
 	'Failed upstream calls are not charged (they are retried automatically); a not-found is charged. Costs 1 credit.';
@@ -67,7 +67,7 @@ const DEPARTMENT_ID = idOption(
 	'Department ID',
 	'department_id',
 	'8011',
-	'One department (from facets): Jerseys 8011, Hats 8008, T-Shirts 8022; parent-child (8008-8084) for a sub-department',
+	'One department, from the facets of the same storefront or store (Fanatics.com: Jerseys 8011, Hats 8008, T-Shirts 8022; NFL Shop Jerseys 14012); parent-child (8008-8084) for a sub-department',
 );
 const BRAND_ID = idOption(
 	'Brand ID',
@@ -143,7 +143,7 @@ const GRID_OPTIONS: INodeProperties[] = [
 			{ name: 'Top Sellers', value: 'top_sellers' },
 		],
 		description:
-			"Top sellers (default), price or newest. Price sorts follow the site's lowest price, which is the with-code price when a promo code applies.",
+			'Top sellers (default), price or newest. Price sorts order by the current price (price, before any promo code), not the with-code price.',
 		routing: { request: { body: { sort: '={{ $value }}' } } },
 	},
 ];
@@ -164,7 +164,7 @@ export const fanaticsOperations: INodeProperties[] = [
 				value: 'browse',
 				action: 'Browse a fanatics listing',
 				description:
-					"Browse a Fanatics listing by its URL or by IDs: a team (Lakers 5,000+ products), a player (Mahomes), a league section (NFL hats), a department, a brand ('47, Nike, New Era) or a collection, with price band, on sale, gender and any facet as filters (sizes, color style, autographed). The facets list the listing's teams, players (up to 100 on a team page), departments, brands, collections and sizes with their IDs. browse names the league, team, player, department, brand and collection the page shows. Send a URL or IDs, not both; a league alone is a landing page: combine it with another ID or a filter. " +
+					"Browse a Fanatics listing by its URL or by IDs: a team (Lakers 5,000+ products), a player (Mahomes), a league section (NFL hats), a department, a brand ('47, Nike, New Era) or a collection, with price band, on sale, gender and any facet as filters (sizes, color style, autographed). The facets list the listing's teams, departments, brands, collections and sizes with their IDs, plus players when the page lists them (e.g. Lakers). browse names the league, team, player, department, brand and collection the page shows. Send a URL or IDs, not both; a league alone is a landing page: combine it with another ID or a filter. " +
 					GRID +
 					' ' +
 					CHARGE,
@@ -186,7 +186,7 @@ export const fanaticsOperations: INodeProperties[] = [
 				value: 'product',
 				action: 'Get a fanatics product',
 				description:
-					"One Fanatics product by ID or URL: title, brand, league, team, player, gender, categories, breadcrumb, description, details, images, the price block (price, regular_price, sale_price, clearance_price, with_code_price, code_percent_off, percent_off, price_label), the site's current promo code (code, percent_off, tiered, ends_on, applies_to_product), in_stock, every size (item_id, available, stock_level low / out, price, with_code_price, ship_by, estimated delivery window, promise_ship_days), every colorway, personalization (name / number fields with their rules and the team roster; the price already includes personalization), flags (jersey_assurance, non_returnable, exclusive, authentic for autographed / authenticated items), the rating (average, count, distribution, fit, value, quality), review_count and data_as_of. Stock is a level, never a unit count. " +
+					"One Fanatics product by ID or URL: title, brand, league, team, player, gender, categories, breadcrumb, description, details, images, the price block (price, regular_price, sale_price, clearance_price, with_code_price, code_percent_off, percent_off, price_label), on_sale (true for sale and clearance markdowns), the site's current promo code (code, percent_off, tiered, ends_on, applies_to_product), in_stock, every size (item_id, available, stock_level low / out, price, with_code_price, ship_by, estimated delivery window, promise_ship_days), every colorway, personalization (name / number fields with their rules and the team roster; the price already includes personalization), flags (jersey_assurance, non_returnable, exclusive, authentic for autographed / authenticated items), the rating (average, count, distribution, fit, value, quality), review_count and data_as_of. Stock is a level, never a unit count. " +
 					CHARGE,
 				routing: request('/api/v1/fanatics/product'),
 			},
@@ -257,7 +257,7 @@ export const fanaticsFields: INodeProperties[] = [
 		displayOptions: show(MARKET_OPERATIONS, { country: ['us'] }),
 		routing: { request: { body: { site: '={{ $value === "fanatics" ? undefined : $value }}' } } },
 		description:
-			'US only: the store to read. Same product IDs on every store; each store writes its own titles. A URL from a league store uses its own store when this is Fanatics.',
+			'US only: the store to read. Same product IDs on every store; each store writes its own titles. Department and filter IDs are per store (Jerseys: 8011 on Fanatics, 14012 on NFL Shop), so take them from the facets of the store you query. A URL from a league store uses its own store when this is Fanatics.',
 	},
 
 	// -- Search Products --
@@ -336,7 +336,7 @@ export const fanaticsFields: INodeProperties[] = [
 				'Player ID',
 				'player_id',
 				'12072',
-				'One player (from facets.players): Patrick Mahomes 12072, Aaron Judge 31',
+				"One player, from the players facet when the page lists one (e.g. Lakers) or a product's player field: Patrick Mahomes 12072, Aaron Judge 31",
 			),
 			DEPARTMENT_ID,
 			BRAND_ID,
