@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 83 resources and 583 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 84 resources and 592 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -58,6 +58,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Dick's Sporting Goods](https://scavio.dev/docs/dicks-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Get Product and Get Reviews 2 | Search Products, Get Product, Get Products Summary, Get Reviews, Get Category Products, Get Brand Products, Get Deals, Get Store Availability, Get Search Suggestions |
 | [Foot Locker (13 storefronts)](https://scavio.dev/docs/footlocker-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Category Products, Get Brand Products, Get Deals, Get Release Calendar, Find Stores, Get Store Availability, Get Reviews, Get Questions |
 | [Fanatics merchandise (8 storefronts + 4 US league stores)](https://scavio.dev/docs/fanatics-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Browse Listing, Get Deals, Get Reviews |
+| [Carrefour (France; search and product also Argentina, Romania, Belgium)](https://scavio.dev/docs/carrefour-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Search Products and Get Product 2 on Belgium | Search Products, Get Product, Get Reviews, Get Category Products, Get Promotions, Get Search Suggestions, Find Stores, Get Store Availability, Get Store |
 | [Vinted (27 country sites)](https://scavio.dev/docs/vinted-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Listings, Get Product, Get Seller, Get Seller Listings, Get Seller Feedback, Find Brands, Get Search Suggestions, Get Filter Options, Get Categories |
 | [Mercado Libre (MX, BR, AR, CO)](https://scavio.dev/docs/mercadolibre-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Reviews 1 | Search Listings, Get Product, Get Reviews, Get Questions, Get Best Sellers |
 
@@ -115,6 +116,20 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.48.0
+
+**New resource: Carrefour, 9 operations, 1 credit each.** Grocery prices by store, promotions, Nutri-Score and stores. Nothing else changed.
+
+- **Country** picks the national site for Search Products and Get Product: France (carrefour.fr, EUR, default), Argentina (ARS), Romania (RON) or Belgium (EUR; Language French or Dutch; 2 credits). Every other operation is France only. Data comes back in the market's language: French titles, labels and ingredients on France.
+- **Store Ref** (Additional Options, France) scopes Search Products, Get Product, Get Category Products and Get Promotions to one store's shelf price and assortment; without it a price is carrefour.fr's national online price (Nutella 400 g: 3.99 national, 3.69 at two stores, 4.61 at another). Take the ref from Find Stores (store_ref or pickup_refs[].ref) or Get Store Availability (stores[].store.ref).
+- **Search Products**, **Get Category Products** and **Get Promotions** share one grid (30 items per page on France) with brand, promotion, Nutri-Score, organic, Carrefour brands and price filters and price, unit price or top-rated sorts. Each item carries price, unit_price (per kg / L), nutriscore, ecoscore and promotion with loyalty_only (loyalty-card price) and start / end dates; on multi-buy deals ("Le 2ème à -50%") the prices cover quantity items and discounted_price is null when the site does not price the deal.
+- **Get Product** adds ingredients, allergens, nutrition per 100 g and per portion, the marketplace seller and the rating distribution. **Get Reviews** returns 1-50 verified-purchase reviews with 4 sorts, a star filter and offset paging.
+- **Get Promotions** lists catalogue, immediate, loyalty-card or the site's festive selection, optionally for one aisle.
+- **Find Stores** (postal code or latitude / longitude, optional service filter), **Get Store Availability** (yes / no per nearby store, no price) and **Get Store** (services, hours, next pickup slots as shown, fuel prices per litre at stores with a fuel station).
+- No Q&A, printed leaflet, delivery-slot booking, cart, loyalty account data or price history: to track prices, poll and store your own. Spain, Italy, Poland, Brazil and the Middle East sites are not covered.
+
+Every operation carries a 120-second request timeout. Failed calls are not charged; a not-found is a charged error.
 
 ## What changed in 0.47.1
 
