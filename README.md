@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 86 resources and 600 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 87 resources and 609 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -60,6 +60,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Fanatics merchandise (8 storefronts + 4 US league stores)](https://scavio.dev/docs/fanatics-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Browse Listing, Get Deals, Get Reviews |
 | [Carrefour (France; search and product also Argentina, Romania, Belgium)](https://scavio.dev/docs/carrefour-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Search Products and Get Product 2 on Belgium | Search Products, Get Product, Get Reviews, Get Category Products, Get Promotions, Get Search Suggestions, Find Stores, Get Store Availability, Get Store |
 | [Allegro (Poland, Czechia, Slovakia, Hungary)](https://scavio.dev/docs/allegro-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Offers, Get Offer, Get Product, Get Product Offers, Get Seller Offers, Get Seller Feedback, Get Category Offers |
+| [OLX Europe (Poland, Romania, Portugal, Bulgaria, Ukraine, Kazakhstan, Uzbekistan)](https://scavio.dev/docs/olx-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Ads, Get Ad, Get Seller, Get Seller Ads, Get Category Filters, Get Categories, Search Locations, Get Search Suggestions, Get Similar Ads |
 | [Vinted (27 country sites)](https://scavio.dev/docs/vinted-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Listings, Get Product, Get Seller, Get Seller Listings, Get Seller Feedback, Find Brands, Get Search Suggestions, Get Filter Options, Get Categories |
 | [Mercado Libre (MX, BR, AR, CO)](https://scavio.dev/docs/mercadolibre-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Reviews 1 | Search Listings, Get Product, Get Reviews, Get Questions, Get Best Sellers |
 
@@ -118,6 +119,19 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.51.0
+
+**New resource: OLX, 9 operations, 1 credit each.** OLX Europe classifieds: used goods, cars, real estate and jobs, with sellers, category filters and similar ads. Nothing else changed.
+
+- OLX Europe only. **Country** picks the site: Poland (olx.pl, PLN, default), Romania (olx.ro, RON), Portugal (olx.pt, EUR), Bulgaria (olx.bg, EUR), Ukraine (olx.ua, UAH), Kazakhstan (olx.kz, KZT) or Uzbekistan (olx.uz, UZS). **Get Category Filters** and **Get Similar Ads** are not available on Kazakhstan or Uzbekistan. OLX Brasil, olx.in and other OLX-branded sites are not covered.
+- Titles, parameters and labels come back in the site's language: Polish on Poland, Russian by default on Kazakhstan and Uzbekistan, where **Language** switches **Search Ads**, **Get Seller Ads** and **Get Ad** to Kazakh or Uzbek.
+- **Search Ads** and **Get Seller Ads** share one grid: up to 50 ads per page (default 40; promoted ads are interleaved on top, each flagged is_promoted with promoted_position). OLX lets anyone page through the first 1,000 results only (total_capped); Kazakhstan and Uzbekistan hide large totals (total null). **Newest** orders by last refresh, not first posting. Filter by price, condition, private or business seller, OLX delivery (not on Kazakhstan or Uzbekistan), photos, region / city / district with a radius, and the category's own filter_* keys from **Get Category Filters** (Category Filters (JSON)).
+- When the site converts a price (olx.uz y.e. to UZS, EUR to RON on Romania, USD / EUR to UAH on Ukraine), price.value is the converted figure and original_value / original_currency keep what the seller entered. Jobs carry salary.
+- Private sellers' names, phone numbers, emails, exact map positions, last-seen times and car VINs are never returned, and phone numbers and emails in ad text are replaced; business_name is set for business sellers only. OLX shows no seller ratings or reviews.
+- An ended ad answers the same 404 as a missing one (not found or no longer active). No view counts, phone numbers, messaging, delivery prices, checkout, average prices, notifications or price history: to watch for new listings or track prices, poll Newest and store your own.
+
+Every operation carries a 120-second request timeout. Failed calls are not charged; a not-found is a charged error.
 
 ## What changed in 0.50.0
 
