@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 84 resources and 592 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 85 resources and 599 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -59,6 +59,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Foot Locker (13 storefronts)](https://scavio.dev/docs/footlocker-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Category Products, Get Brand Products, Get Deals, Get Release Calendar, Find Stores, Get Store Availability, Get Reviews, Get Questions |
 | [Fanatics merchandise (8 storefronts + 4 US league stores)](https://scavio.dev/docs/fanatics-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Browse Listing, Get Deals, Get Reviews |
 | [Carrefour (France; search and product also Argentina, Romania, Belgium)](https://scavio.dev/docs/carrefour-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Search Products and Get Product 2 on Belgium | Search Products, Get Product, Get Reviews, Get Category Products, Get Promotions, Get Search Suggestions, Find Stores, Get Store Availability, Get Store |
+| [Allegro (Poland, Czechia, Slovakia, Hungary)](https://scavio.dev/docs/allegro-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Offers, Get Offer, Get Product, Get Product Offers, Get Seller Offers, Get Seller Feedback, Get Category Offers |
 | [Vinted (27 country sites)](https://scavio.dev/docs/vinted-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Listings, Get Product, Get Seller, Get Seller Listings, Get Seller Feedback, Find Brands, Get Search Suggestions, Get Filter Options, Get Categories |
 | [Mercado Libre (MX, BR, AR, CO)](https://scavio.dev/docs/mercadolibre-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Reviews 1 | Search Listings, Get Product, Get Reviews, Get Questions, Get Best Sellers |
 
@@ -116,6 +117,20 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.49.0
+
+**New resource: Allegro, 7 operations, 2 credits each.** Offers, every seller's price for one product, sellers, sold counts and auctions. Nothing else changed.
+
+- **Country** picks the Allegro site on every operation: Poland (allegro.pl, PLN, default), Czechia (allegro.cz, CZK), Slovakia (allegro.sk, EUR) or Hungary (allegro.hu, HUF). Titles, parameters and labels come back in the site's language: Polish on Poland.
+- An offer is one seller's listing (**Get Offer**, by offer number or link); a catalogue product groups many sellers' offers (**Get Product**, by product ID or link). **Get Product Offers** lists every seller's offer for one product with price, price with delivery, condition, seller, Allegro Smart! and the buy box flag: the price-monitoring operation.
+- **Search Offers**, **Get Category Offers** and **Get Seller Offers** share one grid: 60 organic offers per page (sponsored slots on top), exact total and every facet; 8 sorts (price, price with delivery, popularity, ending soonest, newest); price, condition and Allegro Smart! filters, plus Buying Format (buy now / auction) and Deals Only (Allegro's deals zone, Black Weeks included while it runs) on Poland only. Each item carries price, price_with_delivery, sold_count, discount_percent, lowest_price_30d, the seller's super seller flag, positive feedback percent and business flag, and placement (regular, promoted, sponsored or featured).
+- lowest_price_30d is the EU disclosure Allegro shows next to a discount (the lowest price in the 30 days before it): null without a discount, and not a price history. sold_count is null on auctions and on Czechia, Slovakia and Hungary offer pages.
+- **Get Offer** adds the auction state (current price, minimum next bid, ends at, has bids; no bid history), every parameter with GTIN, delivery methods, returns, warranty and the company name of business sellers. **Get Product** returns the lowest price, offer count, featured offer, star distribution, review aspects and the first 20 reviews as shown.
+- **Get Seller Offers** returns the seller's ID, login, business flag and categories (the slug feeds Seller Category); super seller status, positive percent and member since come from **Get Seller Feedback** (20 ratings per page, no buyer identity).
+- No search suggestions, bidding, buying or checkout, Allegro Lokalnie as its own source, Smart! account data, seller revenue, seller addresses or tax IDs, price history or reviews past the first 20: to track prices, poll and store your own.
+
+Every operation carries a 120-second request timeout (Slovakia and Hungary calls can take up to about a minute). Failed calls are not charged; a not-found is a charged error.
 
 ## What changed in 0.48.0
 
