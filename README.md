@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 85 resources and 599 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 86 resources and 600 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -96,6 +96,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Yelp](https://scavio.dev/docs/yelp-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Businesses, Get Business, Get Reviews |
 | [Indeed](https://scavio.dev/docs/indeed-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Jobs, Get Job, Get Company, Get Company Reviews |
 | [Glassdoor](https://scavio.dev/docs/glassdoor-companies?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) || 2 | Search Companies, Get Company Profile, Get Reviews, Get Salaries |
+| [Company (Enrich)](https://scavio.dev/docs/company-enrich?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 10 from a website, 20 from a place ID; 1 when the listing has no readable website; unreachable sites free | Enrich |
 
 ### App stores, software, and business reviews
 
@@ -117,6 +118,15 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.50.0
+
+**New resource: Company (Enrich), 1 operation.** Find a company's contact details and its owner from its website or a Google Maps place ID. Nothing else changed.
+
+- **Enrich** takes **Website** (a bare domain works; social profile URLs are rejected) or **Place ID** (from the Google resource's **Maps Search**, `local_results[].place_id`). Each field is optional on its own, but at least one is required: an empty call is a free 400. If both are set, Website is the site that gets read.
+- Returns `data.company` (name, website, domain, emails, phones as digits, socials, contact_page, address, place_id), `data.owner` (name, title, source_url, email and email_status, or null when no page names one) and `data.pages_read`. `owner.email_status` is `published` when an address on the site matches the owner's name, else `not_found` with email null.
+- 10 credits from a website, 20 from a place ID. A place ID whose listing has no readable website returns the listing data for 1 credit. A website that cannot be reached (502) is not charged.
+- Calls usually take 10-45 seconds, up to about 2 minutes on a slow site, so the operation carries a 180-second request timeout.
 
 ## What changed in 0.49.0
 
@@ -571,6 +581,7 @@ Several resources are keyed by identifiers that only exist inside the target sit
 | Glassdoor | Search Companies | A company name into an `employer_id` |
 | SEC EDGAR | Look Up Company | A ticker into a CIK (both fields accept either spelling, but the lookup is the reliable path) |
 | Companies House | Search Companies | A company name into a company number |
+| Company (Enrich) | Google > Maps Search | A niche plus a place into the `place_id` Enrich takes (or pass the business's website directly) |
 | Google Ads Transparency | Find Advertisers | A brand name into an `advertiser_id` |
 | Rightmove | Look Up Locations | A place, outcode, postcode or station into the `location_id` Search Listings and Search Agents take (a place name also works, resolved to its first match) |
 | Realtor.com | Get Location Suggestions | A partial place name into the `slug_id` Get Market Stats takes |
@@ -599,6 +610,7 @@ Do not assume an operation pages. Several deliberately do not, and the node only
 - **Trustpilot Get Reviews stops at page 10, 200 reviews per filter combination.** Different stars x language x date range combinations are separate sets, so slice to go deeper. Get Business Profile already carries the 20 newest reviews in its `Language`, so skip Get Reviews page 1 when that is all you need.
 - **Realtor.com Search stops at 10,000 results per query** and **Rightmove stops at 42 search pages, 40 sold pages and 50 agent pages.** Slice by price band, property type or a smaller area to reach more.
 - **Mercado Libre Search stops at 42 pages of about 48, about 2,000 results per query.** Slice by price range, condition or seller. Get Product is the slowest call, up to about 10 seconds.
+- **Company Enrich usually takes 10-45 seconds**, up to about 2 minutes on a slow site, and costs 10 credits from a website, 20 from a place ID. The operation carries a 180-second timeout; run large Maps lists in batches rather than raising concurrency.
 - **Home Depot search page size is fixed at 12** and reviews are 30 per page; asking past `total_pages` is a 404.
 
 ### Silent-wrong-answer traps
