@@ -33,7 +33,7 @@ export const sephoraOperations: INodeProperties[] = [
 				value: 'product',
 				action: 'Get a sephora product',
 				description:
-					'One sephora.com (US) product: name, brand, rating, review count, loves count, price range, description, suggested usage, breadcrumbs, a summary of what reviews say with pro and con sentiment counts (no review text), and every shade or size as a SKU with price, list and sale price, stock, ingredients, images and pickup and same-day eligibility. Costs 1 credit.',
+					'One sephora.com (US) product: name, brand, rating, review count, loves count, price range, description, suggested usage, breadcrumbs, a summary of what reviews say with pro and con sentiment counts (no review text), and every shade or size as a SKU with price, list and sale price, stock, ingredients, images and pickup and same-day eligibility. Costs 2 credits.',
 				routing: { request: { method: 'POST', url: '/api/v1/sephora/product' } },
 			},
 			{
