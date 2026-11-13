@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 88 resources and 626 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 89 resources and 638 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -30,6 +30,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [HEB](https://scavio.dev/docs/heb-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Products, Get Product, Get Stores |
 | [Kroger, QFC and Fred Meyer](https://scavio.dev/docs/kroger-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Search Products and Get Product 2, Get Store Prices 3 | Search Products, Get Product, Get Store Prices, Find Stores, Get Category Products, Get Weekly Digital Deals, Get Coupons, Get Search Suggestions |
 | [Publix](https://scavio.dev/docs/publix-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Category Products, Get Categories, Get Weekly Ad, Get Extra Savings, Get Coupons, Search Savings, Get Order Ahead Menu, Find Stores, Get Search Suggestions |
+| [IKEA](https://scavio.dev/docs/ikea-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 (Compare Prices by Country: 1 per market) | Search Products, Get Product, Get Reviews, Get Category Products, Get Categories, Get Deals, Get Search Suggestions, Find Stores, Get Store Stock, Get Items, Compare Prices by Country, Get As-Is Offers |
 | [Spec's](https://scavio.dev/docs/specs-product?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 5 | Search Products, Get Product, Find Stores |
 | [Lowe's](https://scavio.dev/docs/lowes-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Reviews 1 | Search Products, Get Product, Find Stores, Get Reviews |
 | [Sam's Club](https://scavio.dev/docs/samsclub-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Find Clubs, Get Instant Savings, Get Category Products, Get Reviews |
@@ -120,6 +121,18 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.54.0
+
+**New resource: IKEA, 12 operations, 1 credit each (Compare Prices by Country: 1 credit per market that answered).** IKEA product data across 55 markets: IKEA prices by country for one article number, search, product detail, reviews, categories, deal lists, stores, stock by store, bulk item lookup and As-is (second-hand) offers. Nothing else changed.
+
+- **Country** picks the market. Search Products and Get Product cover 55 markets: the 50 ikea.com markets plus China, Puerto Rico, the Dominican Republic, the Canary and Balearic Islands (with **Island**) and Iceland. Get Category Products, Get Deals, Get Search Suggestions and Get Items serve the 50 ikea.com markets plus China; Get Reviews, Get Categories, Find Stores, Get Store Stock and Compare Prices by Country the 50 ikea.com markets; Get As-Is Offers 13 markets. Ukraine, Greece, Cyprus, Bulgaria, Hong Kong, Taiwan, Indonesia and Turkey are not available.
+- **Language** is optional: one of the market's languages (Canada en or fr, Belgium nl, fr or en, Switzerland de, fr, it or en, United States en or es ...). Data comes in that language and prices in the market's own currency, never converted: on 2026-11-13 KALLAX 80275887 was EUR 49.99 in Germany and the Netherlands, EUR 59.99 in France and SEK 599 in Sweden.
+- **Compare Prices by Country** prices one article number on 2 to 10 markets. Some markets (US, Canada, Japan, Australia, South Korea, India, Malaysia, Singapore, Philippines ...) sell the same product under a different article number, so found is false there.
+- **Get Reviews** returns the 20 most recent reviews the product page shows (no paging, sort or star filter); ratings are pooled across markets. **Get Store Stock** returns a level per store (in stock high / low, out of stock), not a quantity.
+- Puerto Rico, the Dominican Republic and the islands return the first 40 search results only; franchise products return basic detail.
+
+Get Product and Get Reviews carry a 180-second request timeout (a product page can take up to about 100 seconds), every other IKEA operation 120 seconds. Failed calls are not charged; an unknown article number, category or store ID is a charged not-found.
 
 ## What changed in 0.53.0
 
