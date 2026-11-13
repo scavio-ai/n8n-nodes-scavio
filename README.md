@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 87 resources and 609 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 87 resources and 615 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -28,7 +28,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Home Depot](https://scavio.dev/docs/home-depot-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Products, Get Product, Get Reviews |
 | [Costco](https://scavio.dev/docs/costco-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Search Products, Get Category Products, Get Deals and Find Clearance Items 2 in the United States; Get Warehouse Prices, Get Availability and Get Gas Prices scale with the number of warehouses | Search Products, Get Category Products, Get Categories, Get Products, Get Warehouse Prices, Get Availability, Get Reviews, Get Warehouses, Get Gas Prices, Get Coupon Book, Get Deals, Find Clearance Items, Get Search Suggestions |
 | [HEB](https://scavio.dev/docs/heb-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Products, Get Product, Get Stores |
-| [Kroger](https://scavio.dev/docs/kroger-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Products, Get Product |
+| [Kroger, QFC and Fred Meyer](https://scavio.dev/docs/kroger-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Search Products and Get Product 2, Get Store Prices 3 | Search Products, Get Product, Get Store Prices, Find Stores, Get Category Products, Get Weekly Digital Deals, Get Coupons, Get Search Suggestions |
 | [Spec's](https://scavio.dev/docs/specs-product?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 5 | Search Products, Get Product, Find Stores |
 | [Lowe's](https://scavio.dev/docs/lowes-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Reviews 1 | Search Products, Get Product, Find Stores, Get Reviews |
 | [Sam's Club](https://scavio.dev/docs/samsclub-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Find Clubs, Get Instant Savings, Get Category Products, Get Reviews |
@@ -119,6 +119,17 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.52.0
+
+**Kroger: QFC and Fred Meyer banners and 6 new operations.** Nothing else changed.
+
+- Every Kroger operation has a **Banner** option: Kroger (kroger.com), QFC (qfc.com: Washington and Oregon) or Fred Meyer (fredmeyer.com: the Pacific Northwest and Alaska, grocery plus general merchandise, apparel and home). **Auto**, the default, sends none: Kroger, unless a product or category URL or a store ID sets it, so existing workflows behave as before. Other Kroger banners (Ralphs, King Soopers, Fry's, Harris Teeter, Smith's...) are not supported yet.
+- New: **Get Store Prices** (price, promotion, stock, available quantity, aisle and fulfillment for up to 25 UPCs at one store you choose, 3 credits), **Find Stores**, **Get Category Products**, **Get Weekly Digital Deals**, **Get Coupons** (listed, never clipped; no account) and **Get Search Suggestions**, 1 credit each.
+- Prices are integer cents (price 399 = $3.99) and differ by banner and by store. **Search Products**, **Get Product**, **Get Category Products** and **Get Weekly Digital Deals** return the prices of a store the site chooses for the request (returned in store); for one specific store, take a location_id from **Find Stores** and use it in **Get Store Prices**.
+- **Search Products**, **Get Category Products** and **Get Weekly Digital Deals** serve the first page only (up to 24 products), with no sort; a page above 1 is refused before any charge. Ratings are average, count and star distribution; review text is not available. Fuel center locations are returned, fuel prices are not. The printed weekly ad circular is not available.
+
+Every Kroger operation now carries a 120-second request timeout. Failed calls are not charged; an unknown UPC or store ID is a charged not-found.
 
 ## What changed in 0.51.0
 
