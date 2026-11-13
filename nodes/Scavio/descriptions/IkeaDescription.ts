@@ -92,7 +92,7 @@ const GRID_OPS = ['search', 'category', 'deals'];
 const LANG =
 	"Data comes in the market's language and prices in its own currency (never converted); every answer echoes country, language and currency.";
 const ITEM =
-	'item_no, name, type_name, design, measure_text, URL, image, price, previous_price, discount_percent, price_tag (family_price, new_lower_price, lower_price_in_store, new_product, discontinued or none), lowest_price, rating, rating_count (pooled across IKEA markets), badge, colors, variants, last_chance, category_path and availability (with a store ID)';
+	'item_no, name, type_name, design, measure_text, URL, image, price, previous_price, discount_percent, price_tag (family_price, new_lower_price, time_restricted_offer (a limited-time reduced price), lower_price_in_store, new_product, discontinued or none), lowest_price, rating, rating_count (per market as shown; many markets share one pool, some show none), badge, colors, variants, last_chance, category_path and availability (with a store ID)';
 const GRID = `total, page, page_size, total_pages, count, sort, applied_filters, facets and items with ${ITEM}.`;
 const CHARGE =
 	'Failed upstream calls are not charged (they are retried automatically); a not-found is charged.';
@@ -181,7 +181,7 @@ export const ikeaOperations: INodeProperties[] = [
 				name: 'Get Reviews',
 				value: 'reviews',
 				action: 'Get ikea product reviews',
-				description: `An IKEA product's rating, rating_count, secondary_ratings and the 20 most recent reviews the product page shows (title, text, rating, date, author, country), plus highlighted reviews. No paging, sort or star filter. Ratings and reviews are pooled across IKEA markets. Can take up to about 100 seconds. ${CHARGE} Costs 1 credit.`,
+				description: `An IKEA product's rating, rating_count, secondary_ratings and the 20 most recent reviews the product page shows (title, text, rating, date, author, country), plus highlighted reviews. No paging, sort or star filter. Ratings are per market as shown: many markets share one pool (KALLAX: 8,241 in Germany, Spain, Sweden), others have their own (France 2,760, Italy 1,887), and some show none (Estonia, Latvia, Lithuania, Israel, Iceland). Can take up to about 100 seconds. ${CHARGE} Costs 1 credit.`,
 				routing: request('/api/v1/ikea/reviews', 180000),
 			},
 			{
