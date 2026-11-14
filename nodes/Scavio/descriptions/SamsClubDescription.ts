@@ -61,7 +61,7 @@ export const samsClubOperations: INodeProperties[] = [
 				value: 'category',
 				action: 'Get sams club category products',
 				description:
-					"Products in a Sam's Club category, paged, with the same fields as Search Products. Clearance is category 1150109. Prices and stock are for a nearby club chosen by location, returned in club. Costs 1 credit.",
+					"Products in a Sam's Club category, paged, with the same fields as Search Products. Clearance is category 1150109. Prices and stock are for a nearby club chosen by location, returned in club. Costs 2 credits.",
 				routing: { request: { method: 'POST', url: '/api/v1/samsclub/category' } },
 			},
 			{
@@ -69,7 +69,7 @@ export const samsClubOperations: INodeProperties[] = [
 				value: 'savings',
 				action: 'Get sams club instant savings',
 				description:
-					"Every item on Sam's Club Instant Savings, paged: price, was price and savings amount, plus each offer's amount, end date, purchase limit and the channels it applies to. Prices are for a nearby club chosen by location, returned in club. Costs 1 credit.",
+					"Every item on Sam's Club Instant Savings, paged: price, was price and savings amount, plus each offer's amount, end date, purchase limit and the channels it applies to. Prices are for a nearby club chosen by location, returned in club. Costs 2 credits.",
 				routing: { request: { method: 'POST', url: '/api/v1/samsclub/savings' } },
 			},
 			{
@@ -77,7 +77,7 @@ export const samsClubOperations: INodeProperties[] = [
 				value: 'product',
 				action: 'Get a sams club product',
 				description:
-					"One Sam's Club item: online price and club shelf price (club_price), was price, savings, unit price, Instant Savings, rating histogram, images, UPC, specifications and fulfillment per method with stock and aisle. Set a Club ID to price and stock one club. available_quantity is capped at 8 (8 means 8 or more). Costs 1 credit.",
+					"One Sam's Club item: online price and club shelf price (club_price), was price, savings, unit price, Instant Savings, rating histogram, images, UPC, specifications and fulfillment per method with stock and aisle. Set a Club ID to price and stock one club. available_quantity is capped at 8 (8 means 8 or more). Costs 2 credits.",
 				routing: { request: { method: 'POST', url: '/api/v1/samsclub/product' } },
 			},
 			{
@@ -85,7 +85,7 @@ export const samsClubOperations: INodeProperties[] = [
 				value: 'reviews',
 				action: 'Get sams club product reviews',
 				description:
-					"Customer reviews for a Sam's Club item, 10 per page: rating, title, text, author, date, verified purchase and helpful votes, plus the average rating, total count and 1-5 star breakdown. Costs 1 credit.",
+					"Customer reviews for a Sam's Club item, 10 per page: rating, title, text, author, date, verified purchase and helpful votes, plus the average rating, total count and 1-5 star breakdown. Costs 2 credits.",
 				routing: { request: { method: 'POST', url: '/api/v1/samsclub/reviews' } },
 			},
 			{
@@ -93,7 +93,7 @@ export const samsClubOperations: INodeProperties[] = [
 				value: 'search',
 				action: 'Search sams club products',
 				description:
-					"Search Sam's Club: item ID, price, was price and savings, unit price, Instant Savings (amount, end date, limit), rating, review count, stock, pickup, delivery and shipping availability and aisle. Prices and stock are for a nearby club chosen by location, returned in club. Costs 1 credit.",
+					"Search Sam's Club: item ID, price, was price and savings, unit price, Instant Savings (amount, end date, limit), rating, review count, stock, pickup, delivery and shipping availability and aisle. Prices and stock are for a nearby club chosen by location, returned in club. Costs 2 credits.",
 				routing: { request: { method: 'POST', url: '/api/v1/samsclub/search' } },
 			},
 		],
