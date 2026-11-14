@@ -20,7 +20,7 @@ const SELLER_OPS = ['seller'];
 const GRID_OPS = ['search', 'category', 'deals'];
 
 const PRICES =
-	"Prices are in the market's currency, never converted: Switzerland is priced separately in CHF and the euro markets shared one price per product (measured on 2026-11-14 on 4 products). was_price is the crossed-out price shown next to a discount. Maisons du Monde shows no 30-day lowest price and no price history.";
+	"Prices are in the market's currency, never converted, and can differ by market: measured on 2026-11-14 on about 170 discounted sofas, Belgium differed from France on 19 while the other euro markets matched, and Switzerland is priced separately in CHF. Read each market you report. was_price is the crossed-out price shown next to a discount. Maisons du Monde shows no 30-day lowest price and no price history.";
 const GRID =
 	'40 items per page: count, sponsored_count, total (exact), page, total_pages, sort, facets and items with ID, name, collection, brand, URL, image, price, was_price, discount_percent, eco_participation (France), badges, rating, review_count, sold_by (mdm or marketplace), sponsored and condition.';
 const CHARGE = 'Failed upstream calls are not charged; a not-found is charged.';
