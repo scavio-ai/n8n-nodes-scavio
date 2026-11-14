@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 91 resources and 648 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 92 resources and 657 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -33,6 +33,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [IKEA](https://scavio.dev/docs/ikea-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 (Compare Prices by Country: 1 per market) | Search Products, Get Product, Get Reviews, Get Category Products, Get Categories, Get Deals, Get Search Suggestions, Find Stores, Get Store Stock, Get Items, Compare Prices by Country, Get As-Is Offers |
 | [Wayfair](https://scavio.dev/docs/wayfair-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Category Products, Get Sale Events |
 | [Ashley Furniture](https://scavio.dev/docs/ashley-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Search Products and Get Product 1 in Canada, the Philippines, Saudi Arabia and Turkey | Search Products, Get Product, Get Category Products, Get Deal Event Products, Find Stores, Get Store |
+| [Maisons du Monde](https://scavio.dev/docs/maisonsdumonde-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Category Products, Get Deals, Get Reviews, Find Stores, Get Store, Get Store Stock, Get Seller |
 | [Spec's](https://scavio.dev/docs/specs-product?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 5 | Search Products, Get Product, Find Stores |
 | [Lowe's](https://scavio.dev/docs/lowes-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Reviews 1 | Search Products, Get Product, Find Stores, Get Reviews |
 | [Sam's Club](https://scavio.dev/docs/samsclub-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Find Clubs 1 | Search Products, Get Product, Find Clubs, Get Instant Savings, Get Category Products, Get Reviews |
@@ -123,6 +124,19 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.57.0
+
+**New resource: Maisons du Monde, 9 operations, 1 credit each.** Maisons du Monde (furniture and home decor) product data for France, Belgium (French or Dutch), Luxembourg, the Netherlands, Germany, Spain, Italy, Portugal and Switzerland (French, German or Italian): promo price next to the crossed-out price and discount per storefront, whether an item is sold by Maisons du Monde or a marketplace seller, product detail, pooled customer reviews, category grids, Black Friday and Seconde Chance deals, stores, store stock and marketplace sellers. Nothing else changed.
+
+- **Country** picks the market (default France) and, on Belgium and Switzerland, **Language** picks the site language. Prices come in the market's currency (EUR, or CHF in Switzerland), never converted. Measured on 2026-11-14 on 4 products, the euro storefronts shared one price per product and Switzerland was priced separately (round mirror 204172: 74.99, now 37.45 EUR on every euro market; 91.90, now 45.95 CHF).
+- **was_price** is the crossed-out price shown next to a discount. Maisons du Monde shows no 30-day lowest price and no price history, so schedule a workflow to track changes.
+- Search Products, Get Product, Get Category Products, Get Deals and Get Reviews serve all nine markets; Find Stores, Get Store and Get Store Stock serve every market but the Netherlands and Luxembourg; **Get Seller** and the seller filters (Seller Code, Sold by Maisons du Monde Only) serve the marketplace markets France, Germany, Spain and Italy.
+- Grids are 40 per page with the exact total. Search tiles carry sold_by but not the seller name (Get Product has it). The German site does not sort keyword results, so a sorted Search Products on Germany comes back in relevance order with a note.
+- **Get Reviews** returns reviews pooled across every market and shown translated into the request language, with cursor paging and no star filter; a product with no reviews is a charged not-found.
+- Store stock: **Find Stores** (by postcode) for the store ID, then **Get Store Stock** (Maisons du Monde items only). Home delivery is a from-price per product and market (no postcode-exact cost). No search suggestions.
+
+Every Maisons du Monde operation carries a 120-second request timeout. Failed calls are not charged; a not-found is charged.
 
 ## What changed in 0.56.0
 
