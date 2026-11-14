@@ -21,6 +21,7 @@ import { hebOperations, hebFields } from './descriptions/HebDescription';
 import { krogerOperations, krogerFields } from './descriptions/KrogerDescription';
 import { publixOperations, publixFields } from './descriptions/PublixDescription';
 import { ikeaOperations, ikeaFields } from './descriptions/IkeaDescription';
+import { wayfairOperations, wayfairFields } from './descriptions/WayfairDescription';
 import { decathlonOperations, decathlonFields } from './descriptions/DecathlonDescription';
 import { specsOperations, specsFields } from './descriptions/SpecsDescription';
 import { lowesOperations, lowesFields } from './descriptions/LowesDescription';
@@ -123,7 +124,7 @@ export class Scavio implements INodeType {
 		version: 1,
 		subtitle: '={{ $parameter["operation"] + ": " + $parameter["resource"] }}',
 		description:
-			'Real-time structured data from Google, ChatGPT, Gemini, Amazon, Walmart, eBay, Target, Home Depot, Costco, HEB, Kroger, Publix, IKEA, Decathlon, Spec\'s, Lowe\'s, Sam\'s Club, Canadian Tire, Dollar General, Sephora, Ulta Beauty, ALDI, Micro Center, Walgreens, CVS, Whole Foods Market, Harbor Freight, PetSmart, Petco, iHerb, Chewy, Menards, Nordstrom, Nordstrom Rack, Best Buy, TCGplayer, Vinted, Macy\'s, Saks Fifth Avenue, Kohl\'s, JCPenney, Dick\'s Sporting Goods, Foot Locker, Fanatics, Carrefour, Allegro, OLX, Mercado Libre, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Facebook, Pinterest, Threads, Kuaishou, Douyin, Weibo, Twitch, GitHub, Etsy, AliExpress, Zillow, Redfin, Realtor.com, Rightmove, Booking.com, Airbnb, Tripadvisor, Yelp, Indeed, Glassdoor, the App Store, Google Play, SEC EDGAR, Companies House, Legistar, company websites (contact and owner enrichment), G2, Capterra, Trustpilot, ad libraries, and any URL',
+			'Real-time structured data from Google, ChatGPT, Gemini, Amazon, Walmart, eBay, Target, Home Depot, Costco, HEB, Kroger, Publix, IKEA, Wayfair, Decathlon, Spec\'s, Lowe\'s, Sam\'s Club, Canadian Tire, Dollar General, Sephora, Ulta Beauty, ALDI, Micro Center, Walgreens, CVS, Whole Foods Market, Harbor Freight, PetSmart, Petco, iHerb, Chewy, Menards, Nordstrom, Nordstrom Rack, Best Buy, TCGplayer, Vinted, Macy\'s, Saks Fifth Avenue, Kohl\'s, JCPenney, Dick\'s Sporting Goods, Foot Locker, Fanatics, Carrefour, Allegro, OLX, Mercado Libre, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Facebook, Pinterest, Threads, Kuaishou, Douyin, Weibo, Twitch, GitHub, Etsy, AliExpress, Zillow, Redfin, Realtor.com, Rightmove, Booking.com, Airbnb, Tripadvisor, Yelp, Indeed, Glassdoor, the App Store, Google Play, SEC EDGAR, Companies House, Legistar, company websites (contact and owner enrichment), G2, Capterra, Trustpilot, ad libraries, and any URL',
 		defaults: { name: 'Scavio' },
 		inputs: [NodeConnectionTypes.Main],
 		outputs: [NodeConnectionTypes.Main],
@@ -243,6 +244,7 @@ export class Scavio implements INodeType {
 					{ name: 'Vinted', value: 'vinted' },
 					{ name: 'Walgreens', value: 'walgreens' },
 					{ name: 'Walmart', value: 'walmart' },
+					{ name: 'Wayfair', value: 'wayfair' },
 					{ name: 'Weibo (China)', value: 'weibo' },
 					// Whole Foods is the retailer's brand name, not a plural noun, and
 					// `wholeFoods` is frozen once saved in user workflows.
@@ -276,6 +278,8 @@ export class Scavio implements INodeType {
 			...publixFields,
 			...ikeaOperations,
 			...ikeaFields,
+			...wayfairOperations,
+			...wayfairFields,
 			...decathlonOperations,
 			...decathlonFields,
 			...specsOperations,

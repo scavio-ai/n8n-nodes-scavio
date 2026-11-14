@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 89 resources and 638 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 90 resources and 642 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -31,6 +31,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Kroger, QFC and Fred Meyer](https://scavio.dev/docs/kroger-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Search Products and Get Product 2, Get Store Prices 3 | Search Products, Get Product, Get Store Prices, Find Stores, Get Category Products, Get Weekly Digital Deals, Get Coupons, Get Search Suggestions |
 | [Publix](https://scavio.dev/docs/publix-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Category Products, Get Categories, Get Weekly Ad, Get Extra Savings, Get Coupons, Search Savings, Get Order Ahead Menu, Find Stores, Get Search Suggestions |
 | [IKEA](https://scavio.dev/docs/ikea-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 (Compare Prices by Country: 1 per market) | Search Products, Get Product, Get Reviews, Get Category Products, Get Categories, Get Deals, Get Search Suggestions, Find Stores, Get Store Stock, Get Items, Compare Prices by Country, Get As-Is Offers |
+| [Wayfair](https://scavio.dev/docs/wayfair-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Category Products, Get Sale Events |
 | [Spec's](https://scavio.dev/docs/specs-product?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 5 | Search Products, Get Product, Find Stores |
 | [Lowe's](https://scavio.dev/docs/lowes-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Reviews 1 | Search Products, Get Product, Find Stores, Get Reviews |
 | [Sam's Club](https://scavio.dev/docs/samsclub-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Find Clubs, Get Instant Savings, Get Category Products, Get Reviews |
@@ -121,6 +122,17 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.55.0
+
+**New resource: Wayfair, 4 operations, 1 credit each.** Wayfair product data for wayfair.com, wayfair.ca (English or French), wayfair.co.uk and wayfair.ie, plus Wayfair's US sites AllModern, Birch Lane, Joss & Main and Perigold: price, sale price, was price, badge, stock, options, specifications, ratings, reviews, delivery estimates and the current sale events. Nothing else changed.
+
+- **Country** picks the market (United States, Canada, United Kingdom, Ireland); prices come in its currency, never converted. **Language** (Canada only) is English or French. **Site** (United States only) picks AllModern, Birch Lane, Joss & Main or Perigold on Search Products, Get Product and Get Category Products. Wayfair no longer sells in Germany or Austria.
+- **was_price** is Wayfair's strikethrough price: Wayfair's terms state it is the manufacturer's suggested price or the highest price Wayfair offered or sold the item at in the past, and its Sale label means a discount against a price in the previous 90 days. Wayfair shows no price history, so run the workflow on a schedule and store price, sale_price, was_price and badge to build one.
+- **Get Product** returns the 5 reviews the page shows plus the rating histogram and review summary (no review paging). Option choices carry no price: read each with **Option ID**, one call per option. **ZIP / Postal Code** adds delivery estimates (United States and Canada only).
+- **Search Products** returns 30 results per keyword page (category grids 48) and an approximate total. **Brand IDs** takes brand IDs (items[].brand.id), not names. **Get Sale Events** lists the events without expanding them: use On Sale Only, Closeout Only or Open Box Only on a search or category for products.
+
+Every Wayfair operation carries a 120-second request timeout. Failed calls are not charged; an unknown SKU or category is a charged not-found.
 
 ## What changed in 0.54.0
 
