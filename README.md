@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 90 resources and 642 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 91 resources and 648 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -32,6 +32,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Publix](https://scavio.dev/docs/publix-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Category Products, Get Categories, Get Weekly Ad, Get Extra Savings, Get Coupons, Search Savings, Get Order Ahead Menu, Find Stores, Get Search Suggestions |
 | [IKEA](https://scavio.dev/docs/ikea-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 (Compare Prices by Country: 1 per market) | Search Products, Get Product, Get Reviews, Get Category Products, Get Categories, Get Deals, Get Search Suggestions, Find Stores, Get Store Stock, Get Items, Compare Prices by Country, Get As-Is Offers |
 | [Wayfair](https://scavio.dev/docs/wayfair-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Category Products, Get Sale Events |
+| [Ashley Furniture](https://scavio.dev/docs/ashley-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Search Products and Get Product 1 in Canada, the Philippines, Saudi Arabia and Turkey | Search Products, Get Product, Get Category Products, Get Deal Event Products, Find Stores, Get Store |
 | [Spec's](https://scavio.dev/docs/specs-product?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 5 | Search Products, Get Product, Find Stores |
 | [Lowe's](https://scavio.dev/docs/lowes-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Reviews 1 | Search Products, Get Product, Find Stores, Get Reviews |
 | [Sam's Club](https://scavio.dev/docs/samsclub-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Find Clubs 1 | Search Products, Get Product, Find Clubs, Get Instant Savings, Get Category Products, Get Reviews |
@@ -122,6 +123,18 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.56.0
+
+**New resource: Ashley Furniture, 6 operations.** Ashley Furniture product data for ashleyfurniture.com, plus Search Products and Get Product on Ashley's licensed storefronts in Canada, Mexico, the Philippines, Saudi Arabia and Turkey: price next to Ashley's Regular Price, badges, stock and delivery, specifications, ratings, the first 10 reviews, customer Q&A, category grids, deal events and stores. Nothing else changed.
+
+- **Country** (Search Products, Get Product) picks the market; prices come in its currency, never converted. Search Products and Get Product cost 2 credits in the United States and Mexico and 1 credit in Canada, the Philippines, Saudi Arabia and Turkey. Get Category Products, Get Deal Event Products, Find Stores and Get Store are United States only at 2 credits.
+- **regular_price** is Ashley's own Regular Price, which Ashley's terms define as its highest advertised price in store and online, offered to customers using special long-term financing.
+- Ashley prices vary by region and there is no ZIP input: every United States answer returns **priced_for** (zipcode, price_zone), the ZIP and price zone Ashley priced that answer for, so two runs can come back priced for different zones.
+- **Get Product** returns the first 10 reviews the page shows plus the rating histogram, customer photos and Q&A (no review paging). On the licensed storefronts it takes the **Handle** from a search (or the product URL), not an item number; their search returns up to 10 matches (Turkey its first results page) with no paging or sort.
+- Search facets are informational: filter with **Get Category Products**. **Get Deal Event Products** covers Black Friday, Clearance and Hot Buys. **Find Stores** takes a latitude and longitude only (no ZIP or city lookup) and lists stores alphabetically; use **Get Store** for the address, phone and hours.
+
+Every Ashley Furniture operation carries a 120-second request timeout. Failed calls are not charged; an unknown item number, category or store is a charged not-found.
 
 ## What changed in 0.55.0
 
