@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 92 resources and 657 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 93 resources and 669 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -66,6 +66,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Carrefour (France; search and product also Argentina, Romania, Belgium)](https://scavio.dev/docs/carrefour-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Search Products and Get Product 2 on Belgium | Search Products, Get Product, Get Reviews, Get Category Products, Get Promotions, Get Search Suggestions, Find Stores, Get Store Availability, Get Store |
 | [Allegro (Poland, Czechia, Slovakia, Hungary)](https://scavio.dev/docs/allegro-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Offers, Get Offer, Get Product, Get Product Offers, Get Seller Offers, Get Seller Feedback, Get Category Offers |
 | [OLX Europe (Poland, Romania, Portugal, Bulgaria, Ukraine, Kazakhstan, Uzbekistan)](https://scavio.dev/docs/olx-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Ads, Get Ad, Get Seller, Get Seller Ads, Get Category Filters, Get Categories, Search Locations, Get Search Suggestions, Get Similar Ads |
+| [Trendyol (Turkey plus 34 international storefronts)](https://scavio.dev/docs/trendyol-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Category Products, Get Brand Products, Get Reviews, Get Questions, Get Seller, Get Deals, Get Coupons, Get Rankings, Get Search Suggestions, Get Delivery Estimate |
 | [Vinted (27 country sites)](https://scavio.dev/docs/vinted-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Listings, Get Product, Get Seller, Get Seller Listings, Get Seller Feedback, Find Brands, Get Search Suggestions, Get Filter Options, Get Categories |
 | [Mercado Libre (MX, BR, AR, CO)](https://scavio.dev/docs/mercadolibre-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Reviews 1 | Search Listings, Get Product, Get Reviews, Get Questions, Get Best Sellers |
 
@@ -124,6 +125,19 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.58.0
+
+**New resource: Trendyol, 12 operations, 1 credit each.** Trendyol (Turkey's largest online marketplace) and its international storefronts, 35 markets: for one product, the buy-box seller and every other seller's price, seller score, the crossed-out price and Trendyol's lowest-price badge, plus search, category and brand grids, reviews, seller Q&A, seller stores, flash deals, coupons, top-100 rankings, search suggestions and delivery estimates. Nothing else changed.
+
+- **Country** picks the market (default Turkey) and **Language** the language (default the market's first): Turkey (TRY; Turkish, English or Arabic), Germany and Austria (EUR; German), France, Belgium, Croatia, Denmark, Estonia, Finland, Italy, Latvia, Lithuania, Netherlands, Portugal, Slovenia, Spain, Sweden and Luxembourg (EUR; English), Bulgaria, Greece and Slovakia (EUR), Czechia (CZK), Hungary (HUF), Poland (PLN), Romania (RON), Serbia (RSD) and Ukraine (UAH) in the local language or English, Moldova (MDL; Romanian or English), United Arab Emirates (AED; English or Arabic), Saudi Arabia, Qatar, Kuwait, Oman and Bahrain (SAR, QAR, KWD, OMR, BHD; Arabic or English) and Azerbaijan (AZN; Turkish).
+- **Get Deals** and **Get Coupons** are Turkey only; **Get Rankings** is not on the 15 English-language EU storefronts, which have no ranking lists; City ID / District ID on **Get Delivery Estimate** are Turkey only (Istanbul 133, Sisli 54; there is no city list).
+- **Get Product** returns buy_box and other_sellers (each seller's price, score out of 10, badges and lowest-price badge). Trendyol's developer FAQ says the buy box is chosen by algorithm metrics, not price alone, so compare the two. The international storefronts are mostly sold cross-border by Trendyol itself and have their own price lists, not a currency conversion of the Turkish price (measured on 2 products on 2026-11-15).
+- **lowest_price_badge** is the site's "lowest price of the last N days" tag (7, 10, 14, 30 or 90 days): a day count, not a numeric 30-day lowest price. There is no price history, so schedule a workflow to track changes.
+- Grids are 36 per page, at most 138 pages; total stops at 100,000 (total_capped). Sponsored cards are flagged, kept and repeat across pages; favourites and orders come as the site's rounded text.
+- Coupons belong to each seller's listing: the buy box often has none while another seller has some, so set Seller ID from other_sellers. Reviews carry the site's masked author only; no seller e-mail, tax number or address is returned.
+
+Every Trendyol operation carries a 120-second request timeout. Failed calls are not charged; a not-found is charged.
 
 ## What changed in 0.57.0
 
