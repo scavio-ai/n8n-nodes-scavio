@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 94 resources and 675 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 95 resources and 684 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -57,6 +57,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Best Buy](https://scavio.dev/docs/bestbuy-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Category Products 3 on a pcmcat page; Get Deal of the Day 3; Find Stores and Get Search Suggestions 1 | Search Products, Get Product, Get Reviews, Get Category Products, Get Deal of the Day, Find Stores, Get Availability, Get Search Suggestions, Get Prices |
 | [TCGplayer](https://scavio.dev/docs/tcgplayer-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Listings, Get Price History, Get Recent Sales, Get Games, Get Sets, Get Price Guide, Get Search Suggestions, Get Trending Searches, Get Seller, Get Seller Feedback, Get Seller Products |
 | [Nintendo eShop (46 countries)](https://scavio.dev/docs/nintendo-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Games, Get Product, Get Prices, Get Deals, Get Releases, Get DLC |
+| [H&M (47 countries)](https://scavio.dev/docs/hm-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Get Product 2 | Search Products, Get Product, Get Stock, Find Stores, Get Category Products, Get Deals, Get New Arrivals, Get Search Suggestions, Get Production Info |
 | [Macy's](https://scavio.dev/docs/macys-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Reviews, Get Category Products, Get Brand Products, Get Deals, Find Stores, Get Store Availability, Get Search Suggestions |
 | [Saks Fifth Avenue](https://scavio.dev/docs/saks-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Products, Get Product, Get Category Products, Get Brand Products, Get Deals, Find Stores, Get Store Availability, Get Search Suggestions, Get Designers |
 | [Kohl's](https://scavio.dev/docs/kohls-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Find Stores 1 | Search Products, Get Product, Get Category Products, Get Brand Products, Get Deals, Find Stores, Get Store Availability, Get Search Suggestions, Get Coupon Codes |
@@ -126,6 +127,17 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.60.0
+
+**New resource: H&M, 9 operations.** H&M in 47 countries: one article's price, sale price, member price and online stock by size in each H&M country, in that country's currency, plus catalog search, category, sale and new-arrivals grids, search suggestions, stores and where an article is made. Get Product costs 2 credits, every other operation 1. Nothing else changed.
+
+- **Country** picks the H&M country (default United States) and **Language** the language (default the country's first): United States, Canada (English or French), Mexico, United Kingdom, Ireland, Germany, Austria, Switzerland (German, French or Italian), France, Belgium (Dutch or French), Netherlands, Italy, Spain, Portugal, Sweden, Finland (Finnish or Swedish), Denmark, Norway, Poland, Czechia, Slovakia, Hungary, Romania, Bulgaria, Greece, Serbia, Turkey, Ukraine, Israel, Hong Kong, Macau and Taiwan (Chinese or English), Japan, South Korea, India, Malaysia, the Philippines, Singapore, Vietnam and Australia, plus Croatia, Cyprus, Estonia, Latvia, Lithuania, Luxembourg and Slovenia on H&M's shared English EUR store. **Get Product** is not served on Macau, Taiwan or the shared EU store countries (use Search Products or Get Stock there); **Find Stores** is not served on Macau (H&M lists no stores there). Countries where H&M runs a separate site or has no online store are not served.
+- Article codes are global: the same 10-digit code in every country, so one code compares a price across countries with one call per country. price is what a non-member pays now; member_price is H&M's member price as shown to signed-in members; prior_price is the earlier price H&M shows next to an EU markdown.
+- **Get Stock** is online stock per size, not store stock (H&M publishes no per-size store stock; Search Products with a Store Code lists a store's assortment). **Get Product** carries the rating and the latest reviews H&M shows (up to 10, with fit feedback): there is no full review list.
+- Category IDs are the same in every country (ladies_dresses, men_jeans, ...). H&M runs sales in seasons, so **Get Deals** may return an empty grid between sales. No price history (schedule a workflow to track changes), no checkout or member-only cart prices; H&M's sibling brands are not covered.
+
+Every H&M operation carries a 120-second request timeout (Get Product can take up to about a minute). Failed calls are not charged; a not-found is charged.
 
 ## What changed in 0.59.0
 
