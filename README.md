@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 93 resources and 669 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 94 resources and 675 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -56,6 +56,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Nordstrom Rack](https://scavio.dev/docs/nordstromrack-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 5; Get Availability and Get Reviews 10 | Search Products, Get Product, Get Reviews, Get Category Products, Get Brand Products, Find Stores, Get Availability, Get Search Suggestions |
 | [Best Buy](https://scavio.dev/docs/bestbuy-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Category Products 3 on a pcmcat page; Get Deal of the Day 3; Find Stores and Get Search Suggestions 1 | Search Products, Get Product, Get Reviews, Get Category Products, Get Deal of the Day, Find Stores, Get Availability, Get Search Suggestions, Get Prices |
 | [TCGplayer](https://scavio.dev/docs/tcgplayer-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Listings, Get Price History, Get Recent Sales, Get Games, Get Sets, Get Price Guide, Get Search Suggestions, Get Trending Searches, Get Seller, Get Seller Feedback, Get Seller Products |
+| [Nintendo eShop (46 countries)](https://scavio.dev/docs/nintendo-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Games, Get Product, Get Prices, Get Deals, Get Releases, Get DLC |
 | [Macy's](https://scavio.dev/docs/macys-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Reviews, Get Category Products, Get Brand Products, Get Deals, Find Stores, Get Store Availability, Get Search Suggestions |
 | [Saks Fifth Avenue](https://scavio.dev/docs/saks-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Products, Get Product, Get Category Products, Get Brand Products, Get Deals, Find Stores, Get Store Availability, Get Search Suggestions, Get Designers |
 | [Kohl's](https://scavio.dev/docs/kohls-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Find Stores 1 | Search Products, Get Product, Get Category Products, Get Brand Products, Get Deals, Find Stores, Get Store Availability, Get Search Suggestions, Get Coupon Codes |
@@ -125,6 +126,18 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.59.0
+
+**New resource: Nintendo, 6 operations, 1 credit each.** The Nintendo eShop and My Nintendo Store in 46 countries: one game's regular price, sale price and sale end date in each eShop country, in that country's currency, plus catalog search, product detail, deals, new and upcoming releases and a game's DLC. Nothing else changed.
+
+- **Country** picks the eShop (default United States) and **Language** the language (default the country's first). Search Games, Get Product, Get Deals, Get Releases and Get DLC serve 42 countries: the Americas (United States, Canada in English or French, Mexico, Brazil, Argentina, Chile, Colombia, Peru), Europe in the country's language (United Kingdom, Ireland, Germany, Austria, Switzerland in German, French or Italian, France, Belgium in French or Dutch, Netherlands, Luxembourg, Italy, Spain, Portugal), Australia, New Zealand, South Africa, Poland, Czechia, Sweden, Norway, Denmark, Finland, Slovakia, Hungary, Romania, Bulgaria, Greece, Croatia, Slovenia, Estonia, Latvia, Lithuania, Malta and Cyprus (the English European catalog with that country's own prices) and Japan. **Get Prices** also serves South Korea, Hong Kong, Taiwan and Israel. The Philippines, Russia and countries with no eShop data are not served.
+- Item IDs (nsuid) are per eShop region: Americas, Europe (EU / EFTA, UK, Australia, New Zealand, South Africa, Israel), Japan, Korea, and Hong Kong + Taiwan. An ID from one region is not_found in another and there is no cross-region title mapping: look the game up with Search Games or Get Product in that region, then run **Get Prices** for any country of the region (up to 50 IDs). Americas search tiles carry a slug and no nsuid: read Get Product by Store Slug.
+- Prices are always the country's eShop price in its currency; sale_start and sale_end are the eShop's own sale window. Nintendo shows no price history or historical low, so schedule a workflow on Get Prices to build one.
+- Americas **Get Deals** returns Nintendo's featured sale pages, not every discounted game; Europe and Japan return every game on sale. Americas search sorts by relevance or newest only and takes no filters; the Americas release lists are one page. An unsupported sort or filter answers 400.
+- No user reviews (Nintendo's stores have none; age ratings only), no best-seller charts and no autocomplete.
+
+Every Nintendo operation carries a 120-second request timeout. Failed calls are not charged; a not-found is charged.
 
 ## What changed in 0.58.0
 
