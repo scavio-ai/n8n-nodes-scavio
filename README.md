@@ -241,7 +241,7 @@ Every operation carries a 120-second request timeout. Failed calls are not charg
 **New resource: Company (Enrich), 1 operation.** Find a company's contact details and its owner from its website or a Google Maps place ID. Nothing else changed.
 
 - **Enrich** takes **Website** (a bare domain works; social profile URLs are rejected) or **Place ID** (from the Google resource's **Maps Search**, `local_results[].place_id`). Each field is optional on its own, but at least one is required: an empty call is a free 400. If both are set, Website is the site that gets read.
-- Returns `data.company` (name, website, domain, emails, phones as digits, socials, contact_page, address, place_id), `data.owner` (name, title, source_url, email and email_status, or null when no page names one). `owner.email_status` is `published` when an address on the site matches the owner's name, else `not_found` with email null.
+- Returns `data.company` (name, website, domain, emails, phones in E.164 when they validate, socials, contact_page, address, place_id), `data.owner` (name, title, source_url, email and email_status, or null when no page names one). `owner.email_status` is `published` when an address on the site matches the owner's name, else `not_found` with email null.
 - 10 credits from a website, 20 from a place ID. A place ID whose listing has no readable website returns the listing data for 1 credit. A website that cannot be reached (502) is not charged.
 - Calls usually take 10-45 seconds, up to about 2 minutes on a slow site, so the operation carries a 180-second request timeout.
 
