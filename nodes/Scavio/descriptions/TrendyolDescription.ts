@@ -34,7 +34,7 @@ const PRODUCT_REF_OPS = ['product', 'reviews', 'questions', 'coupons', 'delivery
 const ALL_OPS = [...ALL_MARKET_OPS, ...RANKING_OPS, 'deals', 'coupons'];
 
 const PRICES =
-	"Prices are in the market's currency. Each international storefront has its own price list (mostly sold cross-border by Trendyol itself), not a currency conversion of the Turkish price. original_price is the crossed-out price; lowest_price_badge is the site's 'lowest price of the last N days' tag (a day count only). Trendyol publishes no numeric 30-day lowest price and no price history.";
+	"Prices are in the market's currency. Each international storefront has its own price list, not a currency conversion of the Turkish price; items there are sold by Trendyol itself or by other sellers (see buy_box and other_sellers on Get Product). original_price is the crossed-out price; lowest_price_badge is the site's 'lowest price of the last N days' tag (a day count only). Trendyol publishes no numeric 30-day lowest price and no price history.";
 const GRID =
 	"36 items per page (at most 138 pages): count (organic), sponsored_count, total (capped at 100000: total_capped), page, total_pages, sort and items with content_id, listing_id, name, brand, category, URL, images, price, original_price, discount_percent, rrp, plus_price, lowest_price_badge, badges, rating, review_count, favourites and orders (the site's rounded text), seller (ID) and sponsored (flagged, kept, repeating across pages).";
 const CHARGE = 'Failed upstream calls are not charged; a not-found is charged.';
