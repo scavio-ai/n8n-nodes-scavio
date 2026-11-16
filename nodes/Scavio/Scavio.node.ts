@@ -67,6 +67,7 @@ import { hmOperations, hmFields } from './descriptions/HmDescription';
 import { zaraOperations, zaraFields } from './descriptions/ZaraDescription';
 import { asosOperations, asosFields } from './descriptions/AsosDescription';
 import { vintedOperations, vintedFields } from './descriptions/VintedDescription';
+import { mercariOperations, mercariFields } from './descriptions/MercariDescription';
 import { macysOperations, macysFields } from './descriptions/MacysDescription';
 import { saksOperations, saksFields } from './descriptions/SaksDescription';
 import { kohlsOperations, kohlsFields } from './descriptions/KohlsDescription';
@@ -134,7 +135,7 @@ export class Scavio implements INodeType {
 		version: 1,
 		subtitle: '={{ $parameter["operation"] + ": " + $parameter["resource"] }}',
 		description:
-			'Real-time structured data from Google, ChatGPT, Gemini, Amazon, Walmart, eBay, Target, Home Depot, Costco, HEB, Kroger, Publix, IKEA, Wayfair, Ashley Furniture, Maisons du Monde, Decathlon, Spec\'s, Lowe\'s, Sam\'s Club, Canadian Tire, Dollar General, Sephora, Ulta Beauty, ALDI, Micro Center, Walgreens, CVS, Whole Foods Market, Harbor Freight, PetSmart, Petco, iHerb, Chewy, Menards, Nordstrom, Nordstrom Rack, Best Buy, TCGplayer, Nintendo eShop, H&M, Zara, ASOS, Vinted, Macy\'s, Saks Fifth Avenue, Kohl\'s, JCPenney, Dick\'s Sporting Goods, Foot Locker, Fanatics, Carrefour, Allegro, OLX, Trendyol, Mercado Libre, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Facebook, Pinterest, Threads, Kuaishou, Douyin, Weibo, Twitch, GitHub, Etsy, AliExpress, Zillow, Redfin, Realtor.com, Rightmove, Booking.com, Airbnb, Tripadvisor, Yelp, Indeed, Glassdoor, the App Store, Google Play, SEC EDGAR, Companies House, Legistar, company websites (contact and owner enrichment), G2, Capterra, Trustpilot, ad libraries, and any URL',
+			'Real-time structured data from Google, ChatGPT, Gemini, Amazon, Walmart, eBay, Target, Home Depot, Costco, HEB, Kroger, Publix, IKEA, Wayfair, Ashley Furniture, Maisons du Monde, Decathlon, Spec\'s, Lowe\'s, Sam\'s Club, Canadian Tire, Dollar General, Sephora, Ulta Beauty, ALDI, Micro Center, Walgreens, CVS, Whole Foods Market, Harbor Freight, PetSmart, Petco, iHerb, Chewy, Menards, Nordstrom, Nordstrom Rack, Best Buy, TCGplayer, Nintendo eShop, H&M, Zara, ASOS, Vinted, Mercari, Macy\'s, Saks Fifth Avenue, Kohl\'s, JCPenney, Dick\'s Sporting Goods, Foot Locker, Fanatics, Carrefour, Allegro, OLX, Trendyol, Mercado Libre, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Facebook, Pinterest, Threads, Kuaishou, Douyin, Weibo, Twitch, GitHub, Etsy, AliExpress, Zillow, Redfin, Realtor.com, Rightmove, Booking.com, Airbnb, Tripadvisor, Yelp, Indeed, Glassdoor, the App Store, Google Play, SEC EDGAR, Companies House, Legistar, company websites (contact and owner enrichment), G2, Capterra, Trustpilot, ad libraries, and any URL',
 		defaults: { name: 'Scavio' },
 		inputs: [NodeConnectionTypes.Main],
 		outputs: [NodeConnectionTypes.Main],
@@ -225,6 +226,7 @@ export class Scavio implements INodeType {
 					// frozen once saved in user workflows.
 					{ name: 'Menards', value: 'menards' },
 					{ name: 'Mercado Libre', value: 'mercadoLibre' },
+					{ name: 'Mercari', value: 'mercari' },
 					{ name: 'Meta Ad Library', value: 'metaAds' },
 					{ name: 'Micro Center', value: 'microCenter' },
 					{ name: 'Nintendo', value: 'nintendo' },
@@ -359,6 +361,8 @@ export class Scavio implements INodeType {
 			...asosFields,
 			...vintedOperations,
 			...vintedFields,
+			...mercariOperations,
+			...mercariFields,
 			...macysOperations,
 			...macysFields,
 			...saksOperations,

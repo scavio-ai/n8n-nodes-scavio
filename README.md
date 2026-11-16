@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 97 resources and 707 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 98 resources and 718 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -72,6 +72,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [OLX Europe (Poland, Romania, Portugal, Bulgaria, Ukraine, Kazakhstan, Uzbekistan)](https://scavio.dev/docs/olx-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Ads, Get Ad, Get Seller, Get Seller Ads, Get Category Filters, Get Categories, Search Locations, Get Search Suggestions, Get Similar Ads |
 | [Trendyol (Turkey plus 34 international storefronts)](https://scavio.dev/docs/trendyol-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Category Products, Get Brand Products, Get Reviews, Get Questions, Get Seller, Get Deals, Get Coupons, Get Rankings, Get Search Suggestions, Get Delivery Estimate |
 | [Vinted (27 country sites)](https://scavio.dev/docs/vinted-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Listings, Get Product, Get Seller, Get Seller Listings, Get Seller Feedback, Find Brands, Get Search Suggestions, Get Filter Options, Get Categories |
+| [Mercari (US and Japan)](https://scavio.dev/docs/mercari-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Listings, Get Item, Get Category Listings, Get Categories, Get Brands, Get Brand Listings, Get Deals (US), Get Trending (US), Get Seller (Japan), Get Seller Reviews (Japan), Get Shop (Japan) |
 | [Mercado Libre (MX, BR, AR, CO)](https://scavio.dev/docs/mercadolibre-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Reviews 1 | Search Listings, Get Product, Get Reviews, Get Questions, Get Best Sellers |
 
 ### Social and video
@@ -129,6 +130,17 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.63.0
+
+**New resource: Mercari, 11 operations.** Mercari US (mercari.com, USD, English) and Mercari Japan (jp.mercari.com, JPY, Japanese): Mercari sold prices and on-sale listings for the same query, item detail with price drops and sold time, category and brand listings, the category tree and brand list, US deals and trending, and Mercari Japan seller profiles, seller reviews and Mercari Shops shops. Every operation costs 1 credit. Nothing else changed.
+
+- **Country** picks the market: United States (default) or Japan. **Search Listings**, **Get Item**, **Get Category Listings**, **Get Categories**, **Get Brands** and **Get Brand Listings** serve both; **Get Deals** and **Get Trending** are US only; **Get Seller**, **Get Seller Reviews** and **Get Shop** are Japan only. Mercari UK has closed. Item, category, brand and seller IDs are per market: an ID from the US is not valid on Japan.
+- **Status** Sold returns sold listings (sold and in transit) with their prices, so asking and sold prices for the same query come from Search Listings. Lists carry no likes and no sold time; **Get Item** has both (sold_at), and a sold item keeps its full data. Prices are numbers, US dollars on us and whole yen on jp; original_price is the seller's earlier price when above price, with discount_percent against it.
+- Search depth: US 50 per page up to page 20 (1,000 results), Japan 120 per page up to page 91. On Japan, Newest follows Mercari Japan's own order (relisted items move up). Japan data is in Japanese as sellers wrote it (not translated), and Japan calls are slower (search typically 30-60 seconds).
+- **Get Seller** returns a Mercari Japan seller's good / normal / bad ratings and first 30 listings; **Get Seller Reviews** the most recent 100 reviews (no reviewer names); **Get Shop** the Mercari Shops shop profile (for its products use Search Listings with Mercari Shops Only, or Get Item). Not available: US seller profiles and reviews, US search suggestions, Japanese trending, price-drop history.
+
+Every Mercari operation carries a 240-second request timeout. Failed calls are not charged; a not-found is charged.
 
 ## What changed in 0.62.0
 
