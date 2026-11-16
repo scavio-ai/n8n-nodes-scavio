@@ -65,6 +65,7 @@ import { tcgplayerOperations, tcgplayerFields } from './descriptions/TcgplayerDe
 import { nintendoOperations, nintendoFields } from './descriptions/NintendoDescription';
 import { hmOperations, hmFields } from './descriptions/HmDescription';
 import { zaraOperations, zaraFields } from './descriptions/ZaraDescription';
+import { asosOperations, asosFields } from './descriptions/AsosDescription';
 import { vintedOperations, vintedFields } from './descriptions/VintedDescription';
 import { macysOperations, macysFields } from './descriptions/MacysDescription';
 import { saksOperations, saksFields } from './descriptions/SaksDescription';
@@ -133,7 +134,7 @@ export class Scavio implements INodeType {
 		version: 1,
 		subtitle: '={{ $parameter["operation"] + ": " + $parameter["resource"] }}',
 		description:
-			'Real-time structured data from Google, ChatGPT, Gemini, Amazon, Walmart, eBay, Target, Home Depot, Costco, HEB, Kroger, Publix, IKEA, Wayfair, Ashley Furniture, Maisons du Monde, Decathlon, Spec\'s, Lowe\'s, Sam\'s Club, Canadian Tire, Dollar General, Sephora, Ulta Beauty, ALDI, Micro Center, Walgreens, CVS, Whole Foods Market, Harbor Freight, PetSmart, Petco, iHerb, Chewy, Menards, Nordstrom, Nordstrom Rack, Best Buy, TCGplayer, Nintendo eShop, H&M, Zara, Vinted, Macy\'s, Saks Fifth Avenue, Kohl\'s, JCPenney, Dick\'s Sporting Goods, Foot Locker, Fanatics, Carrefour, Allegro, OLX, Trendyol, Mercado Libre, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Facebook, Pinterest, Threads, Kuaishou, Douyin, Weibo, Twitch, GitHub, Etsy, AliExpress, Zillow, Redfin, Realtor.com, Rightmove, Booking.com, Airbnb, Tripadvisor, Yelp, Indeed, Glassdoor, the App Store, Google Play, SEC EDGAR, Companies House, Legistar, company websites (contact and owner enrichment), G2, Capterra, Trustpilot, ad libraries, and any URL',
+			'Real-time structured data from Google, ChatGPT, Gemini, Amazon, Walmart, eBay, Target, Home Depot, Costco, HEB, Kroger, Publix, IKEA, Wayfair, Ashley Furniture, Maisons du Monde, Decathlon, Spec\'s, Lowe\'s, Sam\'s Club, Canadian Tire, Dollar General, Sephora, Ulta Beauty, ALDI, Micro Center, Walgreens, CVS, Whole Foods Market, Harbor Freight, PetSmart, Petco, iHerb, Chewy, Menards, Nordstrom, Nordstrom Rack, Best Buy, TCGplayer, Nintendo eShop, H&M, Zara, ASOS, Vinted, Macy\'s, Saks Fifth Avenue, Kohl\'s, JCPenney, Dick\'s Sporting Goods, Foot Locker, Fanatics, Carrefour, Allegro, OLX, Trendyol, Mercado Libre, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Facebook, Pinterest, Threads, Kuaishou, Douyin, Weibo, Twitch, GitHub, Etsy, AliExpress, Zillow, Redfin, Realtor.com, Rightmove, Booking.com, Airbnb, Tripadvisor, Yelp, Indeed, Glassdoor, the App Store, Google Play, SEC EDGAR, Companies House, Legistar, company websites (contact and owner enrichment), G2, Capterra, Trustpilot, ad libraries, and any URL',
 		defaults: { name: 'Scavio' },
 		inputs: [NodeConnectionTypes.Main],
 		outputs: [NodeConnectionTypes.Main],
@@ -164,6 +165,11 @@ export class Scavio implements INodeType {
 					{ name: 'Amazon', value: 'amazon' },
 					{ name: 'Apple App Store', value: 'appStore' },
 					{ name: 'Ashley Furniture', value: 'ashley' },
+					// ASOS and CVS are retailers' brand names, not plural nouns, and their
+					// values are frozen once saved in user workflows. The rule reports only
+					// the first plural-looking option in this list, so the disable lives here.
+					// eslint-disable-next-line n8n-nodes-base/node-param-resource-with-plural-option
+					{ name: 'ASOS', value: 'asos' },
 					{ name: 'Best Buy', value: 'bestBuy' },
 					{ name: 'Booking.com', value: 'booking' },
 					{ name: 'Canadian Tire', value: 'canadianTire' },
@@ -174,10 +180,6 @@ export class Scavio implements INodeType {
 					{ name: 'Companies House (UK)', value: 'companiesHouse' },
 					{ name: 'Company (Enrich)', value: 'company' },
 					{ name: 'Costco', value: 'costco' },
-					// CVS is the retailer's brand name, not a plural noun, and `cvs` is
-					// frozen once saved in user workflows. The rule reports only the first
-					// plural-looking option in this list, so the disable lives here.
-					// eslint-disable-next-line n8n-nodes-base/node-param-resource-with-plural-option
 					{ name: 'CVS', value: 'cvs' },
 					{ name: 'Decathlon', value: 'decathlon' },
 					{ name: "Dick's Sporting Goods", value: 'dicks' },
@@ -353,6 +355,8 @@ export class Scavio implements INodeType {
 			...hmFields,
 			...zaraOperations,
 			...zaraFields,
+			...asosOperations,
+			...asosFields,
 			...vintedOperations,
 			...vintedFields,
 			...macysOperations,

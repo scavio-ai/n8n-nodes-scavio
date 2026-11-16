@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 96 resources and 696 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 97 resources and 707 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -59,6 +59,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Nintendo eShop (46 countries)](https://scavio.dev/docs/nintendo-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Games, Get Product, Get Prices, Get Deals, Get Releases, Get DLC |
 | [H&M (47 countries)](https://scavio.dev/docs/hm-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Get Product 2 | Search Products, Get Product, Get Stock, Find Stores, Get Category Products, Get Deals, Get New Arrivals, Get Search Suggestions, Get Production Info |
 | [Zara (102 storefronts)](https://scavio.dev/docs/zara-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Product 2 to 6; Get Store Stock 4 by a point; Get Deals and Get New Arrivals 4; Get Prices by Country 2 per country; Get Search Suggestions 4 with the English fallback; China 1 | Search Products, Get Product, Get Materials, Get Stock, Find Stores, Get Store Stock, Get Categories, Get Category Products, Get Deals, Get New Arrivals, Get Prices by Country, Get Search Suggestions |
+| [ASOS (235 countries)](https://scavio.dev/docs/asos-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Stock, Get Reviews, Get Search Suggestions, Get Category Products, Get Categories, Get Brands, Get Deals, Get New Arrivals, Get Markets |
 | [Macy's](https://scavio.dev/docs/macys-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Reviews, Get Category Products, Get Brand Products, Get Deals, Find Stores, Get Store Availability, Get Search Suggestions |
 | [Saks Fifth Avenue](https://scavio.dev/docs/saks-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Products, Get Product, Get Category Products, Get Brand Products, Get Deals, Find Stores, Get Store Availability, Get Search Suggestions, Get Designers |
 | [Kohl's](https://scavio.dev/docs/kohls-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Find Stores 1 | Search Products, Get Product, Get Category Products, Get Brand Products, Get Deals, Find Stores, Get Store Availability, Get Search Suggestions, Get Coupon Codes |
@@ -128,6 +129,17 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.62.0
+
+**New resource: ASOS, 11 operations.** ASOS in 235 countries: ASOS prices by country and currency (one product's price, previous price, RRP, sale flag and online stock by size in each ASOS store and currency), catalogue search, product detail, online stock for up to 100 products per call, reviews per store with ASOS's AI summary, search suggestions, the navigation tree, category and brand pages, the A-Z brand list, the SALE and NEW IN lists, and the markets table. Every operation costs 1 credit. Nothing else changed.
+
+- **Country** picks the country (default United Kingdom; 235 in all) and **Currency** the currency (default ASOS's own default for the country; any currency ASOS offers the country, 245 country-currency combinations, e.g. United Arab Emirates AED or GBP, Israel ILS, GBP or USD, Japan USD or GBP). 13 ASOS stores serve them: gb, us, fr, de, es, it, au, dk, nl, pl and se have a site of their own in their own language; ASOS's European store (33 countries) and international store (170 countries) serve the rest in English. **Get Search Suggestions** is not served on Poland (ASOS's Polish store answers no suggestions). Russia and Belarus are not served (ASOS is not selling there).
+- Product and category IDs are the same on every store, so one product ID compares a price across stores and currencies. Prices are set per store and currency, not per country inside a store, and come back as numbers in the requested currency, never converted: price, previous_price (ASOS's "was"), rrp, lowest_price_30d where ASOS shows it, is_marked_down, is_outlet, discount_percent and discount_basis.
+- **Get Stock** is online stock per variant (ASOS has no physical stores) and carries variant IDs, not size names: **Get Product** maps them to sizes. **Get Reviews** is per store (the European and international stores share one pool), with fit and quality averages and ASOS's labelled AI summary; no reviewer names.
+- **Search Products** serves at most 2,088 results whatever total says (max_reachable); **Get Category Products**, **Get Deals** and **Get New Arrivals** page through everything. The search **Brand Facet IDs** filter takes brand facet IDs from a search response; **Get Brands** returns category IDs to pass to **Get Category Products**. No outlet (ASOS's outlet categories are empty), no promo codes (shown only to signed-in shoppers), no price history (schedule a workflow to track changes).
+
+Every ASOS operation carries a 120-second request timeout. Failed calls are not charged; a not-found is charged.
 
 ## What changed in 0.61.0
 
