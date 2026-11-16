@@ -17,14 +17,15 @@ const request = (url: string) => ({
 const BOTH_OPS = ['search', 'item', 'category', 'categories', 'brands', 'brand'];
 
 const ITEM =
-	'items with item_id, title, URL, price, original_price, discount_percent, currency, status (on_sale, trading = sold and in transit, sold), condition, brand, category_id, size, thumbnail, seller_id, free_shipping and created_at (Japan adds is_shop, shop_id, is_auction), plus total, page, page_size, max_page and has_more. Lists carry no likes and no sold time: Get Item has both';
+	'items with item_id, title, URL, price, original_price, discount_percent, currency, status (on_sale, trading = sold and in transit, sold), condition, brand, category_id, size, thumbnail, seller_id, free_shipping (US: set only when you filter by Shipping; Japan: null on Mercari Shops rows) and created_at (Japan adds is_shop, shop_id, is_auction), plus total, page, page_size, max_page and has_more. Lists carry no likes and no sold time: Get Item has both';
 const PRICES =
-	"Prices are numbers: US dollars on us, whole yen on jp; original_price is the seller's earlier price when above price, with discount_percent against it.";
+	"Prices are numbers: US dollars on us, whole yen on jp; original_price is the seller's earlier price when above price, with discount_percent against it (never set on Japan results).";
 const JP =
-	'Japan data is in Japanese as sellers wrote it (not translated), and Japan calls are slower (search typically 30-60 seconds).';
+	'Japan data is in Japanese as sellers wrote it (not translated), and Japan calls are slower (typically 10-20 seconds, up to about a minute).';
 const IDS =
 	'Item, category, brand and seller IDs are per market: an ID from the US is not valid on Japan.';
-const DEPTH = 'US 50 per page up to page 20 (1,000 results), Japan 120 per page up to page 91.';
+const DEPTH =
+	'US 50 per page up to page 20 (later pages can repeat earlier items: dedupe by item_id), Japan 120 per page up to page 91. total stops at 10,000 on US and 15,000 on Japan (that many or more).';
 const CHARGE = 'Failed upstream calls are not charged; a not-found is charged.';
 
 const statusOption = {
@@ -56,7 +57,7 @@ const sortOption = {
 		{ name: 'Relevance', value: 'relevance' },
 	],
 	description:
-		"Result order. On Japan, Newest follows Mercari Japan's own order (relisted items move up).",
+		"Result order. A US sold search comes most recently sold first under Relevance too (price sorts apply). On Japan, Newest follows Mercari Japan's own order (relisted items move up).",
 	routing: { request: { body: { sort: '={{ $value === "relevance" ? undefined : $value }}' } } },
 };
 
@@ -117,7 +118,7 @@ const filterOptions = [
 			{ name: 'Buyer Pays', value: 'buyer_pays' },
 			{ name: 'Free (Seller Pays)', value: 'free' },
 		],
-		description: 'Who pays shipping',
+		description: 'Who pays shipping. On US, result rows carry free_shipping only when this is set.',
 		routing: { request: { body: { shipping: '={{ $value || undefined }}' } } },
 	},
 	{
@@ -223,7 +224,7 @@ export const mercariOperations: INodeProperties[] = [
 				name: 'Get Item',
 				value: 'item',
 				action: 'Get a mercari item',
-				description: `One listing by item ID or link: description, price, original_price, discount_percent, status, sold_at (when it sold), condition, category path, size, color, shipping (payer, method, fee, days to ship, ships from), likes, photos and the seller summary (US sold_count, Japan good / normal / bad ratings). A sold listing keeps its full data. Japan adds the full public comment list (text, date, is_seller; no commenter names) and Mercari Shops products. ${PRICES} ${JP} ${IDS} US and Japan. ${CHARGE} Costs 1 credit.`,
+				description: `One listing by item ID or link: description, price, original_price, discount_percent (US also price_with_buyer_fee: price plus buyer fees, plus shipping when the buyer pays it), status, sold_at (when it sold, if Mercari shows it), condition, category path, size, color, shipping (payer, method, fee: the shipping label cost paid by payer, days to ship, ships from), likes, photos and the seller summary (US sold_count, Japan good / normal / bad ratings). A sold listing keeps its full data. Japan adds the full public comment list (text, date, is_seller; no commenter names) and Mercari Shops products. ${PRICES} ${JP} ${IDS} US and Japan. ${CHARGE} Costs 1 credit.`,
 				routing: request('/api/v1/mercari/item'),
 			},
 			{
@@ -258,7 +259,7 @@ export const mercariOperations: INodeProperties[] = [
 				name: 'Search Listings',
 				value: 'search',
 				action: 'Search mercari listings',
-				description: `Search listings by keyword: ${ITEM}. Status Sold returns sold listings (sold and in transit) with their prices, so asking prices and sold prices for the same query come from one operation. Depth: ${DEPTH} ${PRICES} ${JP} ${IDS} US and Japan. ${CHARGE} Costs 1 credit.`,
+				description: `Search listings by keyword: ${ITEM}. Status Sold returns sold listings (sold and in transit) with their prices, so asking prices and sold prices for the same query come from one operation. On US, Mercari orders sold results most recently sold first whatever Relevance asks (price sorts apply) and matches the keyword more loosely than on-sale results: check titles before comparing prices. Depth: ${DEPTH} ${PRICES} ${JP} ${IDS} US and Japan. ${CHARGE} Costs 1 credit.`,
 				routing: request('/api/v1/mercari/search'),
 			},
 		],
