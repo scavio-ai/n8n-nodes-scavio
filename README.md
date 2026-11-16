@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 95 resources and 684 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 96 resources and 696 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -58,6 +58,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [TCGplayer](https://scavio.dev/docs/tcgplayer-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Listings, Get Price History, Get Recent Sales, Get Games, Get Sets, Get Price Guide, Get Search Suggestions, Get Trending Searches, Get Seller, Get Seller Feedback, Get Seller Products |
 | [Nintendo eShop (46 countries)](https://scavio.dev/docs/nintendo-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Games, Get Product, Get Prices, Get Deals, Get Releases, Get DLC |
 | [H&M (47 countries)](https://scavio.dev/docs/hm-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Get Product 2 | Search Products, Get Product, Get Stock, Find Stores, Get Category Products, Get Deals, Get New Arrivals, Get Search Suggestions, Get Production Info |
+| [Zara (102 storefronts)](https://scavio.dev/docs/zara-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Product 2 to 6; Get Store Stock 4 by a point; Get Deals and Get New Arrivals 4; Get Prices by Country 2 per country; Get Search Suggestions 4 with the English fallback; China 1 | Search Products, Get Product, Get Materials, Get Stock, Find Stores, Get Store Stock, Get Categories, Get Category Products, Get Deals, Get New Arrivals, Get Prices by Country, Get Search Suggestions |
 | [Macy's](https://scavio.dev/docs/macys-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Reviews, Get Category Products, Get Brand Products, Get Deals, Find Stores, Get Store Availability, Get Search Suggestions |
 | [Saks Fifth Avenue](https://scavio.dev/docs/saks-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Products, Get Product, Get Category Products, Get Brand Products, Get Deals, Find Stores, Get Store Availability, Get Search Suggestions, Get Designers |
 | [Kohl's](https://scavio.dev/docs/kohls-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Find Stores 1 | Search Products, Get Product, Get Category Products, Get Brand Products, Get Deals, Find Stores, Get Store Availability, Get Search Suggestions, Get Coupon Codes |
@@ -127,6 +128,17 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.61.0
+
+**New resource: Zara, 12 operations.** Zara in 102 storefronts: Zara prices by country (one reference's price, sale price and availability in up to 10 countries per call, each in that country's own currency), stock by size online and in physical stores, catalogue search, product detail, materials and origin, the category tree and category lists, the SPECIAL PRICES and new-arrivals lists, stores and search suggestions. Nothing else changed.
+
+- Every request is billed what it spent (credits_used in the response): 2 credits per call for Search Products, Get Materials, Get Stock, Find Stores, Get Categories and Get Category Products; Get Product 2 (4 by reference or when the slug is another country's or language's, 6 for both); Get Store Stock 2 by store IDs, 4 by a point; Get Deals 4 (2 when the country has no special-prices category); Get New Arrivals 4; Get Prices by Country 2 per country that answered; Get Search Suggestions 2 (4 when the English fallback runs). China, Zara's separate site, costs 1 credit per call.
+- **Country** picks the Zara storefront (default United States; 102 in all, each in its own currency) and **Language** the language (default Zara's own default for the country; each storefront serves Zara's own languages for it, usually the local language and English). **Find Stores** and **Get Store Stock** are not served on Angola or Iraq (Zara lists no stores there), **Get New Arrivals** not on Algeria, **Get Search Suggestions** not on Andorra, Albania, Armenia, Azerbaijan, Bosnia and Herzegovina, Algeria, North Macedonia, Macau, Uzbekistan or Kosovo. Belarus and the countries Zara serves only from its worldwide store are not served.
+- Product IDs (one per colour) and references are global on Zara's international site, so **Get Prices by Country** compares one reference across countries in one call; China runs its own IDs, so use the reference there. Prices are numbers in the country's own currency, never converted; old_price is set only on a markdown.
+- **Get Stock** is online stock per size; **Get Store Stock** is units per size in physical stores (sales floor and stockroom). Zara runs seasonal sales and lists special prices between them: **Get Deals** answers an empty list (not an error) where a country has no special-prices category for the section. Category IDs are shared across the northern-hemisphere catalogue; Australia, South Africa and Brazil run their own. No reviews (Zara shows none), no price history (schedule a workflow to track changes); Inditex's other brands are not covered.
+
+Every Zara operation carries a 120-second request timeout. Failed calls are not charged; a not-found is charged.
 
 ## What changed in 0.60.0
 
