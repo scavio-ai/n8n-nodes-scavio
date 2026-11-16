@@ -45,7 +45,7 @@ const PRODUCT_ID_OPS = ['materials', 'stock', 'storeStock'];
 const PRICES =
 	"Prices are numbers in the country's own currency, never converted: price, old_price (set only on a markdown) and discount_percent. No price history: schedule a workflow to track changes.";
 const IDS =
-	"Product IDs (one per colour) and references are global on Zara's international site; China is Zara's separate site with its own IDs, so use the reference there.";
+	"References are global on Zara's international site; a colour's product ID is usually the same across countries but can differ, and China runs its own IDs, so match across countries with the reference.";
 const ITEM =
 	'items with product_id, reference, display_reference, title, URL, seo_slug, section, price, old_price, discount_percent, currency, availability, colors, tags and image, plus total, page and has_more';
 const CHARGE =
