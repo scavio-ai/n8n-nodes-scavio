@@ -29,7 +29,7 @@ const GRID_OPS = ['search', 'category'];
 const LIST_OPS = ['deals', 'newArrivals'];
 
 const PRICES =
-	"Prices are numbers in the request's currency, never converted, set per store and currency (not per country inside a store): price, previous_price, rrp, lowest_price_30d (where ASOS shows it), is_marked_down, is_outlet, discount_percent and discount_basis. No price history: schedule a workflow to track changes.";
+	"Prices are numbers in the request's currency, never converted, as ASOS sets them for that country: countries served by the same ASOS store in the same currency share one price list, except Ireland, which has its own euro prices on ASOS's European store (measured 2026-11-16 on all 245 country-currency combinations). Which products are offered still differs by country. price is the lowest size price when ASOS prices sizes differently (variants carry each size's price): price, previous_price, rrp, lowest_price_30d (where ASOS shows it), is_marked_down, is_outlet, discount_percent and discount_basis. No price history: schedule a workflow to track changes.";
 const IDS =
 	"Product and category IDs are the same on every ASOS store; titles come back in the store's language.";
 const ITEM =
@@ -501,7 +501,7 @@ export const asosOperations: INodeProperties[] = [
 				name: 'Get Reviews',
 				value: 'reviews',
 				action: 'Get asos reviews',
-				description: `Reviews of one product on one store, up to 50 per page: summary (average, count, distribution, recommended, fit and quality), ASOS's labelled AI summary and reviews (rating, title, text, date, fit, quality, verified_purchaser, syndicated, photos). Reviews are per store; the European and international stores share one pool. No reviewer names. ${CHARGE} Costs 1 credit.`,
+				description: `Reviews of one product on one store, up to 50 per page: summary (average, count, distribution, recommended, fit and quality), ASOS's labelled AI summary and reviews (rating, title, text, date, fit, quality, verified_purchaser, syndicated, photos). Which reviews come back depends on the store: gb, us, au and ASOS's European and international stores share one English review pool; es, it, nl, se, dk and pl add reviews written in their own language to that pool; fr and de show only reviews written in French or German (each review carries its language; totals differ by store). No reviewer names. ${CHARGE} Costs 1 credit.`,
 				routing: request('/api/v1/asos/reviews'),
 			},
 			{
