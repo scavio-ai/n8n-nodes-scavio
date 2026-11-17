@@ -28,7 +28,11 @@ const FULL_OPS = [
 ];
 
 const PRICES =
-	"Prices are numbers in the country's own currency, never converted: price is Uniqlo's regular price, promo_price its promotional price. In the United States, Japan and South Korea a sale or limited-time-offer drop is a flag (on_sale, limited_offer, price_flags with start and end dates): promo_price equals price there; Europe and Southeast Asia show promo_price below price. No price history: schedule a workflow to track changes.";
+	"Prices are numbers in the country's own currency, never converted: price is Uniqlo's regular price, promo_price its promotional price. In the United States, Japan, South Korea and Canada (and on some items Singapore, Malaysia and India) Uniqlo marks a drop with flags only (on_sale, limited_offer, price_flags), so promo_price equals price; in Europe, Australia and most of Southeast Asia promo_price is below price. Only a limited-time offer has a window: quote Uniqlo's own label in price_flags.name (e.g. \"until 11/18\"), not a date read from end; a sale flag carries a start but no end, and Select Colors/Sizes Only carries no dates. No price history: schedule a workflow to track changes.";
+const PRICE_GROUPS =
+	"Price group: Get Product and Get Prices by Country default to 00, Uniqlo's regular price list. Search can list the same product_id a second time in price group 01, mostly Uniqlo's Select Colors/Sizes Only sale price for some colours / sizes; set Price Group 01 on Get Product to read that price and the colours / sizes it covers. Get Prices by Country compares group 00 unless Price Group is set.";
+const GU =
+	"GU is a separate brand and not a separate platform here; Uniqlo's own listings can include GU collaboration items (Korea's limited offers did).";
 const IDS =
 	'Product IDs (E479000-000) are global on uniqlo.com: the same ID opens the product in every country that sells it. Taiwan, Hong Kong and China use their own codes.';
 const ITEM =
@@ -171,7 +175,13 @@ const priceGroupOption = textOption(
 	'Price Group',
 	'price_group',
 	'00',
-	'Price group (items[].price_group, default 00)',
+	'Price group (items[].price_group, default 00 = Uniqlo\'s regular price list; 01 is mostly the Select Colors/Sizes Only sale price search lists for some colours / sizes)',
+);
+const storeStockPriceGroupOption = textOption(
+	'Price Group',
+	'price_group',
+	'00',
+	'Price group the variant came from (items[].price_group or the product\'s price_group, default 00), with a variant ID or with product ID + colour + size. A variant of price group 01 asked as 00 reads out of stock in every store.',
 );
 const GENDERS = [
 	{ name: 'All', value: '' },
@@ -290,7 +300,7 @@ export const uniqloOperations: INodeProperties[] = [
 				name: 'Get Deals',
 				value: 'deals',
 				action: 'Get uniqlo deals',
-				description: `Uniqlo's sale or limited-time-offer list of a country, optionally for one gender: ${ITEM}, with limited_offer start and end where Uniqlo shows them. ${PRICES} ${FULL} ${CHARGE} Costs 1 credit.`,
+				description: `Uniqlo's sale or limited-time-offer list of a country, optionally for one gender: ${ITEM}, with limited_offer (name: Uniqlo's own label, start and end its window) where Uniqlo shows them. ${GU} ${PRICES} ${PRICE_GROUPS} ${FULL} ${CHARGE} Costs 1 credit.`,
 				routing: request('/api/v1/uniqlo/deals'),
 			},
 			{
@@ -304,14 +314,14 @@ export const uniqloOperations: INodeProperties[] = [
 				name: 'Get Prices by Country',
 				value: 'prices',
 				action: 'Get uniqlo prices by country',
-				description: `One uniqlo.com product across up to 10 countries in one call: per country the currency, available, title, price, promo_price, discount_percent, on_sale, limited_offer, price_flags, lowest_price_30d (Europe), tax and URL, plus not_sold (countries that do not sell it). Each price is in that country's own currency, never converted. Taiwan, Hong Kong and China use their own product codes and are not offered. ${IDS} Costs 1 credit per country that answered; failed countries are not charged.`,
+				description: `One uniqlo.com product across up to 10 countries in one call: per country the currency, available, title, price, promo_price, discount_percent, on_sale, limited_offer, price_flags, lowest_price_30d (Europe), tax and URL, plus not_sold (countries that do not sell it). Each price is in that country's own currency, never converted. Taiwan, Hong Kong and China use their own product codes and are not offered. ${PRICES} ${PRICE_GROUPS} ${IDS} Costs 1 credit per country that answered; failed countries are not charged.`,
 				routing: request('/api/v1/uniqlo/prices'),
 			},
 			{
 				name: 'Get Product',
 				value: 'product',
 				action: 'Get a uniqlo product',
-				description: `One product by ID or link in 41 countries: description, composition, care, countries_of_origin, category, price, promo_price, on_sale, limited_offer, price_flags, lowest_price_30d (Europe), tax, colors, sizes, lengths, rating with fit and images; variants with variant IDs (l2_id) in the United States, Japan and South Korea. A product a country does not sell is a charged 404. Ratings are per region (Europe shares one pool). ${PRICES} ${IDS} ${CHARGE} Costs 1 credit.`,
+				description: `One product by ID or link in 41 countries: description, composition, care, countries_of_origin, category, price, promo_price, on_sale, limited_offer, price_flags, lowest_price_30d (Europe), tax, colors, sizes, lengths, rating with fit and images; variants with variant IDs (l2_id) in the United States, Japan and South Korea. A product a country does not sell is a charged 404. Ratings are per region (Europe shares one pool). Not available: price history, store-level prices. ${GU} ${PRICES} ${PRICE_GROUPS} ${IDS} ${CHARGE} Costs 1 credit.`,
 				routing: request('/api/v1/uniqlo/product'),
 			},
 			{
@@ -339,14 +349,14 @@ export const uniqloOperations: INodeProperties[] = [
 				name: 'Get Store Stock',
 				value: 'storeStock',
 				action: 'Get uniqlo store stock',
-				description: `Stock status of one variant in the stores nearest a point (in_stock, low_stock, out_of_stock; no unit counts), by variant ID or by product ID + colour + size. Many stores answer out_of_stock, which is Uniqlo's real answer. ${FULL} ${CHARGE} Costs 1 credit by variant ID, 2 by product ID + colour + size.`,
+				description: `Stock status of one variant in the stores nearest a point (in_stock, low_stock, out_of_stock; no unit counts), by variant ID or by product ID + colour + size, with the price group the variant came from (default 00): a variant of price group 01 asked as 00 reads out of stock in every store. ${FULL} ${CHARGE} Costs 1 credit by variant ID, 2 by product ID + colour + size.`,
 				routing: request('/api/v1/uniqlo/store-stock'),
 			},
 			{
 				name: 'Search Products',
 				value: 'search',
 				action: 'Search uniqlo products',
-				description: `Search Uniqlo's catalogue by keyword: ${ITEM}, plus related_keywords. United States, Japan and South Korea, and Uniqlo's Greater China sites (Taiwan, Hong Kong, China; in Chinese, with their own product codes). ${PRICES} ${IDS} ${CHARGE} Costs 1 credit.`,
+				description: `Search Uniqlo's catalogue by keyword: ${ITEM}, plus related_keywords. United States, Japan and South Korea, and Uniqlo's Greater China sites (Taiwan, Hong Kong, China; in Chinese, with their own product codes). ${PRICES} ${PRICE_GROUPS} ${IDS} ${CHARGE} Costs 1 credit.`,
 				routing: request('/api/v1/uniqlo/search'),
 			},
 		],
@@ -665,7 +675,7 @@ export const uniqloFields: INodeProperties[] = [
 				'With a product ID, when the product comes in lengths: length code (lengths[].code)',
 			),
 			limitOption,
-			priceGroupOption,
+			storeStockPriceGroupOption,
 		],
 	},
 
