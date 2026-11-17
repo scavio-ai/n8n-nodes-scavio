@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 99 resources and 727 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 100 resources and 739 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -59,6 +59,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Nintendo eShop (46 countries)](https://scavio.dev/docs/nintendo-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Games, Get Product, Get Prices, Get Deals, Get Releases, Get DLC |
 | [H&M (47 countries)](https://scavio.dev/docs/hm-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Get Product 2 | Search Products, Get Product, Get Stock, Find Stores, Get Category Products, Get Deals, Get New Arrivals, Get Search Suggestions, Get Production Info |
 | [Zara (102 storefronts)](https://scavio.dev/docs/zara-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Product 2 to 6; Get Store Stock 4 by a point; Get Deals and Get New Arrivals 4; Get Prices by Country 2 per country; Get Search Suggestions 4 with the English fallback; China 1 | Search Products, Get Product, Get Materials, Get Stock, Find Stores, Get Store Stock, Get Categories, Get Category Products, Get Deals, Get New Arrivals, Get Prices by Country, Get Search Suggestions |
+| [Uniqlo (41 countries)](https://scavio.dev/docs/uniqlo-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Get Store Stock 2 by product ID + colour + size; Get Prices by Country 1 per country | Search Products, Get Product, Get Stock, Get Store Stock, Find Stores, Get Reviews, Get Search Suggestions, Get Category Products, Get Deals, Get New Arrivals, Get Categories, Get Prices by Country |
 | [ASOS (235 countries)](https://scavio.dev/docs/asos-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Stock, Get Reviews, Get Search Suggestions, Get Category Products, Get Categories, Get Brands, Get Deals, Get New Arrivals, Get Markets |
 | [Macy's](https://scavio.dev/docs/macys-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Reviews, Get Category Products, Get Brand Products, Get Deals, Find Stores, Get Store Availability, Get Search Suggestions |
 | [Saks Fifth Avenue](https://scavio.dev/docs/saks-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Products, Get Product, Get Category Products, Get Brand Products, Get Deals, Find Stores, Get Store Availability, Get Search Suggestions, Get Designers |
@@ -131,6 +132,17 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.65.0
+
+**New resource: Uniqlo, 12 operations.** Uniqlo in 41 countries: Uniqlo prices by country (one product ID priced in up to 10 countries per call, each in its own currency, never converted), online stock by colour and size, store stock near a point, reviews with fit feedback, sale and limited-time offers, new arrivals, search, product detail, categories, stores and search suggestions. Every operation costs 1 credit; Get Store Stock costs 2 by product ID + colour + size (1 by variant ID) and Get Prices by Country 1 per country that answered. Nothing else changed.
+
+- **Country** picks the market. The United States, Japan and South Korea serve every operation; Taiwan, Hong Kong and China (Uniqlo's Greater China sites, in Chinese, with their own product codes) serve Search Products and Get Product; Australia, Belgium, Canada, Germany, Denmark, Spain, France, the United Kingdom, Indonesia, India, Italy, Malaysia, the Netherlands, the Philippines, Sweden, Singapore, Thailand, Vietnam and Uniqlo's EU store (euros, English; Austria, Bulgaria, Czechia, Estonia, Finland, Greece, Croatia, Hungary, Ireland, Lithuania, Luxembourg, Latvia, Poland, Portugal, Romania, Slovenia, Slovakia) serve Get Product and Get Prices by Country. Countries with no Uniqlo online store and a country an operation does not serve answer 400 before anything is charged.
+- Product IDs (E479000-000) are global on uniqlo.com, so **Get Prices by Country** compares one ID across countries in one call. In the United States, Japan and South Korea a sale or limited-time-offer drop is a flag (on_sale, limited_offer, price_flags with dates): promo_price equals price there; Europe and Southeast Asia show promo_price below price.
+- **Get Stock** is online stock per variant (Uniqlo shows at most 11); **Get Store Stock** is the status per store near a point, with no unit counts, and many stores answer out_of_stock, which is Uniqlo's real answer. **Get Reviews** carries fit (1 tight to 5 loose), purchased size and height, weight and age ranges, with no reviewer names or locations; review totals are pooled per region.
+- Not available: price history, store-level prices, GU.
+
+Every Uniqlo operation carries a 240-second request timeout. Failed calls are not charged; a not-found is charged.
 
 ## What changed in 0.64.0
 
