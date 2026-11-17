@@ -32,7 +32,7 @@ const PRICES =
 const IDS =
 	'Product, EAN, category, seller and offer IDs are the same on every storefront; prices, offers and stock can differ between the Netherlands and Belgium.';
 const BEFR =
-	"On Belgium in French, bol's own texts are French, some partner titles stay Dutch and review texts are bol's translation (is_translated).";
+	"On Belgium in French, bol's own texts are French, some partner titles stay Dutch, review_topics (topic and summary) come back in Dutch as bol serves them, and review texts are bol's translation (is_translated).";
 const CHARGE = 'Failed upstream calls are not charged; a not-found is charged.';
 
 const searchSort = {
@@ -180,8 +180,8 @@ const byDisplayName = <T extends { displayName: string }>(items: T[]) =>
 	[...items].sort((a, b) => a.displayName.localeCompare(b.displayName));
 
 const listPage = pageOption(
-	250,
-	'Results page, 1-based, about 24 items per page (max_page in the response). A page past the end returns an empty page with a note.',
+	500,
+	'Results page, 1-based, 1-500, about 24 items per page (max_page in the response; bol lists at most 500 pages). A page past max_page returns an empty page with a note.',
 );
 
 const byField = (
@@ -249,28 +249,28 @@ export const bolcomOperations: INodeProperties[] = [
 				name: 'Get Campaign Products',
 				value: 'campaign',
 				action: 'Get bol com campaign products',
-				description: `The products of one bol.com promotion (a Black Friday deal list, the day deal) by campaign ID or link, paged and sorted (default Popularity): campaign (campaign_id, name, description, type, ends_at) and ${ITEM}. ${PRICES} An ended or unknown campaign is a charged not-found. ${CHARGE} Costs 2 credits.`,
+				description: `The products of one bol.com promotion (a Black Friday deal list, the day deal) by campaign ID or link, paged and sorted (default Popularity): campaign (campaign_id, name, description, type, ends_at) and ${ITEM}. Each item's offer is the product's buy box, which does not always carry this campaign's label. ${PRICES} An ended or unknown campaign is a charged not-found. ${CHARGE} Costs 2 credits.`,
 				routing: request('/api/v1/bolcom/campaign'),
 			},
 			{
 				name: 'Get Category Products',
 				value: 'category',
 				action: 'Get bol com category products',
-				description: `Products in one category, paged, sorted (default Popularity) and filtered like Search Products: category (category_id, name, URL, breadcrumbs) and ${ITEM}. ${PRICES} ${IDS} ${BEFR} An unknown category is a charged not-found. ${CHARGE} Costs 2 credits.`,
+				description: `Products in one category, paged, sorted (default Popularity) and filtered like Search Products, deeper than search (up to page 500): category (category_id, name, URL, breadcrumbs) and ${ITEM}. ${PRICES} ${IDS} ${BEFR} An unknown category is a charged not-found. ${CHARGE} Costs 2 credits.`,
 				routing: request('/api/v1/bolcom/category'),
 			},
 			{
 				name: 'Get Deals',
 				value: 'deals',
 				action: 'Get bol com deals',
-				description: `Today's bol.com deals: day_deal (title, campaign_id, URL, ends_at, highlighted_product) and category_deals (products with product_id, title, URL, image and offer with price, reference price and discount; seller_id only). Open the day deal with Get Campaign Products. ${PRICES} ${CHARGE} Costs 2 credits.`,
+				description: `Today's bol.com deals: day_deal (title, campaign_id, URL on the selected storefront, ends_at, highlighted_product) and category_deals (products with product_id, title, URL, image and offer with price, reference price and discount; seller_id only). Open the day deal with Get Campaign Products. ${PRICES} ${CHARGE} Costs 2 credits.`,
 				routing: request('/api/v1/bolcom/deals'),
 			},
 			{
 				name: 'Get Offers',
 				value: 'offers',
 				action: 'Get bol com offers',
-				description: `Every seller's offer for one product, for price comparison and price monitoring: counts (new, refurbished, second_hand) and offers (offer_id, price, reference price, condition with refurbished_grade or second_hand_state, shipping_cost, delivery_text, delivery_date, seller with seller_id, name, rating out of 10, rating_percent and top_seller, labels). The list does not mark the buy box: Get Product's buy_box.offer_id names it. ${PRICES} ${IDS} An unknown product is a charged not-found. ${CHARGE} Costs 2 credits.`,
+				description: `The lowest-priced 10 offers for one product, for price comparison and price monitoring: counts (new, refurbished, second_hand: all of the product's offers) and offers (up to 10, lowest price first: offer_id, price, reference price, condition with refurbished_grade or second_hand_state, shipping_cost, delivery_text, delivery_date, seller with seller_id, name, rating out of 10 and top_seller, labels), has_more (true when bol has more offers than the 10 returned: the higher-priced ones are not returned and there is no paging). The list does not mark the buy box: Get Product's buy_box.offer_id names it. ${PRICES} ${IDS} An unknown product is a charged not-found. ${CHARGE} Costs 2 credits.`,
 				routing: request('/api/v1/bolcom/offers'),
 			},
 			{
@@ -284,7 +284,7 @@ export const bolcomOperations: INodeProperties[] = [
 				name: 'Get Seller',
 				value: 'seller',
 				action: 'Get a bol com seller',
-				description: `A seller's public profile by seller ID or link: rating out of 10 with product_info, delivery_time, shipping and service sub-ratings, positive_percent, review totals, product_count and business (company_name, city, country, registration_number, vat_number as bol publishes them; no street address). No review texts. An unknown seller is a charged not-found. ${CHARGE} Costs 2 credits.`,
+				description: `A seller's public profile by seller ID or link: rating out of 10 with up to four sub-ratings (product_info, delivery_time, shipping, service; some sellers have fewer), rating_method (recent_reviews: the last 3 months; all_reviews: all of the seller's reviews), positive_percent (bol's positive percentage over those reviews), review totals, product_count and business (company_name, city, country, registration_number, vat_number as bol publishes them; no street address). No review texts. An unknown seller is a charged not-found. ${CHARGE} Costs 2 credits.`,
 				routing: request('/api/v1/bolcom/seller'),
 			},
 			{
