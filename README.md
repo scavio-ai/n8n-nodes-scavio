@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 101 resources and 753 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 102 resources and 768 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -76,6 +76,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Vinted (27 country sites)](https://scavio.dev/docs/vinted-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Listings, Get Product, Get Seller, Get Seller Listings, Get Seller Feedback, Find Brands, Get Search Suggestions, Get Filter Options, Get Categories |
 | [Mercari (US and Japan)](https://scavio.dev/docs/mercari-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Listings, Get Item, Get Category Listings, Get Categories, Get Brands, Get Brand Listings, Get Deals (US), Get Trending (US), Get Seller (Japan), Get Seller Reviews (Japan), Get Shop (Japan) |
 | [Depop (9 markets)](https://scavio.dev/docs/depop-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Search Listings, Get Category Listings, Get Brand Listings and Get Explore Page 5 on New Zealand; Get Product 2 outside the US, 6 on New Zealand | Search Listings, Get Product, Get Category Listings, Get Brand Listings, Get Explore Page, Get Search Suggestions, Get Shop, Get Shop Listings, Get Shop Sold Listings, Get Shop Reviews, Search Shops, Get Categories, Get Brands, Get Similar Listings (US) |
+| [Poshmark (US and Canada)](https://scavio.dev/docs/poshmark-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Listings, Get Sold Listings, Get Listing, Get Category Listings, Get Brand Listings, Get Closet, Get Closet Listings, Get Love Notes, Search Closets, Get Categories, Get Top Brands, Get Search Suggestions, Get Parties, Get Party Listings, Get Similar Listings |
 | [Mercado Libre (MX, BR, AR, CO)](https://scavio.dev/docs/mercadolibre-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Reviews 1 | Search Listings, Get Product, Get Reviews, Get Questions, Get Best Sellers |
 
 ### Social and video
@@ -133,6 +134,18 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.67.0
+
+**New resource: Poshmark, 15 operations.** Poshmark sold prices on poshmark.com (US, USD) and poshmark.ca (Canada, CAD): sold listings by keyword with the price shown on the sold listing and the date Poshmark marked it sold, filtered by brand, department, category, size, condition, colour and price; active listings with the original price the seller entered and price drops; closets with items sold, closet listings and Love Notes; plus categories, top brands, search suggestions, Posh Parties and similar listings. Every operation costs 1 credit. Nothing else changed.
+
+- **Country**: United States (default, USD) or Canada (CAD); both storefronts are English. Search Listings, Get Sold Listings, Get Category Listings, Get Brand Listings, Get Top Brands, Get Search Suggestions, Get Parties, Get Party Listings and Get Similar Listings return that market's own listings in its currency. Listing IDs and closets are global: a listing opens from either market in its own currency (no conversion), and closet listings are read in the seller's home market.
+- **Get Sold Listings** reaches up to 480 sold listings per query and filter combination (10 pages of 48, Poshmark's own limit): narrow with filters or split by price range to reach more. On a sold listing, price is the price shown on the sold listing (Poshmark says a sold listing reflects the final order price; offers are private and not returned) and sold_at is the date Poshmark marked it sold.
+- original_price is the original price the seller entered; first_price is the price it was first listed at, which can be below price when the seller raised the price. Search Listings reaches about 5,000 listings per query (105 pages of 48); total is Poshmark's approximate count.
+- **Get Love Notes** returns the latest 100 Love Notes with the closet's total count, with no authors. Seller usernames only: no real names, cities, likers or comment authors.
+- Not available: sold results beyond 480 per query and filter combination, Love Notes beyond the latest 100, Posh Shows, trending searches, the full brand directory (top 50; brand inputs take any name), offers, bundles, price history.
+
+Every Poshmark operation carries a 240-second request timeout. Failed calls are not charged; a not-found is charged.
 
 ## What changed in 0.66.1
 
