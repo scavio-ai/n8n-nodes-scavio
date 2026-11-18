@@ -81,6 +81,7 @@ import { bolcomOperations, bolcomFields } from './descriptions/BolcomDescription
 import { uniqloOperations, uniqloFields } from './descriptions/UniqloDescription';
 import { depopOperations, depopFields } from './descriptions/DepopDescription';
 import { poshmarkOperations, poshmarkFields } from './descriptions/PoshmarkDescription';
+import { thredupOperations, thredupFields } from './descriptions/ThredupDescription';
 import { olxOperations, olxFields } from './descriptions/OlxDescription';
 import { trendyolOperations, trendyolFields } from './descriptions/TrendyolDescription';
 import { zillowOperations, zillowFields } from './descriptions/ZillowDescription';
@@ -139,7 +140,7 @@ export class Scavio implements INodeType {
 		version: 1,
 		subtitle: '={{ $parameter["operation"] + ": " + $parameter["resource"] }}',
 		description:
-			'Real-time structured data from Google, ChatGPT, Gemini, Amazon, Walmart, eBay, Target, Home Depot, Costco, HEB, Kroger, Publix, IKEA, Wayfair, Ashley Furniture, Maisons du Monde, Decathlon, Spec\'s, Lowe\'s, Sam\'s Club, Canadian Tire, Dollar General, Sephora, Ulta Beauty, ALDI, Micro Center, Walgreens, CVS, Whole Foods Market, Harbor Freight, PetSmart, Petco, iHerb, Chewy, Menards, Nordstrom, Nordstrom Rack, Best Buy, TCGplayer, Nintendo eShop, H&M, Zara, Uniqlo, ASOS, Vinted, Mercari, Depop, Poshmark, Macy\'s, Saks Fifth Avenue, Kohl\'s, JCPenney, Dick\'s Sporting Goods, Foot Locker, Fanatics, Carrefour, Allegro, bol.com, OLX, Trendyol, Mercado Libre, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Facebook, Pinterest, Threads, Kuaishou, Douyin, Weibo, Twitch, GitHub, Etsy, AliExpress, Zillow, Redfin, Realtor.com, Rightmove, Booking.com, Airbnb, Tripadvisor, Yelp, Indeed, Glassdoor, the App Store, Google Play, SEC EDGAR, Companies House, Legistar, company websites (contact and owner enrichment), G2, Capterra, Trustpilot, ad libraries, and any URL',
+			'Real-time structured data from Google, ChatGPT, Gemini, Amazon, Walmart, eBay, Target, Home Depot, Costco, HEB, Kroger, Publix, IKEA, Wayfair, Ashley Furniture, Maisons du Monde, Decathlon, Spec\'s, Lowe\'s, Sam\'s Club, Canadian Tire, Dollar General, Sephora, Ulta Beauty, ALDI, Micro Center, Walgreens, CVS, Whole Foods Market, Harbor Freight, PetSmart, Petco, iHerb, Chewy, Menards, Nordstrom, Nordstrom Rack, Best Buy, TCGplayer, Nintendo eShop, H&M, Zara, Uniqlo, ASOS, Vinted, Mercari, Depop, Poshmark, thredUP, Macy\'s, Saks Fifth Avenue, Kohl\'s, JCPenney, Dick\'s Sporting Goods, Foot Locker, Fanatics, Carrefour, Allegro, bol.com, OLX, Trendyol, Mercado Libre, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Facebook, Pinterest, Threads, Kuaishou, Douyin, Weibo, Twitch, GitHub, Etsy, AliExpress, Zillow, Redfin, Realtor.com, Rightmove, Booking.com, Airbnb, Tripadvisor, Yelp, Indeed, Glassdoor, the App Store, Google Play, SEC EDGAR, Companies House, Legistar, company websites (contact and owner enrichment), G2, Capterra, Trustpilot, ad libraries, and any URL',
 		defaults: { name: 'Scavio' },
 		inputs: [NodeConnectionTypes.Main],
 		outputs: [NodeConnectionTypes.Main],
@@ -261,6 +262,7 @@ export class Scavio implements INodeType {
 					// "Thread" would misname the product, and the `threads` value is frozen
 					// because it is saved inside user workflows.
 					{ name: 'Threads', value: 'threads' },
+					{ name: 'thredUP', value: 'thredup' },
 					{ name: 'TikTok', value: 'tiktok' },
 					{ name: 'TikTok Shop', value: 'tiktokShop' },
 					{ name: 'Trendyol', value: 'trendyol' },
@@ -397,6 +399,8 @@ export class Scavio implements INodeType {
 			...depopFields,
 			...poshmarkOperations,
 			...poshmarkFields,
+			...thredupOperations,
+			...thredupFields,
 			...olxOperations,
 			...olxFields,
 			...trendyolOperations,

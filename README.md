@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 102 resources and 768 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 103 resources and 780 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -77,6 +77,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Mercari (US and Japan)](https://scavio.dev/docs/mercari-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Listings, Get Item, Get Category Listings, Get Categories, Get Brands, Get Brand Listings, Get Deals (US), Get Trending (US), Get Seller (Japan), Get Seller Reviews (Japan), Get Shop (Japan) |
 | [Depop (9 markets)](https://scavio.dev/docs/depop-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Search Listings, Get Category Listings, Get Brand Listings and Get Explore Page 5 on New Zealand; Get Product 2 outside the US, 6 on New Zealand | Search Listings, Get Product, Get Category Listings, Get Brand Listings, Get Explore Page, Get Search Suggestions, Get Shop, Get Shop Listings, Get Shop Sold Listings, Get Shop Reviews, Search Shops, Get Categories, Get Brands, Get Similar Listings (US) |
 | [Poshmark (US and Canada)](https://scavio.dev/docs/poshmark-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Listings, Get Sold Listings, Get Listing, Get Category Listings, Get Brand Listings, Get Closet, Get Closet Listings, Get Love Notes, Search Closets, Get Categories, Get Top Brands, Get Search Suggestions, Get Parties, Get Party Listings, Get Similar Listings |
+| [thredUP (US store)](https://scavio.dev/docs/thredup-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Items, Get Sold Listings, Get Item, Get Category Listings, Get Brand Listings, Get Deals, Get Rescue Boxes, Get Categories, Get Brands, Get Search Suggestions, Get Trending Searches, Get Similar Items |
 | [Mercado Libre (MX, BR, AR, CO)](https://scavio.dev/docs/mercadolibre-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Reviews 1 | Search Listings, Get Product, Get Reviews, Get Questions, Get Best Sellers |
 
 ### Social and video
@@ -134,6 +135,17 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.68.0
+
+**New resource: thredUP, 12 operations.** thredUP prices on thredUP's US store (thredup.com, USD; thredUP ships to the US and Canada from it, so there is no country input): each item's price, the estimated original retail and % off, condition and the flaws thredUP noted, measurements, materials and who priced it; search, sold listings, category, brand and deal grids (Clearance, Under $10, New Arrivals, Price Drops), Rescue boxes, categories and filter values, the brand directory, search suggestions, trending searches and similar items. Every operation costs 1 credit. Nothing else changed.
+
+- estimated_retail is the estimated original retail: thredUP's own estimate on items thredUP prices, entered by the seller on Direct Listing items. percent_off is computed from the price and the estimated retail, null when the estimated retail is missing or not above the price. seller_type is thredup, direct_listing (peer sellers) or dropship (partner listings).
+- List operations answer 119 items per page, pages 1 to 21 (about 2,500 items per query and filter combination); total caps at 10,000 (total_capped true means 10,000+). Free text is matched loosely (semantic): use the Brand option for one brand. Size IDs come from Get Categories, not labels. The price filter is approximate (thredUP matches a base price). Every answer reports the sort applied.
+- **Get Sold Listings** takes filters only (Brand and / or Category, no keyword), with the price the item last listed at; thredUP shows no sold date.
+- thredUP has no men's department. Not available: product reviews (thredUP shows none), seller shops, sold dates, men's clothing, price history. No seller or consignor names or IDs are returned.
+
+Every thredUP operation carries a 240-second request timeout (list calls take 15 to 45 seconds). Failed calls are not charged; a not-found is charged.
 
 ## What changed in 0.67.0
 
