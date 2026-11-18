@@ -19,11 +19,14 @@ const MARKET_OPS = ['search', 'product', 'category', 'brand', 'explore', 'sugges
 const SHOP_OPS = ['shop', 'shopProducts', 'shopSold', 'shopReviews'];
 
 const ITEM =
-	'items with product_id, slug, URL, title, description, brand (id, name, slug), category, group, product_type, status (on_sale, sold), seller_country, pictures, sizes, condition, colors, gender, kids, like_count, boosted, discounted, discount_percentage and price';
+	'items with product_id, slug, URL, title, description, brand (id, name, slug), category, group, product_type, status, pictures, sizes, condition, colors, gender, kids, like_count, boosted, discounted, discount_percentage and price';
+const MARKET_ITEM = `${ITEM}, plus buyer_market_price (status on_sale)`;
 const FIRST_24 =
 	"Only the first 24 results per query: Depop serves no next page, so narrow with filters, sort or a price range to reach more listings.";
 const PRICES =
-	"Prices are numbers for a buyer in the market, as Depop shows them: price, original_price, buyer_fee, tax (tax_type), shipping (shipping_boundary), total and headline_price. price.currency is the listing's currency, usually the market's (some sellers list in another one). On the US, Depop returns a buyer fee on some calls and not on others.";
+	"Prices are numbers as Depop shows them to a buyer in the market: price, original_price (the seller's own original price; it can be far above price), buyer_fee, tax (tax_type), shipping (what the buyer pays; shipping_boundary), total (Scavio's sum: price + buyer_fee + tax + shipping) and headline_price (the price Depop itself headlines: the US leaves out shipping, the UK includes the fee and shipping). price.currency is the listing's currency, usually the market's (some sellers list in another one). On the US, Depop returns a buyer fee on some calls and not on others for the same listing.";
+const MARKET_PRICE =
+	"buyer_market_price is true when the listing is priced in the market's currency; false means another currency, which Depop shows unconverted with the listing's own price block (Get Product too). List items carry no seller country: Get Product has seller.country.";
 const TEXT =
 	"Depop's interface is English in every storefront; titles and descriptions are what sellers wrote (often German, French or Italian on de, fr, it).";
 const CHARGE = 'Failed upstream calls are not charged; a not-found is charged.';
@@ -205,7 +208,7 @@ export const depopOperations: INodeProperties[] = [
 				name: 'Get Brand Listings',
 				value: 'brand',
 				action: 'Get depop brand listings',
-				description: `The first 24 listings of one brand (a slug from Get Brands) in a buyer market: brand and ${ITEM}, count and total_count. An unknown brand is a charged 404. ${FIRST_24} ${PRICES} ${TEXT} ${CHARGE} Costs 1 credit (5 on New Zealand).`,
+				description: `The first 24 listings of one brand (a slug from Get Brands) in a buyer market: brand and ${MARKET_ITEM}, count and total_count. An unknown brand is a charged 404. ${FIRST_24} ${PRICES} ${MARKET_PRICE} ${TEXT} ${CHARGE} Costs 1 credit (5 on New Zealand).`,
 				routing: request('/api/v1/depop/brand'),
 			},
 			{
@@ -226,21 +229,21 @@ export const depopOperations: INodeProperties[] = [
 				name: 'Get Category Listings',
 				value: 'category',
 				action: 'Get depop category listings',
-				description: `The first 24 listings of one category path (from Get Categories, e.g. mens/bottoms/jeans) in a buyer market: category and ${ITEM}, count and total_count. ${FIRST_24} ${PRICES} ${TEXT} ${CHARGE} Costs 1 credit (5 on New Zealand).`,
+				description: `The first 24 listings of one category path (from Get Categories, e.g. mens/bottoms/jeans) in a buyer market: category and ${MARKET_ITEM}, count and total_count. ${FIRST_24} ${PRICES} ${MARKET_PRICE} ${TEXT} ${CHARGE} Costs 1 credit (5 on New Zealand).`,
 				routing: request('/api/v1/depop/category'),
 			},
 			{
 				name: 'Get Explore Page',
 				value: 'explore',
 				action: 'Get a depop explore page',
-				description: `One of Depop's curated explore pages (e.g. 90s-menswear) in a buyer market: title, search_query, the first 24 listings, total_count and more_slugs (the market's other explore pages). An unknown page is a charged 404. ${PRICES} ${TEXT} ${CHARGE} Costs 1 credit (5 on New Zealand).`,
+				description: `One of Depop's curated explore pages (e.g. 90s-menswear) in a buyer market: title, search_query, the first 24 listings (with buyer_market_price), total_count and more_slugs (the market's other explore pages). An unknown page is a charged 404. ${PRICES} ${MARKET_PRICE} ${TEXT} ${CHARGE} Costs 1 credit (5 on New Zealand).`,
 				routing: request('/api/v1/depop/explore'),
 			},
 			{
 				name: 'Get Product',
 				value: 'product',
 				action: 'Get a depop product',
-				description: `One listing by slug, link or product ID, priced for a buyer in the market: description, hashtags, brand, category with breadcrumbs, condition, colors, sizes, shipping, discount, price (buyer market), listing_price (the seller's own currency and price) and the seller (username, verified, country, reviews_rating, reviews_total, items_sold, last_seen, average_shipping_days). Listing IDs are global: the same listing from another market adds that buyer's fee, tax and shipping. ${PRICES} ${TEXT} ${CHARGE} Costs 1 credit on the US, 2 on gb, au, ie, ca, de, fr, it and 6 on New Zealand.`,
+				description: `One listing by slug, link or product ID, priced for a buyer in the market: description, hashtags, brand, category with breadcrumbs, condition, colors, sizes, shipping (national_cost: the seller's domestic rate, which can differ from price.shipping), discount, price (buyer market), listing_price (the seller's own currency and price) and the seller (username, verified, country: the seller account's, reviews_rating, reviews_total, items_sold, last_seen, average_shipping_days). Listing IDs are global: the same listing from another market shows that buyer's fee, tax and shipping, in the listing's own currency. ${PRICES} ${TEXT} ${CHARGE} Costs 1 credit on the US, 2 on gb, au, ie, ca, de, fr, it and 6 on New Zealand.`,
 				routing: request('/api/v1/depop/product'),
 			},
 			{
@@ -261,7 +264,7 @@ export const depopOperations: INodeProperties[] = [
 				name: 'Get Shop Listings',
 				value: 'shopProducts',
 				action: 'Get depop shop listings',
-				description: `A shop's listings for sale, paged by cursor (up to 24 per page): ${ITEM}, created_at and updated_at, plus has_more and next_cursor. Prices in the seller's listing currency. Global. ${CHARGE} Costs 1 credit per page.`,
+				description: `A shop's listings for sale, paged by cursor (up to 24 per page): ${ITEM} (status on_sale), created_at and updated_at, plus has_more and next_cursor. Prices in the seller's listing currency; no buyer_market_price. Global. ${CHARGE} Costs 1 credit per page.`,
 				routing: request('/api/v1/depop/shop-products'),
 			},
 			{
@@ -275,21 +278,21 @@ export const depopOperations: INodeProperties[] = [
 				name: 'Get Shop Sold Listings',
 				value: 'shopSold',
 				action: 'Get depop shop sold listings',
-				description: `A shop's sold listings with the price they sold at (price, original_price, discounted, discount_percentage), paged by cursor (up to 24 per page). Depop shows no sale date: updated_at is the listing's last update. This is Depop's only sold data: there is no keyword search of sold listings. Global. ${CHARGE} Costs 1 credit per page.`,
+				description: `A shop's sold listings with the price they sold at (price, original_price, discounted, discount_percentage), paged by cursor (up to 24 per page). status is sold (sold on Depop) or marked_as_sold (the seller marked it sold, which may be outside Depop). Depop shows no sale date: updated_at is the listing's last update. This is Depop's only sold data: there is no keyword search of sold listings. Global. ${CHARGE} Costs 1 credit per page.`,
 				routing: request('/api/v1/depop/shop-sold'),
 			},
 			{
 				name: 'Get Similar Listings (US)',
 				value: 'similar',
 				action: 'Get depop similar listings',
-				description: `Listings Depop shows as similar to one listing, for a US buyer: ${ITEM}, created_at and updated_at. US only. ${PRICES} ${CHARGE} Costs 1 credit.`,
+				description: `Listings Depop shows as similar to one listing, for a US buyer: ${MARKET_ITEM}, created_at and updated_at. US only. ${PRICES} ${MARKET_PRICE} ${CHARGE} Costs 1 credit.`,
 				routing: request('/api/v1/depop/similar'),
 			},
 			{
 				name: 'Search Listings',
 				value: 'search',
 				action: 'Search depop listings',
-				description: `Search listings for sale in one buyer market: ${ITEM}, count, total_count (approximate) and facets. ${FIRST_24} ${PRICES} ${TEXT} Not available: keyword sold search (use Get Shop Sold Listings), trending searches, views, price history. ${CHARGE} Costs 1 credit (5 on New Zealand).`,
+				description: `Search listings for sale in one buyer market: ${MARKET_ITEM}, count, total_count (approximate) and facets. ${FIRST_24} ${PRICES} ${MARKET_PRICE} ${TEXT} Not available: keyword sold search (use Get Shop Sold Listings), trending searches, views, price history. ${CHARGE} Costs 1 credit (5 on New Zealand).`,
 				routing: request('/api/v1/depop/search'),
 			},
 			{

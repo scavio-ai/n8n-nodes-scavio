@@ -134,14 +134,18 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
 
+## What changed in 0.66.1
+
+Depop descriptions follow the API: list items carry buyer_market_price and no seller country (Get Product has seller.country), Get Shop Sold Listings status is sold or marked_as_sold, and price wording (total is Scavio's sum of the parts, headline_price Depop's own headline). Nothing else changed.
+
 ## What changed in 0.66.0
 
 **New resource: Depop, 14 operations.** Depop resale prices across its 9 storefronts: what listings ask in each buyer market (the price with buyer fee, tax and shipping as Depop shows them), what a shop's items sold for, shop profiles with ratings, reviews and items sold, brand, category and curated explore pages, search suggestions, shop search and US similar listings. Search Listings, Get Category Listings, Get Brand Listings and Get Explore Page cost 1 credit (5 on New Zealand); Get Product costs 1 on the US, 2 on the other markets and 6 on New Zealand; every other operation costs 1. Nothing else changed.
 
 - **Country** is the buyer's country: United States (default, USD), United Kingdom (GBP), Australia (AUD), Ireland (EUR), Canada (CAD), New Zealand (NZD), Germany (EUR), France (EUR), Italy (EUR). Search Listings, Get Product, Get Category Listings, Get Brand Listings, Get Explore Page and Get Search Suggestions serve all nine; Get Similar Listings is US only; the shop operations, Get Categories and Get Brands are global.
 - Search Listings, Get Category Listings, Get Brand Listings and Get Explore Page return the **first 24 results per query**: Depop serves no next page, so narrow with filters, sort or a price range. Sorts are Relevance and price (newest and most popular are not available).
-- Prices are what a buyer in the market pays as Depop shows them (price, buyer_fee, tax, shipping, total, headline_price). price.currency is the listing's currency, usually the market's (some sellers list in another one). Listing IDs are global: the same listing from another market adds that buyer's fee, tax and shipping. On the US, Depop returns a buyer fee on some calls and not on others.
-- **Get Shop Sold Listings** is Depop's only sold data: sold prices come per shop (there is no keyword sold search), and Depop shows no sale date (updated_at is the listing's last update). **Get Shop Reviews** carries no reviewer names.
+- Prices are numbers as Depop shows them to a buyer in the market (price, original_price, buyer_fee, tax, shipping, total as Scavio's sum of those parts, headline_price as Depop itself headlines it). price.currency is the listing's currency, usually the market's (some sellers list in another one; list items mark those with buyer_market_price false, and Depop shows them unconverted). List items carry no seller country; Get Product has seller.country. Listing IDs are global: the same listing from another market shows that buyer's fee, tax and shipping. On the US, Depop returns a buyer fee on some calls and not on others.
+- **Get Shop Sold Listings** is Depop's only sold data: sold prices come per shop (there is no keyword sold search), status is sold (on Depop) or marked_as_sold (the seller marked it sold, which may be outside Depop), and Depop shows no sale date (updated_at is the listing's last update). **Get Shop Reviews** carries no reviewer names.
 - Depop's interface is English in every storefront; titles and descriptions are what sellers wrote. Not available: results past the first 24, keyword sold search, trending searches, views, join date, Top Seller badge, offers / bundles, price history.
 
 Every Depop operation carries a 240-second request timeout. Failed calls are not charged; a not-found is charged.
