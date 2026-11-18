@@ -1,7 +1,7 @@
 {
   "name": "n8n-nodes-scavio",
-  "version": "0.65.0",
-  "description": "n8n community node for Scavio — real-time structured JSON from Google, ChatGPT, Gemini, Amazon, Walmart, eBay, Target, Home Depot, Costco, Publix, IKEA, Wayfair, Ashley Furniture, Maisons du Monde, Best Buy, TCGplayer, Nintendo eShop, H&M, Zara, Uniqlo, ASOS, Vinted, Mercari, Macy's, Saks Fifth Avenue, Kohl's, JCPenney, Dick's Sporting Goods, Foot Locker, Fanatics, Carrefour, Allegro, bol.com, OLX, Trendyol, Nordstrom, Nordstrom Rack, Mercado Libre, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Threads, Kuaishou, Zillow, Redfin, Realtor.com, Rightmove, Booking.com, Airbnb, Tripadvisor, Yelp, Indeed, Glassdoor, App Store, Google Play, SEC EDGAR, Companies House, G2, Capterra, Trustpilot, ad libraries, any URL, and whole websites (map, crawl, batch extract).",
+  "version": "0.66.0",
+  "description": "n8n community node for Scavio — real-time structured JSON from Google, ChatGPT, Gemini, Amazon, Walmart, eBay, Target, Home Depot, Costco, Publix, IKEA, Wayfair, Ashley Furniture, Maisons du Monde, Best Buy, TCGplayer, Nintendo eShop, H&M, Zara, Uniqlo, ASOS, Vinted, Mercari, Depop, Macy's, Saks Fifth Avenue, Kohl's, JCPenney, Dick's Sporting Goods, Foot Locker, Fanatics, Carrefour, Allegro, bol.com, OLX, Trendyol, Nordstrom, Nordstrom Rack, Mercado Libre, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Threads, Kuaishou, Zillow, Redfin, Realtor.com, Rightmove, Booking.com, Airbnb, Tripadvisor, Yelp, Indeed, Glassdoor, App Store, Google Play, SEC EDGAR, Companies House, G2, Capterra, Trustpilot, ad libraries, any URL, and whole websites (map, crawl, batch extract).",
   "keywords": [
     "n8n-community-node-package",
     "scavio",
@@ -17,6 +17,7 @@
     "mercado-libre",
     "mercado-livre",
     "mercari",
+    "depop",
     "bolcom",
     "bol-com",
     "uniqlo",

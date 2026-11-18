@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 100 resources and 739 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 101 resources and 753 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -75,6 +75,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Trendyol (Turkey plus 34 international storefronts)](https://scavio.dev/docs/trendyol-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Category Products, Get Brand Products, Get Reviews, Get Questions, Get Seller, Get Deals, Get Coupons, Get Rankings, Get Search Suggestions, Get Delivery Estimate |
 | [Vinted (27 country sites)](https://scavio.dev/docs/vinted-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Listings, Get Product, Get Seller, Get Seller Listings, Get Seller Feedback, Find Brands, Get Search Suggestions, Get Filter Options, Get Categories |
 | [Mercari (US and Japan)](https://scavio.dev/docs/mercari-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Listings, Get Item, Get Category Listings, Get Categories, Get Brands, Get Brand Listings, Get Deals (US), Get Trending (US), Get Seller (Japan), Get Seller Reviews (Japan), Get Shop (Japan) |
+| [Depop (9 markets)](https://scavio.dev/docs/depop-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Search Listings, Get Category Listings, Get Brand Listings and Get Explore Page 5 on New Zealand; Get Product 2 outside the US, 6 on New Zealand | Search Listings, Get Product, Get Category Listings, Get Brand Listings, Get Explore Page, Get Search Suggestions, Get Shop, Get Shop Listings, Get Shop Sold Listings, Get Shop Reviews, Search Shops, Get Categories, Get Brands, Get Similar Listings (US) |
 | [Mercado Libre (MX, BR, AR, CO)](https://scavio.dev/docs/mercadolibre-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Reviews 1 | Search Listings, Get Product, Get Reviews, Get Questions, Get Best Sellers |
 
 ### Social and video
@@ -132,6 +133,18 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.66.0
+
+**New resource: Depop, 14 operations.** Depop resale prices across its 9 storefronts: what listings ask in each buyer market (the price with buyer fee, tax and shipping as Depop shows them), what a shop's items sold for, shop profiles with ratings, reviews and items sold, brand, category and curated explore pages, search suggestions, shop search and US similar listings. Search Listings, Get Category Listings, Get Brand Listings and Get Explore Page cost 1 credit (5 on New Zealand); Get Product costs 1 on the US, 2 on the other markets and 6 on New Zealand; every other operation costs 1. Nothing else changed.
+
+- **Country** is the buyer's country: United States (default, USD), United Kingdom (GBP), Australia (AUD), Ireland (EUR), Canada (CAD), New Zealand (NZD), Germany (EUR), France (EUR), Italy (EUR). Search Listings, Get Product, Get Category Listings, Get Brand Listings, Get Explore Page and Get Search Suggestions serve all nine; Get Similar Listings is US only; the shop operations, Get Categories and Get Brands are global.
+- Search Listings, Get Category Listings, Get Brand Listings and Get Explore Page return the **first 24 results per query**: Depop serves no next page, so narrow with filters, sort or a price range. Sorts are Relevance and price (newest and most popular are not available).
+- Prices are what a buyer in the market pays as Depop shows them (price, buyer_fee, tax, shipping, total, headline_price). price.currency is the listing's currency, usually the market's (some sellers list in another one). Listing IDs are global: the same listing from another market adds that buyer's fee, tax and shipping. On the US, Depop returns a buyer fee on some calls and not on others.
+- **Get Shop Sold Listings** is Depop's only sold data: sold prices come per shop (there is no keyword sold search), and Depop shows no sale date (updated_at is the listing's last update). **Get Shop Reviews** carries no reviewer names.
+- Depop's interface is English in every storefront; titles and descriptions are what sellers wrote. Not available: results past the first 24, keyword sold search, trending searches, views, join date, Top Seller badge, offers / bundles, price history.
+
+Every Depop operation carries a 240-second request timeout. Failed calls are not charged; a not-found is charged.
 
 ## What changed in 0.65.0
 
