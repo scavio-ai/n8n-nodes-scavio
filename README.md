@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 103 resources and 780 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 104 resources and 787 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -61,6 +61,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Zara (102 storefronts)](https://scavio.dev/docs/zara-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Product 2 to 6; Get Store Stock 4 by a point; Get Deals and Get New Arrivals 4; Get Prices by Country 2 per country; Get Search Suggestions 4 with the English fallback; China 1 | Search Products, Get Product, Get Materials, Get Stock, Find Stores, Get Store Stock, Get Categories, Get Category Products, Get Deals, Get New Arrivals, Get Prices by Country, Get Search Suggestions |
 | [Uniqlo (41 countries)](https://scavio.dev/docs/uniqlo-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Get Store Stock 2 by product ID + colour + size; Get Prices by Country 1 per country | Search Products, Get Product, Get Stock, Get Store Stock, Find Stores, Get Reviews, Get Search Suggestions, Get Category Products, Get Deals, Get New Arrivals, Get Categories, Get Prices by Country |
 | [ASOS (235 countries)](https://scavio.dev/docs/asos-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Stock, Get Reviews, Get Search Suggestions, Get Category Products, Get Categories, Get Brands, Get Deals, Get New Arrivals, Get Markets |
+| [Fashion Nova (104 countries)](https://scavio.dev/docs/fashionnova-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Collection Products, Get Categories, Get Search Suggestions, Get Reviews, Get Similar Products (US) |
 | [Macy's](https://scavio.dev/docs/macys-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Reviews, Get Category Products, Get Brand Products, Get Deals, Find Stores, Get Store Availability, Get Search Suggestions |
 | [Saks Fifth Avenue](https://scavio.dev/docs/saks-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Products, Get Product, Get Category Products, Get Brand Products, Get Deals, Find Stores, Get Store Availability, Get Search Suggestions, Get Designers |
 | [Kohl's](https://scavio.dev/docs/kohls-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Find Stores 1 | Search Products, Get Product, Get Category Products, Get Brand Products, Get Deals, Find Stores, Get Store Availability, Get Search Suggestions, Get Coupon Codes |
@@ -135,6 +136,17 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.69.0
+
+**New resource: Fashion Nova, 7 operations.** Fashion Nova sale prices in 104 countries: each style's price, compare-at (struck-through) price, percent off, final-sale flag and per-size stock in the storefront's own currency; search, collections (sale, best sellers, new, back in stock) to full depth, product detail with every colour and size, the navigation tree, search suggestions, reviews and similar styles. Every operation costs 1 credit. Nothing else changed.
+
+- **Country** picks the storefront (default United States; 104 in all, 37 currencies; International is the site's International storefront in USD) on Search Products, Get Product and Get Collection Products. **Language** is English (default) or Spanish (67 countries; not the United States). A country or language Fashion Nova does not run answers 400 before anything is charged. Get Categories and Get Search Suggestions are the same in every storefront, Get Reviews is one English review pool for every market, and Get Similar Products answers from the US store in USD.
+- percent_off is computed by Scavio from the price and the compare-at price. In the 27 EEA countries Fashion Nova shows VAT-inclusive prices and no compare-at price, so compare_at and percent_off are null there. Size quantities are the stock the page shows, not a guaranteed inventory count.
+- **Search Products** is semantic: its total moves between calls, a later page can repeat a few items, and it shows its first 18 pages of 60 (6 under a sort other than Featured). **Get Collection Products** pages through fully (pages 1 to 200). A facet the list does not offer matches nothing and is listed in unrecognized_filters.
+- **Get Reviews**: 10 per page, pages 1 to 8, four sorts and a star filter; no reviewer names. **Get Product** carries site_ai_review_summary, Fashion Nova's own AI summary of its reviews. Not available: stores, a brand directory, price history, gift cards, new-arrival dates.
+
+Every Fashion Nova operation carries a 240-second request timeout (review calls take 20 to 60 seconds). Failed calls are not charged; a not-found is charged.
 
 ## What changed in 0.68.0
 
