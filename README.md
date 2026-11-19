@@ -137,6 +137,10 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
 
+## What changed in 0.69.1
+
+Fashion Nova descriptions follow the API: Get Collection Products pages 1 to 166 (a collection lists up to about 10,000 products; dedupe by product_id + color across pages), items and products carry code_lowers_price (price_with_code is 40% off the compare-at price and can be at or above the listed price), reviews are per style and mostly English, total_pages is approximate, and brand is the store's vendor field. Nothing else changed.
+
 ## What changed in 0.69.0
 
 **New resource: Fashion Nova, 7 operations.** Fashion Nova sale prices in 104 countries: each style's price, compare-at (struck-through) price, percent off, final-sale flag and per-size stock in the storefront's own currency; search, collections (sale, best sellers, new, back in stock) to full depth, product detail with every colour and size, the navigation tree, search suggestions, reviews and similar styles. Every operation costs 1 credit. Nothing else changed.

@@ -7,7 +7,7 @@ const show = (operation: string[], extra: Record<string, string[]> = {}) => ({
 // Fashion Nova, 7 operations, 1 credit each. 104 countries (Country), each in its own currency (37
 // currencies), English everywhere and Spanish (Language) in 67. Search Products, Get Product and Get
 // Collection Products take Country and Language; Get Categories, Get Search Suggestions and Get
-// Reviews are the same for every storefront (one English review pool); Get Similar Products answers
+// Reviews are the same for every storefront (one review pool per style); Get Similar Products answers
 // from the US store. Review pages take 20 to 60 seconds and the backend retries, so every operation
 // carries a 240s timeout, like thredUP.
 // emptyBody: a base body {} so Get Categories on its default division still posts JSON.
@@ -19,11 +19,11 @@ const MARKET_OPS = ['search', 'product', 'collection'];
 const PRODUCT_OPS = ['product', 'reviews', 'similar'];
 
 const PRICES =
-	"Prices are numbers in the storefront's currency, never converted: price (the lowest size price), compare_at (the site's struck-through price), percent_off (computed by Scavio from the two), on_sale, price_with_code (the price with the site's current promo code, when it shows one) and final_sale. In the 27 EEA countries (at, be, cy, cz, de, dk, ee, es, fi, fr, gr, hu, ie, is, it, lt, lu, lv, mt, nl, no, pl, pt, ro, se, si, sk) Fashion Nova shows VAT-inclusive prices and no compare-at price, so compare_at and percent_off are null there. No price history: schedule a workflow to track changes.";
+	"Prices are numbers in the storefront's currency, never converted: price (the lowest size price), compare_at (the site's struck-through price), percent_off (computed by Scavio from the two), on_sale, price_with_code (the price with Fashion Nova's current code as the page computes it, 40% off compare_at), code_lowers_price (false when that code price is not below price: the code does not lower it; null without a code price) and final_sale. badge is the site's label; percent_off is computed, so the two can differ. In the 27 EEA countries (at, be, cy, cz, de, dk, ee, es, fi, fr, gr, hu, ie, is, it, lt, lu, lv, mt, nl, no, pl, pt, ro, se, si, sk) Fashion Nova shows VAT-inclusive prices and no compare-at price, so compare_at and percent_off are null there. No price history: schedule a workflow to track changes.";
 const ITEM =
-	'items with product_id, handle, color, color_slug, title, URL, price, compare_at, percent_off, on_sale, currency, price_with_code, final_sale, badge, in_stock, sizes_in_stock, sizes (size, quantity, available, low_stock), image and colors';
+	'items with product_id, handle, color, color_slug, title, URL, price, compare_at, percent_off, on_sale, currency, price_with_code, code_lowers_price, final_sale, badge, in_stock, sizes_in_stock, sizes (size, quantity, available, low_stock), image and colors';
 const LIST =
-	"plus total, total_pages, has_more, count and facets (the filter inputs the list offers). A facet the list does not offer matches nothing and is listed in unrecognized_filters.";
+	"plus total, total_pages (approximate), has_more, count and facets (the filter inputs the list offers). A facet the list does not offer matches nothing and is listed in unrecognized_filters.";
 const CHARGE = 'Failed upstream calls are not charged; a not-found is charged.';
 
 const MARKETS: Array<{ name: string; value: string }> = [
@@ -274,21 +274,21 @@ export const fashionnovaOperations: INodeProperties[] = [
 				name: 'Get Collection Products',
 				value: 'collection',
 				action: 'Get fashion nova collection products',
-				description: `One collection by handle or link (sale, best-sellers, new, new-this-week, back-in-stock, jeans ...), to full depth (pages 1 to 200 of 60): ${ITEM}, ${LIST} There is no clearance collection; sale is the markdown collection. An unknown handle is a charged 404. ${PRICES} ${CHARGE} Costs 1 credit.`,
+				description: `One collection by handle or link (sale, best-sellers, new, new-this-week, back-in-stock, jeans ...), pages 1 to 166 of 60 (a collection lists up to about 10,000 products; consecutive pages can repeat a few products, so dedupe by product_id + color): ${ITEM}, ${LIST} There is no clearance collection; sale is the markdown collection. An unknown handle is a charged 404. ${PRICES} ${CHARGE} Costs 1 credit.`,
 				routing: request('/api/v1/fashionnova/collection'),
 			},
 			{
 				name: 'Get Product',
 				value: 'product',
 				action: 'Get a fashion nova product',
-				description: `One style in one colour by handle (plus colour) or link: price, compare_at, percent_off, price_with_code, promo, final_sale, sizes (size, SKU, price, compare_at, quantity, available, low_stock), every colour with its own sizes, rating (average, count, histogram, fit), the first 3 reviews, site_ai_review_summary (Fashion Nova's own AI summary of its reviews), size_guide, delivery, attributes and materials. Quantities are the stock the page shows per size. An unknown handle or colour is a charged 404. ${PRICES} ${CHARGE} Costs 1 credit.`,
+				description: `One style in one colour by handle (plus colour) or link: price, compare_at, percent_off, price_with_code, code_lowers_price, promo, final_sale, sizes (size, SKU, price, compare_at, quantity, available, low_stock), every colour with its own sizes, rating (average, count, histogram, fit), the first 3 reviews, site_ai_review_summary (Fashion Nova's own AI summary of its reviews), size_guide, delivery, attributes and materials. Quantities are the stock the page shows per size. An unknown handle or colour is a charged 404. ${PRICES} ${CHARGE} Costs 1 credit.`,
 				routing: request('/api/v1/fashionnova/product'),
 			},
 			{
 				name: 'Get Reviews',
 				value: 'reviews',
 				action: 'Get fashion nova reviews',
-				description: `One style's reviews, 10 per page, pages 1 to 8, sorted and filtered by star: total (as returned), rating and reviews (rating, title, body, date, verified_buyer, votes, fit, size_purchased, usual_size, color_purchased, topics). One English review pool for every storefront, so there is no country. No reviewer names. Takes 20 to 60 seconds. ${CHARGE} Costs 1 credit.`,
+				description: `One style's reviews, 10 per page, pages 1 to 8, sorted and filtered by star: total (as returned), rating and reviews (rating, title, body, date, verified_buyer, votes, fit, size_purchased and usual_size (the reviewer's own text), color_purchased, language, topics). Reviews are per style, not per colour, in one pool shared by every storefront and mostly English, so there is no country. No reviewer names. Takes 20 to 60 seconds. ${CHARGE} Costs 1 credit.`,
 				routing: request('/api/v1/fashionnova/reviews'),
 			},
 			{
@@ -309,7 +309,7 @@ export const fashionnovaOperations: INodeProperties[] = [
 				name: 'Search Products',
 				value: 'search',
 				action: 'Search fashion nova products',
-				description: `Search one Fashion Nova storefront for sale prices and sizes in stock: ${ITEM}, ${LIST} The search is semantic: its total moves between calls, a later page can repeat a few items, and it shows its first 18 pages of 60 (6 under a sort other than Featured). Narrow with filters, or use Get Collection Products for full depth. Not available: stores, a brand directory, price history, gift cards, new-arrival dates. ${PRICES} ${CHARGE} Costs 1 credit.`,
+				description: `Search one Fashion Nova storefront for sale prices and sizes in stock: ${ITEM}, ${LIST} The search is semantic: its total moves between calls, a later page can repeat a few items, and it shows its first 18 pages of 60 (6 under a sort other than Featured). Narrow with filters, or use Get Collection Products for more depth. Not available: stores, a brand directory or brand filter (brand is the store's vendor field; collab and licensed brand names appear in titles), price history, gift cards, new-arrival dates. ${PRICES} ${CHARGE} Costs 1 credit.`,
 				routing: request('/api/v1/fashionnova/search'),
 			},
 		],
@@ -475,7 +475,7 @@ export const fashionnovaFields: INodeProperties[] = [
 		placeholder: 'Add Option',
 		default: {},
 		displayOptions: show(['collection']),
-		options: [...filterOptions, pageOption(200, 'Page, 60 per page, 1 to 200')].sort(byName),
+		options: [...filterOptions, pageOption(166, 'Page, 60 per page, 1 to 166 (a collection lists up to about 10,000 products)')].sort(byName),
 	},
 	{
 		displayName: 'Additional Options',
