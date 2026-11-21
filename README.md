@@ -138,6 +138,10 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
 
+## What changed in 0.70.1
+
+Argos descriptions follow the API: delivery `later` is Argos's "Delivery within N days", with the new days field; Search Products, Get Category Products and Get Deals return total_capped (Argos stops counting at 10,000); store types are defined (a collection point is collect-only, inside_sainsburys is an Argos counter inside a Sainsbury's store); product rating is null without reviews and badges come one per code; phones read +44...; a postcode that does not exist ends in an unbilled 502 after about 50 seconds. Nothing else changed.
+
 ## What changed in 0.70.0
 
 **New resource: Argos, 10 operations.** Argos store stock, prices and reviews (argos.co.uk, UK, GBP): which Argos stores near a UK postcode can hand over one or more products and whether they can be delivered to a postcode, next to price, was price, offers and badges; plus search, categories, deal collections, product detail, reviews, Q&A and stores. Every operation costs 2 credits. Nothing else changed.

@@ -19,7 +19,7 @@ const PRICES =
 const ITEM =
 	'items with product_id, URL, name, brand, price, was_price, save, offer_text, clearance, badges, rating, review_count, seller, deliverable, reservable, free_delivery, delivery_cost and image';
 const LIST =
-	'plus total, total_pages, has_more, count, tu_clothing_excluded (Tu Clothing items Argos lists but sells on its own site: left out) and facets (the filter inputs the list offers).';
+	'plus total, total_capped (Argos stops counting at 10,000: true means 10,000 or more), total_pages, has_more, count, tu_clothing_excluded (Tu Clothing items Argos lists but sells on its own site: left out) and facets (the filter inputs the list offers).';
 const CHARGE = 'Failed upstream calls are not charged; a not-found is charged.';
 
 const pageOption = (max: number, description: string): INodeProperties => ({
@@ -235,7 +235,7 @@ export const argosOperations: INodeProperties[] = [
 				name: 'Get Product',
 				value: 'product',
 				action: 'Get an argos product',
-				description: `One product by ID or link: template (argos or trusted_seller), EAN, price, was_price, save, offer_text, badges with start and end dates, features, variants, special offers, Nectar points, care plans, payment options, bundles, breadcrumb, rating distribution, question and answer counts and the first 10 reviews. Trusted Seller items carry the fields their page shows (seller_name is null: the page names no seller). A withdrawn or unknown product is a charged 404; a Tu Clothing ID is a 400. ${PRICES} ${CHARGE} Costs 2 credits.`,
+				description: `One product by ID or link: template (argos or trusted_seller), EAN, price, was_price, save, offer_text, badges with start and end dates (one entry per badge code), rating (null without reviews), features, variants, special offers, Nectar points, care plans, payment options, bundles, breadcrumb, rating distribution, question and answer counts and the first 10 reviews. Trusted Seller items carry the fields their page shows (seller_name is null: the page names no seller). A withdrawn or unknown product is a charged 404; a Tu Clothing ID is a 400. ${PRICES} ${CHARGE} Costs 2 credits.`,
 				routing: request('/api/v1/argos/product'),
 			},
 			{
@@ -256,21 +256,21 @@ export const argosOperations: INodeProperties[] = [
 				name: 'Get Search Suggestions',
 				value: 'suggestions',
 				action: 'Get argos search suggestions',
-				description: `Argos's search suggestions for a partial query, each with Argos's popularity weight. ${CHARGE} Costs 2 credits.`,
+				description: `Argos's search suggestions for a partial query, each with Argos's popularity weight, in Argos's order (not sorted by weight). ${CHARGE} Costs 2 credits.`,
 				routing: request('/api/v1/argos/suggestions'),
 			},
 			{
 				name: 'Get Store Stock',
 				value: 'storeStock',
 				action: 'Get argos store stock',
-				description: `Whether 1 to 10 Argos products can be collected at the Argos stores near a UK postcode (nearest first, up to 10 within 50 miles) and delivered to a postcode. Each store has a state per product: collect_now, collect_today, collect_tomorrow, collect_later, out_of_stock or not_available, with available_from and the site's message; delivery is same_day (Fast Track), next_day, later, out_of_stock or not_available. Availability states, not unit counts (Argos shows none). Trusted Seller items are never stocked in stores (400). ${CHARGE} Costs 2 credits.`,
+				description: `Whether 1 to 10 Argos products can be collected at the Argos stores near a UK postcode (nearest first, up to 10 within 50 miles) and delivered to a postcode. Each store has a state per product: collect_now, collect_today, collect_tomorrow, collect_later, out_of_stock or not_available, with available_from and the site's message; delivery is same_day (Fast Track), next_day, later (Argos's "Delivery within N days", with days = N), out_of_stock or not_available; quote delivery from state and message (available_from is the date Argos returns, as given). Store types: argos_store (a standalone Argos store), inside_sainsburys (an Argos counter inside a Sainsbury's store), collection_point (a collect-only point, no shop). A postcode that does not exist gets no answer from Argos: an unbilled 502 after about 50 seconds. Availability states, not unit counts (Argos shows none). Trusted Seller items are never stocked in stores (400). ${CHARGE} Costs 2 credits.`,
 				routing: request('/api/v1/argos/store-stock'),
 			},
 			{
 				name: 'Get Stores',
 				value: 'stores',
 				action: 'Get argos stores',
-				description: `Argos stores near a UK postcode (nearest first, up to 10 within 50 miles; type argos_store, inside_sainsburys or collection_point, distance, address, phone, hours), or one store by its reference (stores[].store) with opening hours, special hours and services. No stock: use Get Store Stock. ${CHARGE} Costs 2 credits.`,
+				description: `Argos stores near a UK postcode (nearest first, up to 10 within 50 miles; type argos_store, inside_sainsburys (an Argos counter inside a Sainsbury's store) or collection_point (collect-only, no shop), distance, address, phone (+44...), hours), or one store by its reference (stores[].store) with opening hours, special hours and services. No stock: use Get Store Stock. ${CHARGE} Costs 2 credits.`,
 				routing: request('/api/v1/argos/stores'),
 			},
 			{
