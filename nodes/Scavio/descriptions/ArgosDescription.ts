@@ -235,7 +235,7 @@ export const argosOperations: INodeProperties[] = [
 				name: 'Get Product',
 				value: 'product',
 				action: 'Get an argos product',
-				description: `One product by ID or link: template (argos or trusted_seller), EAN, price, was_price, save, offer_text, badges with start and end dates (one entry per badge code), rating (null without reviews), features, variants, special offers, Nectar points, care plans, payment options, bundles, breadcrumb, rating distribution, question and answer counts and the first 10 reviews. Trusted Seller items carry the fields their page shows (seller_name is null: the page names no seller). A withdrawn or unknown product is a charged 404; a Tu Clothing ID is a 400. ${PRICES} ${CHARGE} Costs 2 credits.`,
+				description: `One product by ID or link: template (argos or trusted_seller), EAN, price, was_price, save, offer_text, badges with start and end dates (one entry per badge code), rating (null without reviews), features, variants, special offers, Nectar points, care plans, payment options, bundles, breadcrumb, rating distribution, question and answer counts and the first 10 reviews. Trusted Seller items carry the fields their page shows (seller_name is null: the page names no seller; delivery_price and free_delivery are null, and free_delivery and delivery_cost are null in lists: the seller sets delivery). A withdrawn or unknown product is a charged 404; a Tu Clothing ID is a 400. ${PRICES} ${CHARGE} Costs 2 credits.`,
 				routing: request('/api/v1/argos/product'),
 			},
 			{

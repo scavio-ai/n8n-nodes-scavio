@@ -140,7 +140,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 
 ## What changed in 0.70.1
 
-Argos descriptions follow the API: delivery `later` is Argos's "Delivery within N days", with the new days field; Search Products, Get Category Products and Get Deals return total_capped (Argos stops counting at 10,000); store types are defined (a collection point is collect-only, inside_sainsburys is an Argos counter inside a Sainsbury's store); product rating is null without reviews and badges come one per code; phones read +44...; a postcode that does not exist ends in an unbilled 502 after about 50 seconds. Nothing else changed.
+Argos descriptions follow the API: delivery `later` is Argos's "Delivery within N days", with the new days field; Search Products, Get Category Products and Get Deals return total_capped (Argos stops counting at 10,000); store types are defined (a collection point is collect-only, inside_sainsburys is an Argos counter inside a Sainsbury's store); product rating is null without reviews and badges come one per code; phones read +44...; a postcode that does not exist ends in an unbilled 502 after about 50 seconds; Trusted Seller items carry null delivery fields (the seller sets delivery and Argos shows no charge). Nothing else changed.
 
 ## What changed in 0.70.0
 
