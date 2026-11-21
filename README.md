@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 105 resources and 797 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 106 resources and 810 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -70,6 +70,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Foot Locker (13 storefronts)](https://scavio.dev/docs/footlocker-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Category Products, Get Brand Products, Get Deals, Get Release Calendar, Find Stores, Get Store Availability, Get Reviews, Get Questions |
 | [Fanatics merchandise (8 storefronts + 4 US league stores)](https://scavio.dev/docs/fanatics-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Browse Listing, Get Deals, Get Reviews |
 | [Argos (UK)](https://scavio.dev/docs/argos-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Products, Get Product, Get Store Stock, Get Stores, Get Reviews, Get Questions, Get Categories, Get Category Products, Get Deals, Get Search Suggestions |
+| [Media Expert (Poland)](https://scavio.dev/docs/mediaexpert-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 to 3, actual cost: Get Store Stock and Get Categories 2; Search Products 3 (1 when Media Expert answers with a full category page); Get Category Products, Get Brand Products, Get Outlet, Get Marketplace Seller and a promotion list's products 1 unsorted, 3 sorted or lazily loaded; the rest 1 | Search Products, Get Product, Get Store Stock, Get Stores, Get Reviews, Get Category Products, Get Categories, Get Brands, Get Brand Products, Get Promotions, Get Outlet, Get Marketplace Seller, Get Search Suggestions |
 | [Carrefour (France; search and product also Argentina, Romania, Belgium)](https://scavio.dev/docs/carrefour-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Search Products and Get Product 2 on Belgium | Search Products, Get Product, Get Reviews, Get Category Products, Get Promotions, Get Search Suggestions, Find Stores, Get Store Availability, Get Store |
 | [Allegro (Poland, Czechia, Slovakia, Hungary)](https://scavio.dev/docs/allegro-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Offers, Get Offer, Get Product, Get Product Offers, Get Seller Offers, Get Seller Feedback, Get Category Offers |
 | [bol.com (Netherlands and Belgium)](https://scavio.dev/docs/bolcom-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Product by EAN 4 | Search Products, Get Product, Get Offers, Get Seller, Get Seller Products, Get Category Products, Get Brand Products, Get Deals, Get Campaign Products |
@@ -137,6 +138,17 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.71.0
+
+**New resource: Media Expert, 13 operations.** Media Expert Black Week prices, the Omnibus 30-day low and store stock (mediaexpert.pl, Poland, PLN): for any product the price, the old price, the lowest price of the last 30 days that Media Expert shows next to a promotion (EU Omnibus Directive) and the code price with its code and dates, plus Media Expert's stock indicator at the stores nearest a Polish city or postcode; and search, categories, brands, promotions (Black Weeks included), outlet, marketplace sellers, reviews, stores and suggestions.
+
+- **Get Store Stock** takes a product ID (items[].product_id, not the offer ID) and a Polish city, town or postcode, and answers up to 40 stores, nearest first, with stock_level (Media Expert's stock indicator, a bucket such as 0, 2, 9 or 20, not a unit count), in_stock, collect_in_1h (pickup within an hour) and order_to_store_day when the item is not on the shelf. Marketplace items are never stocked in stores (a charged 400).
+- Billed on actual cost, 1 to 3 credits per call (credits_used reports each one). There is no Country: one Polish store. Names, specifications, labels and reviews are in Polish, as Media Expert writes them.
+- **Search Products** and the list operations return 30 per page by default (up to 50), up to page 100; Media Expert stops counting at 5,000 (total_capped). Price sorts are Media Expert's own order, which follows promotional and code prices. There is no price filter.
+- **Get Reviews**: Media Expert's own reviews by SKU, product ID or link, up to 100 per page, six sorts, a star range and a verified-purchase filter, with verified_purchase and incentivized (a review from a Media Expert promotional campaign) flags; no reviewer identity. Not available: Q&A (Media Expert has none), leaflets, price history, unit counts, checkout prices.
+
+Every Media Expert operation carries a 240-second request timeout. Failed calls are not charged; a not-found is charged. Also in 0.71.0: the Argos Trusted Seller delivery copy (delivery fields are null; the seller sets delivery).
 
 ## What changed in 0.70.1
 
