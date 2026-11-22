@@ -80,6 +80,7 @@ import { argosOperations, argosFields } from './descriptions/ArgosDescription';
 import { mediaexpertOperations, mediaexpertFields } from './descriptions/MediaexpertDescription';
 import { actionOperations, actionFields } from './descriptions/ActionDescription';
 import { hemaOperations, hemaFields } from './descriptions/HemaDescription';
+import { autozoneOperations, autozoneFields } from './descriptions/AutozoneDescription';
 import { carrefourOperations, carrefourFields } from './descriptions/CarrefourDescription';
 import { allegroOperations, allegroFields } from './descriptions/AllegroDescription';
 import { bolcomOperations, bolcomFields } from './descriptions/BolcomDescription';
@@ -145,7 +146,7 @@ export class Scavio implements INodeType {
 		version: 1,
 		subtitle: '={{ $parameter["operation"] + ": " + $parameter["resource"] }}',
 		description:
-			'Real-time structured data from Google, ChatGPT, Gemini, Amazon, Walmart, eBay, Target, Home Depot, Costco, HEB, Kroger, Publix, IKEA, Wayfair, Ashley Furniture, Maisons du Monde, Decathlon, Spec\'s, Lowe\'s, Sam\'s Club, Canadian Tire, Dollar General, Sephora, Ulta Beauty, ALDI, Micro Center, Walgreens, CVS, Whole Foods Market, Harbor Freight, PetSmart, Petco, iHerb, Chewy, Menards, Nordstrom, Nordstrom Rack, Best Buy, TCGplayer, Nintendo eShop, H&M, Zara, Uniqlo, ASOS, Fashion Nova, Vinted, Mercari, Depop, Poshmark, thredUP, Macy\'s, Saks Fifth Avenue, Kohl\'s, JCPenney, Dick\'s Sporting Goods, Foot Locker, Fanatics, Argos, Media Expert, Action, HEMA, Carrefour, Allegro, bol.com, OLX, Trendyol, Mercado Libre, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Facebook, Pinterest, Threads, Kuaishou, Douyin, Weibo, Twitch, GitHub, Etsy, AliExpress, Zillow, Redfin, Realtor.com, Rightmove, Booking.com, Airbnb, Tripadvisor, Yelp, Indeed, Glassdoor, the App Store, Google Play, SEC EDGAR, Companies House, Legistar, company websites (contact and owner enrichment), G2, Capterra, Trustpilot, ad libraries, and any URL',
+			'Real-time structured data from Google, ChatGPT, Gemini, Amazon, Walmart, eBay, Target, Home Depot, Costco, HEB, Kroger, Publix, IKEA, Wayfair, Ashley Furniture, Maisons du Monde, Decathlon, Spec\'s, Lowe\'s, Sam\'s Club, Canadian Tire, Dollar General, Sephora, Ulta Beauty, ALDI, Micro Center, Walgreens, CVS, Whole Foods Market, Harbor Freight, AutoZone, PetSmart, Petco, iHerb, Chewy, Menards, Nordstrom, Nordstrom Rack, Best Buy, TCGplayer, Nintendo eShop, H&M, Zara, Uniqlo, ASOS, Fashion Nova, Vinted, Mercari, Depop, Poshmark, thredUP, Macy\'s, Saks Fifth Avenue, Kohl\'s, JCPenney, Dick\'s Sporting Goods, Foot Locker, Fanatics, Argos, Media Expert, Action, HEMA, Carrefour, Allegro, bol.com, OLX, Trendyol, Mercado Libre, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Facebook, Pinterest, Threads, Kuaishou, Douyin, Weibo, Twitch, GitHub, Etsy, AliExpress, Zillow, Redfin, Realtor.com, Rightmove, Booking.com, Airbnb, Tripadvisor, Yelp, Indeed, Glassdoor, the App Store, Google Play, SEC EDGAR, Companies House, Legistar, company websites (contact and owner enrichment), G2, Capterra, Trustpilot, ad libraries, and any URL',
 		defaults: { name: 'Scavio' },
 		inputs: [NodeConnectionTypes.Main],
 		outputs: [NodeConnectionTypes.Main],
@@ -183,6 +184,7 @@ export class Scavio implements INodeType {
 					{ name: 'Argos', value: 'argos' },
 					{ name: 'Ashley Furniture', value: 'ashley' },
 					{ name: 'ASOS', value: 'asos' },
+					{ name: 'AutoZone', value: 'autozone' },
 					{ name: 'Best Buy', value: 'bestBuy' },
 					{ name: 'bol.com', value: 'bolcom' },
 					{ name: 'Booking.com', value: 'booking' },
@@ -353,6 +355,8 @@ export class Scavio implements INodeType {
 			...wholeFoodsFields,
 			...harborFreightOperations,
 			...harborFreightFields,
+			...autozoneOperations,
+			...autozoneFields,
 			...petsmartOperations,
 			...petsmartFields,
 			...petcoOperations,
