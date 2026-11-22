@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 106 resources and 810 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 107 resources and 826 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -71,6 +71,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Fanatics merchandise (8 storefronts + 4 US league stores)](https://scavio.dev/docs/fanatics-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Browse Listing, Get Deals, Get Reviews |
 | [Argos (UK)](https://scavio.dev/docs/argos-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Products, Get Product, Get Store Stock, Get Stores, Get Reviews, Get Questions, Get Categories, Get Category Products, Get Deals, Get Search Suggestions |
 | [Media Expert (Poland)](https://scavio.dev/docs/mediaexpert-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 to 3, actual cost: Get Store Stock and Get Categories 2; Search Products 3 (1 when Media Expert answers with a full category page); Get Category Products, Get Brand Products, Get Outlet, Get Marketplace Seller and a promotion list's products 1 unsorted, 3 sorted or lazily loaded; the rest 1 | Search Products, Get Product, Get Store Stock, Get Stores, Get Reviews, Get Category Products, Get Categories, Get Brands, Get Brand Products, Get Promotions, Get Outlet, Get Marketplace Seller, Get Search Suggestions |
+| [Action (19 storefronts in 16 countries)](https://scavio.dev/docs/action-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Products by Article Number, Get Weekly Deals, Get Category Products, Get Categories, Get Brand Products, Get Own Brands, Get New Arrivals, Get Collection Products, Get Search Suggestions, Find Stores, Get Store, Get Reviews, Search Webshop, Get Webshop Product |
 | [Carrefour (France; search and product also Argentina, Romania, Belgium)](https://scavio.dev/docs/carrefour-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Search Products and Get Product 2 on Belgium | Search Products, Get Product, Get Reviews, Get Category Products, Get Promotions, Get Search Suggestions, Find Stores, Get Store Availability, Get Store |
 | [Allegro (Poland, Czechia, Slovakia, Hungary)](https://scavio.dev/docs/allegro-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Offers, Get Offer, Get Product, Get Product Offers, Get Seller Offers, Get Seller Feedback, Get Category Offers |
 | [bol.com (Netherlands and Belgium)](https://scavio.dev/docs/bolcom-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Product by EAN 4 | Search Products, Get Product, Get Offers, Get Seller, Get Seller Products, Get Category Products, Get Brand Products, Get Deals, Get Campaign Products |
@@ -138,6 +139,17 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.72.0
+
+**New resource: Action, 16 operations.** Action (action.com), the European non-food discount store, on 19 storefronts in 16 countries: this week's Action deals with their validity dates and week id, the same article's price on each storefront (one article number everywhere, priced per market), and the stores near a city or postcode with opening hours; plus search, products, categories, own brands, new arrivals, seasonal collections (Black Friday included), suggestions, reviews and the shop.action.com webshop.
+
+- **Country** picks the storefront (Netherlands by default, Belgium, France, Luxembourg, Germany, Austria, Switzerland, Italy, Spain, Portugal, Poland, Czechia, Slovakia, Romania, Croatia, Slovenia), with a **Language** for Belgium (Dutch or French) and Switzerland (German, French or Italian). Prices come in the market's currency (EUR, CHF, PLN, CZK, RON), never converted; titles and labels in the storefront's language, as Action writes them.
+- **Get Weekly Deals** returns week_id (e.g. Promo2026Week47), Action's validity label and ISO valid_from / valid_to dates; a deal week runs Wednesday to Tuesday and the assortment changes weekly. Belgium adds Action Plus loyalty-card deals. **Get Products by Article Number** prices up to 60 article numbers on one market per call: run it once per country to compare.
+- **Find Stores** answers the 20 nearest stores (they may cross a border) with 7 dated days of opening hours. Action does not publish store stock. **Get Reviews** serves the Netherlands, Germany, France and Poland only, with Local, International or All scope and no reviewer identity. **Search Webshop** and **Get Webshop Product** read shop.action.com (Netherlands and Belgium): EAN, online stock level (not store stock), order limit and shipping cost.
+- Not available: store stock, price history, leaflets, checkout, other countries.
+
+Every Action operation costs 1 credit and carries a 240-second request timeout. Failed calls are not charged; a not-found is charged.
 
 ## What changed in 0.71.0
 
