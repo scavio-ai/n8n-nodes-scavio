@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 107 resources and 826 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 108 resources and 839 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -72,6 +72,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Argos (UK)](https://scavio.dev/docs/argos-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Products, Get Product, Get Store Stock, Get Stores, Get Reviews, Get Questions, Get Categories, Get Category Products, Get Deals, Get Search Suggestions |
 | [Media Expert (Poland)](https://scavio.dev/docs/mediaexpert-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 to 3, actual cost: Get Store Stock and Get Categories 2; Search Products 3 (1 when Media Expert answers with a full category page); Get Category Products, Get Brand Products, Get Outlet, Get Marketplace Seller and a promotion list's products 1 unsorted, 3 sorted or lazily loaded; the rest 1 | Search Products, Get Product, Get Store Stock, Get Stores, Get Reviews, Get Category Products, Get Categories, Get Brands, Get Brand Products, Get Promotions, Get Outlet, Get Marketplace Seller, Get Search Suggestions |
 | [Action (19 storefronts in 16 countries)](https://scavio.dev/docs/action-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Products by Article Number, Get Weekly Deals, Get Category Products, Get Categories, Get Brand Products, Get Own Brands, Get New Arrivals, Get Collection Products, Get Search Suggestions, Find Stores, Get Store, Get Reviews, Search Webshop, Get Webshop Product |
+| [HEMA (Netherlands, Belgium, France, Germany; stores also Luxembourg and Austria)](https://scavio.dev/docs/hema-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Category Products, Get Categories, Get New Arrivals, Get Sale Products, Get Weekly Offers, Get Campaign Products, Get Search Suggestions, Get Store Stock, Find Stores, Get Store, Get Reviews |
 | [Carrefour (France; search and product also Argentina, Romania, Belgium)](https://scavio.dev/docs/carrefour-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Search Products and Get Product 2 on Belgium | Search Products, Get Product, Get Reviews, Get Category Products, Get Promotions, Get Search Suggestions, Find Stores, Get Store Availability, Get Store |
 | [Allegro (Poland, Czechia, Slovakia, Hungary)](https://scavio.dev/docs/allegro-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Offers, Get Offer, Get Product, Get Product Offers, Get Seller Offers, Get Seller Feedback, Get Category Offers |
 | [bol.com (Netherlands and Belgium)](https://scavio.dev/docs/bolcom-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Product by EAN 4 | Search Products, Get Product, Get Offers, Get Seller, Get Seller Products, Get Category Products, Get Brand Products, Get Deals, Get Campaign Products |
@@ -139,6 +140,16 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.73.0
+
+**New resource: HEMA, 13 operations.** HEMA (hema.com), the Dutch variety store: HEMA store stock, the sellable units HEMA's store service reports per store for up to 12 articles near a city or postcode, with the stock level (full, regular or limited), in the Netherlands, Belgium, France, Germany, Luxembourg and Austria; each article's dated price schedule with upcoming promotions as HEMA writes them (e.g. 2+1 gratis); plus search, categories, new arrivals, sale, weekly offers, Christmas and Sinterklaas campaigns, suggestions, stores and HEMA's own product reviews.
+
+- **Country** picks the webshop (Netherlands by default, Belgium, France, Germany), with a **Language** for Belgium (Dutch or French). Luxembourg and Austria have HEMA stores but no webshop: Get Store Stock, Find Stores and Get Store serve them. Prices come in EUR; names, labels and promotion texts in the market's language, as HEMA writes them. Article numbers are the same in every market and prices are set per market; HEMA notes that online prices can differ from store prices.
+- **Get Store Stock** answers, per store, the sellable units and stock level as HEMA's store service reports them (not a promise that the shelf has it), with shelf locations, hours and distance. **Get Product** returns the EAN, variants and the dated price schedule, upcoming promotions included. **Get Weekly Offers** (Netherlands, Belgium) returns HEMA's validity label, the ISO date, the week and the promotion cards. **Get Reviews** reads HEMA's own reviews (the Netherlands, France and Germany share the Dutch pool; Belgium has its own), with no reviewer identity.
+- No brands operation (HEMA sells its own brand). Not available: price history, checkout or ordering, the photo service and cake ordering, other countries.
+
+Every HEMA operation costs 1 credit and carries a 240-second request timeout. Failed calls are not charged; a not-found is charged.
 
 ## What changed in 0.72.0
 
