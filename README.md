@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 109 resources and 851 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 110 resources and 862 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -42,6 +42,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Sephora](https://scavio.dev/docs/sephora-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Product |
 | [Ulta Beauty](https://scavio.dev/docs/ulta-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Product, Get Store Availability |
 | [ALDI](https://scavio.dev/docs/aldi-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Find Stores |
+| [Instacart (US; Canada in English or French, except Search Across Stores and Get Reviews)](https://scavio.dev/docs/instacart-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Search Products 3 (2 when the page fits in the first answer); Search Across Stores 3 up to 5 stores, 4 for 6 to 10 | Get Retailers, Search Products, Search Across Stores, Get Product, Compare Prices Across Stores, Get Categories, Get Category Products, Get Deals, Find Pickup Stores, Get Suggestions, Get Reviews |
 | [Micro Center](https://scavio.dev/docs/microcenter-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Stores 1 | Search Products, Get Product, Get Stores |
 | [Walgreens](https://scavio.dev/docs/walgreens-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Store Stock 4 | Search Products, Get Product, Find Stores, Get Store Stock |
 | [CVS](https://scavio.dev/docs/cvs-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Store Stock |
@@ -141,6 +142,18 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.75.0
+
+**New resource: Instacart, 11 operations.** Instacart (instacart.com), the US and Canada grocery delivery and pickup marketplace: Instacart prices by store at a ZIP. Every store delivering to a ZIP with its pricing label, one product priced at every one of those stores, one query across up to 10 stores, and delivery, pickup or in-store prices side by side; plus a store's search, aisles, deals, pickup locations, suggestions and product reviews.
+
+- **Country**: United States by default on every operation; Canada (instacart.ca, CAD, a postal code as ZIP) on every operation except Search Across Stores and Get Reviews. **Language** French (Canada) returns names, aisles and price text as Instacart shows them in Quebec; Get Suggestions is English only.
+- **Prices**: every price is Instacart's price for that store, ZIP and service type, named in priced_for with the retailer's pricing label as Instacart shows it. Retailers set their Instacart prices, which can be above their in-store prices, so an Instacart delivery price is not the store's shelf price; Service Type In-Store returns Instacart's in-store prices where it shows them. Get Retailers marks no_markups (Instacart's "No markups" label) and EBT per store.
+- **Compare Prices Across Stores** prices one product at every store delivering to the ZIP (Instacart delivery prices, low to high; no unit price or stock). Product IDs are the same at every store. **Search Across Stores** (US) prices one query at up to 10 stores, up to 20 items each.
+- **Get Product**: ingredients, warnings / allergens as given, key nutrients as Instacart lists them, images, the store's price block and rating summary. **Get Deals**: the store's Sales collection (no coupons). **Find Pickup Stores**: pickup locations with 7 days of hours for the 5 nearest. **Get Reviews** (US): 15 a page, no reviewer identity.
+- Not available: delivery and service fees or order minimums as numbers (Instacart shows them at checkout), coupons, Instacart+ member prices, account, order or cart data, price history.
+
+Every Instacart operation costs 1 credit (Search Products 3, or 2 when the page fits in Instacart's first answer; Search Across Stores 3 for up to 5 stores, 4 for 6 to 10) and carries a 240-second request timeout. Failed calls are not charged; a not-found is charged.
 
 ## What changed in 0.74.0
 
