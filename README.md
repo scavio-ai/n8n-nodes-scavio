@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 111 resources and 876 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 112 resources and 887 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -36,6 +36,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Maisons du Monde](https://scavio.dev/docs/maisonsdumonde-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Category Products, Get Deals, Get Reviews, Find Stores, Get Store, Get Store Stock, Get Seller |
 | [Spec's](https://scavio.dev/docs/specs-product?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 5 | Search Products, Get Product, Find Stores |
 | [Lowe's](https://scavio.dev/docs/lowes-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Reviews 1 | Search Products, Get Product, Find Stores, Get Reviews |
+| [Ace Hardware (US)](https://scavio.dev/docs/acehardware-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Search Products 2 (3 on a category redirect); Get Product 2; Get Store Stock 1 per 5 stores (Nearby 6); Find Nearest Stores with details 1 per store lookup (25 stores 6) | Search Products, Get Product, Get Store Stock, Get Store, Find Nearest Stores, Get Category Products, Get Categories, Get Brand Products, Get Deals, Get Weekly Ad, Get Paint Colors |
 | [Sam's Club](https://scavio.dev/docs/samsclub-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Find Clubs 1 | Search Products, Get Product, Find Clubs, Get Instant Savings, Get Category Products, Get Reviews |
 | [Canadian Tire](https://scavio.dev/docs/canadiantire-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Find Stores, Get Availability, Find Clearance Items, Get Deals |
 | [Dollar General](https://scavio.dev/docs/dollargeneral-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Find Stores, Get Deals, Get Coupons |
@@ -143,6 +144,18 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.77.0
+
+**New resource: Ace Hardware, 11 operations.** Ace Hardware (acehardware.com), the US hardware cooperative: Ace Hardware prices by store. An item's price at the Ace store you pick (named in priced_for), exact units on hand at that store and its 25 nearest, and that store's weekly ad; plus search, categories, brands, deals with promo codes, store details and Ace's paint colours. Pair it with the Home Depot and Lowe's resources for a local hardware price check on the same item (brand + model).
+
+- **Country**: United States only; no operation takes a country.
+- **Prices**: Ace stores are independently owned and operated, and the same item can be priced differently at different stores (Ace's terms: pricing varies by location). **Get Product** with a **Store Number** returns the price as Ace shows it for that store, with priced_for (store_id, price_list); without one, priced_for names the price list Ace used (CORP is Ace's online price). msrp is reported as Ace gives it and can be below a store's price. Listing prices (Search Products, Get Category Products, Get Brand Products, Get Deals) are the price Ace shows in its listing, not a store's price.
+- **Store numbers**: 5 digits (e.g. 18250 or 03085), shown in every Ace store page link (acehardware.com/store-details/NUMBER). There is no store search by ZIP or city; **Find Nearest Stores** lists the 25 stores Ace names as nearest to one store.
+- **Get Store Stock** returns exact units on hand (units_in_stock, soft_units, shelf location_code, regional distribution centre units) at 1-25 stores, or at one store and its 25 nearest (Nearby). Ace answers 0 for a store number or product it does not know, exactly as for one out of stock. **Get Weekly Ad** returns one store's circular with valid_from / valid_to and the ad's own price text.
+- Not available: review or Q&A text (rating and count only), search suggestions, ZIP or city store search, pickup or delivery dates, price history (schedule a workflow to track changes), Ace Rewards member prices, Ace Handyman, rentals, Ace-licensed stores outside the US, checkout.
+
+Every Ace Hardware operation costs 1 credit (Search Products 2, or 3 when Ace redirects the search to a category and the list options are applied to it; Get Product 2; Get Store Stock 1 per 5 stores, Nearby 6; Find Nearest Stores with details 1 lookup per store, 25 stores 6; an occasional call costs 2 instead of 1, and credits_used says what was charged) and carries a 240-second request timeout. Failed calls are not charged; a not-found is charged.
 
 ## What changed in 0.76.0
 
