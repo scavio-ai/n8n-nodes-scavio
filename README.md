@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 114 resources and 910 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 115 resources and 918 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -39,6 +39,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Ace Hardware (US)](https://scavio.dev/docs/acehardware-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Search Products 2 (3 on a category redirect); Get Product 2; Get Store Stock 1 per 5 stores (Nearby 6); Find Nearest Stores with details 1 per store lookup (25 stores 6) | Search Products, Get Product, Get Store Stock, Get Store, Find Nearest Stores, Get Category Products, Get Categories, Get Brand Products, Get Deals, Get Weekly Ad, Get Paint Colors |
 | [Tractor Supply (US)](https://scavio.dev/docs/tractorsupply-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Get Product 2 on the first call for a store not yet looked up; Get Store Prices 1 per 5 lookups (25 new stores 11) | Search Products, Get Product, Get Store Prices, Get Store Stock, Get Fulfillment, Find Stores, Get Store, Get Category Products, Get Categories, Get Brand Products, Get Deals, Get Promotions |
 | [Michaels (US, Canada)](https://scavio.dev/docs/michaels-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Category Products and Get Deals 4 with a /shop/ category | Search Products, Get Product, Get Store Stock, Get Store Inventory, Find Stores, Get Store, Get Category Products, Get Categories, Get Brand Products, Get Deals, Get Search Suggestions |
+| [Nike (62 storefronts)](https://scavio.dev/docs/nike-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Category Products, Get Brand Products, Get Deals, Get Releases, Get Release, Get Reviews |
 | [Sam's Club](https://scavio.dev/docs/samsclub-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Find Clubs 1 | Search Products, Get Product, Find Clubs, Get Instant Savings, Get Category Products, Get Reviews |
 | [Canadian Tire](https://scavio.dev/docs/canadiantire-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Find Stores, Get Availability, Find Clearance Items, Get Deals |
 | [Dollar General](https://scavio.dev/docs/dollargeneral-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Find Stores, Get Deals, Get Coupons |
@@ -146,6 +147,18 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.80.0
+
+**New resource: Nike, 8 operations.** Nike (nike.com, including Jordan Brand): Nike's sale price next to its own full price and discount percent as Nike gives them, every size with its GTIN, and Nike's launch calendar with price, release start, method and a per-size level for each launch item; the same style code priced on 62 storefronts in 42 countries, each in its own currency. Plus search, listings, Jordan / ACG / SB, the Sale listing and review summaries. Nike has no public API for catalog, prices or launches. Pair it with the Foot Locker, Dick's Sporting Goods, Amazon and eBay resources for a price check on the same style code.
+
+- **Country** picks the storefront (United States by default; China is www.nike.com.cn) and **Language** the storefront language where a country has several (Switzerland, Belgium, Luxembourg, Canada, the United States, Japan, Spain and others). Get Releases and Get Release are not offered on Vietnam, China or Japan in English; Get Reviews is not offered on China.
+- **Prices** are per storefront and differ between markets, also inside the euro zone: the same Nike Dunk Low (style color DD1503-103) was $78.97 next to a $120 full price (34%) on www.nike.com, £54.99 next to £109.99 (50%) on nike.com/gb, €59.99 next to €119.99 (50%) on nike.com/fr and ¥17,050 on nike.com/jp (captured 2026-11-24). promotions carry Nike's offer text with its dates.
+- **Lists** (Search Products, Get Category Products, Get Brand Products, Get Deals) return Nike's first page only: the 24 product groups Nike's page shows first. Filter tokens come from an earlier response's facets.
+- **Get Product** lists every size with its GTIN and Nike's status: sizes, not stock levels. **Get Releases** and **Get Release** carry method (LINE or DRAW, as Nike labels it) and a per-size level (HIGH, MEDIUM, LOW or OOS as Nike gives it) for launch items; before a launch Nike can show LOW on every size. Read-only data: no entry or purchase.
+- Not available: store locator, in-store or pickup stock, stock levels for regular products, review paging or Q&A (Get Reviews is the summary and the 3 newest reviews), search suggestions, pages past the first, member prices, gift cards, Nike Factory store prices, Converse, checkout.
+
+Every Nike operation costs 1 credit (credits_used says what was charged) and carries a 240-second request timeout. Failed calls are not charged; a not-found is charged.
 
 ## What changed in 0.79.0
 
