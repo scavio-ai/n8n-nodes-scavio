@@ -224,7 +224,7 @@ export const tractorsupplyOperations: INodeProperties[] = [
 				name: 'Get Product',
 				value: 'product',
 				action: 'Get a tractor supply product',
-				description: `One ${NAME} product or size in full by item number or link, priced for one store. ${PRICED} Returns priced_for, price, price_max, was_price, pickup_price, price_type, discount_percent, mapp (the manufacturer's minimum advertised price where Tractor Supply flags it; such items show one price everywhere), UPC, description, specifications, variants, breadcrumbs, fulfilment, promotions, rating and review_count (no review text). An unknown item is a charged not-found. ${CHARGE} Costs 1 credit (2 on the first call for a store not yet looked up).`,
+				description: `One ${NAME} product or size in full by item number or link, priced for one store. ${PRICED} Returns priced_for, price, price_max, was_price, pickup_price, price_type, discount_percent, mapp (the manufacturer's minimum advertised price where Tractor Supply flags it; reported as given; flagged items can still show different prices at different stores), UPC, description, specifications, variants, breadcrumbs, fulfilment, promotions, rating and review_count (no review text). An unknown item is a charged not-found. ${CHARGE} Costs 1 credit (2 on the first call for a store not yet looked up).`,
 				routing: request('/api/v1/tractorsupply/product'),
 			},
 			{
