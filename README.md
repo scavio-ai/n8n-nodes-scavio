@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 115 resources and 918 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 116 resources and 930 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -40,6 +40,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Tractor Supply (US)](https://scavio.dev/docs/tractorsupply-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Get Product 2 on the first call for a store not yet looked up; Get Store Prices 1 per 5 lookups (25 new stores 11) | Search Products, Get Product, Get Store Prices, Get Store Stock, Get Fulfillment, Find Stores, Get Store, Get Category Products, Get Categories, Get Brand Products, Get Deals, Get Promotions |
 | [Michaels (US, Canada)](https://scavio.dev/docs/michaels-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Category Products and Get Deals 4 with a /shop/ category | Search Products, Get Product, Get Store Stock, Get Store Inventory, Find Stores, Get Store, Get Category Products, Get Categories, Get Brand Products, Get Deals, Get Search Suggestions |
 | [Nike (62 storefronts)](https://scavio.dev/docs/nike-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Category Products, Get Brand Products, Get Deals, Get Releases, Get Release, Get Reviews |
+| [Staples (US; Canada search and product)](https://scavio.dev/docs/staples-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Category Products, Get Categories, Get Deals, Get Coupons, Get Store Stock, Find Stores, Get Store, Get Reviews, Get Questions, Get Trending Searches |
 | [Sam's Club](https://scavio.dev/docs/samsclub-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Find Clubs 1 | Search Products, Get Product, Find Clubs, Get Instant Savings, Get Category Products, Get Reviews |
 | [Canadian Tire](https://scavio.dev/docs/canadiantire-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Find Stores, Get Availability, Find Clearance Items, Get Deals |
 | [Dollar General](https://scavio.dev/docs/dollargeneral-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Find Stores, Get Deals, Get Coupons |
@@ -147,6 +148,19 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.81.0
+
+**New resource: Staples, 12 operations.** Staples (staples.com, the US office supply retailer; Staples Canada at staples.ca): an ink cartridge's price next to Staples' own cost per page and the stated page yield, copy paper per ream, and the units of one item at the Staples stores near a ZIP exactly as Staples reports them; plus search, categories, On Promotion and Clearance deals, coupons with Staples' own end dates, stores, reviews with full paging, customer Q&A and trending searches. Staples has no public API for its catalog, prices or store stock (Staples Business Advantage connects contract buyers' purchasing systems). Pair it with the Amazon, Walmart, Target and Best Buy resources for a price check on the same item.
+
+- **Country** is United States (www.staples.com, USD, the default) or Canada (www.staples.ca, Staples Canada, CAD) and **Language** English or French (Canada only), on Search Products and Get Product; every other operation is US only. Canada search returns Staples Canada's top matches (about 5, no paging, sort or filters).
+- **Prices** are national: the ZIP changes delivery availability and dates, the store changes pickup units, neither changes the price. Hammermill Copy Plus (item 122374, 10 reams) was $49.99 next to Staples' Regular $83.19, at "$5.00/Ream", with "Offer Expires on 11/28/2026"; the HP 64XL Black High Yield cartridge (item 2724258, "Prints Up to 600 Pages") carried Staples' own "$0.10 Cost Per Page" (captured 2026-11-24).
+- **Get Store Stock** lists only the stores near a US ZIP that have the item for pickup, with units as Staples reports them and the pickup text (Ready in 30 mins): the same HP 64XL showed 7 stores near ZIP 60540 with 63 units in all. An empty list means no nearby store has it or it is not offered for store pickup. Staples returns a threshold value beside the units; it is passed through as given.
+- **Get Product** adds page_yield, sheets_per_ream, promotions and offer_expires (Staples' own texts and expiry), coupon codes and ream / carton variants. staples.com publishes no UPC (model is the manufacturer part number); Staples Canada products carry a barcode.
+- **Get Reviews** pages up to 100 a page with sorts, star and photo filters and verified and incentivized flags; **Get Questions** returns 10 a page with their answers. No reviewer names.
+- Not available: the weekly ad, search suggestions, print and tech service prices, ink recycling rewards, Rewards member prices, price match requests, Staples Business Advantage contract prices, price history, checkout.
+
+Every Staples operation costs 1 credit (credits_used says what was charged) and carries a 240-second request timeout. Failed calls are not charged; a not-found is charged.
 
 ## What changed in 0.80.0
 
