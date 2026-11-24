@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 112 resources and 887 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 113 resources and 899 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -37,6 +37,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Spec's](https://scavio.dev/docs/specs-product?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 5 | Search Products, Get Product, Find Stores |
 | [Lowe's](https://scavio.dev/docs/lowes-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Reviews 1 | Search Products, Get Product, Find Stores, Get Reviews |
 | [Ace Hardware (US)](https://scavio.dev/docs/acehardware-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Search Products 2 (3 on a category redirect); Get Product 2; Get Store Stock 1 per 5 stores (Nearby 6); Find Nearest Stores with details 1 per store lookup (25 stores 6) | Search Products, Get Product, Get Store Stock, Get Store, Find Nearest Stores, Get Category Products, Get Categories, Get Brand Products, Get Deals, Get Weekly Ad, Get Paint Colors |
+| [Tractor Supply (US)](https://scavio.dev/docs/tractorsupply-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Get Product 2 on the first call for a store not yet looked up; Get Store Prices 1 per 5 lookups (25 new stores 11) | Search Products, Get Product, Get Store Prices, Get Store Stock, Get Fulfillment, Find Stores, Get Store, Get Category Products, Get Categories, Get Brand Products, Get Deals, Get Promotions |
 | [Sam's Club](https://scavio.dev/docs/samsclub-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Find Clubs 1 | Search Products, Get Product, Find Clubs, Get Instant Savings, Get Category Products, Get Reviews |
 | [Canadian Tire](https://scavio.dev/docs/canadiantire-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Find Stores, Get Availability, Find Clearance Items, Get Deals |
 | [Dollar General](https://scavio.dev/docs/dollargeneral-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Find Stores, Get Deals, Get Coupons |
@@ -144,6 +145,18 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.78.0
+
+**New resource: Tractor Supply, 12 operations.** Tractor Supply (tractorsupply.com), the US rural lifestyle retailer: an item's price at the store you pick (named in priced_for with the store's price zone), one item's price at up to 25 stores in one call, exact units per store with in-transit stock and its pickup date, and pickup and delivery options for a ZIP; plus search, categories, brands, deals, promotions with dates and store details. Pair it with the Ace Hardware, Walmart and Chewy resources for a price check on the same item.
+
+- **Country**: United States only; no operation takes a country.
+- **Prices**: Tractor Supply prices by store, so Search Products, Get Product, Get Category Products, Get Brand Products and Get Deals need a **Store Number** or a **ZIP Code** (Price For; the nearest store Tractor Supply lists for the ZIP is used). Every price answer carries priced_for (store_id, zone, city, state). Tractor Supply's terms note that prices may vary in different geographic markets, and the same item can be priced differently at different stores: the same 50 lb bag of Producer's Pride 16% Layer Pellets (item 2340147) was $14.49 at store 1933 Glendive MT (zone 81) and $20.19 at store 1923 Port Orchard WA (zone 92). Some items carry a manufacturer's minimum advertised price (mapp) and show one price everywhere.
+- **Get Store Prices** returns one item's price at up to 25 stores, or at the stores nearest a ZIP, with each store's zone and the price range. **Get Store Stock** returns units per store as Tractor Supply reports them, with in-transit units and their pickup date. **Get Fulfillment** returns pickup units and the delivery options (standard, same day, ship to store) with dates for one item at one store and a ZIP.
+- **Item numbers** are 7 digits (item_number from a list, e.g. 2340147). **Find Stores** lists the stores nearest a ZIP with hours, price zone, services and dated store events.
+- Not available: review or Q&A text (rating and count only), search suggestions, the weekly ad, a clearance list, price history (schedule a workflow to track changes), Neighbor's Club member prices, live chick availability, Petsense, checkout.
+
+Every Tractor Supply operation costs 1 credit (Get Product 2 on the first call for a store not yet looked up; Get Store Prices 1 per 5 lookups, 25 new stores 11; credits_used says what was charged) and carries a 240-second request timeout. Failed calls are not charged; a not-found is charged.
 
 ## What changed in 0.77.0
 
