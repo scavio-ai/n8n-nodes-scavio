@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 117 resources and 940 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 118 resources and 955 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -45,6 +45,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Canadian Tire](https://scavio.dev/docs/canadiantire-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Find Stores, Get Availability, Find Clearance Items, Get Deals |
 | [Dollar General](https://scavio.dev/docs/dollargeneral-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Find Stores, Get Deals, Get Coupons |
 | [Dollar Tree (US; Canada store pages)](https://scavio.dev/docs/dollartree-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Find Stores 5 | Search Products, Get Product, Get Category Products, Get Categories, Get Brand Products, Get Deals, Get Store Stock, Find Stores, Get Store, Get Reviews |
+| [Discount Tire (US)](https://scavio.dev/docs/discounttire-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Tires by Size, Get Vehicle Fitment, Get Tires for Vehicle, Get Product, Get Model, Get Store Stock, Find Stores, Get Store, Get Reviews, Get Store Reviews, Get Wheels, Browse Tire Models, Get Categories, Get Suggestions, Get Appointment Availability |
 | [Sephora](https://scavio.dev/docs/sephora-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Product |
 | [Ulta Beauty](https://scavio.dev/docs/ulta-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Product, Get Store Availability |
 | [ALDI](https://scavio.dev/docs/aldi-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Find Stores |
@@ -149,6 +150,21 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.83.0
+
+**New resource: Discount Tire, 15 operations.** Discount Tire (discounttire.com, the US tire and wheel retailer, America's Tire in parts of CA, PA, NJ and NY): the price of a tire at a named store, the same tire at other Discount Tire and America's Tire stores, the tires that fit a vehicle with the original-equipment tire flagged and staggered front / rear sets, and the exact units at the stores near a ZIP; plus tires by size, wheels, models with every size, promotions with their end dates, categories, search suggestions, stores, store hours, tire and store reviews, and the read-only appointment calendar. Discount Tire has no public product API (it runs an affiliate programme through CJ, and fleet customers use an account portal). See the [Discount Tire API page](https://scavio.dev/discounttire-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme). Pair it with the Walmart, Sam's Club and Amazon resources for the same tire (match on manufacturer part number or GTIN), and with AutoZone and O'Reilly Auto Parts for parts.
+
+- **Country**: United States only (www.discounttire.com, USD); Discount Tire and America's Tire are one catalog.
+- **Prices are per store**: Search Tires by Size, Get Tires for Vehicle, Get Product, Get Model, Get Wheels and Browse Tire Models take Price At: a store code (Find Stores lists them) or a ZIP code (the nearest store is used), and the response names the store used. Price can differ between stores and is not different at every store: measured 2026-11-25, Michelin Defender 2 225/65R17 (item 108547) was $206 a tire at 9 stores in 8 states and $205 at an America's Tire store in New Jersey; across 45 tires, the stores measured in Texas, Florida and Washington showed no differences, a California store 1, a Michigan store 3 and the New Jersey store 13 of 32.
+- **Per tire, not per set**: price is per tire or wheel; Discount Tire publishes no set-of-four price, so 4 x price is arithmetic, not a Discount Tire price. Promotions are Discount Tire's own title and text with its end date (ISO 8601 UTC and as given); no start date.
+- **Vehicle fitment**: Get Vehicle Fitment is one step per call (years, makes, models with vehicle_id, trims with trim_id, size options with assembly_id, then the fitment). The 2022 Ford F-150 XLT Crew Cab 2WD is vehicle_id 17361, trim_id 52455, assembly 0000E28B (245/70R17). Get Tires for Vehicle and Get Wheels take the same three IDs; staggered vehicles come back as front / rear sets, each tire with its own per-tire price (a set is 2 front + 2 rear). Ranking Treadwell adds Discount Tire's Treadwell ranking fields, Discount Tire's own estimates, as given.
+- **Get Store Stock** gives the exact units of 1-4 items at the stores near a ZIP (5 stores per page, 10-150 miles); a store with 0 units can still say "Available as soon as" with a date.
+- **Reviews**: Discount Tire's own tire and store reviews with sorts, a star filter and full paging; no reviewer names.
+- **Get Appointment Availability** is read only (Scavio never books); slot start and end are the store's local time (YYYY-MM-DDTHH:MM, no time zone).
+- Not available: the deals page text, road hazard and certificate prices, financing, installation and fee amounts, the Treadwell chat, fleet accounts, Tire Rack, price history, checkout and booking.
+
+Every Discount Tire operation costs 1 credit; credits_used says what was charged. Every operation carries a 240-second request timeout. Failed calls are not charged; a not-found is charged.
 
 ## What changed in 0.82.1
 
