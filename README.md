@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 124 resources and 1,006 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 124 resources and 1,007 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -69,7 +69,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Menards](https://scavio.dev/docs/menards-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | Search Products 2; Get Product 1, 2 with a Store ID; Find Stores 1 | Search Products, Get Product, Find Stores |
 | [Nordstrom](https://scavio.dev/docs/nordstrom-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 5; Get Availability and Get Reviews 10 | Search Products, Get Product, Get Reviews, Get Category Products, Get Brand Products, Find Stores, Get Availability, Get Search Suggestions |
 | [Nordstrom Rack](https://scavio.dev/docs/nordstromrack-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 5; Get Availability and Get Reviews 10 | Search Products, Get Product, Get Reviews, Get Category Products, Get Brand Products, Find Stores, Get Availability, Get Search Suggestions |
-| [Best Buy](https://scavio.dev/docs/bestbuy-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Category Products 3 on a pcmcat page; Get Deal of the Day 3; Find Stores and Get Search Suggestions 1 | Search Products, Get Product, Get Reviews, Get Category Products, Get Deal of the Day, Find Stores, Get Availability, Get Search Suggestions, Get Prices |
+| [Best Buy (US; Canada via Country)](https://scavio.dev/docs/bestbuy-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Category Products 3 on a pcmcat page; Get Deal of the Day 3; Find Stores and Get Search Suggestions 1; 1 for Best Buy Canada | Search Products, Get Product, Get Reviews, Get Category Products, Get Deal of the Day, Find Stores, Get Availability, Get Search Suggestions, Get Prices; Canada only: Get Questions |
 | [TCGplayer](https://scavio.dev/docs/tcgplayer-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Listings, Get Price History, Get Recent Sales, Get Games, Get Sets, Get Price Guide, Get Search Suggestions, Get Trending Searches, Get Seller, Get Seller Feedback, Get Seller Products |
 | [Nintendo eShop (46 countries)](https://scavio.dev/docs/nintendo-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Games, Get Product, Get Prices, Get Deals, Get Releases, Get DLC |
 | [H&M (47 countries)](https://scavio.dev/docs/hm-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Get Product 2 | Search Products, Get Product, Get Stock, Find Stores, Get Category Products, Get Deals, Get New Arrivals, Get Search Suggestions, Get Production Info |
@@ -156,6 +156,20 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.90.0
+
+**Best Buy Canada on the Best Buy resource, 1 new operation.** Best Buy Canada (bestbuy.ca, Best Buy's Canadian store: 142 stores across Canada per Best Buy's FY2026 10-K, plus a marketplace of third-party sellers): Canadian electronics prices with exact units per store, sale end dates and the environmental handling fee (EHF) by province. Best Buy's developer API (developer.bestbuy.com) covers bestbuy.com only. See the [Best Buy API page](https://scavio.dev/bestbuy-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme). For the same model at other Canadian retailers use the Amazon (Amazon.ca), Walmart (walmart.ca), Costco (costco.ca) and Canadian Tire resources; match on brand and model.
+
+- **Country** on all nine Best Buy operations: United States (default, bestbuy.com, unchanged: a US workflow sends the same request as before) or Canada. Canada Options on Search Products, Get Category Products and Get Deal of the Day: Page Size 1-100, four sorts (Best Match, Price, Customer Rating), the US filters plus Minimum Rating, Sold By, Seller, In Stock Online Only and Facet Filters (JSON), Province and Language (English or French: the same SKUs and CAD prices, French names and links). Results are capped at the first 2,000 of a query (results_capped).
+- **Prices are national** (the same in every province and store); only the EHF varies by province. Get Product returns the UPC, sale start and end (UTC), ehf_by_province, and the Geek Squad open-box, open-box and refurbished SKUs with their own prices; its rating and review count are null for Canada (use Get Reviews or Get Prices).
+- **Get Availability** for Canada: exact units per store for up to 20 SKUs at the stores nearest a postal code (Max Stores 1-50) or up to 50 store IDs. Captured 2026-11-25: the Apple MacBook Air 13.6" (2026, M5, 16GB / 512GB, SKU 19791103) at 35 units in the Centreville store in Montreal (store 651), at 1589.99 CAD (regular 1789.99, sale ending 2026-12-03 07:00 UTC). A store with no stock record comes back status unknown with units null, never out of stock.
+- **Get Deal of the Day** for Canada lists a deal collection instead (Best Buy Canada has none): Black Friday, Top Deals, Clearance, Open Box or Refurbished, with dates_text when the collection's page states its dates ("Sale kicking off November 19 and running until December 3" on Black Friday).
+- **Find Stores** for Canada: near a postal code (Radius 1-100 km), in a city, or near a latitude and longitude, with 7 dated days of hours. **Get Reviews** for Canada: Page Size 1-100, Verified Purchases Only, With Photos Only, French-only reviews; no reviewer names.
+- **New, Canada only: Get Questions**: customer questions about one product, each with its answer count and top answer, most answered or newest; no asker or answerer names.
+- Not available for Canada: per-store prices (the price is national), a Deal of the Day, results past 2,000 per query, review photos hosted off Best Buy, cart or checkout, price history (poll and store the answers).
+
+Every Best Buy Canada operation costs 1 credit; US credits are unchanged. credits_used says what was charged. Failed calls and refused inputs are not charged; a not-found is charged.
 
 ## What changed in 0.89.0
 
