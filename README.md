@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 120 resources and 970 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 121 resources and 977 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -50,6 +50,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Nellis Auction (6 US shopping locations)](https://scavio.dev/docs/nellis-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Lots, Get Lot, Get Locations, Get Categories |
 | [Sephora](https://scavio.dev/docs/sephora-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Product |
 | [Ulta Beauty](https://scavio.dev/docs/ulta-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Product, Get Store Availability |
+| [Dermstore (US and Canada)](https://scavio.dev/docs/dermstore-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get List Page, Get Product, Get Suggestions, Get Offers, Get Brands, Get Categories |
 | [ALDI](https://scavio.dev/docs/aldi-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Find Stores |
 | [Instacart (US; Canada in English or French, except Search Across Stores and Get Reviews)](https://scavio.dev/docs/instacart-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Search Products 3 (2 when the page fits in the first answer); Search Across Stores 3 up to 5 stores, 4 for 6 to 10 | Get Retailers, Search Products, Search Across Stores, Get Product, Compare Prices Across Stores, Get Categories, Get Category Products, Get Deals, Find Pickup Stores, Get Suggestions, Get Reviews |
 | [Micro Center](https://scavio.dev/docs/microcenter-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Stores 1 | Search Products, Get Product, Get Stores |
@@ -152,6 +153,19 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.86.0
+
+**New resource: Dermstore, 7 operations.** Dermstore (dermstore.com, the US skincare and beauty retailer, shipping to the US and Canada): price, RRP as Dermstore gives it and Dermstore's offer text per product and per brand, every shade, size or strength with its own price and stock, UPC, auto-replenish discounts, the 10 latest reviews, the current offers with their end times, and US vs Canada prices for the same SKU. Dermstore has no public API; its affiliate programme runs on Awin and offers product feeds to approved publishers. See the [Dermstore API page](https://scavio.dev/dermstore-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme). Pair a product with the Sephora, Ulta Beauty and Amazon resources for the same product and size elsewhere (match on UPC, or brand + name + size).
+
+- **Country**: United States (default, USD) or Canada (Dermstore's own Canadian dollar prices, not converted), on every operation.
+- **Search Products**: keywords or a SKU, up to 200 a page, 7 sorts, filters by brand, skin type, concern, SPF band, key ingredient, preference, gender, price, rating and discount, facets on request. A mapped keyword (sunscreen, retinol, eltamd) returns the page Dermstore sends it to, reported in resolved_from.
+- **Get List Page**: any Dermstore list page by path or link: a category, brand, /sale, an offer page (/shop/black-friday/30-off), /gift-sets or an ingredient page.
+- **RRP and discount**: rrp is Dermstore's RRP as given; discount_percent is computed by Scavio from price and RRP, only when the RRP is above the price. offer is Dermstore's own promotion text, as given; code rates differ by brand (captured 2026-11-25: EltaMD UV Clear SPF 46, 1.7 fl. oz., at 46 USD and 65.78 CAD; SkinCeuticals offered "Earn 10% Back + $25 Gift", double points as Dermstore states it).
+- **Get Offers**: the end time Dermstore states (ends); Dermstore gives no start date.
+- Not available: a full review feed or review paging (only the 10 latest via Get Product), Q&A, member (VIP) prices, cart or checkout prices, price history, offer start dates.
+
+Every Dermstore operation costs 1 credit; credits_used says what was charged. Every operation carries a 240-second request timeout. Failed calls are not charged; a not-found is charged.
 
 ## What changed in 0.85.0
 
