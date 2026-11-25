@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 124 resources and 998 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 124 resources and 1,003 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -25,7 +25,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Walmart](https://scavio.dev/docs/walmart-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1, or 2 on walmart.com.mx or when targeting one store | Search Products, Get Product, Get Reviews, Get Category Products, Get Buy Box Offer, Get Seller, Get Seller Products, [Get Stores](https://scavio.dev/docs/walmart-stores?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) |
 | [eBay](https://scavio.dev/docs/ebay-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Listings, Get Listing, Get Seller Profile |
 | [Target](https://scavio.dev/docs/target-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Product, Get Reviews, [Get Store Availability](https://scavio.dev/docs/target-availability?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) |
-| [Home Depot](https://scavio.dev/docs/home-depot-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Products, Get Product, Get Reviews |
+| [Home Depot (US; Canada via Country)](https://scavio.dev/docs/home-depot-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; 1 for Home Depot Canada | Search Products, Get Product, Get Reviews; Canada only: Get Category Products, Get Categories, Get Store Stock, Get Store, Get Search Suggestions |
 | [Costco](https://scavio.dev/docs/costco-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Search Products, Get Category Products, Get Deals and Find Clearance Items 2 in the United States; Get Warehouse Prices, Get Availability and Get Gas Prices scale with the number of warehouses | Search Products, Get Category Products, Get Categories, Get Products, Get Warehouse Prices, Get Availability, Get Reviews, Get Warehouses, Get Gas Prices, Get Coupon Book, Get Deals, Find Clearance Items, Get Search Suggestions |
 | [HEB](https://scavio.dev/docs/heb-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Products, Get Product, Get Stores |
 | [Kroger, QFC and Fred Meyer](https://scavio.dev/docs/kroger-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Search Products and Get Product 2, Get Store Prices 3 | Search Products, Get Product, Get Store Prices, Find Stores, Get Category Products, Get Weekly Digital Deals, Get Coupons, Get Search Suggestions |
@@ -156,6 +156,19 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.89.0
+
+**Home Depot Canada on the Home Depot resource, 5 new operations.** Home Depot Canada (homedepot.ca, The Home Depot's Canadian store: 182 stores in 10 provinces): Canadian home improvement prices per store, so the same item's price and exact units at stores in different provinces, and a store's price next to the online price. Home Depot Canada has no public API. See the [Home Depot API page](https://scavio.dev/homedepot-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme). For the same item at other Canadian retailers use the Canadian Tire resource and the Walmart (walmart.ca) and Amazon (Amazon.ca) resources; match on brand and model.
+
+- **Country** on Search Products, Get Product and Get Reviews: United States (default, homedepot.com, unchanged: a US workflow sends the same request as before) or Canada. Canada Options: Store ID (default store 7274; data.store says which), Page Size 1-40, four sorts (Home Depot Canada has no Top Sellers), Deals (Special Buy, New Lower Price, Savings), Filters (JSON) from an earlier response's facets (Include Facets), Category ID and Language (English or French: the same IDs and CAD prices, French names and links). With a Category ID or Deals the query is optional.
+- **Get Product** with a Store ID: price is that store's price (price_source store) and online_price the online price, which can differ, with store_units (exact units), aisle and bay. Captured 2026-11-25: the 2-inch x 4-inch x 8-ft SPF Premium Stud (1000112108) at store 7128 (ST-HENRI, QC) at 4.14 CAD with 2858 units in aisle 19, bay 001, next to an online_price of 6.58. Prices can differ by store (lumber does; the tools, Christmas tree and fridge sampled had one price everywhere).
+- **Get Reviews** for Canada: the first 8 reviews per language and the first page of questions; no reviewer names.
+- **New, Canada only:** Get Category Products (a category or collection page, priced at a store), Get Categories (the department tree and the current event pages), Get Store Stock (exact units of one item at every store near a postal code or city, no prices), Get Store (one store with 7 dated days of hours and nearby stores) and Get Search Suggestions.
+- When Home Depot Canada has no store record for an item that exists, Get Product returns the online price with store_price_returned false, and Get Store Stock answers an unbilled 502.
+- Not available for Canada: UPC or barcodes (Home Depot Canada shows none), structured sale end dates (the price badge and Home Depot's promotion text only), reviews past the first 8 per language, delivery quotes, the flyer, cart or checkout, price history (poll and store the answers).
+
+Every Home Depot Canada operation costs 1 credit; the US stays at 2. credits_used says what was charged. Failed calls and refused inputs are not charged; a not-found is charged.
 
 ## What changed in 0.88.0
 
