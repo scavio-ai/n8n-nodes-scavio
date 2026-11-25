@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 121 resources and 977 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 122 resources and 982 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -95,6 +95,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Mercari (US and Japan)](https://scavio.dev/docs/mercari-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Listings, Get Item, Get Category Listings, Get Categories, Get Brands, Get Brand Listings, Get Deals (US), Get Trending (US), Get Seller (Japan), Get Seller Reviews (Japan), Get Shop (Japan) |
 | [Depop (9 markets)](https://scavio.dev/docs/depop-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Search Listings, Get Category Listings, Get Brand Listings and Get Explore Page 5 on New Zealand; Get Product 2 outside the US, 6 on New Zealand | Search Listings, Get Product, Get Category Listings, Get Brand Listings, Get Explore Page, Get Search Suggestions, Get Shop, Get Shop Listings, Get Shop Sold Listings, Get Shop Reviews, Search Shops, Get Categories, Get Brands, Get Similar Listings (US) |
 | [Poshmark (US and Canada)](https://scavio.dev/docs/poshmark-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Listings, Get Sold Listings, Get Listing, Get Category Listings, Get Brand Listings, Get Closet, Get Closet Listings, Get Love Notes, Search Closets, Get Categories, Get Top Brands, Get Search Suggestions, Get Parties, Get Party Listings, Get Similar Listings |
+| [OfferUp (US)](https://scavio.dev/docs/offerup-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Get Listing 1, or 2 when the listing needs a second, costlier fetch | Search Listings, Get Listing, Get Category Listings, Get Categories, Get Seller |
 | [thredUP (US store)](https://scavio.dev/docs/thredup-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Items, Get Sold Listings, Get Item, Get Category Listings, Get Brand Listings, Get Deals, Get Rescue Boxes, Get Categories, Get Brands, Get Search Suggestions, Get Trending Searches, Get Similar Items |
 | [Mercado Libre (MX, BR, AR, CO)](https://scavio.dev/docs/mercadolibre-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Reviews 1 | Search Listings, Get Product, Get Reviews, Get Questions, Get Best Sellers |
 
@@ -153,6 +154,19 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.87.0
+
+**New resource: OfferUp, 5 operations.** OfferUp (offerup.com, the US local marketplace for buying and selling used items, cars and trucks): asking prices around any US ZIP code, so the same item's asking prices in different US metros, with the area OfferUp resolved the ZIP to; cars and trucks filtered by dealer or private seller, make, model year and mileage; one listing in full with condition, posted date and vehicle details (no VIN); the category tree; and a seller's public profile numbers. OfferUp has no public API for reading listings; OfferUp for Business (OfferUp Motors, Storefronts) is seller-side tooling that syncs a dealer's own inventory into OfferUp. See the [OfferUp API page](https://scavio.dev/offerup-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme). Pair a listing with the Amazon and Walmart resources for the same item's new price and with Mercari's sold search for sold prices (match on model and title).
+
+- **ZIP Code** is required on Search Listings and Get Category Listings (US only, USD). location.resolved is the area OfferUp named for the ZIP and radius_miles the radius it applied (captured 2026-11-25: 98101 resolved to Seattle, 60601 to Chicago).
+- **Search Listings**: keywords, radius, 5 sorts plus newest model year and lowest mileage for vehicles, filters by asking price, condition and category, and in Cars & Trucks by seller type (dealer or private), make, year range and max mileage. About 48 a page up to page 50, has_more, no total count. filters_not_applied lists any filter OfferUp did not apply; Seller Type limits a search to Cars & Trucks (category ID 5.1). Promoted OfferUp listings are marked sponsored.
+- **Get Listing**: asking price, original price, firm, status, condition, posted and updated dates, description, photos, attributes, vehicle details (no VIN), local pickup and the seller's public numbers. Listings from search carry no posted date or condition.
+- **Get Seller**: seller type, rating, rating count, items sold, joined, response time, last active, badges and the first 20 listings; dealer and business accounts also name, website and opening hours.
+- Prices are asking prices, not sold prices. No seller names for individuals (a dealer or business account's name only), usernames, avatars, phone numbers, emails, street addresses, coordinates or VINs; phone numbers, emails and VIN-like codes in titles and descriptions read [removed].
+- Not available: sold listings or sold prices (OfferUp does not show them publicly), shipping (OfferUp ended nationwide shipping in 2025; listings are local pickup), search suggestions, a total result count, a seller's listings past the first 20, messaging or offers.
+
+Every OfferUp operation costs 1 credit; Get Listing is 1, or 2 when the listing needs a second, costlier fetch; credits_used says what was charged. Every operation carries a 240-second request timeout. Failed calls are not charged; a not-found is charged.
 
 ## What changed in 0.86.0
 
