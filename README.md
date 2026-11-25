@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 122 resources and 982 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 124 resources and 998 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -43,6 +43,8 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Staples (US; Canada search and product)](https://scavio.dev/docs/staples-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Category Products, Get Categories, Get Deals, Get Coupons, Get Store Stock, Find Stores, Get Store, Get Reviews, Get Questions, Get Trending Searches |
 | [Sam's Club](https://scavio.dev/docs/samsclub-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Find Clubs 1 | Search Products, Get Product, Find Clubs, Get Instant Savings, Get Category Products, Get Reviews |
 | [Canadian Tire](https://scavio.dev/docs/canadiantire-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Find Stores, Get Availability, Find Clearance Items, Get Deals |
+| [SportChek (Canada)](https://scavio.dev/docs/sportchek-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get List Page, Get Product, Get Reviews, Get Search Suggestions, Get Store, Get Brands, Get Categories |
+| [Mark's (Canada; French via L'Equipeur)](https://scavio.dev/docs/marks-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get List Page, Get Product, Get Questions, Get Search Suggestions, Get Store, Get Brands, Get Categories |
 | [Dollar General](https://scavio.dev/docs/dollargeneral-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Find Stores, Get Deals, Get Coupons |
 | [Dollar Tree (US; Canada store pages)](https://scavio.dev/docs/dollartree-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Find Stores 5 | Search Products, Get Product, Get Category Products, Get Categories, Get Brand Products, Get Deals, Get Store Stock, Find Stores, Get Store, Get Reviews |
 | [Discount Tire (US)](https://scavio.dev/docs/discounttire-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Tires by Size, Get Vehicle Fitment, Get Tires for Vehicle, Get Product, Get Model, Get Store Stock, Find Stores, Get Store, Get Reviews, Get Store Reviews, Get Wheels, Browse Tire Models, Get Categories, Get Suggestions, Get Appointment Availability |
@@ -154,6 +156,19 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.88.0
+
+**New resources: SportChek and Mark's, 8 operations each.** SportChek (sportchek.ca, Canada's sporting goods retailer, a Canadian Tire Corporation banner) and Mark's (marks.com, the Canadian workwear, casual clothing and footwear retailer, a Canadian Tire Corporation banner; L'Equipeur in French): prices in CAD with the was price, sale label and the sale's posted end date each banner shows, filters from the site's own facets, one product's sizes and colours with online units and the units at the store the site assigns, SportChek customer reviews, Mark's customer questions, search suggestions, one store's hours and nearby stores, and the brand and category lists. Neither banner has a public API. See the [SportChek API page](https://scavio.dev/sportchek-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) and the [Mark's API page](https://scavio.dev/marks-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme). Pair a product with the Amazon and Walmart resources for the same model at Amazon.ca and Walmart.ca (match on brand, model, colour and size).
+
+- **Search Products** and **Get List Page** (a category or deals page path from Get Categories, or a sale, clearance or Black Friday page): 24 products a page (12 on Mark's category pages), sorts, Brand, Deals and Filters (JSON) from an earlier response's facets (Include Facets). Deals on a deals page is a 400, not charged.
+- **was_price** is the site's was price as given, only where the site shows one; **footnote** is the site's own sentence on it ("Was price reflects the last national regular price this product was sold for.", English pages). A percent off is not returned: compute it from price and was_price and label it computed. **sale_ends** is the sale end date the site shows, as given.
+- **Get Product**: variants with their own price, was price and sale_ends, units_at_store and units_online. units_at_store are the units at the store the site assigns to the request's region (assigned_store); a caller cannot choose a store. In our checks prices were the same at every store sampled.
+- **Get Reviews** (SportChek): a summary, then page 1 the first 8, pages 2-4 the next 30 each; no reviewer names. **Get Questions** (Mark's): the newest 10 with answers; no asker names.
+- **Language** (Mark's): French reads L'Equipeur (lequipeur.com) on Search Products, Get List Page, Get Product, Get Brands and Get Categories: the same product codes and CAD prices, French titles. SportChek is English only.
+- Not available: choosing a store for price or stock, stores near a postal code, the flyer, Triangle Rewards or CT Money prices, price history (poll and store the answers), UPC or barcodes (the site shows none), cart or checkout.
+
+Every SportChek and Mark's operation costs 1 credit; credits_used says what was charged. Answers take about 10-90 seconds, so every operation carries a 240-second request timeout. Failed calls and refused inputs are not charged; a not-found is charged.
 
 ## What changed in 0.87.0
 

@@ -40,6 +40,8 @@ import {
 	canadianTireOperations,
 	canadianTireFields,
 } from './descriptions/CanadianTireDescription';
+import { sportchekOperations, sportchekFields } from './descriptions/SportchekDescription';
+import { marksOperations, marksFields } from './descriptions/MarksDescription';
 import {
 	dollarGeneralOperations,
 	dollarGeneralFields,
@@ -159,7 +161,7 @@ export class Scavio implements INodeType {
 		version: 1,
 		subtitle: '={{ $parameter["operation"] + ": " + $parameter["resource"] }}',
 		description:
-			'Real-time structured data from Google, ChatGPT, Gemini, Amazon, Walmart, eBay, Target, Home Depot, Costco, HEB, Kroger, Publix, IKEA, Wayfair, Ashley Furniture, Maisons du Monde, Decathlon, Spec\'s, Lowe\'s, Ace Hardware, Tractor Supply, Michaels, Nike, Staples, Sam\'s Club, Canadian Tire, Dollar General, Dollar Tree, Discount Tire, Vevor, Nellis Auction, Sephora, Ulta Beauty, Dermstore, ALDI, Micro Center, Walgreens, CVS, Whole Foods Market, Harbor Freight, AutoZone, O\'Reilly Auto Parts, Instacart, PetSmart, Petco, iHerb, Chewy, Menards, Nordstrom, Nordstrom Rack, Best Buy, TCGplayer, Nintendo eShop, H&M, Zara, Uniqlo, ASOS, Fashion Nova, Vinted, Mercari, Depop, Poshmark, OfferUp, thredUP, Macy\'s, Saks Fifth Avenue, Kohl\'s, JCPenney, Dick\'s Sporting Goods, Foot Locker, Fanatics, Argos, Media Expert, Action, HEMA, Carrefour, Allegro, bol.com, OLX, Trendyol, Mercado Libre, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Facebook, Pinterest, Threads, Kuaishou, Douyin, Weibo, Twitch, GitHub, Etsy, AliExpress, Zillow, Redfin, Realtor.com, Rightmove, Booking.com, Airbnb, Tripadvisor, Yelp, Indeed, Glassdoor, the App Store, Google Play, SEC EDGAR, Companies House, Legistar, company websites (contact and owner enrichment), G2, Capterra, Trustpilot, ad libraries, and any URL',
+			'Real-time structured data from Google, ChatGPT, Gemini, Amazon, Walmart, eBay, Target, Home Depot, Costco, HEB, Kroger, Publix, IKEA, Wayfair, Ashley Furniture, Maisons du Monde, Decathlon, Spec\'s, Lowe\'s, Ace Hardware, Tractor Supply, Michaels, Nike, Staples, Sam\'s Club, Canadian Tire, SportChek, Mark\'s, Dollar General, Dollar Tree, Discount Tire, Vevor, Nellis Auction, Sephora, Ulta Beauty, Dermstore, ALDI, Micro Center, Walgreens, CVS, Whole Foods Market, Harbor Freight, AutoZone, O\'Reilly Auto Parts, Instacart, PetSmart, Petco, iHerb, Chewy, Menards, Nordstrom, Nordstrom Rack, Best Buy, TCGplayer, Nintendo eShop, H&M, Zara, Uniqlo, ASOS, Fashion Nova, Vinted, Mercari, Depop, Poshmark, OfferUp, thredUP, Macy\'s, Saks Fifth Avenue, Kohl\'s, JCPenney, Dick\'s Sporting Goods, Foot Locker, Fanatics, Argos, Media Expert, Action, HEMA, Carrefour, Allegro, bol.com, OLX, Trendyol, Mercado Libre, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Facebook, Pinterest, Threads, Kuaishou, Douyin, Weibo, Twitch, GitHub, Etsy, AliExpress, Zillow, Redfin, Realtor.com, Rightmove, Booking.com, Airbnb, Tripadvisor, Yelp, Indeed, Glassdoor, the App Store, Google Play, SEC EDGAR, Companies House, Legistar, company websites (contact and owner enrichment), G2, Capterra, Trustpilot, ad libraries, and any URL',
 		defaults: { name: 'Scavio' },
 		inputs: [NodeConnectionTypes.Main],
 		outputs: [NodeConnectionTypes.Main],
@@ -258,6 +260,8 @@ export class Scavio implements INodeType {
 					// Maisons du Monde is the retailer's brand name; title case would misspell it.
 					// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased
 					{ name: 'Maisons du Monde', value: 'maisonsDuMonde' },
+					// Mark's is the retailer's brand name; `marks` is frozen once saved in user workflows.
+					{ name: "Mark's", value: 'marks' },
 					{ name: 'Media Expert', value: 'mediaexpert' },
 					// Menards is the retailer's brand name, not a plural noun, and `menards` is
 					// frozen once saved in user workflows.
@@ -291,6 +295,8 @@ export class Scavio implements INodeType {
 					// Spec's is the retailer's brand name, not a plural noun, and `specs` is
 					// frozen once saved in user workflows.
 					{ name: "Spec's", value: 'specs' },
+					// SportChek is the retailer's brand name (one word, capital C).
+					{ name: 'SportChek', value: 'sportchek' },
 					// Staples is the retailer's brand name, not a plural noun.
 					{ name: 'Staples', value: 'staples' },
 					{ name: 'Target', value: 'target' },
@@ -374,6 +380,10 @@ export class Scavio implements INodeType {
 			...samsClubFields,
 			...canadianTireOperations,
 			...canadianTireFields,
+			...sportchekOperations,
+			...sportchekFields,
+			...marksOperations,
+			...marksFields,
 			...dollarGeneralOperations,
 			...dollarGeneralFields,
 			...dollartreeOperations,
