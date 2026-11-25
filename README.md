@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 116 resources and 930 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 117 resources and 940 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -44,6 +44,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Sam's Club](https://scavio.dev/docs/samsclub-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Find Clubs 1 | Search Products, Get Product, Find Clubs, Get Instant Savings, Get Category Products, Get Reviews |
 | [Canadian Tire](https://scavio.dev/docs/canadiantire-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Find Stores, Get Availability, Find Clearance Items, Get Deals |
 | [Dollar General](https://scavio.dev/docs/dollargeneral-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Find Stores, Get Deals, Get Coupons |
+| [Dollar Tree (US; Canada store pages)](https://scavio.dev/docs/dollartree-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Find Stores 5 | Search Products, Get Product, Get Category Products, Get Categories, Get Brand Products, Get Deals, Get Store Stock, Find Stores, Get Store, Get Reviews |
 | [Sephora](https://scavio.dev/docs/sephora-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Product |
 | [Ulta Beauty](https://scavio.dev/docs/ulta-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Product, Get Store Availability |
 | [ALDI](https://scavio.dev/docs/aldi-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Find Stores |
@@ -148,6 +149,19 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.82.0
+
+**New resource: Dollar Tree, 10 operations.** Dollar Tree (dollartree.com, the US and Canada discount variety store chain): an item's online case price next to its unit price, case pack, minimum order and split-case rules exactly as Dollar Tree gives them, and the units of one item at a Dollar Tree store plus its nearby stores; plus search, categories, brands, sale, clearance, New Arrivals and More Choices listings, stores with hours and services, and reviews. Dollar Tree has no public API for its catalog, prices or store stock (suppliers work through its vendor portal and EDI). Pair it with the Dollar General, Walmart, Target and Instacart resources for a price check on the same item.
+
+- **Country**: every operation is United States only (www.dollartree.com, USD) except Get Store, which also takes Canada (Dollar Tree Canada store pages, English, no prices). Dollar Tree Canada has no shopping site.
+- **Prices** are Dollar Tree's online unit prices from one national online price list (the same at every store and ZIP measured); Dollar Tree notes that prices and availability may vary between stores and online, and in-store shelf prices are not published online. Online orders are by the case: item 221159 (9-in. White Paper Plates, 40-ct. Packs) was $1.50 a unit, case_pack 30, case_price $45.00, minimum_quantity 5 (captured 2026-11-24). A case pack or case price Dollar Tree gives as 0 is null; stores sell single units.
+- **Get Store Stock** needs a store number (Find Stores gives the store numbers near a ZIP; a ZIP alone does not pick a store) and returns the units at that store, up to about 63 nearby stores by store number, ship-to-home units with an ETA and the ship-to-store ETA: item 221159 showed 116 units at store 5126 (New York) and 63 nearby stores, 59 of them with stock.
+- **Search Products** matches item numbers, not UPCs. **Get Deals** lists Sale, Clearance, New Arrivals or More Choices (Dollar Tree's multi-price assortment); Dollar Tree publishes no validity dates and no weekly ad.
+- **Get Reviews** returns the newest English reviews (up to about 98 per call), many syndicated from brand sites and flagged; no other sort, no star filter, no Q&A, no reviewer names.
+- Not available: search suggestions, the weekly ad, deal validity dates, Quick Order / bulk ordering, gift cards, Canada products and prices, price history, checkout.
+
+Every Dollar Tree operation costs 1 credit except Find Stores (5); credits_used says what was charged. Every operation carries a 240-second request timeout, and Get Store Stock, Find Stores and Get Reviews (usually 10-35 s, up to about 2.5 minutes) 300 seconds. Failed calls are not charged; a not-found is charged.
 
 ## What changed in 0.81.0
 
