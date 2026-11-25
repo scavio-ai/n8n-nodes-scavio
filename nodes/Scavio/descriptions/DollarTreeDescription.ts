@@ -240,7 +240,7 @@ export const dollartreeOperations: INodeProperties[] = [
 				name: 'Get Product',
 				value: 'product',
 				action: 'Get a dollar tree product',
-				description: `One ${NAME} item in full by item number or link: price (unit), list_price, sale_price, unit_price_text, case_price, case_pack, minimum_quantity, split_case (available, multiple, fee), not_for_individual_sale, UPCs as given, rating, review_count, delivery options, order_limit, online_stock (units Dollar Tree can ship), specifications, categories and child SKUs. ${PRICES} An unknown item is a charged not-found. ${ONE}.`,
+				description: `One ${NAME} item in full by item number or link: price (unit), list_price, sale_price, unit_price_text, case_price, case_pack, minimum_quantity, split_case (available, computed by Scavio as minimum_quantity < case_pack, and multiple), split_case_fee (Dollar Tree's field as given; its meaning is not published, so it is not a fee), banner_code (DT or FD, not a store-brand flag), not_for_individual_sale, UPCs as given, rating, review_count, delivery options, order_limit, online_stock (units Dollar Tree can ship), specifications, categories and child SKUs. ${PRICES} An unknown item is a charged not-found. ${ONE}.`,
 				routing: request('/api/v1/dollartree/product'),
 			},
 			{
@@ -261,7 +261,7 @@ export const dollartreeOperations: INodeProperties[] = [
 				name: 'Get Store Stock',
 				value: 'storeStock',
 				action: 'Get dollar tree store stock',
-				description: `Units of one ${NAME} item at a store, as Dollar Tree's product page reports them for the store chosen: the store's units and status, up to about 63 nearby stores by store number with their units, nearby_in_stock, ship_to_home (units, cases, ETA) and ship_to_store (ETA). Stores sell single units. A store number is required: a ZIP alone does not pick a store (Find Stores gives the store numbers near a ZIP). Price does not change by store. An unknown item or store is a charged not-found. ${SLOW} ${ONE}.`,
+				description: `Units of one ${NAME} item at a store, as Dollar Tree's product page reports them for the store chosen: the store's units and status (status can be null), up to about 63 nearby stores by store number with their units (none at some rural stores), nearby_in_stock, ship_to_home (dc_number, cases, case_size, max_order_units, ETA) and ship_to_store (dc_number, units, cases, ETA). max_order_units is the most units orderable for delivery, the same at every store, not cases x case_size. Stores sell single units. A store number is required: a ZIP alone does not pick a store (Find Stores gives the store numbers near a ZIP). Price does not change by store. An unknown item or store is a charged not-found. ${SLOW} ${ONE}.`,
 				routing: request('/api/v1/dollartree/store-stock', false, SLOW_TIMEOUT),
 			},
 			{
