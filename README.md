@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 118 resources and 955 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 119 resources and 966 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -46,6 +46,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Dollar General](https://scavio.dev/docs/dollargeneral-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Find Stores, Get Deals, Get Coupons |
 | [Dollar Tree (US; Canada store pages)](https://scavio.dev/docs/dollartree-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Find Stores 5 | Search Products, Get Product, Get Category Products, Get Categories, Get Brand Products, Get Deals, Get Store Stock, Find Stores, Get Store, Get Reviews |
 | [Discount Tire (US)](https://scavio.dev/docs/discounttire-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Tires by Size, Get Vehicle Fitment, Get Tires for Vehicle, Get Product, Get Model, Get Store Stock, Find Stores, Get Store, Get Reviews, Get Store Reviews, Get Wheels, Browse Tire Models, Get Categories, Get Suggestions, Get Appointment Availability |
+| [Vevor (13 storefronts)](https://scavio.dev/docs/vevor-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Get Prices Across Storefronts 3 | Search Products, Get Product, Get Shipping, Get Reviews, Get Questions, Get Search Suggestions, Get Categories, Get Category Products, Get Collection, Get Deals, Get Prices Across Storefronts |
 | [Sephora](https://scavio.dev/docs/sephora-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Product |
 | [Ulta Beauty](https://scavio.dev/docs/ulta-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Product, Get Store Availability |
 | [ALDI](https://scavio.dev/docs/aldi-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Find Stores |
@@ -150,6 +151,20 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.84.0
+
+**New resource: Vevor, 11 operations.** VEVOR (vevor.com, the tools and equipment seller with storefronts in 13 countries): VEVOR's price on each storefront in its own currency, the was price only while a VEVOR deal is active (with VEVOR's deal start and end), every variant with its own price and stock, the shipping fee and delivery date by US state or Canadian province, and the same SKU on all 13 storefronts in one call. VEVOR has no public product API (it runs an affiliate programme through Awin and other networks; the Pro Member, Dealer & Distributor and dropshipping programmes are sign-up forms, not APIs). See the [Vevor API page](https://scavio.dev/vevor-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme).
+
+- **Country and Language**: United States (www.vevor.com, USD; English or Spanish), Canada (www.vevor.ca, CAD; English or French), United Kingdom (GBP), Australia (AUD), Germany, France, Spain, Italy, Netherlands (EUR, each in its own language), Poland (PLN), Mexico (MXN, Spanish), Norway (www.vevor.co.no, EUR) and Other Europe (eur.vevor.com, EUR; English, Swedish, Danish, Finnish, Norwegian, Portuguese, Czech, Greek, Slovak, Hungarian or Romanian). Each storefront language has its own search index: send the search term in that language.
+- **Price per storefront**: measured 2026-11-25, one SKU (GYQXJBMQJQYPKEO1LV0) was 195.01 USD on www.vevor.com, 233.90 CAD on www.vevor.ca, 175.90 GBP on www.vevor.co.uk, 170.90 EUR on www.vevor.de, 261.99 EUR on www.vevor.co.no and 721.90 PLN on www.vevor.pl. Get Prices Across Storefronts returns all 13 in one call (3 credits) and takes the SKU only.
+- **Shipping by state**: price and stock do not change by ZIP; Get Shipping needs State on the US storefront and Province on the Canadian one, which drive the fee and delivery date (a welder to Alaska, AK 99501, had a $130 fee; contiguous states were measured free).
+- **Was price**: given only while a VEVOR deal is active (deal start and end as VEVOR gives them) or when VEVOR's page shows its own strikethrough price, otherwise null; never compute a discount from it.
+- **Lists**: 60 items a page; totals are exact up to 100, then "100+" (total_is_lower_bound).
+- **Reviews**: one pool shared across storefronts and a product's variants, so they come in many languages; up to 100 a page, sorts, star and photo filters; no reviewer names.
+- Not available: coupon codes (VEVOR shows them only after a claim), the pickup store, Pro or bulk prices, financing, the ships-from warehouse, VEVOR's listings on other marketplaces (use the Amazon, Walmart, Home Depot, Tractor Supply, TikTok Shop or eBay resources), price history, checkout.
+
+Every Vevor operation costs 1 credit except Get Prices Across Storefronts (3); credits_used says what was charged. Every operation carries a 240-second request timeout. Failed calls are not charged; a not-found is charged.
 
 ## What changed in 0.83.0
 
