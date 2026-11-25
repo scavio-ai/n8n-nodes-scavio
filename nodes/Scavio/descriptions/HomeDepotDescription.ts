@@ -1,8 +1,9 @@
 import type { INodeProperties } from 'n8n-workflow';
 
 // Home Depot (US, homedepot.com) is the default. Country "Canada" reads Home Depot Canada
-// (homedepot.ca) on Search Products, Get Product and Get Reviews; the five other operations
-// are Home Depot Canada only and send no country (the API defaults them to "ca"). The
+// (homedepot.ca) on Search Products, Get Product, Get Reviews, Find Stores and Get
+// Availability. Get Delivery Quote is US only. Five operations are Home Depot Canada only
+// and send no country (the API defaults them to "ca"). The
 // Country field only sends a value for Canada, so a US workflow posts exactly the body it
 // did before Home Depot Canada existed.
 
@@ -140,6 +141,22 @@ export const homeDepotOperations: INodeProperties[] = [
 		displayOptions: { show: { resource: ['homeDepot'] } },
 		options: [
 			{
+				name: 'Find Stores',
+				value: 'stores',
+				action: 'Find home depot stores',
+				description:
+					'Find Home Depot stores near a ZIP code, city or address: store number, address, coordinates, distance, phone numbers, opening hours and in-store services. Use the store number with Get Availability and Get Delivery Quote. Home Depot Canada: near a postal code or city, or latitude and longitude, with 7 dated days of hours. Costs 2 credits, 1 for Canada.',
+				routing: { request: { method: 'POST', url: '/api/v1/homedepot/stores' } },
+			},
+			{
+				name: 'Get Availability',
+				value: 'availability',
+				action: 'Get home depot store availability',
+				description:
+					"One item's price, promotions and pickup stock at a store, and delivery options, dates and charges to a ZIP code; pass a Store ID, a ZIP code or both. Home Depot Canada: Store ID required, the store's price with exact units and aisle and bay; no delivery quotes. When Home Depot Canada has no store record for an item that exists, the answer is an unbilled 502. Costs 2 credits, 1 for Canada.",
+				routing: { request: { method: 'POST', url: '/api/v1/homedepot/availability' } },
+			},
+			{
 				name: 'Get Categories',
 				value: 'categories',
 				action: 'Get home depot canada categories',
@@ -154,6 +171,14 @@ export const homeDepotOperations: INodeProperties[] = [
 				description:
 					'Home Depot Canada only: one category or collection page by Category ID, priced at a store, with exact units at that store and aisle and bay. Prices in CAD. An unknown category or store is a charged 404. Costs 1 credit.',
 				routing: { request: { method: 'POST', url: '/api/v1/homedepot/category' } },
+			},
+			{
+				name: 'Get Delivery Quote',
+				value: 'shipping',
+				action: 'Get a home depot delivery quote',
+				description:
+					'United States only: every delivery option Home Depot quotes for an item to a ZIP code for a quantity: charge, free-shipping status, delivery dates, the delivery level on bulky items, and states it will not ship to. Not available for Home Depot Canada. Costs 4 credits.',
+				routing: { request: { method: 'POST', url: '/api/v1/homedepot/shipping' } },
 			},
 			{
 				name: 'Get Product',
@@ -219,7 +244,7 @@ export const homeDepotFields: INodeProperties[] = [
 			{ name: 'Canada', value: 'ca' },
 			{ name: 'United States', value: 'us' },
 		],
-		displayOptions: show(['search', 'product', 'reviews']),
+		displayOptions: show(['search', 'product', 'reviews', 'stores', 'availability']),
 		description:
 			"Home Depot (homedepot.com) or Home Depot Canada (homedepot.ca, The Home Depot's Canadian store: 182 stores in 10 provinces; prices in CAD, 1 credit per call)",
 		routing: { request: { body: { country: '={{ $value === "ca" ? "ca" : undefined }}' } } },
@@ -270,7 +295,7 @@ export const homeDepotFields: INodeProperties[] = [
 		required: true,
 		default: '',
 		placeholder: '206568793',
-		displayOptions: show(['product', 'reviews', 'stock']),
+		displayOptions: show(['product', 'reviews', 'stock', 'availability', 'shipping']),
 		routing: { request: { body: { item_id: '={{ $value }}' } } },
 		description:
 			'Home Depot item ID, or a full product URL; tracking parameters are discarded. For Home Depot Canada a 10-digit item ID or a homedepot.ca link. An unknown item comes back as a 404.',
@@ -313,6 +338,56 @@ export const homeDepotFields: INodeProperties[] = [
 		displayOptions: show(['store']),
 		routing: { request: { body: { store_id: '={{ $value }}' } } },
 		description: 'A Home Depot Canada store number (4 digits)',
+	},
+
+	// ── Find Stores ──
+	{
+		displayName: 'Query',
+		name: 'query',
+		type: 'string',
+		required: true,
+		default: '',
+		placeholder: '98101',
+		displayOptions: show(['stores'], ['us']),
+		routing: { request: { body: { query: '={{ $value }}' } } },
+		description: 'A ZIP code, city or address to find stores near',
+	},
+	{
+		displayName: 'Query',
+		name: 'query',
+		type: 'string',
+		default: '',
+		placeholder: 'M5V 2T6',
+		displayOptions: show(['stores'], ['ca']),
+		routing: { request: { body: { query: '={{ $value || undefined }}' } } },
+		description:
+			'A Canadian postal code or city. Optional when Canada Options sets Latitude and Longitude.',
+	},
+
+	// ── Get Availability (Canada) ──
+	{
+		displayName: 'Store ID',
+		name: 'store_id',
+		type: 'string',
+		required: true,
+		default: '',
+		placeholder: '7076',
+		displayOptions: show(['availability'], ['ca']),
+		routing: { request: { body: { store_id: '={{ $value }}' } } },
+		description: 'A Home Depot Canada store number, from Find Stores or Get Store Stock',
+	},
+
+	// ── Get Delivery Quote ──
+	{
+		displayName: 'ZIP Code',
+		name: 'zip',
+		type: 'string',
+		required: true,
+		default: '',
+		placeholder: '98101',
+		displayOptions: show(['shipping']),
+		routing: { request: { body: { zip: '={{ $value }}' } } },
+		description: '5-digit US ZIP code to quote delivery to',
 	},
 
 	// ── Additional Options: Search Products (United States) ──
@@ -463,6 +538,134 @@ export const homeDepotFields: INodeProperties[] = [
 				...languageOption,
 				description: 'Home Depot Canada review language (English and French are different review sets)',
 			},
+		],
+	},
+
+	// ── Additional Options: Find Stores (United States) ──
+	{
+		displayName: 'Additional Options',
+		name: 'additionalOptions',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
+		displayOptions: show(['stores'], ['us']),
+		options: [
+			{
+				displayName: 'Max Stores',
+				name: 'maxStores',
+				type: 'number',
+				default: 20,
+				typeOptions: { minValue: 1, maxValue: 20 },
+				description: 'Stores to return, nearest first, 1-20',
+				routing: { request: { body: { limit: '={{ $value }}' } } },
+			},
+		],
+	},
+
+	// ── Canada Options: Find Stores (Canada) ──
+	{
+		displayName: 'Canada Options',
+		name: 'canadaOptions',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
+		displayOptions: show(['stores'], ['ca']),
+		options: [
+			languageOption,
+			{
+				displayName: 'Latitude',
+				name: 'latitude',
+				type: 'number',
+				default: 0,
+				typeOptions: { numberPrecision: 6 },
+				description: 'With Longitude, instead of the query',
+				routing: { request: { body: { latitude: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Longitude',
+				name: 'longitude',
+				type: 'number',
+				default: 0,
+				typeOptions: { numberPrecision: 6 },
+				description: 'With Latitude, instead of the query',
+				routing: { request: { body: { longitude: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Max Stores',
+				name: 'maxStores',
+				type: 'number',
+				default: 10,
+				typeOptions: { minValue: 1, maxValue: 50 },
+				description: 'Stores to return, nearest first, 1-50',
+				routing: { request: { body: { limit: '={{ $value }}' } } },
+			},
+			{
+				displayName: 'Page',
+				name: 'page',
+				type: 'number',
+				default: 1,
+				typeOptions: { minValue: 1, maxValue: 100 },
+				description: 'Result page to read',
+				routing: { request: { body: { page: '={{ $value }}' } } },
+			},
+		],
+	},
+
+	// ── Additional Options: Get Availability (United States) ──
+	{
+		displayName: 'Additional Options',
+		name: 'additionalOptions',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
+		displayOptions: show(['availability'], ['us']),
+		options: [
+			storeIdOption(
+				"Store number from Find Stores, for pickup stock and the store's price. Pass a Store ID, a ZIP Code or both.",
+			),
+			{
+				displayName: 'ZIP Code',
+				name: 'zip',
+				type: 'string',
+				default: '',
+				placeholder: '98101',
+				description:
+					'5-digit US ZIP code to quote delivery to. Independent of the Store ID: the two need not be near each other.',
+				routing: { request: { body: { zip: '={{ $value || undefined }}' } } },
+			},
+		],
+	},
+
+	// ── Canada Options: Get Availability (Canada) ──
+	{
+		displayName: 'Canada Options',
+		name: 'canadaOptions',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
+		displayOptions: show(['availability'], ['ca']),
+		options: [languageOption],
+	},
+
+	// ── Additional Options: Get Delivery Quote ──
+	{
+		displayName: 'Additional Options',
+		name: 'additionalOptions',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
+		displayOptions: show(['shipping']),
+		options: [
+			{
+				displayName: 'Quantity',
+				name: 'quantity',
+				type: 'number',
+				default: 1,
+				typeOptions: { minValue: 1, maxValue: 999 },
+				description: 'Units to quote delivery for',
+				routing: { request: { body: { quantity: '={{ $value }}' } } },
+			},
+			storeIdOption('Optional store number from Find Stores'),
 		],
 	},
 
