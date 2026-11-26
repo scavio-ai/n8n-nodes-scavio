@@ -22,7 +22,7 @@ export const cvsOperations: INodeProperties[] = [
 				value: 'product',
 				action: 'Get a cvs product',
 				description:
-					'One CVS product by URL or ID: regular and sale price, unit price, promotion and its end date, rating, review count, UPC, size, description, highlights, ingredients, directions, warnings, attributes, breadcrumbs, images and every variant (SKU ID, UPC, size, price, rating). Can take 10-30 seconds or more. Costs 1 credit.',
+					'One CVS product by URL or ID: regular and sale price, unit price, promotion and its end date, rating, review count, UPC, size, description, highlights, ingredients, directions, warnings, attributes, breadcrumbs, images and every variant (SKU ID, UPC, size, price, rating). Can take 10-30 seconds or more. Costs 2 credits.',
 				// Answers can take 10-30+ seconds, so the route carries a 120s timeout.
 				routing: { request: { method: 'POST', url: '/api/v1/cvs/product', timeout: 120000 } },
 			},
