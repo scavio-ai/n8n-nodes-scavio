@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 140 resources and 1,143 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 148 resources and 1,193 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -78,6 +78,9 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [CarGurus (US, Canada, UK; Spanish and French pages)](https://scavio.dev/docs/cargurus-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Listings, Get Dealer, Find Dealers, Get Price Trends, Get Research Page, Get Expert Reviews, Get Makes, Get Models |
 | [CarMax (US)](https://scavio.dev/docs/carmax-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Cars, Get Listing, Get Photos, Get Stores, Get Store, Get Store Inventory, Get Reviews, Get Review Summary, Get Suggestions, Get Makes, Get Models, Get Car Value |
 | [Carvana (US)](https://scavio.dev/docs/carvana-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Vehicles, Get Vehicle, Get Model Year Guide, Get Trims, Get Lineup, Get Makes |
+| [TrueCar (US)](https://scavio.dev/docs/truecar-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Vehicles, Get Listing, Get Model Overview, Get Owner Reviews, Get Dealer, Get Dealer Inventory, Get Suggestions, Get Makes, Get Models |
+| [Edmunds (US)](https://scavio.dev/docs/edmunds-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Listings, Get Listing, Get Consumer Reviews, Get Dealer, Get Model, Get MSRP and Price, Get Appraisal Values, Get Makes and Models |
+| [Kelley Blue Book (US)](https://scavio.dev/docs/kbb-car-value?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 (Get Car Value with ZIP Code 2, up to 6; deeper Get Reviews pages 1 or 5) | Get Car Value, Get Model Year, Search Cars for Sale, Get Listing, Get Reviews, Find Dealers, Get Dealer, Get Makes and Models |
 | [PetSmart](https://scavio.dev/docs/petsmart-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Find Stores, Get Store Stock, Get Availability, Get Deals |
 | [Petco](https://scavio.dev/docs/petco-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Product, Find Stores, Get Store Inventory |
 | [iHerb](https://scavio.dev/docs/iherb-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Products, Get Product, Get Prices, Get Reviews |
@@ -139,8 +142,13 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Redfin](https://scavio.dev/docs/redfin-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Listings, Get Property, Get Market Stats |
 | [Realtor.com](https://scavio.dev/docs/realtor-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Listings, Get Property, Get Location Suggestions, Get Market Stats, Search Agents, Get Agent Profile |
 | [Rightmove (UK)](https://scavio.dev/docs/rightmove-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Look Up Locations, Search Listings, Get Property, Get Sold Prices, Get Sold Property, Search Agents, Get Agent Branch |
+| [Rent.com (US; Apartment Guide via Site)](https://scavio.dev/docs/rentcom-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Rentals, Get Listing, Get Building, Get Rent Trends, Get Suggestions, Get Cities |
+| [Trulia (US; Spanish rental pages)](https://scavio.dev/docs/trulia-neighborhood?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Get Neighborhood, Search Homes, Get Property, Get School, Get Suggestions |
+| [StreetEasy (NYC and North NJ)](https://scavio.dev/docs/streeteasy-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Listings, Get Listing, Get Building, Get Buildings, Get Market Data |
+| [RentCafe (US and Canada; French pages)](https://scavio.dev/docs/rentcafe-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Rentals, Get Property, Get Floor Plan Units, Get Reviews, Get Suggestions, Get Rent Trends |
 | [Booking.com](https://scavio.dev/docs/booking-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Properties, Get Hotel, Get Hotel Reviews |
 | [Airbnb](https://scavio.dev/docs/airbnb-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Stays, Get Listing, Get Reviews |
+| [Vrbo (20 market-languages)](https://scavio.dev/docs/vrbo-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 (Search Properties 2 per attempt, 2-8) | Search Properties, Get Property, Get Suggestions |
 | [Tripadvisor](https://scavio.dev/docs/tripadvisor-locations?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Resolve Location IDs, Search Locations, Get Location, Get Reviews |
 
 ### Local, jobs, and employers
@@ -172,6 +180,96 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.95.0
+
+**8 new resources, 50 operations:** Rent.com, Trulia, StreetEasy, RentCafe, Vrbo, TrueCar, Edmunds, Kelley Blue Book. All are new resources; no existing operation changed.
+
+**New resource: Rent.com, 6 operations.** Rent.com (rent.com) and Apartment Guide (apartmentguide.com, the same rentals), the US rental listing sites run by Redfin: rentals by city and state, ZIP or neighborhood with the listed rent, rent by bed count, units available, rent specials and price drops; one rental in full with floor plans and their units, fees, pet policies, parking and amenities; the unit listings in one building; Rent.com's average rent per bed count with its year-on-year change and monthly series; search-box suggestions; and the cities of a state. See the [Rent.com API page](https://scavio.dev/rentcom-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme).
+
+- **Search Rentals**: City and State (optionally a Neighborhood) or a ZIP Code; property type, beds, baths, monthly rent range, minimum square feet, pets, cheap or luxury, rent specials, up to 8 amenities, 6 sorts; 30 a page on Rent.com, 50 on Apartment Guide (captured 2026-11-26: 2-bed apartments in Austin, TX by lowest price gave 1819 listings and 20380 available units, the first from 624 USD a month).
+- **Site**: Rent.com (default) or Apartment Guide on Search Rentals, Get Listing and Get Suggestions. Apartment Guide takes City and State (with one Beds value) or a ZIP Code, and Page; every other filter is Rent.com only.
+- **Get Listing**: floor plans with their units, fees, pet policies, parking, amenities, office hours, rent specials, price drops, lease terms, schools, nearby places and walk score. Apartment Guide's 5898701 and Rent.com's lc5898701 are the same listing.
+- **Get Rent Trends**: the current average rent per bed count with its year-on-year change and the monthly series as Rent.com publishes it on the page; series_range says which months it covers, and it can end well before today (captured 2026-11-26: Los Angeles, CA, 2024-04 to 2025-05).
+- No phone number, email or agent or landlord name is returned; the management company is given only for listings a property manager pays to list.
+- Not available: rental applications or tours, price history beyond the listed price drops, homes for sale.
+
+Every Rent.com operation costs 1 credit; credits_used says what was charged. Every operation carries a 240-second request timeout. Failed calls are not charged; a not-found is charged, and a page past the last one is an empty page with a note (charged).
+
+**New resource: Trulia, 5 operations.** Trulia (trulia.com, Zillow Group's home and neighborhood site): one neighborhood with Trulia's "What Locals Say" survey results and safety statements, resident reviews, homes for sale and for rent, the commute, amenities, schools and Trulia's market snapshot; homes for sale, for rent or recently sold; one home or rental building in full; one school with its GreatSchools ratings; and place suggestions. See the [Trulia API page](https://scavio.dev/trulia-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme).
+
+- **Get Neighborhood**: survey results and safety statements with their percentages, resident reviews (up to 40 shown; the total and category counts cover all), facts, amenities, schools and (on by default, same credit) the market snapshot and median sale price history with the scope Trulia gives them (captured 2026-11-26: Upper East Side, New York, 1480 survey responses, 277 resident reviews, average sale price $1.47M in October 2026). Crime data is no longer on Trulia.
+- **Search Homes**: a ZIP code, "City, ST" or "Neighborhood, City, ST"; for sale (default), for rent or recently sold; bed, bath, price, square-foot, year-built and HOA filters, property types, keyword, pets on rentals, 7 sorts, 40 a page up to page 50 (captured 2026-11-26: homes for sale in Austin, TX gave 2146).
+- **Get Property**: a home by zpid, a rental building by building ID, or either by link: Zestimate and Rent Zestimate as Trulia shows them, price and tax history, payment estimate, the neighborhood's location ID, and for buildings floor plans with units, fees and special offers.
+- **Language**: English or Spanish where Trulia publishes Spanish pages: rental searches, buildings and neighborhoods.
+- No listing-agent names, phones, emails or license numbers and no reviewer names are returned; brokerage company names are.
+- Not available: crime data, agent profiles, more than 50 pages of one search.
+
+Every Trulia operation costs 1 credit; credits_used says what was charged. Every operation carries a 240-second request timeout. Failed calls are not charged; a not-found is charged.
+
+**New resource: StreetEasy, 5 operations.** StreetEasy (streeteasy.com, Zillow Group's New York City real estate site, covering NYC's five boroughs and North New Jersey): homes for sale, rentals and past sales with StreetEasy's own filters and sorts, net effective rent and months free on rentals, one listing in full with its price changes, monthly charges and the unit's past listings, one building with its policies and per-bedroom inventory, the building directory of an area, and the monthly market data StreetEasy publishes for New York City. StreetEasy publishes no public API for its listings. See the [StreetEasy API page](https://scavio.dev/streeteasy-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme).
+
+- **Area** is required on Search Listings and Get Buildings: a borough, a neighborhood, a North NJ city, nyc, or a StreetEasy area ID (captured 2026-11-26: rentals in Jersey City gave 2927 listings).
+- **Search Listings**: Mode For Sale, For Rent or Sold; price, bedrooms, bathrooms, size, home type, sale type, year built, amenities, pets, ZIP, by owner (rent), in contract (sale), 7 sorts, up to 100 pages. Featured and sponsored cards come first, with their placement.
+- **Get Listing**: by link or path, or by ID with a Listing Type (sale or rent). Price changes, monthly maintenance, taxes and common charges, net effective rent and months free, move-in fees, the unit's past listings and the area's recent-listing prices for that bedroom count (captured 2026-11-26: a one-bedroom at 99 Provost Street, Jersey City, at 4730 USD a month, net effective 4336 USD with 2 months free).
+- **Get Market Data**: New York City only (New Jersey areas have no published series); sales by home type or rentals by bedrooms, monthly from 2010-01 (captured 2026-11-26: Williamsburg median sale price 1450000 USD in 2026-10).
+- No agent or private landlord names, emails, phones or photos are returned; the brokerage is.
+- Not available: agent profiles, reviews (StreetEasy has none), search suggestions, the Hamptons.
+
+Every StreetEasy operation costs 1 credit; credits_used says what was charged. Every operation carries a 240-second request timeout. Failed calls are not charged; a not-found is charged.
+
+**New resource: RentCafe, 6 operations.** RentCafe (rentcafe.com, Yardi's US and Canada rental listing site): rental search in any US or Canadian city, ZIP code, neighborhood or state, rents in USD or CAD, English or French pages; one listing in full with every floor plan, its fees and pet policy, amenities and RentCafe's own renters summary; every unit of a floor plan with its base rent and move-in date; resident reviews; location and property suggestions; and the rent trends RentCafe publishes for US cities. See the [RentCafe API page](https://scavio.dev/rentcafe-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme).
+
+- **Search Rentals**: by Location (austin-tx, 78704-tx, downtown-toronto-toronto-on, a state), City and State, or ZIP Code and State; property type, ONE Filter per search (beds, rent specials, short-term, furnished, utilities included or an amenity) plus price range and pet-friendly, 5 sorts, 25 a page (captured 2026-11-26: 2-bedroom apartments in austin-tx gave 4228 listings; toronto-on 8559 in CAD).
+- **Market and Language**: United States (USD) or Canada (CAD), read from the location when left as is; French returns RentCafe's French pages with the same listings and prices.
+- **Get Property**: floor plans with their units and rents, policies (deposit, application and pet fees), amenities, category ratings, RentCafe's renters summary and reviews (captured 2026-11-26: Bridge At Indigo in Austin, 1130 to 2880 USD across 9 floor plans, rated 4 from 39 reviews). Get Floor Plan Units lists every unit of one floor plan with its base rent and move-in date.
+- **Get Reviews**: 10 a page in RentCafe's order; RentCafe offers no review sort or star filter. No reviewer names.
+- **Get Rent Trends**: US cities only (captured 2026-11-26: Austin, TX averaged 1643 USD, 1664 a year earlier); a city without a rent trends page is a not-found, not charged.
+- Not available: tours, contact or application forms, price alerts, price history.
+
+Every RentCafe operation costs 1 credit; credits_used says what was charged. Every operation carries a 240-second request timeout. Failed calls are not charged; a not-found is charged (except Get Rent Trends).
+
+**New resource: Vrbo, 3 operations.** Vrbo (vrbo.com, Expedia Group's vacation rental site) in 20 vrbo.com market-languages: vacation-rental search by place or region ID for your dates and guests, with the nightly price, the total for the stay, the was price, Vrbo's fees line and refund deadline, the guest rating and Premier Host badges; one property in full with every amenity group, house rules, highlights, photos and what is nearby; and Vrbo's destination suggestions. Vrbo's own API (Expedia Group's partner program) is for approved partners, not self-serve. See the [Vrbo API page](https://scavio.dev/vrbo-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme).
+
+- **Market**: United States (default, USD), United Kingdom (GBP), Canada in English or French (CAD), Mexico (MXN), Brazil (BRL), Spain, Italy, Portugal, Netherlands, Austria, Greece, Finland (EUR), Denmark (DKK), Sweden (SEK), Norway (NOK), Japan (JPY), Singapore (SGD), Australia (AUD), New Zealand (NZD), each in its own language and currency. abritel.fr, fewo-direkt.de, stayz.com.au and bookabach.co.nz are separate sites and are not covered.
+- **Search Properties**: Destination or Region ID plus Check-In and Check-Out (at most 90 nights); adults, children's ages, 5 sorts and Vrbo's filters (property type, amenity, house rule, pets, location type, Premier Host, minimum bedrooms). The first 50 results only: Vrbo's results pages carry no further page. Vrbo sometimes answers with a 3-result page; Scavio asks again (up to 4 attempts) and returns those 3 with partial: true if that is all Vrbo gives (captured 2026-11-26: Destin, Florida for 2027-01-15 to 2027-01-18 with 2 adults gave 50 of 394 matched properties, the first at 264 USD a night, 792 USD for 3 nights).
+- **Get Property**: read without dates; default_price is the site's own default stay, not a quote. Host: Premier Host flag and languages only (no host name, biography or photo).
+- Not available: reviews, the availability calendar, dated prices on a property (use Search Properties), results past the first 50, booking.
+
+Get Property and Get Suggestions cost 2 credits; Search Properties costs 2 per attempt, 2 to 8 (usually 2 to 6). credits_used says what was charged. Every operation carries a 240-second request timeout (a search can take about 3 minutes). Failed calls are not charged; a not-found is charged.
+
+**New resource: TrueCar, 9 operations.** TrueCar (truecar.com, the US car-buying marketplace): new and used dealer inventory around any US ZIP with the price, MSRP, TrueCar's own price label and rating as given, mileage, history counts and the dealer; one listing in full by VIN or link with TrueCar's price summary, dealer fees, specs, warranties and history flags; TrueCar's model overviews with trims, starting MSRP and the starting market average; owner reviews per generation; dealer profiles and one dealer's lot; makes, models and suggestions. TrueCar has no public API. See the [TrueCar API page](https://scavio.dev/truecar-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme).
+
+- **ZIP Code** is required on Search Vehicles (US only, USD; captured 2026-11-26: a used Toyota RAV4 around 10001 gave 2440 vehicles, the first a 2017 RAV4 Hybrid XLE at 16485 USD with 125334 miles, 5.8 miles away). TrueCar also lists far-away vehicles offered with delivery: read distance_miles.
+- **Search Vehicles**: make and model (names or slugs), 30 a page, TrueCar's ten sorts, radius, year, price, maximum mileage, trim, body style, drivetrains, colours, fuel types, accident-free and certified pre-owned; total is capped at 10,000 by TrueCar. Get Dealer Inventory lists one dealer's lot the same way.
+- **Get Listing**: by VIN or truecar.com listing link. The VIN is an input only and is never returned: Search Vehicles and Get Dealer Inventory carry no VIN or listing link, so their results cannot be passed to Get Listing.
+- **Get Model Overview**: trims with starting MSRP and TrueCar's Starting Market Average as labelled (captured 2026-11-26: 2026 Toyota RAV4 LE from 33495 USD MSRP, starting market average 32766.12 USD, owner rating 4.38 from 5069).
+- **Get Owner Reviews**: grouped by generation as TrueCar groups them, star and text filters, up to 100 a page in TrueCar's own order; no reviewer names, initials or states.
+- Not available: keyword search, a mileage minimum, private sellers, a review sort, dealer reviews, delivery quotes, payment estimates, price history.
+
+Every TrueCar operation costs 1 credit; credits_used says what was charged. Every operation carries a 240-second request timeout. Failed calls are not charged; a not-found is charged.
+
+**New resource: Edmunds, 8 operations.** Edmunds (edmunds.com, the US car research and shopping site owned by CarMax): new and used car listings around any US city with the price, price change, MSRP and Edmunds' own local and national deal rating as given; one listing in full with dealer fees and price history; owner reviews per model year; dealer pages with sales and service ratings and reviews; a model year's research page with Edmunds' expert review; MSRP, invoice and Edmunds Suggested Price per trim; and Edmunds' used-car values per condition. Edmunds' own API is for partners and dealers only. See the [Edmunds API page](https://scavio.dev/edmunds-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme).
+
+- **City and State** are required on Search Listings (US only, USD); a ZIP is not accepted, because Edmunds places a search by its own city pages (captured 2026-11-26: a used Toyota RAV4 around New York, NY gave 3124 listings, among them a 2015 RAV4 Limited at 7995 USD with 157526 miles, rated Great against Edmunds' local estimate of 13201 USD).
+- **Search Listings**: make and model or every make (used), radius 10-500 miles, 5 sorts, year, price and mileage ranges, trim, drivetrain, exterior colour, body type, deal rating and no accidents, 21 a page.
+- **Get Listing**: by VIN with make, model and year, or by its edmunds.com link. The VIN is an input only and is never returned anywhere; listing photos are not returned.
+- **Get MSRP and Price** and **Get Appraisal Values**: Edmunds computes its Suggested Price and its used-car values for a place of its own and names it (suggested_price_near, values_near); read it with the figures (captured 2026-11-26: 2025 Toyota RAV4 XLE, Edmunds Suggested Price 30140 USD near Paramus, NJ 07652). Appraisal values are Edmunds' estimates, not an offer.
+- **Get Consumer Reviews** and **Get Dealer**: no reviewer names; names are also taken out of dealer replies. Private sellers show city and state only.
+- Not available: ZIP-based search, a VIN-specific appraisal, stock numbers, listing photos.
+
+Every Edmunds operation costs 2 credits; credits_used says what was charged. Every operation carries a 240-second request timeout. Failed calls are not charged; a not-found is charged.
+
+**New resource: Kelley Blue Book, 8 operations.** Kelley Blue Book (kbb.com, Cox Automotive's car value and research site): a car's Kelley Blue Book values by make, model, year, trim, condition and mileage, every price type KBB gives (17 for a used car) with KBB's adjustments, optionally for a US ZIP code; one model year's trims, depreciation, specs and rankings; cars for sale around a ZIP with KBB's deal rating; one listing in full; owner reviews; dealers near a ZIP and one dealer's inventory; and KBB's make and model directory. KBB's own data feed is a business contract, not a self-serve API. See the [Kelley Blue Book API page](https://scavio.dev/kbb-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme).
+
+- **Get Car Value**: Make, Model (KBB's slug), Model Year and Trim (trim slug from Get Model Year, vehicle ID or a unique trim name); Intent, Condition, Mileage and ZIP Code are optional. Without a ZIP code the values are for KBB's default location; ZIP Code needs Mileage and works for Buy Used and Trade In or Sell, not Buy New (captured 2026-11-26: a 2021 Toyota RAV4 LE Sport Utility 4D at 40000 miles in good condition had a Fair Purchase Price of 25950 USD at KBB's default ZIP 92620 and 25410 USD at ZIP 10001).
+- **Search Cars for Sale**: ZIP Code required; used, new or all, make and model (never widened to the whole make), radius, 4 sorts, year, price and mileage ranges, drivetrain, exterior colour, dealer or private seller, 25 or 100 a page (captured 2026-11-26: used Toyota RAV4 around 10001 gave 574 listings).
+- **Get Reviews**: 8 a page, pages 1 to 10, 3 sorts and a star filter; no reviewer name, nickname or location.
+- **Find Dealers**: up to 50 nearest a ZIP code; no paging, so narrow with Radius or Make. Dealer details are the dealer's public business details.
+- No VIN or stock number is returned; private sellers carry city, state and distance only.
+- Not available: dealer reviews (rating and count only), a VIN lookup, review pages past 10, Kelley Blue Book Canada or Brazil.
+
+Every Kelley Blue Book operation costs 1 credit; Get Car Value with a ZIP code costs 2 (up to 6), and Get Reviews past page 1, with another sort or a star filter 1 or 5. credits_used says what was charged. Every operation carries a 240-second request timeout. Failed calls are not charged; a not-found is charged.
 
 ## What changed in 0.94.0
 

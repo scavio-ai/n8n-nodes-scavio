@@ -111,6 +111,9 @@ import { autotraderOperations, autotraderFields } from './descriptions/Autotrade
 import { cargurusOperations, cargurusFields } from './descriptions/CargurusDescription';
 import { carmaxOperations, carmaxFields } from './descriptions/CarmaxDescription';
 import { carvanaOperations, carvanaFields } from './descriptions/CarvanaDescription';
+import { truecarOperations, truecarFields } from './descriptions/TruecarDescription';
+import { edmundsOperations, edmundsFields } from './descriptions/EdmundsDescription';
+import { kbbOperations, kbbFields } from './descriptions/KbbDescription';
 import { carrefourOperations, carrefourFields } from './descriptions/CarrefourDescription';
 import { allegroOperations, allegroFields } from './descriptions/AllegroDescription';
 import { bolcomOperations, bolcomFields } from './descriptions/BolcomDescription';
@@ -126,6 +129,7 @@ import { bookingOperations, bookingFields } from './descriptions/BookingDescript
 import { tripadvisorOperations, tripadvisorFields } from './descriptions/TripadvisorDescription';
 import { indeedOperations, indeedFields } from './descriptions/IndeedDescription';
 import { airbnbOperations, airbnbFields } from './descriptions/AirbnbDescription';
+import { vrboOperations, vrboFields } from './descriptions/VrboDescription';
 import { glassdoorOperations, glassdoorFields } from './descriptions/GlassdoorDescription';
 import { yelpOperations, yelpFields } from './descriptions/YelpDescription';
 import { appStoreOperations, appStoreFields } from './descriptions/AppStoreDescription';
@@ -134,6 +138,10 @@ import { secOperations, secFields } from './descriptions/SecDescription';
 import { redfinOperations, redfinFields } from './descriptions/RedfinDescription';
 import { realtorOperations, realtorFields } from './descriptions/RealtorDescription';
 import { rightmoveOperations, rightmoveFields } from './descriptions/RightmoveDescription';
+import { rentcomOperations, rentcomFields } from './descriptions/RentcomDescription';
+import { truliaOperations, truliaFields } from './descriptions/TruliaDescription';
+import { streeteasyOperations, streeteasyFields } from './descriptions/StreeteasyDescription';
+import { rentcafeOperations, rentcafeFields } from './descriptions/RentcafeDescription';
 import {
 	mercadoLibreOperations,
 	mercadoLibreFields,
@@ -177,7 +185,7 @@ export class Scavio implements INodeType {
 		version: 1,
 		subtitle: '={{ $parameter["operation"] + ": " + $parameter["resource"] }}',
 		description:
-			'Real-time structured data from Google, ChatGPT, Gemini, Amazon, Walmart, eBay, Target, Home Depot, Costco, HEB, Kroger, Publix, IKEA, Wayfair, Ashley Furniture, Maisons du Monde, Decathlon, Spec\'s, Lowe\'s, Ace Hardware, Tractor Supply, Michaels, Nike, Staples, Sam\'s Club, Canadian Tire, SportChek, Mark\'s, RONA, Dollar General, Dollar Tree, Discount Tire, Vevor, Nellis Auction, Bring a Trailer, Sephora, Ulta Beauty, Dermstore, Space NK, Lookfantastic, Cult Beauty, YesStyle, Notino, Douglas, Boots, ALDI, Micro Center, Walgreens, CVS, Whole Foods Market, Harbor Freight, AutoZone, O\'Reilly Auto Parts, RockAuto, Cars.com, Autotrader, CarGurus, CarMax, Carvana, Instacart, PC Express, PetSmart, Petco, iHerb, Chewy, Menards, Nordstrom, Nordstrom Rack, Best Buy, TCGplayer, Nintendo eShop, H&M, Zara, Uniqlo, ASOS, Fashion Nova, Vinted, Mercari, Depop, Poshmark, OfferUp, thredUP, Macy\'s, Saks Fifth Avenue, Kohl\'s, JCPenney, Dick\'s Sporting Goods, Foot Locker, Fanatics, Argos, Media Expert, Action, HEMA, Carrefour, Allegro, bol.com, OLX, Trendyol, Mercado Libre, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Facebook, Pinterest, Threads, Kuaishou, Douyin, Weibo, Twitch, GitHub, Etsy, AliExpress, Zillow, Redfin, Realtor.com, Rightmove, Booking.com, Airbnb, Tripadvisor, Yelp, Indeed, Glassdoor, the App Store, Google Play, SEC EDGAR, Companies House, Legistar, company websites (contact and owner enrichment), G2, Capterra, Trustpilot, ad libraries, and any URL',
+			'Real-time structured data from Google, ChatGPT, Gemini, Amazon, Walmart, eBay, Target, Home Depot, Costco, HEB, Kroger, Publix, IKEA, Wayfair, Ashley Furniture, Maisons du Monde, Decathlon, Spec\'s, Lowe\'s, Ace Hardware, Tractor Supply, Michaels, Nike, Staples, Sam\'s Club, Canadian Tire, SportChek, Mark\'s, RONA, Dollar General, Dollar Tree, Discount Tire, Vevor, Nellis Auction, Bring a Trailer, Sephora, Ulta Beauty, Dermstore, Space NK, Lookfantastic, Cult Beauty, YesStyle, Notino, Douglas, Boots, ALDI, Micro Center, Walgreens, CVS, Whole Foods Market, Harbor Freight, AutoZone, O\'Reilly Auto Parts, RockAuto, Cars.com, Autotrader, CarGurus, CarMax, Carvana, TrueCar, Edmunds, Kelley Blue Book, Instacart, PC Express, PetSmart, Petco, iHerb, Chewy, Menards, Nordstrom, Nordstrom Rack, Best Buy, TCGplayer, Nintendo eShop, H&M, Zara, Uniqlo, ASOS, Fashion Nova, Vinted, Mercari, Depop, Poshmark, OfferUp, thredUP, Macy\'s, Saks Fifth Avenue, Kohl\'s, JCPenney, Dick\'s Sporting Goods, Foot Locker, Fanatics, Argos, Media Expert, Action, HEMA, Carrefour, Allegro, bol.com, OLX, Trendyol, Mercado Libre, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Facebook, Pinterest, Threads, Kuaishou, Douyin, Weibo, Twitch, GitHub, Etsy, AliExpress, Zillow, Redfin, Realtor.com, Rightmove, Rent.com, Trulia, StreetEasy, RentCafe, Booking.com, Airbnb, Vrbo, Tripadvisor, Yelp, Indeed, Glassdoor, the App Store, Google Play, SEC EDGAR, Companies House, Legistar, company websites (contact and owner enrichment), G2, Capterra, Trustpilot, ad libraries, and any URL',
 		defaults: { name: 'Scavio' },
 		inputs: [NodeConnectionTypes.Main],
 		outputs: [NodeConnectionTypes.Main],
@@ -247,6 +255,7 @@ export class Scavio implements INodeType {
 					{ name: 'Douglas', value: 'douglas' },
 					{ name: 'Douyin (China)', value: 'douyin' },
 					{ name: 'eBay', value: 'ebay' },
+					{ name: 'Edmunds', value: 'edmunds' },
 					{ name: 'Etsy', value: 'etsy' },
 					{ name: 'Extract (Any URL)', value: 'extract' },
 					{ name: 'Facebook', value: 'facebook' },
@@ -271,6 +280,7 @@ export class Scavio implements INodeType {
 					{ name: 'Instacart', value: 'instacart' },
 					{ name: 'Instagram', value: 'instagram' },
 					{ name: 'JCPenney', value: 'jcpenney' },
+					{ name: 'Kelley Blue Book', value: 'kbb' },
 					{ name: "Kohl's", value: 'kohls' },
 					{ name: 'Kroger', value: 'kroger' },
 					{ name: 'Kuaishou (China)', value: 'kuaishou' },
@@ -315,6 +325,8 @@ export class Scavio implements INodeType {
 					{ name: 'Realtor.com', value: 'realtor' },
 					{ name: 'Reddit', value: 'reddit' },
 					{ name: 'Redfin', value: 'redfin' },
+					{ name: 'Rent.com', value: 'rentcom' },
+					{ name: 'RentCafe', value: 'rentcafe' },
 					{ name: 'Rightmove (UK)', value: 'rightmove' },
 					{ name: 'RockAuto', value: 'rockauto' },
 					{ name: 'RONA', value: 'rona' },
@@ -330,6 +342,7 @@ export class Scavio implements INodeType {
 					{ name: 'SportChek', value: 'sportchek' },
 					// Staples is the retailer's brand name, not a plural noun.
 					{ name: 'Staples', value: 'staples' },
+					{ name: 'StreetEasy', value: 'streeteasy' },
 					{ name: 'Target', value: 'target' },
 					{ name: 'TCGplayer', value: 'tcgplayer' },
 					// Threads is Meta's brand name, not a plural noun. Singularizing it to
@@ -342,12 +355,15 @@ export class Scavio implements INodeType {
 					{ name: 'Tractor Supply', value: 'tractorsupply' },
 					{ name: 'Trendyol', value: 'trendyol' },
 					{ name: 'Tripadvisor', value: 'tripadvisor' },
+					{ name: 'TrueCar', value: 'truecar' },
+					{ name: 'Trulia', value: 'trulia' },
 					{ name: 'Trustpilot', value: 'trustpilot' },
 					{ name: 'Twitch', value: 'twitch' },
 					{ name: 'Ulta Beauty', value: 'ulta' },
 					{ name: 'Uniqlo', value: 'uniqlo' },
 					{ name: 'Vevor', value: 'vevor' },
 					{ name: 'Vinted', value: 'vinted' },
+					{ name: 'Vrbo', value: 'vrbo' },
 					{ name: 'Walgreens', value: 'walgreens' },
 					{ name: 'Walmart', value: 'walmart' },
 					{ name: 'Wayfair', value: 'wayfair' },
@@ -482,6 +498,12 @@ export class Scavio implements INodeType {
 			...carmaxFields,
 			...carvanaOperations,
 			...carvanaFields,
+			...truecarOperations,
+			...truecarFields,
+			...edmundsOperations,
+			...edmundsFields,
+			...kbbOperations,
+			...kbbFields,
 			...petsmartOperations,
 			...petsmartFields,
 			...petcoOperations,
@@ -584,10 +606,20 @@ export class Scavio implements INodeType {
 			...realtorFields,
 			...rightmoveOperations,
 			...rightmoveFields,
+			...rentcomOperations,
+			...rentcomFields,
+			...truliaOperations,
+			...truliaFields,
+			...streeteasyOperations,
+			...streeteasyFields,
+			...rentcafeOperations,
+			...rentcafeFields,
 			...bookingOperations,
 			...bookingFields,
 			...airbnbOperations,
 			...airbnbFields,
+			...vrboOperations,
+			...vrboFields,
 			...tripadvisorOperations,
 			...tripadvisorFields,
 			...yelpOperations,
