@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 125 resources and 1,022 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 126 resources and 1,029 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -56,6 +56,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Dermstore (US and Canada)](https://scavio.dev/docs/dermstore-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get List Page, Get Product, Get Suggestions, Get Offers, Get Brands, Get Categories |
 | [ALDI](https://scavio.dev/docs/aldi-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Find Stores |
 | [Instacart (US; Canada in English or French, except Search Across Stores and Get Reviews)](https://scavio.dev/docs/instacart-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Search Products 3 (2 when the page fits in the first answer); Search Across Stores 3 up to 5 stores, 4 for 6 to 10 | Get Retailers, Search Products, Search Across Stores, Get Product, Compare Prices Across Stores, Get Categories, Get Category Products, Get Deals, Find Pickup Stores, Get Suggestions, Get Reviews |
+| [PC Express (Canada: Real Canadian Superstore, No Frills, Loblaws, Zehrs, Fortinos, Valu-mart, Your Independent Grocer, Wholesale Club, Provigo, Maxi)](https://scavio.dev/docs/pcexpress-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Get Product 5 (1 when it answers from the search listing); Get Store 5 | Search Products, Get Category Products, Get Collection, Get Product, Find Stores, Get Store, Get Search Suggestions |
 | [Micro Center](https://scavio.dev/docs/microcenter-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Stores 1 | Search Products, Get Product, Get Stores |
 | [Walgreens](https://scavio.dev/docs/walgreens-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Store Stock 4 | Search Products, Get Product, Find Stores, Get Store Stock |
 | [CVS](https://scavio.dev/docs/cvs-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Store Stock |
@@ -157,6 +158,18 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.93.0
+
+**New resource: PC Express, 7 operations.** PC Express (Loblaw's online grocery for Real Canadian Superstore, No Frills, Loblaws, Zehrs, Fortinos, Valu-mart, Your Independent Grocer, Wholesale Club, Provigo and Maxi; Loblaw operates 2,504 stores per its 2025 annual report): what each Loblaw banner charges for the same product code at its default store on one date, with the deal end date and the PC Optimum offer as shown. PC Express has no public API. See the [PC Express API page](https://scavio.dev/pcexpress-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme). For national brands, pair it with the Walmart resource on the Walmart.ca (Canada) domain.
+
+- **Banner** on every operation: Real Canadian Superstore (default), No Frills, Loblaws, Zehrs, Fortinos, Valu-mart, Your Independent Grocer, Real Canadian Wholesale Club, Provigo, Maxi. **Language**: English, or French on Provigo (French only) and Maxi (French by default, English too).
+- Prices are each banner's default online store's; choosing a store is not offered, and every answer says which store priced it (store.requested false). The same product code is priced per banner: captured 2026-11-26, No Name Large Size Eggs 12 Pack (20812144001_EA) was 3.93 CAD at Real Canadian Superstore's default store 1033 and 4.17 at Maxi's default store 8976.
+- **Search Products**, **Get Category Products** and **Get Collection** (deals-centre, black-friday, no-name, pc-value ...): 48 a page, five sorts, brand codes (No Name, President's Choice), deal types (price reduction, PC Optimum points, multi-buy, member-only price, $1-$5), price band, Prepared in Canada, dietary and aisle filters, Include Facets. Deals carry the end date as shown (expiry_date), no start date; member_only_price is the price the site shows publicly on the item.
+- **Get Product**: GTIN, ingredients, nutrition, comparison prices and stock status as given; when the product page does not answer, the item comes from the search listing (source search) at 1 credit. **Find Stores**: a banner's pickup stores by city, postal code start or province, or nearest a latitude and longitude. **Get Store**: 7 dated days of store, pharmacy, clinic and optical hours. **Get Search Suggestions**: the terms PC Express suggests.
+- Not available: choosing a store, review text (rating and count only), the printed flyer, Shoppers Drug Mart, Atlantic Superstore, City Market and T&T, cart or checkout, PC Optimum prices behind a login, price history (poll and store the answers).
+
+Credits: 1 per operation; Get Product 5 (1 from the search listing); Get Store 5. credits_used says what was charged. Get Product, Get Store, Find Stores and Get Search Suggestions can take up to 2 minutes, so every operation carries a 240-second request timeout. Failed calls and refused inputs are not charged; a not-found is charged.
 
 ## What changed in 0.92.0
 
