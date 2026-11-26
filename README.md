@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 124 resources and 1,013 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 125 resources and 1,022 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -45,6 +45,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Canadian Tire](https://scavio.dev/docs/canadiantire-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Find Stores, Get Availability, Find Clearance Items, Get Deals |
 | [SportChek (Canada)](https://scavio.dev/docs/sportchek-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get List Page, Get Product, Get Reviews, Get Search Suggestions, Get Store, Get Brands, Get Categories |
 | [Mark's (Canada; French via L'Equipeur)](https://scavio.dev/docs/marks-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get List Page, Get Product, Get Questions, Get Search Suggestions, Get Store, Get Brands, Get Categories |
+| [RONA (Canada)](https://scavio.dev/docs/rona-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | Get Store Prices, Get Categories, Find Stores and Get Store 1; Search Products and Get Deals 2 (3 with a Store ID; Search Products 2 more when RONA redirects the term); Get Product 3; Get Store Stock 3; Get Category Products 2 (3 with a Store ID), or 1 with a Family ID and a Store ID | Search Products, Get Product, Get Store Prices, Get Category Products, Get Categories, Find Stores, Get Store, Get Store Stock, Get Deals |
 | [Dollar General](https://scavio.dev/docs/dollargeneral-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Find Stores, Get Deals, Get Coupons |
 | [Dollar Tree (US; Canada store pages)](https://scavio.dev/docs/dollartree-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Find Stores 5 | Search Products, Get Product, Get Category Products, Get Categories, Get Brand Products, Get Deals, Get Store Stock, Find Stores, Get Store, Get Reviews |
 | [Discount Tire (US)](https://scavio.dev/docs/discounttire-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Tires by Size, Get Vehicle Fitment, Get Tires for Vehicle, Get Product, Get Model, Get Store Stock, Find Stores, Get Store, Get Reviews, Get Store Reviews, Get Wheels, Browse Tire Models, Get Categories, Get Suggestions, Get Appointment Availability |
@@ -156,6 +157,19 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.92.0
+
+**New resource: RONA, 9 operations.** RONA (rona.ca, the Canadian home improvement retailer: RONA+ and RONA stores, about 425 corporate and affiliated dealer stores per RONA inc.): store prices in CAD for up to 60 article numbers at one store in one call, with the regular price, rebate and exact store units, so the same lumber, panels or tools can be priced store by store and next to Home Depot Canada; keyword search, category and weekly deals lists priced at the store you choose; one product with the sale end RONA shows; the 403 stores on RONA's store locator; one store's hours; and which stores near a store have an article. RONA has no public API. See the [RONA API page](https://scavio.dev/rona-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme). Pair a RONA item with the Home Depot resource and Country Canada for Home Depot Canada in the same city: match the same grade and length, or the same model.
+
+- **Get Store Prices**: up to 60 article numbers (comma-separated) at one Store ID: price, regular price, rebate, on sale, exact units, DC and parcel units, aisle, UPC and model. RONA prices some goods per store: captured 2026-11-26, 2-in x 4-in x 8-ft SPF Select Lumber (0971073) was 4.35 CAD at store 41460 (Quebec), 4.22 at 55130 (Ontario) and 4.19 at 62860 (Alberta), while the DEWALT 20 V MAX Brushless Compact Drill/Driver Kit on sale (00277649) was 118 at all three.
+- **Search Products**, **Get Category Products** and **Get Deals**: without a Store ID the prices and units are for the store RONA's site picks for the visit (store.requested false); with a Store ID they are that store's. Sorts (not on Get Deals), RONA's filters from Include Facets, On Sale Only, Clearance Only, 24, 48 or 96 a page.
+- **Get Product**: sale_ends_text as RONA shows it ("until Dec 10th, 2026") and sale_ends as an ISO date only when unambiguous; units, aisle, nearby stores with units; rating and review count only.
+- **Find Stores**: RONA+ and RONA stores, corporate and dealer, by province, city and banner, or nearest a latitude and longitude. **Get Store Stock**: which stores near a store or a point have one article; RONA offers no nearby-store list for some articles (lumber), and the list can come back empty now and then (run it once more).
+- units are exact store units; null means RONA showed no count, not zero. Article numbers keep their leading zeros. Language: English (default) or French on every operation.
+- Not available: review text, search suggestions, postal-code store lookup (use a latitude and longitude, or a city or province), the printed flyer, cart or checkout, price history (poll and store the answers).
+
+credits_used says what was charged. Answers can take up to about a minute, so every operation carries a 240-second request timeout. Failed calls and refused inputs are not charged; a not-found is charged.
 
 ## What changed in 0.91.0
 

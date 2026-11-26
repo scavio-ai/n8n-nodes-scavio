@@ -42,6 +42,7 @@ import {
 } from './descriptions/CanadianTireDescription';
 import { sportchekOperations, sportchekFields } from './descriptions/SportchekDescription';
 import { marksOperations, marksFields } from './descriptions/MarksDescription';
+import { ronaOperations, ronaFields } from './descriptions/RonaDescription';
 import {
 	dollarGeneralOperations,
 	dollarGeneralFields,
@@ -161,7 +162,7 @@ export class Scavio implements INodeType {
 		version: 1,
 		subtitle: '={{ $parameter["operation"] + ": " + $parameter["resource"] }}',
 		description:
-			'Real-time structured data from Google, ChatGPT, Gemini, Amazon, Walmart, eBay, Target, Home Depot, Costco, HEB, Kroger, Publix, IKEA, Wayfair, Ashley Furniture, Maisons du Monde, Decathlon, Spec\'s, Lowe\'s, Ace Hardware, Tractor Supply, Michaels, Nike, Staples, Sam\'s Club, Canadian Tire, SportChek, Mark\'s, Dollar General, Dollar Tree, Discount Tire, Vevor, Nellis Auction, Sephora, Ulta Beauty, Dermstore, ALDI, Micro Center, Walgreens, CVS, Whole Foods Market, Harbor Freight, AutoZone, O\'Reilly Auto Parts, Instacart, PetSmart, Petco, iHerb, Chewy, Menards, Nordstrom, Nordstrom Rack, Best Buy, TCGplayer, Nintendo eShop, H&M, Zara, Uniqlo, ASOS, Fashion Nova, Vinted, Mercari, Depop, Poshmark, OfferUp, thredUP, Macy\'s, Saks Fifth Avenue, Kohl\'s, JCPenney, Dick\'s Sporting Goods, Foot Locker, Fanatics, Argos, Media Expert, Action, HEMA, Carrefour, Allegro, bol.com, OLX, Trendyol, Mercado Libre, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Facebook, Pinterest, Threads, Kuaishou, Douyin, Weibo, Twitch, GitHub, Etsy, AliExpress, Zillow, Redfin, Realtor.com, Rightmove, Booking.com, Airbnb, Tripadvisor, Yelp, Indeed, Glassdoor, the App Store, Google Play, SEC EDGAR, Companies House, Legistar, company websites (contact and owner enrichment), G2, Capterra, Trustpilot, ad libraries, and any URL',
+			'Real-time structured data from Google, ChatGPT, Gemini, Amazon, Walmart, eBay, Target, Home Depot, Costco, HEB, Kroger, Publix, IKEA, Wayfair, Ashley Furniture, Maisons du Monde, Decathlon, Spec\'s, Lowe\'s, Ace Hardware, Tractor Supply, Michaels, Nike, Staples, Sam\'s Club, Canadian Tire, SportChek, Mark\'s, RONA, Dollar General, Dollar Tree, Discount Tire, Vevor, Nellis Auction, Sephora, Ulta Beauty, Dermstore, ALDI, Micro Center, Walgreens, CVS, Whole Foods Market, Harbor Freight, AutoZone, O\'Reilly Auto Parts, Instacart, PetSmart, Petco, iHerb, Chewy, Menards, Nordstrom, Nordstrom Rack, Best Buy, TCGplayer, Nintendo eShop, H&M, Zara, Uniqlo, ASOS, Fashion Nova, Vinted, Mercari, Depop, Poshmark, OfferUp, thredUP, Macy\'s, Saks Fifth Avenue, Kohl\'s, JCPenney, Dick\'s Sporting Goods, Foot Locker, Fanatics, Argos, Media Expert, Action, HEMA, Carrefour, Allegro, bol.com, OLX, Trendyol, Mercado Libre, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Facebook, Pinterest, Threads, Kuaishou, Douyin, Weibo, Twitch, GitHub, Etsy, AliExpress, Zillow, Redfin, Realtor.com, Rightmove, Booking.com, Airbnb, Tripadvisor, Yelp, Indeed, Glassdoor, the App Store, Google Play, SEC EDGAR, Companies House, Legistar, company websites (contact and owner enrichment), G2, Capterra, Trustpilot, ad libraries, and any URL',
 		defaults: { name: 'Scavio' },
 		inputs: [NodeConnectionTypes.Main],
 		outputs: [NodeConnectionTypes.Main],
@@ -288,6 +289,7 @@ export class Scavio implements INodeType {
 					{ name: 'Reddit', value: 'reddit' },
 					{ name: 'Redfin', value: 'redfin' },
 					{ name: 'Rightmove (UK)', value: 'rightmove' },
+					{ name: 'RONA', value: 'rona' },
 					{ name: 'Saks Fifth Avenue', value: 'saks' },
 					{ name: "Sam's Club", value: 'samsClub' },
 					{ name: 'SEC EDGAR', value: 'sec' },
@@ -384,6 +386,8 @@ export class Scavio implements INodeType {
 			...sportchekFields,
 			...marksOperations,
 			...marksFields,
+			...ronaOperations,
+			...ronaFields,
 			...dollarGeneralOperations,
 			...dollarGeneralFields,
 			...dollartreeOperations,
