@@ -36,6 +36,7 @@ import { michaelsOperations, michaelsFields } from './descriptions/MichaelsDescr
 import { nikeOperations, nikeFields } from './descriptions/NikeDescription';
 import { staplesOperations, staplesFields } from './descriptions/StaplesDescription';
 import { samsClubOperations, samsClubFields } from './descriptions/SamsClubDescription';
+import { bjsOperations, bjsFields } from './descriptions/BjsDescription';
 import {
 	canadianTireOperations,
 	canadianTireFields,
@@ -56,6 +57,7 @@ import { bringatrailerOperations, bringatrailerFields } from './descriptions/Bri
 import { sephoraOperations, sephoraFields } from './descriptions/SephoraDescription';
 import { ultaOperations, ultaFields } from './descriptions/UltaDescription';
 import { dermstoreOperations, dermstoreFields } from './descriptions/DermstoreDescription';
+import { bathandbodyworksOperations, bathandbodyworksFields } from './descriptions/BathandbodyworksDescription';
 import { spacenkOperations, spacenkFields } from './descriptions/SpacenkDescription';
 import { lookfantasticOperations, lookfantasticFields } from './descriptions/LookfantasticDescription';
 import { cultbeautyOperations, cultbeautyFields } from './descriptions/CultbeautyDescription';
@@ -99,7 +101,11 @@ import { jcpenneyOperations, jcpenneyFields } from './descriptions/JcpenneyDescr
 import { dicksOperations, dicksFields } from './descriptions/DicksDescription';
 import { footlockerOperations, footlockerFields } from './descriptions/FootlockerDescription';
 import { fanaticsOperations, fanaticsFields } from './descriptions/FanaticsDescription';
+import { academyOperations, academyFields } from './descriptions/AcademyDescription';
+import { reiOperations, reiFields } from './descriptions/ReiDescription';
 import { fashionnovaOperations, fashionnovaFields } from './descriptions/FashionnovaDescription';
+import { gapOperations, gapFields } from './descriptions/GapDescription';
+import { zapposOperations, zapposFields } from './descriptions/ZapposDescription';
 import { argosOperations, argosFields } from './descriptions/ArgosDescription';
 import { mediaexpertOperations, mediaexpertFields } from './descriptions/MediaexpertDescription';
 import { actionOperations, actionFields } from './descriptions/ActionDescription';
@@ -165,6 +171,8 @@ import { g2Operations, g2Fields } from './descriptions/G2Description';
 import { capterraOperations, capterraFields } from './descriptions/CapterraDescription';
 import { trustpilotOperations, trustpilotFields } from './descriptions/TrustpilotDescription';
 import { goodreadsOperations, goodreadsFields } from './descriptions/GoodreadsDescription';
+import { neweggOperations, neweggFields } from './descriptions/NeweggDescription';
+import { rakutenOperations, rakutenFields } from './descriptions/RakutenDescription';
 import {
 	chatgptOperations,
 	chatgptFields,
@@ -196,7 +204,7 @@ export class Scavio implements INodeType {
 		version: 1,
 		subtitle: '={{ $parameter["operation"] + ": " + $parameter["resource"] }}',
 		description:
-			'Real-time structured data from Google, ChatGPT, Gemini, Amazon, Walmart, eBay, Target, Home Depot, Costco, HEB, Kroger, Publix, IKEA, Wayfair, Ashley Furniture, Maisons du Monde, Decathlon, Spec\'s, Lowe\'s, Ace Hardware, Tractor Supply, Michaels, Nike, Staples, Sam\'s Club, Canadian Tire, SportChek, Mark\'s, RONA, Dollar General, Dollar Tree, Discount Tire, Vevor, Nellis Auction, EstateSales.net, Bring a Trailer, Sephora, Ulta Beauty, Dermstore, Space NK, Lookfantastic, Cult Beauty, YesStyle, Notino, Douglas, Boots, ALDI, Micro Center, Walgreens, CVS, Whole Foods Market, Harbor Freight, AutoZone, O\'Reilly Auto Parts, RockAuto, Cars.com, Autotrader, CarGurus, CarMax, Carvana, TrueCar, Edmunds, Kelley Blue Book, Instacart, PC Express, PetSmart, Petco, iHerb, Chewy, Menards, Nordstrom, Nordstrom Rack, Best Buy, TCGplayer, Nintendo eShop, H&M, Zara, Uniqlo, ASOS, Fashion Nova, Vinted, Mercari, Depop, Poshmark, OfferUp, thredUP, Macy\'s, Saks Fifth Avenue, Kohl\'s, JCPenney, Dick\'s Sporting Goods, Foot Locker, Fanatics, Argos, Media Expert, Action, HEMA, Carrefour, Allegro, bol.com, OLX, Trendyol, Mercado Libre, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Facebook, Pinterest, Threads, Kuaishou, Douyin, Weibo, Twitch, GitHub, Etsy, AliExpress, Zillow, Redfin, Realtor.com, Rightmove, Rent.com, Trulia, StreetEasy, RentCafe, Movoto, HotPads, Apartment List, Compass, AffordableHousing.com, Lennar, Extra Space Storage, Public Storage, Booking.com, Airbnb, Vrbo, Expedia, Tripadvisor, Yelp, Indeed, Glassdoor, the App Store, Google Play, SEC EDGAR, Companies House, Legistar, company websites (contact and owner enrichment), G2, Capterra, Trustpilot, Goodreads, ad libraries, and any URL',
+			'Real-time structured data from Google, ChatGPT, Gemini, Amazon, Walmart, eBay, Target, Home Depot, Costco, HEB, Kroger, Publix, IKEA, Wayfair, Ashley Furniture, Maisons du Monde, Decathlon, Spec\'s, Lowe\'s, Ace Hardware, Tractor Supply, Michaels, Nike, Staples, Sam\'s Club, BJ\'s Wholesale Club, Canadian Tire, SportChek, Mark\'s, RONA, Dollar General, Dollar Tree, Discount Tire, Vevor, Nellis Auction, EstateSales.net, Bring a Trailer, Sephora, Ulta Beauty, Dermstore, Bath & Body Works, Space NK, Lookfantastic, Cult Beauty, YesStyle, Notino, Douglas, Boots, ALDI, Micro Center, Walgreens, CVS, Whole Foods Market, Harbor Freight, AutoZone, O\'Reilly Auto Parts, RockAuto, Cars.com, Autotrader, CarGurus, CarMax, Carvana, TrueCar, Edmunds, Kelley Blue Book, Instacart, PC Express, PetSmart, Petco, iHerb, Chewy, Menards, Nordstrom, Nordstrom Rack, Best Buy, Newegg, TCGplayer, Nintendo eShop, H&M, Zara, Uniqlo, ASOS, Fashion Nova, Gap, Old Navy, Banana Republic, Athleta, Zappos, 6pm, Vinted, Mercari, Depop, Poshmark, OfferUp, thredUP, Macy\'s, Saks Fifth Avenue, Kohl\'s, JCPenney, Dick\'s Sporting Goods, Foot Locker, Fanatics, Academy Sports + Outdoors, REI, Argos, Media Expert, Action, HEMA, Carrefour, Allegro, bol.com, OLX, Trendyol, Mercado Libre, Rakuten, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Facebook, Pinterest, Threads, Kuaishou, Douyin, Weibo, Twitch, GitHub, Etsy, AliExpress, Zillow, Redfin, Realtor.com, Rightmove, Rent.com, Trulia, StreetEasy, RentCafe, Movoto, HotPads, Apartment List, Compass, AffordableHousing.com, Lennar, Extra Space Storage, Public Storage, Booking.com, Airbnb, Vrbo, Expedia, Tripadvisor, Yelp, Indeed, Glassdoor, the App Store, Google Play, SEC EDGAR, Companies House, Legistar, company websites (contact and owner enrichment), G2, Capterra, Trustpilot, Goodreads, ad libraries, and any URL',
 		defaults: { name: 'Scavio' },
 		inputs: [NodeConnectionTypes.Main],
 		outputs: [NodeConnectionTypes.Main],
@@ -218,6 +226,11 @@ export class Scavio implements INodeType {
 				type: 'options',
 				noDataExpression: true,
 				options: [
+					// Academy Sports + Outdoors, Argos, ASOS and CVS are retailers' brand names, not plural
+					// nouns, and their values are frozen once saved in user workflows. The rule reports only
+					// the first plural-looking option in this list, so the disable lives here.
+					// eslint-disable-next-line n8n-nodes-base/node-param-resource-with-plural-option
+					{ name: 'Academy Sports + Outdoors', value: 'academy' },
 					{ name: 'Account', value: 'account' },
 					{ name: 'Ace Hardware', value: 'acehardware' },
 					{ name: 'Action', value: 'action' },
@@ -230,16 +243,14 @@ export class Scavio implements INodeType {
 					{ name: 'Amazon', value: 'amazon' },
 					{ name: 'Apartment List', value: 'apartmentlist' },
 					{ name: 'Apple App Store', value: 'appStore' },
-					// Argos, ASOS and CVS are retailers' brand names, not plural nouns, and their
-					// values are frozen once saved in user workflows. The rule reports only
-					// the first plural-looking option in this list, so the disable lives here.
-					// eslint-disable-next-line n8n-nodes-base/node-param-resource-with-plural-option
 					{ name: 'Argos', value: 'argos' },
 					{ name: 'Ashley Furniture', value: 'ashley' },
 					{ name: 'ASOS', value: 'asos' },
 					{ name: 'Autotrader', value: 'autotrader' },
 					{ name: 'AutoZone', value: 'autozone' },
+					{ name: 'Bath & Body Works', value: 'bathandbodyworks' },
 					{ name: 'Best Buy', value: 'bestBuy' },
+					{ name: "BJ's Wholesale Club", value: 'bjs' },
 					{ name: 'bol.com', value: 'bolcom' },
 					{ name: 'Booking.com', value: 'booking' },
 					{ name: 'Boots', value: 'boots' },
@@ -280,6 +291,7 @@ export class Scavio implements INodeType {
 					{ name: 'Fashion Nova', value: 'fashionnova' },
 					{ name: 'Foot Locker', value: 'footlocker' },
 					{ name: 'G2 (Software Reviews)', value: 'g2' },
+					{ name: 'Gap Inc.', value: 'gap' },
 					{ name: 'Gemini', value: 'gemini' },
 					{ name: 'GitHub', value: 'github' },
 					{ name: 'Glassdoor', value: 'glassdoor' },
@@ -329,6 +341,7 @@ export class Scavio implements INodeType {
 					{ name: 'Micro Center', value: 'microCenter' },
 					{ name: 'Movoto', value: 'movoto' },
 					{ name: 'Nellis Auction', value: 'nellis' },
+					{ name: 'Newegg', value: 'newegg' },
 					{ name: 'Nike', value: 'nike' },
 					{ name: 'Nintendo', value: 'nintendo' },
 					{ name: 'Nordstrom', value: 'nordstrom' },
@@ -344,9 +357,11 @@ export class Scavio implements INodeType {
 					{ name: 'Poshmark', value: 'poshmark' },
 					{ name: 'Public Storage', value: 'publicstorage' },
 					{ name: 'Publix', value: 'publix' },
+					{ name: 'Rakuten', value: 'rakuten' },
 					{ name: 'Realtor.com', value: 'realtor' },
 					{ name: 'Reddit', value: 'reddit' },
 					{ name: 'Redfin', value: 'redfin' },
+					{ name: 'REI', value: 'rei' },
 					{ name: 'Rent.com', value: 'rentcom' },
 					{ name: 'RentCafe', value: 'rentcafe' },
 					{ name: 'Rightmove (UK)', value: 'rightmove' },
@@ -397,6 +412,7 @@ export class Scavio implements INodeType {
 					{ name: 'Yelp', value: 'yelp' },
 					{ name: 'YesStyle', value: 'yesstyle' },
 					{ name: 'YouTube', value: 'youtube' },
+					{ name: 'Zappos', value: 'zappos' },
 					{ name: 'Zara', value: 'zara' },
 					{ name: 'Zillow', value: 'zillow' },
 				],
@@ -448,6 +464,8 @@ export class Scavio implements INodeType {
 			...staplesFields,
 			...samsClubOperations,
 			...samsClubFields,
+			...bjsOperations,
+			...bjsFields,
 			...canadianTireOperations,
 			...canadianTireFields,
 			...sportchekOperations,
@@ -476,6 +494,8 @@ export class Scavio implements INodeType {
 			...ultaFields,
 			...dermstoreOperations,
 			...dermstoreFields,
+			...bathandbodyworksOperations,
+			...bathandbodyworksFields,
 			...spacenkOperations,
 			...spacenkFields,
 			...lookfantasticOperations,
@@ -544,6 +564,8 @@ export class Scavio implements INodeType {
 			...nordstromRackFields,
 			...bestBuyOperations,
 			...bestBuyFields,
+			...neweggOperations,
+			...neweggFields,
 			...tcgplayerOperations,
 			...tcgplayerFields,
 			...nintendoOperations,
@@ -556,6 +578,10 @@ export class Scavio implements INodeType {
 			...asosFields,
 			...fashionnovaOperations,
 			...fashionnovaFields,
+			...gapOperations,
+			...gapFields,
+			...zapposOperations,
+			...zapposFields,
 			...vintedOperations,
 			...vintedFields,
 			...mercariOperations,
@@ -574,6 +600,10 @@ export class Scavio implements INodeType {
 			...footlockerFields,
 			...fanaticsOperations,
 			...fanaticsFields,
+			...academyOperations,
+			...academyFields,
+			...reiOperations,
+			...reiFields,
 			...argosOperations,
 			...argosFields,
 			...mediaexpertOperations,
@@ -604,6 +634,8 @@ export class Scavio implements INodeType {
 			...trendyolFields,
 			...mercadoLibreOperations,
 			...mercadoLibreFields,
+			...rakutenOperations,
+			...rakutenFields,
 			...youtubeOperations,
 			...youtubeFields,
 			...redditOperations,
