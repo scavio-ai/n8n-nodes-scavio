@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 148 resources and 1,193 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 159 resources and 1,261 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -51,6 +51,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Discount Tire (US)](https://scavio.dev/docs/discounttire-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Tires by Size, Get Vehicle Fitment, Get Tires for Vehicle, Get Product, Get Model, Get Store Stock, Find Stores, Get Store, Get Reviews, Get Store Reviews, Get Wheels, Browse Tire Models, Get Categories, Get Suggestions, Get Appointment Availability |
 | [Vevor (13 storefronts)](https://scavio.dev/docs/vevor-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Get Prices Across Storefronts 3 | Search Products, Get Product, Get Shipping, Get Reviews, Get Questions, Get Search Suggestions, Get Categories, Get Category Products, Get Collection, Get Deals, Get Prices Across Storefronts |
 | [Nellis Auction (6 US shopping locations)](https://scavio.dev/docs/nellis-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Lots, Get Lot, Get Locations, Get Categories |
+| [EstateSales.net (US)](https://scavio.dev/docs/estatesales-sales?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Get Sales, Get Sale, Get Companies, Get Company, Search Sales and Items, Get Item |
 | [Bring a Trailer](https://scavio.dev/docs/bringatrailer-results?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Auction Results, Get Price History, Get Listing, Get Live Auctions, Get Make, Get Model, Get Location, Get Suggestions |
 | [Sephora (US; Canada via Country)](https://scavio.dev/docs/sephora-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Get Product and Get Offers 2 (the same for Canada) | Search Products, Get Category Products, Get Product; Canada only: Get Brand Products, Get Brands, Get Search Suggestions, Get Offers, Find Stores, Get Store |
 | [Ulta Beauty](https://scavio.dev/docs/ulta-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Product, Get Store Availability |
@@ -146,9 +147,18 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Trulia (US; Spanish rental pages)](https://scavio.dev/docs/trulia-neighborhood?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Get Neighborhood, Search Homes, Get Property, Get School, Get Suggestions |
 | [StreetEasy (NYC and North NJ)](https://scavio.dev/docs/streeteasy-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Listings, Get Listing, Get Building, Get Buildings, Get Market Data |
 | [RentCafe (US and Canada; French pages)](https://scavio.dev/docs/rentcafe-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Rentals, Get Property, Get Floor Plan Units, Get Reviews, Get Suggestions, Get Rent Trends |
+| [Movoto (US)](https://scavio.dev/docs/movoto-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Homes, Get Property, Get Market Trends, Get Suggestions, Get School |
+| [HotPads (US rentals)](https://scavio.dev/docs/hotpads-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Rentals, Get Listing, Get Costs and Fees, Get Price History, Get Suggestions |
+| [Apartment List (US)](https://scavio.dev/docs/apartmentlist-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Rentals, Get Listing, Get Rent Report, Get Market Summary, Get Review Summaries, Get Suggestions |
+| [Compass (US)](https://scavio.dev/docs/compass-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Listings, Get Listing, Get Suggestions |
+| [AffordableHousing.com (US)](https://scavio.dev/docs/affordablehousing-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 (Search Listings and Get Suggestions 2) | Search Listings, Get Listing, Get Suggestions, Get Waiting Lists, Get Housing Authority, Get Housing Authorities |
+| [Lennar (US new homes)](https://scavio.dev/docs/lennar-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search, Get Community, Get Plan, Get Home, Get Master-Planned Community, Get Markets, Get Market, Get Suggestions, Resolve Link, Get Promotions, Get Payment Estimate |
+| [Extra Space Storage (US)](https://scavio.dev/docs/extraspace-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Facilities, Get Facility, Get Reviews, Get City Prices, Get Locations |
+| [Public Storage (US and Canada; French pages)](https://scavio.dev/docs/publicstorage-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Facilities, Get Facility, Get Reviews |
 | [Booking.com](https://scavio.dev/docs/booking-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Properties, Get Hotel, Get Hotel Reviews |
 | [Airbnb](https://scavio.dev/docs/airbnb-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Stays, Get Listing, Get Reviews |
 | [Vrbo (20 market-languages)](https://scavio.dev/docs/vrbo-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 (Search Properties 2 per attempt, 2-8) | Search Properties, Get Property, Get Suggestions |
+| [Expedia (50 market-languages)](https://scavio.dev/docs/expedia-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 (1 on some New Zealand, Korea and Indonesia pages) | Search Properties, Get Property, Get Price Calendar, Get Suggestions |
 | [Tripadvisor](https://scavio.dev/docs/tripadvisor-locations?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Resolve Location IDs, Search Locations, Get Location, Get Reviews |
 
 ### Local, jobs, and employers
@@ -169,6 +179,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [G2 (Software Reviews)](https://scavio.dev/docs/g2-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 5 | Search Products, Get Product, Get Reviews |
 | [Capterra (Software Reviews)](https://scavio.dev/docs/capterra-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Products, Get Product, Get Reviews |
 | [Trustpilot](https://scavio.dev/docs/trustpilot-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Businesses, Get Business Profile, Get Reviews, Get Categories, Get Category Businesses, Get Review |
+| [Goodreads](https://scavio.dev/docs/goodreads-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search, Get Book, Get Reviews, Get Suggestions, Get Author, Get Author Books, Get Series, Get Editions, Get List, Get Book Lists, Search Lists, Get Quotes, Get Genre Books, Get New Releases |
 
 ### Ad libraries, filings, and any URL
 
@@ -180,6 +191,126 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.96.0
+
+**11 new resources, 68 operations:** Movoto, HotPads, Apartment List, Compass, AffordableHousing.com, Lennar, Extra Space Storage, Public Storage, EstateSales.net, Goodreads, Expedia. All are new resources; no existing operation changed.
+
+**New resource: Movoto, 5 operations.** Movoto (movoto.com, the US home search site owned by Lower): homes for sale, sold homes and rentals in any US city, ZIP code, county, neighborhood or school zone with Movoto's filters and sorts; one home in full with price and tax history, schools, local scores and Movoto's area-based estimate; the market trends Movoto publishes for a city or ZIP code; place suggestions; and one school with its ratings and the homes zoned for it. See the [Movoto API page](https://scavio.dev/movoto-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme).
+
+- **Search Homes**: Search By City, ZIP Code, County, Neighborhood or School Zone; Status For Sale, Sold or Rentals; property types, bed, bath, price, size, lot, year-built, HOA and days-on-market ranges, garage spaces, pool, sold window and for-sale flags, 8 sorts, 50 a page up to 99 pages (captured 2026-11-26: homes for sale in Austin, TX gave 5885 over 99 pages).
+- **Get Property**: by link or path; price and tax history, features, schools with GreatSchools ratings, local scores, nearby homes and Movoto's area-based estimate (the area's price per square foot times the home's size; not an appraisal) (captured 2026-11-26: 12901 Sherbourne St, Austin, TX at 649029 USD, estimate 542780 USD).
+- **Get Market Trends**: a city (City and State) or a ZIP code; today, one month ago and one year ago only, plus Movoto's daily statistics for a ZIP code (captured 2026-11-26: Los Angeles, CA median list price 1049000 USD, down 4.6% year over year).
+- Sold prices are null where the sale price is not public (non-disclosure states such as Texas).
+- No listing-agent names, phones, emails or license numbers are returned; brokerage company names are.
+- Not available: street-address suggestions, parent school reviews, a monthly market series.
+
+Every Movoto operation costs 1 credit; credits_used says what was charged. Every operation carries a 240-second request timeout. Failed calls are not charged; a not-found is charged, and a page past the last one is an empty page with a note (charged).
+
+**New resource: HotPads, 5 operations.** HotPads (hotpads.com, Zillow Group's rental search site): apartments, houses, condos, townhomes, rooms, sublets and for-rent-by-owner listings in any US city, neighborhood, borough or ZIP code; one listing in full with floor plans, units, pet policies and HotPads' comparison with area averages; the rent history HotPads publishes for a listing; the costs and fees the property manager lists; and location suggestions. See the [HotPads API page](https://scavio.dev/hotpads-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme).
+
+- **Search Rentals**: Area (a Get Suggestions resource_id or a place such as Austin, TX) and Type; beds (exact or minimum), baths, rent, square feet, pets, in-unit laundry, one amenity, keywords, 4 sorts, 40 buildings a page (captured 2026-11-26: for-rent-by-owner listings in dallas-tx gave 775 units in 600 buildings, from 750 USD a month).
+- **Get Listing**: by link or building ID; floor plans with their units, rents and availability, pet policies, popularity and area comparison (captured 2026-11-26: Lincoln at Bankside, Bronx, NY, 350 units across 54 floor plans at 2687 to 5667 USD a month).
+- **Get Price History**: Listing Alias and Model ID from Get Listing price_history (set only where HotPads publishes a history; captured 2026-11-26: 22 events for listing alias 5759ydyqtn49h).
+- **Get Costs and Fees**: move-in and monthly totals, base rent, required and optional fees, usage fees.
+- US only (including DC and Puerto Rico); HotPads Canada is not offered. Landlord and agent names, phones and emails are not returned.
+
+Every HotPads operation costs 1 credit; credits_used says what was charged. Every operation carries a 240-second request timeout. Failed calls are not charged; a not-found is charged.
+
+**New resource: Apartment List, 6 operations.** Apartment List (apartmentlist.com, the US rental search site): rentals in any US city, neighborhood or ZIP code with the rent range, rent by bed count, floor plans and their units, units available and rent specials; one listing in full with fees, pet policies, parking, requirements, lease terms and its review summary; average rents by bed count with a listings summary; the monthly rent report Apartment List publishes for a city; resident-review summaries for every listing in a city; and location suggestions. See the [Apartment List API page](https://scavio.dev/apartmentlist-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme).
+
+- **Search Rentals**: City and State, a Location Slug from Get Suggestions (city, neighborhood or ZIP code) or a ZIP Code; beds, baths, rent range, move-in date, amenities, occupancy types and 4 sorts, 20 a page. Without filters or sort the answer is fast and in Apartment List's map order; filters and sort (city or ZIP code only) can take up to about 2 minutes (captured 2026-11-26: Austin, TX gave 2197 listings and 20223 units; 1-bedroom rentals in Chicago up to 2000 USD by lowest price gave 442, the first from 660 USD a month).
+- **ZIP Code**: read under its city: the city's listings inside the ZIP code's bounding box, and the city's summary.
+- **Get Listing**: floor plans with every unit's price, base price, total price and required fees, specials, fees, pet policies, parking, income and screening requirements, lease terms, office hours, phone (apartment communities only) and the resident review summary (captured 2026-11-26: The Asher in Austin, TX, 377 units, 40 available, from 1381 USD for 1 bedroom).
+- **Get Rent Report**: Apartment List's own rent estimates as its monthly report publishes them, growth as a fraction (captured 2026-11-26: Chicago, IL median 1723 USD for 1 bedroom and 1875 USD for 2, +3.37% on the year).
+- No reviewer names are returned.
+- Not available: tours or applications, price history beyond the rent report, homes for sale.
+
+Every Apartment List operation costs 1 credit; credits_used says what was charged. Every operation carries a 240-second request timeout. Failed calls are not charged; a not-found is charged.
+
+**New resource: Compass, 3 operations.** Compass (compass.com, the US real estate brokerage): homes for sale, rentals and homes sold in the last 90 days in any US area with price, beds, baths, size, status, the listing brand and open houses; one listing in full with pricing, dates, history, details, schools, building, rental terms and tax; and Compass's search box suggestions. See the [Compass API page](https://scavio.dev/compass-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme).
+
+- **Search Listings**: Area (a Compass slug from Get Suggestions, or "City, ST") and Mode For Sale, For Rent or Sold (last 90 days); highest price, fewest beds, baths and square feet, property type, open house this weekend, coming soon, 3 sorts, 41 a page up to 9 pages. Compass pages through the first 369 results: reachable says how many (captured 2026-11-26: homes for sale in manhattan-ny up to 2000000 USD with 2 or more bedrooms gave 1219, 369 reachable).
+- **Get Listing**: by link or listing ID; pricing, dates, days on market, listing and public-record sale history, details, schools, building, rental terms, tax and source MLS (captured 2026-11-26: 77 Bleecker Street, Unit 121, Manhattan, NY at 1875000 USD, 24 days on market).
+- Compass does not apply a minimum price, a maximum bedroom count, year built or lot size, so they are not offered.
+- No agent names, emails, phones, license numbers or photos are returned; the listing brand is.
+
+Every Compass operation costs 2 credits; credits_used says what was charged. Every operation carries a 240-second request timeout. Failed calls are not charged; a not-found is charged.
+
+**New resource: AffordableHousing.com, 6 operations.** AffordableHousing.com (affordablehousing.com, the US affordable and Section 8 rental site run by Affordable Housing Network): affordable and Section 8 rentals in any US state, city, county or ZIP code; one listing in full with its models and units, fees, the utilities split, amenities and accessibility; open Section 8 and public housing waiting lists; one housing authority with its waiting list status, voucher count, programs and public office contact; the housing authorities of a state; and place suggestions. See the [AffordableHousing.com API page](https://scavio.dev/affordablehousing-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme).
+
+- **Search Listings**: State required, then a City, a City and ZIP Code (a ZIP code is searched within its city), a County or the whole state; beds, baths, property type, rent range, pet friendly, Section 8, utilities included, age restricted, accessibility and 9 sorts, 42 a page. Premium and spotlight listings come first; the sort applies within each tier (captured 2026-11-26: Section 8 listings in Houston, TX gave 1183, the first a 1-bedroom apartment at 1000 USD a month).
+- **Get Listing**: models with their units and availability, subsidized units, move-in, monthly and one-time fee totals, application and pet fees, what the tenant pays and what the owner pays, amenities and accessibility.
+- **Get Waiting Lists**: open lists nationwide or for one state (captured 2026-11-26: 753 nationwide, 50 in Texas), with the agency URL Get Housing Authority takes.
+- **Get Housing Authority**: waiting list status, voucher count, Section 8 inventory, programs, jurisdiction and the agency's public office phone, fax and website (captured 2026-11-26: Somerville Housing Authority, 1193 vouchers, 12 waiting lists). No staff contact details.
+- Private landlords are never named and their contact details are never returned; phone numbers and email addresses are cut out of listing text.
+- Not available: payment standard or fair market rent numbers, applications, waiting list sign-up.
+
+Search Listings and Get Suggestions cost 2 credits; the other operations 1. credits_used says what was charged. Every operation carries a 240-second request timeout. Failed calls are not charged; a not-found is charged.
+
+**New resource: Lennar, 11 operations.** Lennar (lennar.com, the US homebuilder): new homes and communities in any Lennar market with the price, the was price, beds, baths, square feet, homesite availability and offer flags; one community in full with its plans, homesites, HOA fee, tax rate and sales center hours; one floor plan; one homesite with its closing cost incentive and estimated move-in date; master-planned communities; every market with its cities, feature codes and school districts; the market-wide promotion as Lennar shows it; Lennar's payment calculator for a homesite; place suggestions and a link resolver. For new-home price tracking, incentive monitoring and market comparisons. See the [Lennar API page](https://scavio.dev/lennar-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme).
+
+- **Search**: Mode Homes (homesites and floor plans) or Communities; Search By Market Code, State, City, Text, Coordinates (with a radius) or Map Box; beds, baths, price and square-foot filters, home types, community types (active adult, lifestyle), homesite availability (quick move-in, under construction, coming soon, future release), community status, feature codes and school filters, 7 sorts, 1 to 200 a page (captured 2026-11-26: homes in Dallas / Ft. Worth by lowest price gave 890 homesites, the first a 1-bed, 661 sqft homesite in Princeton at 117499 USD).
+- **Get Markets** and **Get Market**: 104 markets in 32 states (captured 2026-11-26); one market's cities and the feature codes and school districts the Search filters take.
+- **Get Community**, **Get Plan** and **Get Home**: community number, plan number and lot ID from Search answers; Resolve Link turns a lennar.com link into those IDs (captured 2026-11-26: Kresston in Montgomery, TX from 339990 USD, its Melrose II homesite at 384990 USD, was 424990).
+- **Get Promotions**: offers, incentives and legal copy exactly as Lennar shows them, or null when none runs (captured 2026-11-26: Dallas / Ft. Worth ran "Black Friday Deals!" with up to a $20,000 price reduction).
+- **Get Payment Estimate**: Lennar's calculator with a down payment and an interest rate as a decimal (0.065 for 6.5%); amounts are the calculator's, not a quote.
+- No sales consultant names are returned; the sales office phone is Lennar's public business number.
+- Not available: price history, reservations or contact forms.
+
+Every Lennar operation costs 1 credit; credits_used says what was charged. Every operation carries a 240-second request timeout. Failed calls are not charged; a not-found is charged.
+
+**New resource: Extra Space Storage, 5 operations.** Extra Space Storage (extraspace.com, the US self-storage REIT): self-storage facilities near any US ZIP code, city, place or point with Starting at prices by size class, promotion and rating; one facility in full with every unit class, its in-store price and web rate, availability and promotions, plus Extra Space's own price stats; the Google reviews shown on a facility page; a US city's storage prices from Extra Space's city page; and the cities Extra Space lists. See the [Extra Space Storage API page](https://scavio.dev/extraspace-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme).
+
+- **Search Facilities**: a ZIP code, "City, ST" or place, or Coordinates; up to 120 facilities nearest first with no further pages, filtered by climate control, drive-up, indoor, RV parking, enclosed vehicle storage, 24-hour access and unit sizes, sorted by distance or Starting at price (captured 2026-11-26: ZIP 90012 gave 120 facilities, the nearest 0.44 miles away from 69 USD a month).
+- **Get Facility**: by facility ID (store_id, not the store number in the name) or link; units with in-store price and web rate as the facility page labels them, available count, features and promotions; Include Unavailable adds classes with nothing to rent now (captured 2026-11-26: facility 1934 in Knoxville, TN, a 10' x 15' climate-controlled unit at 98 USD web rate against 172 in store).
+- **Get Reviews**: 4 sorts, a star filter, up to 100 a page over the facility's full set; no reviewer names.
+- **Get City Prices**: City and State from Get Locations; the city page's own price sentences and price stats per size; city pages can take up to about 3 minutes.
+- Not available: reservations or rentals, price history.
+
+Every Extra Space Storage operation costs 1 credit; credits_used says what was charged. Every operation carries a 240-second request timeout. Failed calls are not charged; a not-found is charged.
+
+**New resource: Public Storage, 3 operations.** Public Storage (publicstorage.com, the largest US self-storage operator, now also in Canada): self-storage facilities near a ZIP or postal code, a city or an address with each facility's distance, hours, starting price, features and unit prices (In-Store Rent, Online price, promotion, move-in cost); one facility in full; and every customer review shown for a US facility. See the [Public Storage API page](https://scavio.dev/publicstorage-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme).
+
+- **Search Facilities**: a Location (ZIP or postal code, city with state or province, or a street address; not latitude / longitude) or, for page 2 and later of a ZIP search, the Search Slug page 1 returned; 3 sorts and filters for climate controlled, drive-up, 24/7 access, business, vehicle, RV and boat storage and a unit size, 9-19 facilities a page (captured 2026-11-26: ZIP 75201 by lowest price gave 10 facilities on page 1 of 2, the first 0.5 miles away from 32 USD).
+- **Market and Language**: United States (USD, miles) or Canada (CAD, km); French returns Public Storage Canada's French pages (captured 2026-11-26: Toronto, ON gave 18 facilities).
+- **Get Facility**: every unit with In-Store Rent, Online price, promotion, move-in cost, admin fee and lock charge, plus hours, amenities and (US) rating and review count (captured 2026-11-26: store 2044 in Dallas, rated 4.7 from 422 reviews, its 5'x5' unit at 66 USD in store and 39.60 USD online). Promotions can vary between visits; Public Storage does not publish occupancy.
+- **Get Reviews**: every review shown for a US facility, newest first, optionally one star rating; no reviewer names (captured 2026-11-26: store 2223 had 819 five-star reviews).
+- Not available: reviews for Canadian facilities, a review sort, reservations.
+
+Every Public Storage operation costs 1 credit; credits_used says what was charged. Every operation carries a 240-second request timeout. Failed calls are not charged; a not-found is charged.
+
+**New resource: EstateSales.net, 6 operations.** EstateSales.net (estatesales.net, the US estate sale directory run by Vintage Software): estate sales, auctions and moving sales near any US ZIP code or in a city's metro area with their dates, sale type, distance and pictures; one sale in full with its schedule, terms and description; every estate sale company listed for a metro area and one company's public page with its upcoming sales; keyword search over sales and marketplace items; and one marketplace item with its current bid, buy-now price, shipping and pickup. See the [EstateSales.net API page](https://scavio.dev/estatesales-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme).
+
+- **Get Sales**: a ZIP Code, or City and State (the city's metro area); When (today, tomorrow, starting within 15 days), Sale Types and 5 sorts apply to the first 20 sales the page lists, nearest first; total_count and filtered_count are the site's own counts (captured 2026-11-26: around ZIP 75201, Dallas, TX, the site counted 164 sales and listed 20, the nearest 2.13 miles away).
+- **Get Sale**: by sale ID or link, with local and UTC times for every sale day, terms, description and pictures; a company-run sale's street address is given once its show-address time has passed.
+- **Get Companies** and **Get Company**: every company listed for a metro area (captured 2026-11-26: Dallas-Fort-Worth-Arlington, 226 companies) and one company's page with its current and upcoming sales; testimonials carry no author names.
+- **Search Sales and Items**: 24 a page, pages 1 to 4 (captured 2026-11-26: lamp gave 1057 results over 45 pages). Get Item reads one marketplace item with its bids, buy-now price, shipping and pickup; no bidder identity is returned.
+- Private sellers are never identified: a private sale gives its city, state and ZIP only. Company names, phones, websites and addresses are their public business contact.
+- Not available: sales past the first 20 of an area, search pages past 4, bidding or buying, price history.
+
+Every EstateSales.net operation costs 1 credit; credits_used says what was charged. Every operation carries a 240-second request timeout (Get Company and Search Sales and Items can take 10 to 50 seconds). Failed calls are not charged; a not-found is charged.
+
+**New resource: Goodreads, 14 operations.** Goodreads (goodreads.com, Amazon's book community): book, list and quote search; one book in full by ID, link or ISBN with its rating distribution, genres, series, awards and Kindle price as Goodreads shows it; reader reviews with Goodreads' own sorts and star, language and edition filters; authors with their books and series; every edition of a work; Listopia lists, the lists a book is on and list search; quotes; a genre's most shelved and most read books; and new releases by genre or month. Goodreads retired its official API (no new developer keys since 2020). See the [Goodreads API page](https://scavio.dev/goodreads-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme).
+
+- **Search**: books (by title, author or ISBN), lists or quotes, 20 a page up to page 100; Goodreads search has no sort or field filter (captured 2026-11-26: dune gave over 111k books, the first Dune by Frank Herbert, rated 4.29 from 1732454 ratings).
+- **Get Book**: by Book ID or URL, or by ISBN (checksum verified). Returns work_id (what Get Editions and Get Quotes take), genre slugs (what Get Genre Books takes), awards, Kindle price (USD, as given) and the first 30 reviews in popular order.
+- **Get Reviews**: 30 a page, Sort (popular, newest, oldest), Stars, Language, Edition Only, and Pages 1 to 4 (up to 120 reviews of one view per call; Goodreads has no jump to a deeper page). Sorted, filtered or multi-page views take 15-60 s, up to about 2 minutes.
+- **Get Genre Books**: Popular (the first 50 of the genre's shelf, most shelved first) or Most Read This Week; one page per genre. **Get New Releases**: by Month (YYYY-MM, the first 15 Goodreads shows) or by Genre.
+- Reviewer names, avatars and profile links are never returned (profile links are cut out of review text); a list's creator is not returned.
+- Not available: user shelves and profiles, reading challenges, groups, ratings history.
+
+Every Goodreads operation costs 1 credit; credits_used says what was charged. Every operation carries a 240-second request timeout. Failed calls are not charged; a not-found is charged.
+
+**New resource: Expedia, 4 operations.** Expedia (expedia.com, Expedia Group's travel booking site) in 50 Expedia market-languages: hotel and stay search by place or region ID for your dates and adults, with the large price as Expedia shows it, the nightly price, the total for the stay, the was price, Expedia's fees line, deal and scarcity badges and the guest rating; one property page in full with every amenity group, fees, policies, what is nearby and FAQs; Expedia's price calendar for one property; and Expedia's destination suggestions. See the [Expedia API page](https://scavio.dev/expedia-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme).
+
+- **Market**: 50 market-languages from the United States (default, USD) to Saudi Arabia (SAR), each in its own language and currency. Get Property and Get Price Calendar are not available in the United Kingdom, Brazil, Hong Kong (all three languages), Malaysia and the Philippines, where Expedia answers hotel pages with another country's site; Search Properties and Get Suggestions work there.
+- **Search Properties**: Destination or Region ID plus Check-In and Check-Out (at most 28 nights), adults (one room), 4 sorts, star rating, amenity and guest rating filters. The top results of Expedia's first page: 3 on most requests (partial: true), up to 10 on some; no further page can be fetched (captured 2026-11-26: Las Vegas, NV for 2027-01-20 to 2027-01-23 with 2 adults gave 10 of 24 matched properties, the first at 1297 USD for 3 nights).
+- **Get Property**: read without dates; rooms, dated rates and review texts are not offered (use Search Properties for dated prices).
+- **Get Price Calendar**: the price Expedia shows for each day from today to about 10 months ahead, labelled by Expedia "Lowest prices in the past 24 hours" (captured 2026-11-26: property 17117062 in New York, 241 days, 232 with a price). Send the property path from Search Properties where you can.
+- Not available: review texts, results past Expedia's first page, flights, cars, booking.
+
+Every Expedia operation is billed on what it cost: 2 credits for most pages, 1 on some New Zealand, Korea and Indonesia pages; credits_used says what was charged. Every operation carries a 240-second request timeout (a call can take up to about 4 minutes). Failed calls and another market's page are not charged; a not-found is charged.
 
 ## What changed in 0.95.0
 
