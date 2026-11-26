@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 124 resources and 1,007 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 124 resources and 1,013 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -50,7 +50,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Discount Tire (US)](https://scavio.dev/docs/discounttire-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Tires by Size, Get Vehicle Fitment, Get Tires for Vehicle, Get Product, Get Model, Get Store Stock, Find Stores, Get Store, Get Reviews, Get Store Reviews, Get Wheels, Browse Tire Models, Get Categories, Get Suggestions, Get Appointment Availability |
 | [Vevor (13 storefronts)](https://scavio.dev/docs/vevor-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Get Prices Across Storefronts 3 | Search Products, Get Product, Get Shipping, Get Reviews, Get Questions, Get Search Suggestions, Get Categories, Get Category Products, Get Collection, Get Deals, Get Prices Across Storefronts |
 | [Nellis Auction (6 US shopping locations)](https://scavio.dev/docs/nellis-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Lots, Get Lot, Get Locations, Get Categories |
-| [Sephora](https://scavio.dev/docs/sephora-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Product |
+| [Sephora (US; Canada via Country)](https://scavio.dev/docs/sephora-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Get Product and Get Offers 2 (the same for Canada) | Search Products, Get Category Products, Get Product; Canada only: Get Brand Products, Get Brands, Get Search Suggestions, Get Offers, Find Stores, Get Store |
 | [Ulta Beauty](https://scavio.dev/docs/ulta-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Product, Get Store Availability |
 | [Dermstore (US and Canada)](https://scavio.dev/docs/dermstore-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get List Page, Get Product, Get Suggestions, Get Offers, Get Brands, Get Categories |
 | [ALDI](https://scavio.dev/docs/aldi-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Find Stores |
@@ -156,6 +156,17 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.91.0
+
+**Sephora Canada on the Sephora resource, 6 new operations.** Sephora Canada (sephora.com/ca, Sephora's Canadian store: 152 stores per its store list on Nov 25, 2026): Canadian beauty prices in CAD (The Ordinary, Dior, Rare Beauty, Supergoop and the rest of the catalogue) with sale prices and dated offers. Sephora publishes no public product or store API. See the [Sephora API page](https://scavio.dev/sephora-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme). For the same product at other Canadian retailers use the Dermstore (Country Canada), Amazon (Amazon.ca) and Walmart (walmart.ca) resources; match on brand, name and size.
+
+- **Country** on Search Products, Get Category Products and Get Product: United States (default, sephora.com, unchanged: a US workflow sends the same request as before) or Canada. Canada Options on the two listings: Sort By, Brand, On Sale Only, New Only, Clean at Sephora Only, Minimum Rating, Minimum and Maximum Price (CAD), Facet Filters (JSON), Include Facets and Language (English or French: the same product and SKU IDs and CAD prices, French names and descriptions). ZIP Code is US only.
+- **Same product and SKU IDs as sephora.com**, with CAD prices as Sephora Canada gives them (French prices such as 33,00 $ are read as 33.00). Get Product returns every SKU with price, list and sale price, in stock and only few left, the 10 latest reviews without reviewer names, and Sephora's own AI-generated summary of customer reviews, labelled as Sephora's (read it as Sephora's summary, not as a fact). Captured 2026-11-26: Dior Sauvage Eau de Parfum (P428500), the 3.4 oz / 100 ml SKU 2038131 at 200 CAD, in stock; the Sephora Collection Oil Infusion Hydrating Lip Oil (P518068) at a sale price of 10.50 CAD (list 15.00).
+- **New, Canada only:** Get Brand Products (one brand's products with the Canada listing options), Get Brands (the A-Z brand directory), Get Search Suggestions, Get Offers (eligibility, promo code, threshold and the end date as given, no start date; app-only offers flagged; 26 offers on 2026-11-26, among them 30% off Sephora Collection ending 2026-11-30 23:59 PT), Find Stores (152 stores on the store list, by province) and Get Store (address, phone, coordinates, weekly and holiday hours, services; public business data, returned as captured).
+- Not available for Canada: stock per store, a store finder by postal code, the full review list with its sorts or a star filter, UPC, Beauty Insider prices, cart or checkout, price history (poll and store the answers).
+
+Credits are the same in both countries: 1 per call, Get Product and Get Offers 2. credits_used says what was charged. Failed calls and refused inputs are not charged; a not-found is charged for Canada. Every Sephora operation now carries a 240s timeout.
 
 ## What changed in 0.90.0
 
