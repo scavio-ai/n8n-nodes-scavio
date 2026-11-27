@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 190 resources and 1,543 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 194 resources and 1,586 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -148,6 +148,10 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Enjoei (Brazil)](https://scavio.dev/docs/enjoei-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Listings, Get Category Listings, Get Categories, Get Product, Get Shop, Get Shop Listings, Get Shop Sold Listings, Get Shop Reviews, Get Search Suggestions |
 | [Atacadao (Brazil)](https://scavio.dev/docs/atacadao-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Product, Get Stores Near, Get Stores, Get Store, Get Flyers, Get Facets, Get Search Suggestions, Get Categories |
 | [Carrefour Brasil (Brazil)](https://scavio.dev/docs/carrefourbr-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Collection Products, Get Product, Get Delivery Options, Get Stores, Get Search Suggestions, Get Coupons, Get Categories |
+| [Terabyteshop (Brazil)](https://scavio.dev/docs/terabyte-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Reviews, Get Category Products, Get Brand Products, Get Deals, Get Coupons, Get Trending Searches, Get PC Builder |
+| [Cobasi (Brazil)](https://scavio.dev/docs/cobasi-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Brand Products, Get Deals, Get Product, Get Reviews, Get Questions, Get Pickup and Delivery, Get Search Suggestions, Get Stores, Get Store |
+| [Netshoes (Brazil)](https://scavio.dev/docs/netshoes-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get List Products, Get Product, Get Offers, Get Online Stock, Get Shipping, Get Reviews, Get Questions, Get Daily Deal, Get Seller, Get Popular Searches |
+| [Estante Virtual (Brazil)](https://scavio.dev/docs/estantevirtual-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Get Copies with Include Sellers ceil((1 + copies) / 5) | Search Books, Get Book by ISBN, Get Book, Get Copies, Get Copy, Get Shipping, Get Seller, Get Seller Books, Get Seller Reviews, Get Sellers, Get Category Books, Get List Books |
 | [Rakuten (US, UK and Canada; French pages)](https://scavio.dev/docs/rakuten-stores?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Get Stores, Get Store, Get Store Coupons, Get Rates, Search, Get Suggestions, Get Category Stores, Get Deals, Get In-Store Offers |
 
 ### Social and video
@@ -222,6 +226,49 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.102.0
+
+**4 new resources, 43 operations:** Terabyteshop, Cobasi, Netshoes, Estante Virtual. All are new resources; no existing operation changed.
+
+**New resource: Terabyteshop, 9 operations.** Terabyteshop (terabyteshop.com.br, Brazil's PC-parts store), Brazil only, prices in BRL: keyword search, category and brand listings and the deal listings with the card price, the Pix price (Pix is Brazil's instant payment), the list price and installments; one product with every card plan, warranty and a running deal's units left; reviews; the active coupons; the site's top search terms; and the Full Custom PC builder.
+
+- **Search Products**: up to 100 a page. The site's search ignores sorting, so Scavio sorts the returned page and a note says so (captured 2026-11-27: rtx 5060 matched 162 products, the first an RTX 5060 Ti card at 4199.99 BRL by Pix).
+- **Get Category Products**, **Get Brand Products** and **Get Deals** (Black Friday, Open Box, Free Shipping): 30 a page, the site's order or by price, Subcategory and spec Filters (JSON) (captured 2026-11-27: the Black Friday listing held 6767 products).
+- **Get Product**: card total, Pix price, every card plan, warranty, the deal's end and units left, specs and the 5 newest reviews (captured 2026-11-27: a Gigabyte GS24F14 monitor at 549.99 BRL by Pix, 6 units left in a Black Friday offer ending 2026-11-30). **Get Reviews**: 5 a page, no reviewer names.
+- **Get Coupons** (all, by coupon category or one code with the products it covers), **Get Trending Searches** and **Get PC Builder** (platforms, component groups and options with availability per distribution center; builder prices are the builder's own and can differ from the product page).
+- Not available: shipping by CEP (quoted in the cart), stores (it has none), stock unit counts, price history.
+
+Every Terabyteshop operation costs 1 credit; credits_used says what was charged. Search, product and listings carry a 240-second request timeout (they usually take 5 to 30 seconds, up to about 90); the others 120 seconds. Failed calls and refused inputs are not charged; a not-found is charged.
+
+**New resource: Cobasi, 11 operations.** Cobasi (cobasi.com.br, the Brazilian pet store of Grupo Petz Cobasi), Brazil only, prices in BRL: keyword search, category and brand listings and the deals page; one product with every size's price and, when it can be bought on subscription, the Compra Programada price; reviews and questions; pickup and delivery for one SKU at a CEP; search suggestions; the store directory and one store.
+
+- **Search Products**, **Get Category Products**, **Get Brand Products** and **Get Deals**: 20 a page, up to page 50, sorted and filtered (captured 2026-11-27: racao golden matched 237 products; the deals page held 1293).
+- **Get Product**: each size's price, EAN, price per measure and subscription price when offered (captured 2026-11-27: a Formula Natural Fresh Meat dog food, 1 kg at 59.99 BRL, list 74.99). **Get Reviews** and **Get Questions**: 4 a page, no reviewer or asker names.
+- **Get Pickup and Delivery**: the stores near a CEP that can hand the SKU over and the delivery options; flags, not unit counts (captured 2026-11-27: 11 pickup stores near CEP 01310-100, ready in 45 minutes, or delivery for 7.90 BRL in 2 business days).
+- **Get Stores** (253 captured 2026-11-27), **Get Store** (hours, services) and **Get Search Suggestions**.
+- Not available: Pix prices, per-store prices or stock, marketplace sellers, deal validity dates, price history.
+
+Every Cobasi operation costs 1 credit; credits_used says what was charged. Listings, product, stores and store carry a 300-second request timeout (they take 10 to 90 seconds); the others 120 seconds. Failed calls and refused inputs are not charged; a not-found is charged.
+
+**New resource: Netshoes, 11 operations.** Netshoes (netshoes.com.br, Brazil's sporting-goods store, part of Magalu), Brazil only, prices in BRL: keyword search and list pages; one product with every size and every seller's offer; the offers, online stock and delivery options for one size; reviews and questions; the daily deal; a marketplace seller; and the popular searches.
+
+- **Search Products** (100 a page) and **Get List Products** (45 a page, tenis-black-friday by default): the site's 7 sorts, Brand, Gender, Size, Seller, a price range and Filters (JSON) (captured 2026-11-27: tenis corrida filtered to nike matched 214 products; tenis-black-friday held 736).
+- **Get Product**: card price, the Pix price where a Pix promotion applies, every size with EAN and every seller's offer (captured 2026-11-27: an Adidas Racer TR23 at 249.99 BRL, list 499.99, in 8 sizes). **Get Offers** for one size.
+- **Get Online Stock** and **Get Shipping** use the size's buy-box offer, whose price can differ by a few reais from the price Get Product shows (captured 2026-11-27: 549 units of size 38 online; free delivery to CEP 01310-100 in 3 days).
+- **Get Reviews** (13 a page, by stars or with photos), **Get Questions**, **Get Daily Deal** (no prices: send its product IDs to Get Product), **Get Seller** (company name, CNPJ, business address, rating; no contacts) and **Get Popular Searches**.
+
+Every Netshoes operation costs 1 credit; credits_used says what was charged. Search and list pages carry a 240-second request timeout (they usually take 2 to 30 seconds); the others 180 seconds. Failed calls and refused inputs are not charged; a not-found is charged.
+
+**New resource: Estante Virtual, 12 operations.** Estante Virtual (estantevirtual.com.br, Brazil's used and new book marketplace, part of Magalu), Brazil only, prices in BRL: search, category and list pages; the book for an ISBN; one book with its lowest used and new copy; every copy of a book on sale; one copy; a delivery quote to a CEP; a sebo's (second-hand bookshop's) page, catalogue and reviews; and the sebo directory.
+
+- **Search Books** and **Get Category Books**: 44 a page, 6 sorts, used or new, author, publisher, city, price and Filters (JSON) (captured 2026-11-27: dom casmurro matched 3915 books). **Get List Books**: black-friday by default, 42 a page.
+- **Get Book by ISBN** (check digit verified, so a typo is not charged) and **Get Book** (captured 2026-11-27: 1984, ISBN 9788535914849, had 198 used and 62 new copies, from 18 BRL used and 21.90 BRL new).
+- **Get Copies**: up to 50 a page, cheapest first; Include Sellers adds each copy's seller and is billed ceil((1 + copies) / 5) credits (10 copies = 3). **Get Copy** and **Get Shipping** (captured 2026-11-27: 19.34 BRL to CEP 01310-100 in 9 days).
+- **Get Seller**, **Get Seller Books**, **Get Seller Reviews** and **Get Sellers** (captured 2026-11-27: 1258 in Sao Paulo city). Sellers appear by shop name with city and state, marked private or business; reviewer names are never returned.
+- Not available: search suggestions, questions, stores, a was-price, Pix prices, price history.
+
+Every Estante Virtual operation costs 1 credit except Get Copies with Include Sellers; credits_used says what was charged. Every operation carries a 240-second request timeout (most calls take 2 to 30 seconds, up to 70 when the site is busy). Failed calls and refused inputs are not charged; a not-found is charged.
 
 ## What changed in 0.101.0
 
