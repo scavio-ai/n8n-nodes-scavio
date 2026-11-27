@@ -260,7 +260,7 @@ Every Lojas Renner operation costs 1 credit; credits_used says what was charged.
 
 - **Search Products** (a keyword the site sends to a category is followed, with redirected_to), **Get Category Products**, **Get Brand Products** and **Get Deals** (Black Friday, Open Box or another campaign): 36 a page, by price or name, Filters (JSON) (captured 2026-11-27: rtx 5060 matched 1385 products; Black Friday held 1467).
 - **Get Product**: card, Pix and list price, the running offer with its end and units left, specs, EAN and warranty (captured 2026-11-27: an INNO3D RTX 5060 card at 3159.99 BRL by Pix, 3717.64 by card, 2 units left in a Black Friday offer ending 2026-11-30).
-- **Get Product Live**: the page as loaded, with live promotion units, the FPS benchmarks shown on PCs and a prebuilt PC's or kit's components (captured 2026-11-27: 22 component groups and FPS for 14 games on a Pichau prebuilt PC). Slower: 30 to 160 seconds.
+- **Get Product Live**: the page as a visitor sees it, with live promotion units, the FPS benchmarks shown on PCs and a prebuilt PC's or kit's components (captured 2026-11-27: 22 component groups and FPS for 14 games on a Pichau prebuilt PC). Slower: 30 to 160 seconds.
 - **Get Reviews** (10 a page, by stars or with media, no reviewer names), **Get Installments** (every card plan, including the discounts on short plans), **Get Coupons**, **Get Categories** and **Get Search Suggestions**.
 - Not available: shipping by CEP, stores, stock unit counts, the PC builder, price history.
 

@@ -161,7 +161,7 @@ export const pichauOperations: INodeProperties[] = [
 				name: 'Get Product Live',
 				value: 'product_live',
 				action: 'Get a pichau product page as loaded',
-				description: `One product page of ${SITE} as a browser shows it after loading, by URL key or link: product_id, sku, name, product_type, available, stock_status, only_x_left, price, pix_price, list_price, installment, on_promotion, offer (live units left and sold), benchmark (overall, CPU and GPU scores and FPS per game at Full HD, 1080p ultra, Quad HD and 4K, the UL benchmark the site shows on PCs; an FPS of 0 is the site's 'under 20 FPS'), components (a prebuilt PC's or kit's parts per group: the selected part and the choices offered), rating and review_count. Slower than Get Product. An unknown product is a charged not-found. Captured 2026-11-27: a Pichau prebuilt PC listed 22 component groups and FPS for 14 games, with 48 Black Friday units left. ${ONE}`,
+				description: `One product page of ${SITE} as a visitor sees it, by URL key or link: product_id, sku, name, product_type, available, stock_status, only_x_left, price, pix_price, list_price, installment, on_promotion, offer (live units left and sold), benchmark (overall, CPU and GPU scores and FPS per game at Full HD, 1080p ultra, Quad HD and 4K, the UL benchmark the site shows on PCs; an FPS of 0 is the site's 'under 20 FPS'), components (a prebuilt PC's or kit's parts per group: the selected part and the choices offered), rating and review_count. Slower than Get Product. An unknown product is a charged not-found. Captured 2026-11-27: a Pichau prebuilt PC listed 22 component groups and FPS for 14 games, with 48 Black Friday units left. ${ONE}`,
 				routing: request('/api/v1/pichau/product-live', SLOW_MS),
 			},
 			{
