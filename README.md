@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 184 resources and 1,490 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 187 resources and 1,515 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -142,6 +142,9 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Drogasil + Droga Raia (Brazil)](https://scavio.dev/docs/rdsaude-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Categories, Get Product, Get Prices, Get Store Availability, Get Stores, Search Stores, Get Reviews, Get Deals, Get Suggestions |
 | [Reclame Aqui (Brazil)](https://scavio.dev/docs/reclameaqui-company-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Get Company Complaints by shortname 2 (3 when the search misses) | Search Companies, Get Company, Get Company Complaints, Get Complaint, Search Complaints, Get Rankings, Get Segments, Get Segment Ranking |
 | [Leroy Merlin (Brazil, Italy, Spain, Portugal, Poland, Romania, France)](https://scavio.dev/docs/leroymerlin-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | Actual cost per market: Brazil 1; Italy 1 (Get Product and Get Category Products 2); Romania 1; Spain, Portugal and Poland 2; France 5 | Search, Get Category Products, Get Offers, Get Product, Get Store Stock, Get Stores, Get Store, Get Reviews, Get Shipping Quote, Get Address for CEP, Get Regions, Get Categories, Get Suggestions |
+| [Natura (Brazil, Argentina, Chile, Colombia, Mexico, Peru)](https://scavio.dev/docs/natura-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Categories, Get Product, Get Search Suggestions, Get Stores, Get Deals |
+| [O Boticario + Eudora (Brazil)](https://scavio.dev/docs/boticario-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; page operations 2 when the page needs a second route; Get Prices 1 per 5 SKUs | Search Products, Get Category Products, Get Categories, Get Deals, Get Promotion Conditions, Get Product, Get Prices, Get Reviews, Get Stores, Get Delivery and Pickup, Get Search Suggestions |
+| [Centauro (Brazil)](https://scavio.dev/docs/centauro-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Deals, Get Product, Get Freight and Pickup, Get Stores, Get Search Suggestions |
 | [Rakuten (US, UK and Canada; French pages)](https://scavio.dev/docs/rakuten-stores?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Get Stores, Get Store, Get Store Coupons, Get Rates, Search, Get Suggestions, Get Category Stores, Get Deals, Get In-Store Offers |
 
 ### Social and video
@@ -219,7 +222,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 
 ## What changed in 0.100.0
 
-**7 new resources, 63 operations:** KaBuM!, Magazine Luiza (Magalu), Casas Bahia, Buscape + Zoom, Drogasil + Droga Raia, Reclame Aqui, Leroy Merlin. All are new resources; no existing operation changed.
+**10 new resources, 88 operations:** KaBuM!, Magazine Luiza (Magalu), Casas Bahia, Buscape + Zoom, Drogasil + Droga Raia, Reclame Aqui, Leroy Merlin, Natura, O Boticario + Eudora, Centauro. All are new resources; no existing operation changed.
 
 **New resource: KaBuM!, 7 operations.** KaBuM! (kabum.com.br, the Brazilian computer and electronics retailer, part of Magalu), Brazil only, prices in BRL: keyword search and category listings with KaBuM!'s sorts and facet filters; the departments and their category trees; one product with the card and Pix prices, every payment plan, the running offer, stock, specs and the seller; delivery options to a CEP; customer reviews; and offer campaigns. See the [KaBuM! API page](https://scavio.dev/kabum-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme).
 
@@ -295,6 +298,35 @@ Every Reclame Aqui operation costs 1 credit, Get Company Complaints 2 by shortna
 - Not available: search in France, reviews in Spain and France, store stock outside Brazil, Ukraine and Greece, price history.
 
 Leroy Merlin operations are billed on what the request spent in its market: Brazil 1 credit, Italy 1 (Get Product and Get Category Products 2), Romania 1, Spain, Portugal and Poland 2, France 5; credits_used says what was charged. Every operation carries a 270-second request timeout (Brazil search and category can take up to 240 seconds). Failed calls and refused inputs are not charged; a not-found is charged what it spent.
+
+**New resource: Natura, 7 operations.** Natura (the Brazilian beauty brand of Natura &Co) on its own storefronts through Country: Brazil (BRL, default), Argentina (ARS), Chile (CLP), Colombia (COP), Mexico (MXN) and Peru (PEN), in each market's language: keyword search, category listings and the Black Friday campaign listing; the category menu; one product with its shades, kit contents and ingredients; search suggestions; and the physical stores in Brazil. See the [Natura API page](https://scavio.dev/natura-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme).
+
+- **Search Products**, **Get Category Products** and **Get Deals**: up to 100 a page, pages 1 to 200, the market's own sorts (not every market offers every sort), Filters (JSON) from the facets and a price range in the market's currency (captured 2026-11-27: perfume in Brazil gave 522 results, the first at 99.95 BRL, list 199.90; maquiagem held 964 products).
+- **Get Deals**: the market's campaign category (natura-friday in Brazil, Argentina, Chile and Colombia; promociones in Mexico and Peru) with the campaign's dates as the page states them (captured 2026-11-27: natura-friday held 4248 products; the page stated 16 to 27 November 2026, extended to 30 November).
+- **Get Product**: by product ID or link; price, list price, discount, installments, stock flag and the low-stock badge, shades, kit contents, ingredients as written, rating and the 3 latest reviews with no names (captured 2026-11-27: the Deo Parfum Ilia Secreto 25 ml at 66.48 BRL, rated 4.7 from 109 reviews).
+- **Get Stores**: Brazil only, by state, city, CEP prefix and store type (captured 2026-11-27: 1,093 stores, 102 in the city of Sao Paulo); no coordinates or hours. **Get Categories** and **Get Search Suggestions**.
+- Prices are as a visitor who is not signed in sees them: no consultant prices, no regional prices by CEP. Not available: full review paging, store stock, regional prices, Natura's US store, price history.
+
+Every Natura operation costs 1 credit; credits_used says what was charged. Every operation carries a 180-second request timeout (most calls take 2 to 30 seconds, pages of 100 up to a minute). Failed calls and refused inputs are not charged; a not-found is charged.
+
+**New resource: O Boticario + Eudora, 11 operations.** O Boticario and Eudora (boticario.com.br and eudora.com.br, the beauty brands of Grupo Boticario) through Brand, Brazil only, prices in BRL: keyword search, category and product-brand listings and the deal listings with the card price, the Pix price, deal badges and each item's countdown; the category menu; the promotion conditions; one product with its online stock count and every shade; bulk prices; reviews; pickup stores near a CEP; delivery and pickup for one product; and search suggestions. See the [O Boticario API page](https://scavio.dev/boticario-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme).
+
+- **Search Products**, **Get Category Products** and **Get Deals** (Beauty Week, the site's Black Friday event, or the promotions hub, optionally one section): 36 a page, pages 1 to 100, 7 sorts, Product Brand, Line, Category, Min Rating, price range and Facets (JSON) (captured 2026-11-27: perfume gave 1823 results, the first at 434.80 BRL by card or 391.32 BRL by Pix (Brazil's instant payment); Beauty Week held 1216 items).
+- **Get Product**: by SKU, slug or link; card and Pix prices, online stock count as given, seller, datasheet, every shade or size, kit components and the review summary with the site's own AI summary as given (captured 2026-11-27: the Base Liquida Cor 330 Make B. Mate Salicylic 30g at 59.90 BRL, was 99.90, 440 units online, rated 4.88 from 3860 reviews). **Get Prices**: up to 10 SKUs in one call.
+- **Get Promotion Conditions**: each campaign's validity dates and coupon codes as written (captured 2026-11-27: 19 campaigns). **Get Reviews**: by SKU or product group, up to 50 a page, 3 sorts, by stars; no reviewer names.
+- **Get Stores**: the stores that offer pickup near a Brazilian CEP, nearest first, with hours (captured 2026-11-27: 348 stores near CEP 01310-100). **Get Delivery and Pickup**: delivery options and whether store pickup is offered for one product at a CEP. **Get Categories** and **Get Search Suggestions**.
+- Not available: per-store stock, which store holds an order, loyalty prices, price history.
+
+O Boticario + Eudora operations cost 1 credit; search, category, categories, deals, promotion conditions and product cost 2 when the page needs a second route, and Get Prices costs 1 per 5 SKUs; credits_used says what was charged. Page operations carry a 300-second request timeout (they usually take 10 to 130 seconds), the others 120 seconds. Failed calls and refused inputs are not charged; a not-found is charged what it spent.
+
+**New resource: Centauro, 7 operations.** Centauro (centauro.com.br, the sporting-goods retailer of Grupo SBF), Brazil only, prices in BRL: keyword search, category listings and deal lists with the price, the Pix price, badges and every colour; one product with every size; delivery and store pickup for one size to a CEP; the stores near a CEP; and search suggestions. See the [Centauro API page](https://scavio.dev/centauro-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme).
+
+- **Search Products**, **Get Category Products** and **Get Deals** (the Black Friday hotsite, the outlet, Mega Oferta or another hotsite slug): 36 a page, pages 1 to 278 (the site caps totals at 10000), 4 sorts, Filters, Brand, Store and Seller (captured 2026-11-27: tenis corrida reached the 10000 cap, the first at 389.99 BRL, list 599.99; the Black Friday hotsite held 9257 products).
+- **Get Product**: by product ID (model + colour) or link; every size with SKU, EAN, price, Pix price (Brazil's instant payment), seller and stock flag, colours, specs and up to 3 reviews with no names (captured 2026-11-27: the Tenis Masculino adidas Super U from 389.99 to 599.99 BRL by size, 11 of 12 sizes in stock).
+- **Get Freight and Pickup**: delivery options and store pickup for one size SKU to a Brazilian CEP, store by store with stock flags (captured 2026-11-27: free same-day pickup to CEP 01310-100 and 18 stores holding the size). **Get Stores**: stores near a CEP with the Store filter value (captured 2026-11-27: 27 stores near CEP 20040-002). **Get Search Suggestions**.
+- Not available: deal start and end dates (the site publishes none), the full review list, Q&A, unit counts, price history.
+
+Every Centauro operation costs 1 credit; credits_used says what was charged. Listing operations carry a 210-second request timeout (they usually take 10 to 45 seconds), the others 150 seconds. Failed calls and refused inputs are not charged; a not-found is charged.
 
 ## What changed in 0.99.0
 
