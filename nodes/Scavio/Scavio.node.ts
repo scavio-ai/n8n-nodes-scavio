@@ -106,7 +106,12 @@ import { reiOperations, reiFields } from './descriptions/ReiDescription';
 import { qvcOperations, qvcFields } from './descriptions/QvcDescription';
 import { barnesandnobleOperations, barnesandnobleFields } from './descriptions/BarnesandnobleDescription';
 import { thriftbooksOperations, thriftbooksFields } from './descriptions/ThriftbooksDescription';
+import { belkOperations, belkFields } from './descriptions/BelkDescription';
+import { abercrombieOperations, abercrombieFields } from './descriptions/AbercrombieDescription';
+import { llbeanOperations, llbeanFields } from './descriptions/LlbeanDescription';
+import { sweetwaterOperations, sweetwaterFields } from './descriptions/SweetwaterDescription';
 import { williamssonomaOperations, williamssonomaFields } from './descriptions/WilliamssonomaDescription';
+import { bedbathbeyondOperations, bedbathbeyondFields } from './descriptions/BedbathbeyondDescription';
 import { fashionnovaOperations, fashionnovaFields } from './descriptions/FashionnovaDescription';
 import { gapOperations, gapFields } from './descriptions/GapDescription';
 import { zapposOperations, zapposFields } from './descriptions/ZapposDescription';
@@ -209,7 +214,7 @@ export class Scavio implements INodeType {
 		version: 1,
 		subtitle: '={{ $parameter["operation"] + ": " + $parameter["resource"] }}',
 		description:
-			'Real-time structured data from Google, ChatGPT, Gemini, Amazon, Walmart, eBay, Target, Home Depot, Costco, HEB, Kroger, Publix, IKEA, Wayfair, Ashley Furniture, Maisons du Monde, Williams-Sonoma, Pottery Barn, West Elm, Decathlon, Spec\'s, Lowe\'s, Ace Hardware, Tractor Supply, Michaels, Nike, Staples, Sam\'s Club, BJ\'s Wholesale Club, Canadian Tire, SportChek, Mark\'s, RONA, Dollar General, Dollar Tree, Discount Tire, Vevor, Nellis Auction, EstateSales.net, Bring a Trailer, Sephora, Ulta Beauty, Dermstore, Bath & Body Works, Space NK, Lookfantastic, Cult Beauty, YesStyle, Notino, Douglas, Boots, ALDI, Micro Center, Walgreens, CVS, Whole Foods Market, Harbor Freight, AutoZone, O\'Reilly Auto Parts, RockAuto, Cars.com, Autotrader, CarGurus, CarMax, Carvana, TrueCar, Edmunds, Kelley Blue Book, Instacart, PC Express, PetSmart, Petco, iHerb, Chewy, Menards, Nordstrom, Nordstrom Rack, Best Buy, Newegg, TCGplayer, Nintendo eShop, H&M, Zara, Uniqlo, ASOS, Fashion Nova, Gap, Old Navy, Banana Republic, Athleta, Zappos, 6pm, Vinted, Mercari, Depop, Poshmark, OfferUp, thredUP, Macy\'s, Saks Fifth Avenue, Kohl\'s, JCPenney, Dick\'s Sporting Goods, Foot Locker, Fanatics, Academy Sports + Outdoors, REI, Argos, Media Expert, Action, HEMA, Carrefour, Allegro, bol.com, OLX, Trendyol, Mercado Libre, Rakuten, QVC, HSN, Barnes & Noble, ThriftBooks, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Facebook, Pinterest, Threads, Kuaishou, Douyin, Weibo, Twitch, GitHub, Etsy, AliExpress, Zillow, Redfin, Realtor.com, Rightmove, Rent.com, Trulia, StreetEasy, RentCafe, Movoto, HotPads, Apartment List, Compass, AffordableHousing.com, Lennar, Extra Space Storage, Public Storage, U-Haul, Booking.com, Airbnb, Vrbo, Expedia, Tripadvisor, Yelp, Indeed, Glassdoor, the App Store, Google Play, SEC EDGAR, Companies House, Legistar, company websites (contact and owner enrichment), G2, Capterra, Trustpilot, Goodreads, ad libraries, and any URL',
+			'Real-time structured data from Google, ChatGPT, Gemini, Amazon, Walmart, eBay, Target, Home Depot, Costco, HEB, Kroger, Publix, IKEA, Wayfair, Ashley Furniture, Maisons du Monde, Williams-Sonoma, Pottery Barn, West Elm, Decathlon, Spec\'s, Lowe\'s, Ace Hardware, Tractor Supply, Michaels, Nike, Staples, Sam\'s Club, BJ\'s Wholesale Club, Canadian Tire, SportChek, Mark\'s, RONA, Dollar General, Dollar Tree, Discount Tire, Vevor, Nellis Auction, EstateSales.net, Bring a Trailer, Sephora, Ulta Beauty, Dermstore, Bath & Body Works, Space NK, Lookfantastic, Cult Beauty, YesStyle, Notino, Douglas, Boots, ALDI, Micro Center, Walgreens, CVS, Whole Foods Market, Harbor Freight, AutoZone, O\'Reilly Auto Parts, RockAuto, Cars.com, Autotrader, CarGurus, CarMax, Carvana, TrueCar, Edmunds, Kelley Blue Book, Instacart, PC Express, PetSmart, Petco, iHerb, Chewy, Menards, Nordstrom, Nordstrom Rack, Best Buy, Newegg, TCGplayer, Nintendo eShop, H&M, Zara, Uniqlo, ASOS, Fashion Nova, Gap, Old Navy, Banana Republic, Athleta, Zappos, 6pm, Vinted, Mercari, Depop, Poshmark, OfferUp, thredUP, Macy\'s, Saks Fifth Avenue, Kohl\'s, JCPenney, Dick\'s Sporting Goods, Foot Locker, Fanatics, Academy Sports + Outdoors, REI, Argos, Media Expert, Action, HEMA, Carrefour, Allegro, bol.com, OLX, Trendyol, Mercado Libre, Rakuten, QVC, HSN, Barnes & Noble, ThriftBooks, Belk, Abercrombie & Fitch, Hollister, L.L.Bean, Sweetwater, Bed Bath & Beyond, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Facebook, Pinterest, Threads, Kuaishou, Douyin, Weibo, Twitch, GitHub, Etsy, AliExpress, Zillow, Redfin, Realtor.com, Rightmove, Rent.com, Trulia, StreetEasy, RentCafe, Movoto, HotPads, Apartment List, Compass, AffordableHousing.com, Lennar, Extra Space Storage, Public Storage, U-Haul, Booking.com, Airbnb, Vrbo, Expedia, Tripadvisor, Yelp, Indeed, Glassdoor, the App Store, Google Play, SEC EDGAR, Companies House, Legistar, company websites (contact and owner enrichment), G2, Capterra, Trustpilot, Goodreads, ad libraries, and any URL',
 		defaults: { name: 'Scavio' },
 		inputs: [NodeConnectionTypes.Main],
 		outputs: [NodeConnectionTypes.Main],
@@ -231,6 +236,7 @@ export class Scavio implements INodeType {
 				type: 'options',
 				noDataExpression: true,
 				options: [
+					{ name: 'Abercrombie & Fitch', value: 'abercrombie' },
 					// Academy Sports + Outdoors, Argos, ASOS and CVS are retailers' brand names, not plural
 					// nouns, and their values are frozen once saved in user workflows. The rule reports only
 					// the first plural-looking option in this list, so the disable lives here.
@@ -255,6 +261,8 @@ export class Scavio implements INodeType {
 					{ name: 'AutoZone', value: 'autozone' },
 					{ name: 'Barnes & Noble', value: 'barnesandnoble' },
 					{ name: 'Bath & Body Works', value: 'bathandbodyworks' },
+					{ name: 'Bed Bath & Beyond', value: 'bedbathbeyond' },
+					{ name: 'Belk', value: 'belk' },
 					{ name: 'Best Buy', value: 'bestBuy' },
 					{ name: "BJ's Wholesale Club", value: 'bjs' },
 					{ name: 'bol.com', value: 'bolcom' },
@@ -321,6 +329,7 @@ export class Scavio implements INodeType {
 					{ name: "Kohl's", value: 'kohls' },
 					{ name: 'Kroger', value: 'kroger' },
 					{ name: 'Kuaishou (China)', value: 'kuaishou' },
+					{ name: 'L.L.Bean', value: 'llbean' },
 					{ name: 'Legistar (Municipal)', value: 'legistar' },
 					{ name: 'Lennar', value: 'lennar' },
 					{ name: 'LinkedIn', value: 'linkedin' },
@@ -387,6 +396,7 @@ export class Scavio implements INodeType {
 					// Staples is the retailer's brand name, not a plural noun.
 					{ name: 'Staples', value: 'staples' },
 					{ name: 'StreetEasy', value: 'streeteasy' },
+					{ name: 'Sweetwater', value: 'sweetwater' },
 					{ name: 'Target', value: 'target' },
 					{ name: 'TCGplayer', value: 'tcgplayer' },
 					// Threads is Meta's brand name, not a plural noun. Singularizing it to
@@ -458,6 +468,8 @@ export class Scavio implements INodeType {
 			...maisonsDuMondeFields,
 			...williamssonomaOperations,
 			...williamssonomaFields,
+			...bedbathbeyondOperations,
+			...bedbathbeyondFields,
 			...decathlonOperations,
 			...decathlonFields,
 			...specsOperations,
@@ -622,6 +634,14 @@ export class Scavio implements INodeType {
 			...barnesandnobleFields,
 			...thriftbooksOperations,
 			...thriftbooksFields,
+			...belkOperations,
+			...belkFields,
+			...abercrombieOperations,
+			...abercrombieFields,
+			...llbeanOperations,
+			...llbeanFields,
+			...sweetwaterOperations,
+			...sweetwaterFields,
 			...argosOperations,
 			...argosFields,
 			...mediaexpertOperations,
