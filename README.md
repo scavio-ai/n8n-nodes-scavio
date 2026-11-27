@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 167 resources and 1,333 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 172 resources and 1,381 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -34,6 +34,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Wayfair](https://scavio.dev/docs/wayfair-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Category Products, Get Sale Events |
 | [Ashley Furniture](https://scavio.dev/docs/ashley-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Search Products and Get Product 1 in Canada, the Philippines, Saudi Arabia and Turkey | Search Products, Get Product, Get Category Products, Get Deal Event Products, Find Stores, Get Store |
 | [Maisons du Monde](https://scavio.dev/docs/maisonsdumonde-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Category Products, Get Deals, Get Reviews, Find Stores, Get Store, Get Store Stock, Get Seller |
+| [Williams-Sonoma (Williams Sonoma, Pottery Barn, Pottery Barn Kids, Pottery Barn Teen, West Elm, Rejuvenation, Mark and Graham; US, Canada product)](https://scavio.dev/docs/williamssonoma-product?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Search Products and Get Category Products 5 | Get Product, Get Configurator, Get Delivery Estimate, Get Online Stock, Get Store Pickup, Find Stores, Get Floor Samples, Get Categories, Get Category Products, Search Products, Get Popular Searches, Get Reviews |
 | [Spec's](https://scavio.dev/docs/specs-product?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 5 | Search Products, Get Product, Find Stores |
 | [Lowe's](https://scavio.dev/docs/lowes-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Reviews 1 | Search Products, Get Product, Find Stores, Get Reviews |
 | [Ace Hardware (US)](https://scavio.dev/docs/acehardware-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Search Products 2 (3 on a category redirect); Get Product 2; Get Store Stock 1 per 5 stores (Nearby 6); Find Nearest Stores with details 1 per store lookup (25 stores 6) | Search Products, Get Product, Get Store Stock, Get Store, Find Nearest Stores, Get Category Products, Get Categories, Get Brand Products, Get Deals, Get Weekly Ad, Get Paint Colors |
@@ -111,6 +112,8 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Fanatics merchandise (8 storefronts + 4 US league stores)](https://scavio.dev/docs/fanatics-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Browse Listing, Get Deals, Get Reviews |
 | [Academy Sports + Outdoors (US)](https://scavio.dev/docs/academy-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Store Availability, Find Stores, Get Store Details, Get Category Products, Get Categories, Get Deals, Get Search Suggestions |
 | [REI (US)](https://scavio.dev/docs/rei-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Products, Get Category Products, Get Deals, Get Product, Get Reviews, Get Store Stock, Find Stores, Get Store Details, Get Search Suggestions |
+| [QVC + HSN (QVC US, UK, DE, IT, JP; HSN US)](https://scavio.dev/docs/qvc-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Products, Get Today's Special, Get On Air Now, Get Program Guide, Get Recently Aired Items, Get Category Products, Get Search Suggestions, Get Reviews |
+| [Barnes & Noble (US)](https://scavio.dev/docs/barnesandnoble-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search, Get Product, Get Store Availability, Get Stores, Get Store, Get Suggestions, Get Bestsellers, Get Category Products, Get Categories, Get Deals |
 | [Argos (UK)](https://scavio.dev/docs/argos-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Products, Get Product, Get Store Stock, Get Stores, Get Reviews, Get Questions, Get Categories, Get Category Products, Get Deals, Get Search Suggestions |
 | [Media Expert (Poland)](https://scavio.dev/docs/mediaexpert-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 to 3, actual cost: Get Store Stock and Get Categories 2; Search Products 3 (1 when Media Expert answers with a full category page); Get Category Products, Get Brand Products, Get Outlet, Get Marketplace Seller and a promotion list's products 1 unsorted, 3 sorted or lazily loaded; the rest 1 | Search Products, Get Product, Get Store Stock, Get Stores, Get Reviews, Get Category Products, Get Categories, Get Brands, Get Brand Products, Get Promotions, Get Outlet, Get Marketplace Seller, Get Search Suggestions |
 | [Action (19 storefronts in 16 countries)](https://scavio.dev/docs/action-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Products by Article Number, Get Weekly Deals, Get Category Products, Get Categories, Get Brand Products, Get Own Brands, Get New Arrivals, Get Collection Products, Get Search Suggestions, Find Stores, Get Store, Get Reviews, Search Webshop, Get Webshop Product |
@@ -163,6 +166,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Lennar (US new homes)](https://scavio.dev/docs/lennar-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search, Get Community, Get Plan, Get Home, Get Master-Planned Community, Get Markets, Get Market, Get Suggestions, Resolve Link, Get Promotions, Get Payment Estimate |
 | [Extra Space Storage (US)](https://scavio.dev/docs/extraspace-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Facilities, Get Facility, Get Reviews, Get City Prices, Get Locations |
 | [Public Storage (US and Canada; French pages)](https://scavio.dev/docs/publicstorage-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Facilities, Get Facility, Get Reviews |
+| [U-Haul (US and Canada; English, Spanish, French)](https://scavio.dev/docs/uhaul-truck-quote?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Get Truck Quote, Find Locations, Get Location, Search Storage, Get Storage Facility, Get Reviews, Get Suggestions, Get Moving Supplies |
 | [Booking.com](https://scavio.dev/docs/booking-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Properties, Get Hotel, Get Hotel Reviews |
 | [Airbnb](https://scavio.dev/docs/airbnb-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Stays, Get Listing, Get Reviews |
 | [Vrbo (20 market-languages)](https://scavio.dev/docs/vrbo-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 (Search Properties 2 per attempt, 2-8) | Search Properties, Get Property, Get Suggestions |
@@ -188,6 +192,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Capterra (Software Reviews)](https://scavio.dev/docs/capterra-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Products, Get Product, Get Reviews |
 | [Trustpilot](https://scavio.dev/docs/trustpilot-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Businesses, Get Business Profile, Get Reviews, Get Categories, Get Category Businesses, Get Review |
 | [Goodreads](https://scavio.dev/docs/goodreads-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search, Get Book, Get Reviews, Get Suggestions, Get Author, Get Author Books, Get Series, Get Editions, Get List, Get Book Lists, Search Lists, Get Quotes, Get Genre Books, Get New Releases |
+| [ThriftBooks (US)](https://scavio.dev/docs/thriftbooks-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Books, Look Up ISBN, Get Work Prices, Get Edition, Get Copies, Get Editions, Get Reviews, Get Search Suggestions |
 
 ### Ad libraries, filings, and any URL
 
@@ -199,6 +204,66 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.98.0
+
+**5 new resources, 48 operations:** QVC + HSN, Barnes & Noble, ThriftBooks, U-Haul, Williams-Sonoma. All are new resources; no existing operation changed.
+
+**New resource: QVC + HSN, 10 operations.** QVC (qvc.com, qvcuk.com, qvc.de, qvc.it, qvc.jp) and HSN (hsn.com, US), the video shopping networks of QVC Group, through Site and Market: keyword search with the current price, QVC's everyday price, the special price code and window, Easy Pay or FlexPay instalments, rating and stock flags; one product with every color and size; up to 20 QVC products in one call; today's special; what is on air now; the TV program guide; the items HSN presented in one show hour; QVC category grids; search suggestions; and the first page of a product's reviews. See the [QVC + HSN API page](https://scavio.dev/qvc-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme).
+
+- **Search Products**: QVC 7 sorts, 1 to 96 a page, Filters (facet tokens from a previous answer, us, uk and de); HSN 6 sorts, 60 a page and a Department (captured 2026-11-27: blender on QVC US gave 102 results, the first at 99.98 USD against a QVC price of 159.99; ring on HSN gave 687).
+- **Get Product**: by item number or link; QVC variants carry a stock flag (QVC publishes no unit counts), HSN variants units_left when HSN shows low inventory (captured 2026-11-27: the GE Profile Opal Mini Pro Nugget Ice Maker at 279.98 USD, a Today's Special Value to 2026-12-01).
+- **Get Products**: up to 20 QVC item numbers in one call (US and Italy). **Get Today's Special**: QVC's Today's Special Value with its window, or HSN's Today's Special and list. **Get On Air Now**: the item on air on each QVC channel.
+- **Get Program Guide**: one day of QVC (every channel or one, 4 US time zones, 14 days back to 17 ahead) or HSN / HSN2 hourly; **Get Recently Aired Items**: the items of one HSN show hour. Show names as listed; no host or guest names.
+- **Get Category Products**: QVC category and collection grids, 96 a page (captured 2026-11-27: the QVC Clearance Sale held 8551 items). HSN categories are not offered yet.
+- **Get Reviews**: the first page only, as the product page shows it (QVC 8 newest, HSN 12 highest rated), with the rating summary and questions; no paging, sort or star filter, no reviewer names.
+
+Every QVC + HSN operation costs 1 credit; credits_used says what was charged. Every operation carries a 180-second request timeout (reviews take 20 to 60 seconds). Failed calls and refused inputs are not charged; a not-found is charged.
+
+**New resource: Barnes & Noble, 10 operations.** Barnes & Noble (barnesandnoble.com, the US bookseller), US only, prices in USD: keyword search and collection pages with the site's sorts and filters; one title by EAN or ISBN with format, publisher, online stock flags and one EAN per format; store pickup flags near a ZIP code, city or store number; stores and one store's hours; search suggestions; the bestseller lists; the header navigation; and the deals pages. See the [Barnes & Noble API page](https://scavio.dev/barnesandnoble-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme).
+
+- **Search** and **Get Category Products**: 7 sorts and Filters (JSON) for format, availability, price band, subject, age and language; the 24 results the site shows with its own total and facets, no page 2 (captured 2026-11-27: project hail mary gave 3101 results; books/mystery-thrillers counted 188000 titles).
+- **Get Product**: by EAN / ISBN-13 or ISBN-10; price, original price, online stock flags, rating, the member offer text as given, a short overview excerpt (at most 300 characters) and one EAN per format (captured 2026-11-27: Project Hail Mary in hardcover at 32 USD, rated 4.6 from 287 ratings, 6 formats). Review text is not available.
+- **Get Store Availability**: Barnes & Noble's own pickup flags (eligible, available) at the stores near a ZIP code, city or store number; not unit counts (captured 2026-11-27: available at 28 of 28 stores near ZIP 60611).
+- **Get Stores** and **Get Store**: by ZIP code, city and state or coordinates, with hours by day, holiday hours and services (captured 2026-11-27: 44 stores near ZIP 10001).
+- **Get Bestsellers** (Bestsellers, Bestselling Books, The New York Times Best Sellers, B&N Stores Bestsellers), **Get Categories**, **Get Suggestions** and **Get Deals** (captured 2026-11-27: the Black Friday and Cyber Monday page held 21 shelves with 165 titles).
+- Member prices are not shown to visitors and are not returned. Not available: review text, unit counts, deeper result pages, price history.
+
+Every Barnes & Noble operation costs 1 credit; credits_used says what was charged. Every operation carries a 180-second request timeout (collection, bestseller, deal and navigation pages take 8 to 35 seconds). Failed calls and refused inputs are not charged; a not-found is charged.
+
+**New resource: ThriftBooks, 8 operations.** ThriftBooks (thriftbooks.com, the US online used-book seller), prices in USD: search or browse the catalog with the Bestsellers, Deals and New Releases presets; look a book up by ISBN; a work's price for each format and condition; one edition with its copies for sale; every edition of a work; customer reviews; and search suggestions. See the [ThriftBooks API page](https://scavio.dev/thriftbooks-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme).
+
+- **Search Books**: Query or the whole catalog, List (Bestsellers, Deals, New Releases), 7 sorts, formats, conditions, languages, Genre IDs from facets, price range and collectible, signed, first edition and large print flags; up to 50 works a page, Page x Page Size within 10000. ISBNs go to Look Up ISBN (captured 2026-11-27: project hail mary gave 3 works, the first with 27 editions from 17.25 to 29.99 USD).
+- **Look Up ISBN** and **Get Work Prices**: the format x condition table, price, list price, quantity and copy details for New, Like New, Very Good, Good and Acceptable (captured 2026-11-27: ISBN 9780593135204, the hardcover New at 23.92 USD, list 32).
+- **Get Edition** and **Get Copies**: one edition with its copies for sale; description is the short overview excerpt the page gives.
+- **Get Editions**: 25 a page, filtered by format and condition, 5 sorts, in stock only by default (captured 2026-11-27: The Hunger Games had 33 editions in stock).
+- **Get Reviews**: 10 a page, no reviewer names. **Get Search Suggestions**: title and author completions.
+- A New quantity of 500 means 500 or more. Prices are as a visitor who is not signed in sees them. Not available: price history, checkout.
+
+Every ThriftBooks operation costs 1 credit; credits_used says what was charged. Every operation carries a 120-second request timeout. Failed calls and refused inputs are not charged; a not-found is charged.
+
+**New resource: U-Haul, 8 operations.** U-Haul (uhaul.com, the US and Canada truck rental and self-storage company), US (USD, miles) and Canada (CAD, km), in English, Spanish or French: U-Haul's own truck rental rates for a move, read from its public quote form; locations near a place for trucks, trailers, moving supplies or self-storage; one location with its Canadian rate card; self-storage facilities with starting rates and features, and one facility with every unit type and vacant units; U-Haul's own customer reviews; place suggestions; and moving supplies prices. See the [U-Haul API page](https://scavio.dev/uhaul-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme).
+
+- **Get Truck Quote**: Pickup, optional Drop-Off (empty for in-town) and Pickup Date (up to 330 days ahead); every truck with rate, availability, per-mile or per-km rate and the truck + labor estimate (captured 2026-11-27: Dallas, TX to Austin, TX included 2 days and 229 miles, the 10' Truck at 212 USD). A price quote, never a reservation: nothing is reserved and no pickup location is returned. Trailer, towing and U-Box quotes are not covered.
+- **Find Locations** and **Get Location**: 6 locations a page where U-Haul pages, by service; one location with hours, payment and, in Canada, its rate card in CAD (captured 2026-11-27: location 848027 in Toronto, ON listed the Pickup Truck at 19.95 CAD a weekday day plus 0.99 CAD a km).
+- **Search Storage** and **Get Storage Facility**: up to 18 facilities sorted by distance, starting rate or rating and filtered by features; one facility with every unit type, monthly rate and vacant units (captured 2026-11-27: facility 741065 in Dallas, TX held 43 unit types with 139 vacant units).
+- **Get Reviews**: U-Haul's own reviews filtered by service and stars, sorted and paged; no reviewer names.
+- **Get Moving Supplies**: by category or product link, USD or CAD (captured 2026-11-27: the Medium Moving Box as low as 1.99 USD, 3.21 CAD in Canada).
+- The market follows the place; Language picks www, es or fr.uhaul.com. Not available: trailer and U-Box quotes, reservations, price history.
+
+Every U-Haul operation costs 1 credit; credits_used says what was charged. Every operation carries a 180-second request timeout (Get Truck Quote takes about 25 seconds). Failed calls and refused inputs are not charged; a not-found is charged.
+
+**New resource: Williams-Sonoma, 12 operations.** One resource for the Williams-Sonoma, Inc. brands (Williams Sonoma, Pottery Barn, Pottery Barn Kids, Pottery Barn Teen, West Elm, Rejuvenation, Mark and Graham; Brand), in the US (USD), with Get Product also on the Canadian sites (CAD): one product with every SKU's price, stock state and delivery services; the fabric configurator of a made-to-order Pottery Barn piece; delivery dates to a ZIP code; online stock ranges; store pickup; stores and floor samples; category trees and Pottery Barn category listings; Williams Sonoma and Pottery Barn search; popular searches; and Williams Sonoma reviews. See the [Williams-Sonoma API page](https://scavio.dev/williamssonoma-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme).
+
+- **Get Product**: by Brand + product ID or a product link (the link sets brand and market); up to 500 SKUs with price, regular price, stock state (on hand, back ordered, not available), delivery and pickup services (captured 2026-11-27: the WÜSTHOF Classic Chef's Knife had 19 SKUs from 99 to 200 USD, rated 4.81 from 564 reviews; a West Elm rug on westelm.ca ran 524 to 1274 CAD). Ratings exist on Williams Sonoma only.
+- **Get Configurator**: Pottery Barn made-to-order pieces by base SKU, product ID or link; price range across fabrics, lead time and every fabric (captured 2026-11-27: the Gabrielle Sofa offered 50 fabrics from 1999 to 2899 USD).
+- **Get Delivery Estimate**, **Get Online Stock** and **Get Store Pickup**: dates to a US ZIP code (captured 2026-11-27: a Gabrielle sofa to 94103 as a special order, 2027-02-26 to 2027-03-12); national unit ranges per SKU such as 1-10 or 401+; pickup true or false at up to 10 stores, no unit counts.
+- **Find Stores** and **Get Floor Samples**: by ZIP code or coordinates across every brand with stores (captured 2026-11-27: ZIP 60611 gave 10 stores across 6 brands within 25 miles). Mark and Graham has no stores.
+- **Search Products** (Williams Sonoma and Pottery Barn; West Elm search is not served) and **Get Category Products** (Pottery Barn, 5 sorts): page 1, 20 products, with total and facets.
+- **Get Reviews**: Williams Sonoma only, newest first, 8 on page 1 and 30 on pages 2 to 5; no sort or star filter, no reviewer names.
+- Prices are the brand's online prices, the same at every ZIP code and store. Not available: unit counts per store, deeper search pages, UPCs, price history.
+
+Every Williams-Sonoma operation costs 1 credit, Search Products and Get Category Products 5; credits_used says what was charged. Every operation carries a 180-second request timeout. Failed calls and refused inputs are not charged; a not-found is charged.
 
 ## What changed in 0.97.0
 
