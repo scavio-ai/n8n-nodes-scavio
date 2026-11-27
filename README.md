@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 198 resources and 1,619 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 200 resources and 1,630 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -156,6 +156,8 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Lojas Renner (Brazil)](https://scavio.dev/docs/renner-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Deals, Get Product, Get SKU Price, Get Stores |
 | [Pichau (Brazil)](https://scavio.dev/docs/pichau-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Brand Products, Get Deals, Get Product, Get Product Live, Get Reviews, Get Installments, Get Coupons, Get Categories, Get Search Suggestions |
 | [Dafiti (Brazil)](https://scavio.dev/docs/dafiti-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Brand Products, Get Deals, Get Product, Get Sizes and Stock |
+| [Riachuelo (Brazil)](https://scavio.dev/docs/riachuelo-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Deals, Get Product |
+| [Petz (Brazil)](https://scavio.dev/docs/petz-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Brand Products, Get Deals, Get Product, Get Stores, Get Store |
 | [Rakuten (US, UK and Canada; French pages)](https://scavio.dev/docs/rakuten-stores?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Get Stores, Get Store, Get Store Coupons, Get Rates, Search, Get Suggestions, Get Category Stores, Get Deals, Get In-Store Offers |
 
 ### Social and video
@@ -233,7 +235,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 
 ## What changed in 0.103.0
 
-**4 new resources, 33 operations:** C&A Brasil, Lojas Renner, Pichau, Dafiti. All are new resources; no existing operation changed.
+**6 new resources, 44 operations:** C&A Brasil, Lojas Renner, Pichau, Dafiti, Riachuelo, Petz. All are new resources; no existing operation changed.
 
 **New resource: C&A Brasil, 10 operations.** C&A Brasil (cea.com.br, the Brazilian arm of the C&A fashion chain), Brazil only, prices in BRL: keyword search, category, brand and promotion-collection listings with the price, list price, Pix price (Pix is Brazil's instant payment) and every size's own price and capped online quantity; the filter values; search suggestions; the department tree; one product; a delivery quote by CEP; and the pickup points near a CEP.
 
@@ -272,6 +274,24 @@ Every Pichau operation costs 1 credit; credits_used says what was charged. Every
 - Not available: review texts, shipping quotes, search suggestions, Dafiti Colombia, price history.
 
 Every Dafiti operation costs 1 credit; credits_used says what was charged. Listings and Get Product carry a 300-second request timeout (listings usually take 15 to 160 seconds); Get Sizes and Stock 180 seconds. Failed calls and refused inputs are not charged; a not-found is charged.
+
+**New resource: Riachuelo, 4 operations.** Riachuelo (riachuelo.com.br, the Brazilian fashion retailer), Brazil only, prices in BRL: keyword search across the whole site, category listings and campaign pages with the price, list price, discount and every colour and size with the site's sold-out flag and the units it lists; and one product with the rating summary and the reviews the page shows.
+
+- **Search Products**, **Get Category Products** and **Get Deals**: 24 a page, pages 1 to 500, the site's 6 sorts and Filters (JSON) (size, colour, gender, subcategory, brand, category group). total includes sold-out products (captured 2026-11-27: vestido matched 1204 products; feminino held 9006).
+- **Get Deals**: by default a department's Black Friday page (feminino, masculino or infantil), or another campaign page by path. Campaign pages are seasonal and carry no start or end dates (captured 2026-11-27, Black Friday week: the masculino page held 627 products).
+- **Get Product** by SKU or URL: price, list price, attributes, composition, the rating summary and the reviews the product page shows, without reviewer names (captured 2026-11-27: a pair of wide-leg trousers at 79.99 BRL, list 159.99, rated 5 from 11 ratings). The product page lists no stock per size; listing items carry it.
+- Not available: more review pages, shipping quotes by CEP, store stock, stores, search suggestions, price history.
+
+Every Riachuelo operation costs 1 credit; credits_used says what was charged. Search Products carries a 300-second request timeout (keyword searches usually take 5 to 90 seconds); the others 180 seconds. Failed calls and refused inputs are not charged; a not-found is charged.
+
+**New resource: Petz, 7 operations.** Petz (petz.com.br, the Brazilian pet store of Grupo Petz Cobasi), Brazil only, prices in BRL: keyword search, category and brand listings and the deals with the price, list price, the Assinatura Petz (repeat delivery) price, the Clubz member price and the stock Petz shows; one product with every size or variant; and the store directory.
+
+- **Search Products**, **Get Category Products**, **Get Brand Products** and **Get Deals** (the deals page or one of its collections): 20 a page, pages 1 to 50, by relevance, price or newest. A search counts at most 1,000 products (total_capped) (captured 2026-11-27: ração golden matched 72 products; cachorro/racao held 978).
+- **Get Product** by product ID or URL: prices, the Assinatura Petz price, stock_units capped at 100 (stock_capped means 100 or more), every size or variant with its own prices and stock, specs, the rating with star counts and the 3 latest reviews without reviewer names (captured 2026-11-27: a Selections For Pet dog food, 3 kg, at 46.39 BRL, list 57.99, in 3 sizes).
+- **Get Stores**: every Petz store, narrowed by state and city, with address, phone, hours and whether online orders can be picked up there (captured 2026-11-27: 269 stores, 128 in SP). **Get Store**: one store's page.
+- Not available: per-store stock or prices, prices by CEP, more review pages, search suggestions, Pix prices, installments, shipping, price history.
+
+Every Petz operation costs 1 credit; credits_used says what was charged. Every operation carries a 300-second request timeout (listings usually take 50 to 150 seconds, the others 30 to 95). Failed calls and refused inputs are not charged; a not-found is charged.
 
 ## What changed in 0.102.0
 
