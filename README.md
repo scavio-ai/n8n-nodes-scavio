@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 177 resources and 1,427 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 184 resources and 1,490 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -135,6 +135,13 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [OfferUp (US)](https://scavio.dev/docs/offerup-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Get Listing 1, or 2 when the listing needs a second, costlier fetch | Search Listings, Get Listing, Get Category Listings, Get Categories, Get Seller |
 | [thredUP (US store)](https://scavio.dev/docs/thredup-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Items, Get Sold Listings, Get Item, Get Category Listings, Get Brand Listings, Get Deals, Get Rescue Boxes, Get Categories, Get Brands, Get Search Suggestions, Get Trending Searches, Get Similar Items |
 | [Mercado Libre (MX, BR, AR, CO)](https://scavio.dev/docs/mercadolibre-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Get Reviews 1 | Search Listings, Get Product, Get Reviews, Get Questions, Get Best Sellers |
+| [KaBuM! (Brazil)](https://scavio.dev/docs/kabum-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Categories, Get Product, Get Shipping Quote, Get Reviews, Get Offers |
+| [Magazine Luiza (Magalu; Brazil)](https://scavio.dev/docs/magalu-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Products, Get Category Products, Get Deals, Get Product, Get Reviews, Get Search Suggestions, Get Stores, Get Store |
+| [Casas Bahia (with Extra and Ponto; Brazil)](https://scavio.dev/docs/casasbahia-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Products, Get Category Products, Get Product, Get Categories |
+| [Buscape + Zoom (Brazil)](https://scavio.dev/docs/buscape-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search, Get Category Products, Get Categories, Get Product, Get Offers, Get Price History, Get Lowest Price, Get Deals, Get Deal Landing, Get Store, Get Suggestions, Get Shipping Estimate |
+| [Drogasil + Droga Raia (Brazil)](https://scavio.dev/docs/rdsaude-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Categories, Get Product, Get Prices, Get Store Availability, Get Stores, Search Stores, Get Reviews, Get Deals, Get Suggestions |
+| [Reclame Aqui (Brazil)](https://scavio.dev/docs/reclameaqui-company-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Get Company Complaints by shortname 2 (3 when the search misses) | Search Companies, Get Company, Get Company Complaints, Get Complaint, Search Complaints, Get Rankings, Get Segments, Get Segment Ranking |
+| [Leroy Merlin (Brazil, Italy, Spain, Portugal, Poland, Romania, France)](https://scavio.dev/docs/leroymerlin-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | Actual cost per market: Brazil 1; Italy 1 (Get Product and Get Category Products 2); Romania 1; Spain, Portugal and Poland 2; France 5 | Search, Get Category Products, Get Offers, Get Product, Get Store Stock, Get Stores, Get Store, Get Reviews, Get Shipping Quote, Get Address for CEP, Get Regions, Get Categories, Get Suggestions |
 | [Rakuten (US, UK and Canada; French pages)](https://scavio.dev/docs/rakuten-stores?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Get Stores, Get Store, Get Store Coupons, Get Rates, Search, Get Suggestions, Get Category Stores, Get Deals, Get In-Store Offers |
 
 ### Social and video
@@ -209,6 +216,85 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.100.0
+
+**7 new resources, 63 operations:** KaBuM!, Magazine Luiza (Magalu), Casas Bahia, Buscape + Zoom, Drogasil + Droga Raia, Reclame Aqui, Leroy Merlin. All are new resources; no existing operation changed.
+
+**New resource: KaBuM!, 7 operations.** KaBuM! (kabum.com.br, the Brazilian computer and electronics retailer, part of Magalu), Brazil only, prices in BRL: keyword search and category listings with KaBuM!'s sorts and facet filters; the departments and their category trees; one product with the card and Pix prices, every payment plan, the running offer, stock, specs and the seller; delivery options to a CEP; customer reviews; and offer campaigns. See the [KaBuM! API page](https://scavio.dev/kabum-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme).
+
+- **Search Products** and **Get Category Products**: up to 100 a page, 5 sorts, Filters (JSON) from facets, price range in BRL (captured 2026-11-27: cadeira gamer gave 648 results, the first at 433.32 BRL card / 389.99 BRL Pix; hardware/placa-de-video-vga held 459 products).
+- **Get Product**: by product code or link; card price, Pix (Brazil's instant payment) / boleto price, list price, payment plans, the running offer with units left, stock, specs and the seller with business name, CNPJ and seller score (captured 2026-11-27: the Cadeira Gamer Husky Storm 100, rated 4.8 from 159 reviews).
+- **Get Shipping Quote**: one unit to a Brazilian CEP (postal code), with price and arrival date per option (captured 2026-11-27: 4 options to CEP 01310-100, from 34.59 BRL).
+- **Get Reviews**: newest or oldest, up to 50 a page, by stars, with KaBuM!'s own summary as given; no reviewer names. **Get Categories**: the departments or one department's tree.
+- **Get Offers**: the products of a campaign (blackfriday, ofertaskabum) with offer units left and sold (captured 2026-11-27: Black Friday held 620 products).
+- Prices are as a visitor who is not signed in sees them: Prime-member prices are never returned. Not available: store pickup, price history.
+
+Every KaBuM! operation costs 1 credit; credits_used says what was charged. Every operation carries a 120-second request timeout (most calls take 2 to 15 seconds). Failed calls and refused inputs are not charged; a not-found is charged.
+
+**New resource: Magazine Luiza, 8 operations.** Magazine Luiza (magazineluiza.com.br, Magalu, the Brazilian retailer and marketplace), Brazil only, prices in BRL: keyword search, category listings and deal selections with the card price, the Pix price, coupons and each deal's timer; one product with every payment plan, the seller's details and answered questions; reviews; search suggestions; and the physical stores with one store's address and phone. See the [Magazine Luiza API page](https://scavio.dev/magalu-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme).
+
+- **Search Products**, **Get Category Products** and **Get Deals** (the daily deals or a campaign selection such as blackfriday2026): 40 items a page, pages 1 to 25, 8 sorts, Brand, Seller (Magalu or a marketplace seller), price range, Min Rating, Black Friday Only, Promotion and Attributes (JSON) from the facets; sponsored cards are flagged (captured 2026-11-27: geladeira frost free counted 1000 results; the Geladeira Refrigerador subcategory held 616 products; the daily deals held 353 items).
+- Prices: the card price, the Pix price (Brazil's instant payment) and the regular price when a lower one applies, plus coupons and deal_starts_at / deal_ends_at as the site gives them (captured 2026-11-27: the LG Frost Free Smart Inverse 462L at 3893.68 BRL by card or 3699 BRL by Pix).
+- **Get Product**: by product ID or link; every payment plan, coupons, the seller's legal name, CNPJ, score and sales, variants, specs and answered questions (no names). Availability is the site's flag, never a unit count.
+- **Get Reviews**: 4 sorts, up to 50 a page, with the star distribution, aspect ratings and Magalu's own summary; no reviewer names, no star filter. **Get Search Suggestions**: up to 10 completions.
+- **Get Stores** and **Get Store**: the stores in a state (UF), optionally a city, and one store's address, CEP and phone (captured 2026-11-27: 513 stores in Sao Paulo state).
+- Not available: shipping by CEP, store pickup, store stock, store hours, the Full filter, GTINs, price history.
+
+Every Magazine Luiza operation costs 2 credits; credits_used says what was charged. Search, category, deal and product operations carry a 270-second request timeout (they usually take 10 to 60 seconds, deal pages up to 161 seconds on Black Friday 2026); the others 120 seconds. Failed calls and refused inputs are not charged; a not-found is charged.
+
+**New resource: Casas Bahia, 4 operations.** Casas Bahia (casasbahia.com.br, the Brazilian retailer of Grupo Casas Bahia) with its Extra and Ponto storefronts through Storefront, Brazil only, prices in BRL: keyword search, category, deal collection and seller lists with the storefront's sorts and filters; one product with every seller, the Pix price and every installment plan; and each storefront's category menu. See the [Casas Bahia API page](https://scavio.dev/casasbahia-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme).
+
+- **Search Products** and **Get Category Products**: 20 items a page, pages 1 to 500, 5 sorts, Filters (facet filter values from a previous answer), Own Store Only and a price range, sponsored placements kept apart; Get Category Products also takes deal collections and seller lists (captured 2026-11-27: geladeira frost free gave 1170 results plus 8 sponsored placements; Eletroportáteis counted 10,000+ products).
+- List items carry no prices: run **Get Product** with an item's SKU for the price, list price, Pix price (Brazil's instant payment), installment plans, store card plan and every seller, with availability flags, specs, variants, the rating summary with the storefront's own review summary, the 3 reviews and 3 questions on the page (captured 2026-11-27: the Smart TV 55" TCL 55P755 rated 4.9 from 759 reviews with 135 questions).
+- **Get Categories**: the storefront's menu with the path each category takes (captured 2026-11-27: 8 groups and 39 categories).
+- Casas Bahia, Extra and Ponto share one catalog; own-store prices and review counts can differ per storefront. No reviewer names. Not available: reviews past the page's 3, freight by CEP, store lists, unit counts, price history.
+
+Every Casas Bahia operation costs 2 credits; credits_used says what was charged. Every operation carries a 180-second request timeout (most calls take 10 to 60 seconds). Failed calls and refused inputs are not charged; a not-found is charged.
+
+**New resource: Buscape + Zoom, 12 operations.** Buscape and Zoom (buscape.com.br and zoom.com.br, Brazil's price comparison sites, one catalog), chosen with Site, prices in BRL: search, category and deal listings; the category tree; one product with the offers on the page and the site's price tip; every store offer; daily lowest-price history; the lowest current price; campaign landings; a store's coupons; freight estimates to a CEP; and search suggestions. See the [Buscape + Zoom API page](https://scavio.dev/buscape-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme).
+
+- **Search**, **Get Category Products** and **Get Deals**: up to 100 a page, 5 sorts, Filters (JSON) from facets, price range, category IDs, marketplace and best-selling store (captured 2026-11-27: geladeira gave 4053 results, the first from 2308 BRL across 5 stores; a deals list held 305 items).
+- **Get Product**: specs, the offers on the page, 40 days of prices, the site's price tip, the editors' pros and cons and up to 10 store reviews, as given; no reviewer names (captured 2026-11-27: the iPhone 16 128GB with 22 offers from 6 stores).
+- **Get Offers**: every store offer, 4 sorts and variant filter, up to 50 a page (captured 2026-11-27: 54 offers from 5 stores for one refrigerator). **Get Lowest Price**: the lowest current price with its store and stock.
+- **Get Price History**: the day's lowest price and its store for 40 days or 3 to 12 months (captured 2026-11-27: 5057.99 down to 4299 BRL over 40 days).
+- **Get Deal Landing**, **Get Store** (cashback and the coupons the page lists), **Get Shipping Estimate** (freight per store offer to a Brazilian CEP, with State and City) and **Get Suggestions**.
+- Store and coupon links are not returned. Not available: store ratings (the sites publish none), review paging.
+
+Every Buscape + Zoom operation costs 1 credit; credits_used says what was charged. Every operation carries a 180-second request timeout (most calls take 1 to 9 seconds, page reads up to about 80). Failed calls and refused inputs are not charged; a not-found is charged.
+
+**New resource: Drogasil + Droga Raia, 11 operations.** Drogasil and Droga Raia (drogasil.com.br and drogaraia.com.br, the pharmacy chains of RD Saude), chosen with Site, Brazil only, prices in BRL: search and category listings; the menu tree; one product with its price ladder, variants and regulatory flags as given; bulk prices; store pickup availability; stores near a CEP and the store locator; customer reviews; deals and coupons; and search suggestions. See the [Drogasil + Droga Raia API page](https://scavio.dev/rdsaude-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme).
+
+- **Search Products** and **Get Category Products**: by keyword, product code or EAN, 24, 36 or 48 a page, 3 sorts, brand, seller, highlight, pickup store, price and Facets (JSON) filters (captured 2026-11-27: protetor solar on Drogasil gave 5583 results, the first at 84.99 BRL).
+- **Get Product**: by SKU or link; price, list price, the price ladder (offers, quantity discounts, lab programs, payment discounts as given), variants, kit, the marketplace seller's business name and the regulatory flags exactly as the site gives them (captured 2026-11-27: the Kit Nivea Sun FPS 50 at 43.99 BRL). **Get Prices**: up to 48 product codes in one call.
+- **Get Store Availability**: store pickup yes or no for products at stores, up to 5 checks, no unit counts. **Get Stores**: the 6 nearest stores to a Brazilian CEP (postal code). **Search Stores**: the locator (about 4,000 stores) by state, city, neighborhood or text, filtered by 24 hours, parking and Farmacia Popular.
+- **Get Reviews**: up to 50 a page, by stars, with the site's own summary and tags as given; no reviewer names (captured 2026-11-27: an Episol sunscreen powder averaged 4.82 from 164 reviews).
+- **Get Deals**: Oferta do Dia, % Especial, Black Friday, the running coupons or one coupon's products (captured 2026-11-27: NIVEABRAND covered 195 products). **Get Categories** and **Get Suggestions**.
+- Prices are the site's default online price, the same at every store. Not available: unit counts, per-store prices, deal end dates, price history.
+
+Every Drogasil + Droga Raia operation costs 1 credit; credits_used says what was charged. Every operation carries a 180-second request timeout (most calls take 2 to 15 seconds, the menu and the locator up to 35). Failed calls and refused inputs are not charged; a not-found is charged.
+
+**New resource: Reclame Aqui, 8 operations.** Reclame Aqui (reclameaqui.com.br, Brazil's company complaint and reputation site), Portuguese text as published: company search; one company's reputation; a company's complaints; one complaint's thread; complaints across every company; the site-wide rankings; and segment rankings. Consumer names and contact details are never returned. See the [Reclame Aqui API page](https://scavio.dev/reclameaqui-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme).
+
+- **Search Companies** and **Get Company**: reputation for 5 periods (complaints, answered and solved percent, would do business again, final score, average answer time, status RA1000 to Not Recommended), main problems, segment ranking and 6 months of history (captured 2026-11-27: Nubank over 6 months had 56825 complaints, 93.2% solved, RA1000).
+- **Get Company Complaints**: by Company ID or shortname, newest first, the site's status tabs, Category, Product and Problem IDs, Black Friday purchases and a keyword, 5 or 10 a page up to offset 500, with the exact total (captured 2026-11-27: Nubank had 164495 resolved complaints).
+- **Get Complaint**: one complaint with company answers, consumer replies and the final evaluation. **Search Complaints**: across every company, with the companies the matches are about (captured 2026-11-27: iphone quebrado matched 3774 complaints).
+- **Get Rankings**: the 11 site-wide lists of 20. **Get Segments** (165 segments, 15 main segments) and **Get Segment Ranking** (best and worst of a segment, 10 a page).
+- Consumer names, emails, IPs, phones and cities are never returned; a name in a company's greeting is replaced with [nome]. Not available: consumer identities, other sort orders.
+
+Every Reclame Aqui operation costs 1 credit, Get Company Complaints 2 by shortname (3 when the search misses it); credits_used says what was charged. Every operation carries a 120-second request timeout. Failed calls and refused inputs are not charged; a not-found is charged.
+
+**New resource: Leroy Merlin, 13 operations.** Leroy Merlin (the home improvement retailer of the ADEO group) through Country: Brazil (BRL, prices per price region) and Italy, Spain, Portugal, Poland, Romania and France (EUR, PLN, RON), in each market's language: keyword search and category listings; Leroy Merlin Italia's offers page; one product with its price, unit, specifications and marketplace offers; exact store stock with the aisle in Brazil; stores and one store's hours; reviews; and, in Brazil, delivery quotes, CEP addresses, the price regions and the department tree. See the [Leroy Merlin API page](https://scavio.dev/leroymerlin-api?utm_source=n8n-node&utm_medium=package&utm_campaign=readme).
+
+- **Search** (not France) and **Get Category Products**: Region required in Brazil, 3 sorts, Page and Filters (JSON) from filters_available in Europe; European pages carry full details for the first products only (18 of 48 in most markets, all 48 in Romania), the rest as IDs for Get Product (captured 2026-11-27: furadeira in grande_sao_paulo gave 401 results; an Italian impact drivers category held 358 products). **Get Offers**: Leroy Merlin Italia's offers page (captured 2026-11-27: 923 products).
+- **Get Product**: by reference number or link (France needs the link); in Brazil the region's price, unit, package, installments and store stock per store; in Europe price excluding VAT, unit price and promotion dates as given, deliveries and marketplace offers (captured 2026-11-27: a Wap cordless drill at 129.90 BRL, in stock at 12 of 16 stores).
+- **Get Store Stock**: Brazil only, exact units, the aisle and pickup at every store of a price region or one store (captured 2026-11-27: 469 units across 4 Rio de Janeiro stores). Prices are set per region, not per store.
+- **Get Stores** and **Get Store**: Brazil by state, region or a point; Europe (not Spain) the 10 stores nearest a city, postcode or point (captured 2026-11-27: Milano listed 10 stores, the nearest at 9.4 km).
+- **Get Reviews**: Brazil 6 a page by most helpful; Italy, Portugal, Poland and Romania 8 a page with 4 sorts and a star filter; no reviewer names (captured 2026-11-27: an Italian product averaged 4.6 from 295 reviews).
+- **Get Shipping Quote**, **Get Address for CEP**, **Get Regions** and **Get Categories**: Brazil only (captured 2026-11-27: CEP 01310-100 quoted 9.90 BRL standard in 1 day and free pickup in 2 hours). **Get Suggestions**: Italy, Spain, Portugal and Poland.
+- Not available: search in France, reviews in Spain and France, store stock outside Brazil, Ukraine and Greece, price history.
+
+Leroy Merlin operations are billed on what the request spent in its market: Brazil 1 credit, Italy 1 (Get Product and Get Category Products 2), Romania 1, Spain, Portugal and Poland 2, France 5; credits_used says what was charged. Every operation carries a 270-second request timeout (Brazil search and category can take up to 240 seconds). Failed calls and refused inputs are not charged; a not-found is charged what it spent.
 
 ## What changed in 0.99.0
 

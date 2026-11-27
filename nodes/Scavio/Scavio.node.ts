@@ -110,6 +110,13 @@ import { belkOperations, belkFields } from './descriptions/BelkDescription';
 import { abercrombieOperations, abercrombieFields } from './descriptions/AbercrombieDescription';
 import { llbeanOperations, llbeanFields } from './descriptions/LlbeanDescription';
 import { sweetwaterOperations, sweetwaterFields } from './descriptions/SweetwaterDescription';
+import { kabumOperations, kabumFields } from './descriptions/KabumDescription';
+import { magaluOperations, magaluFields } from './descriptions/MagaluDescription';
+import { casasbahiaOperations, casasbahiaFields } from './descriptions/CasasbahiaDescription';
+import { buscapeOperations, buscapeFields } from './descriptions/BuscapeDescription';
+import { rdsaudeOperations, rdsaudeFields } from './descriptions/RdsaudeDescription';
+import { reclameaquiOperations, reclameaquiFields } from './descriptions/ReclameaquiDescription';
+import { leroymerlinOperations, leroymerlinFields } from './descriptions/LeroymerlinDescription';
 import { williamssonomaOperations, williamssonomaFields } from './descriptions/WilliamssonomaDescription';
 import { bedbathbeyondOperations, bedbathbeyondFields } from './descriptions/BedbathbeyondDescription';
 import { fashionnovaOperations, fashionnovaFields } from './descriptions/FashionnovaDescription';
@@ -214,7 +221,7 @@ export class Scavio implements INodeType {
 		version: 1,
 		subtitle: '={{ $parameter["operation"] + ": " + $parameter["resource"] }}',
 		description:
-			'Real-time structured data from Google, ChatGPT, Gemini, Amazon, Walmart, eBay, Target, Home Depot, Costco, HEB, Kroger, Publix, IKEA, Wayfair, Ashley Furniture, Maisons du Monde, Williams-Sonoma, Pottery Barn, West Elm, Decathlon, Spec\'s, Lowe\'s, Ace Hardware, Tractor Supply, Michaels, Nike, Staples, Sam\'s Club, BJ\'s Wholesale Club, Canadian Tire, SportChek, Mark\'s, RONA, Dollar General, Dollar Tree, Discount Tire, Vevor, Nellis Auction, EstateSales.net, Bring a Trailer, Sephora, Ulta Beauty, Dermstore, Bath & Body Works, Space NK, Lookfantastic, Cult Beauty, YesStyle, Notino, Douglas, Boots, ALDI, Micro Center, Walgreens, CVS, Whole Foods Market, Harbor Freight, AutoZone, O\'Reilly Auto Parts, RockAuto, Cars.com, Autotrader, CarGurus, CarMax, Carvana, TrueCar, Edmunds, Kelley Blue Book, Instacart, PC Express, PetSmart, Petco, iHerb, Chewy, Menards, Nordstrom, Nordstrom Rack, Best Buy, Newegg, TCGplayer, Nintendo eShop, H&M, Zara, Uniqlo, ASOS, Fashion Nova, Gap, Old Navy, Banana Republic, Athleta, Zappos, 6pm, Vinted, Mercari, Depop, Poshmark, OfferUp, thredUP, Macy\'s, Saks Fifth Avenue, Kohl\'s, JCPenney, Dick\'s Sporting Goods, Foot Locker, Fanatics, Academy Sports + Outdoors, REI, Argos, Media Expert, Action, HEMA, Carrefour, Allegro, bol.com, OLX, Trendyol, Mercado Libre, Rakuten, QVC, HSN, Barnes & Noble, ThriftBooks, Belk, Abercrombie & Fitch, Hollister, L.L.Bean, Sweetwater, Bed Bath & Beyond, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Facebook, Pinterest, Threads, Kuaishou, Douyin, Weibo, Twitch, GitHub, Etsy, AliExpress, Zillow, Redfin, Realtor.com, Rightmove, Rent.com, Trulia, StreetEasy, RentCafe, Movoto, HotPads, Apartment List, Compass, AffordableHousing.com, Lennar, Extra Space Storage, Public Storage, U-Haul, Booking.com, Airbnb, Vrbo, Expedia, Tripadvisor, Yelp, Indeed, Glassdoor, the App Store, Google Play, SEC EDGAR, Companies House, Legistar, company websites (contact and owner enrichment), G2, Capterra, Trustpilot, Goodreads, ad libraries, and any URL',
+			'Real-time structured data from Google, ChatGPT, Gemini, Amazon, Walmart, eBay, Target, Home Depot, Costco, HEB, Kroger, Publix, IKEA, Wayfair, Ashley Furniture, Maisons du Monde, Williams-Sonoma, Pottery Barn, West Elm, Decathlon, Spec\'s, Lowe\'s, Ace Hardware, Tractor Supply, Michaels, Nike, Staples, Sam\'s Club, BJ\'s Wholesale Club, Canadian Tire, SportChek, Mark\'s, RONA, Dollar General, Dollar Tree, Discount Tire, Vevor, Nellis Auction, EstateSales.net, Bring a Trailer, Sephora, Ulta Beauty, Dermstore, Bath & Body Works, Space NK, Lookfantastic, Cult Beauty, YesStyle, Notino, Douglas, Boots, ALDI, Micro Center, Walgreens, CVS, Whole Foods Market, Harbor Freight, AutoZone, O\'Reilly Auto Parts, RockAuto, Cars.com, Autotrader, CarGurus, CarMax, Carvana, TrueCar, Edmunds, Kelley Blue Book, Instacart, PC Express, PetSmart, Petco, iHerb, Chewy, Menards, Nordstrom, Nordstrom Rack, Best Buy, Newegg, TCGplayer, Nintendo eShop, H&M, Zara, Uniqlo, ASOS, Fashion Nova, Gap, Old Navy, Banana Republic, Athleta, Zappos, 6pm, Vinted, Mercari, Depop, Poshmark, OfferUp, thredUP, Macy\'s, Saks Fifth Avenue, Kohl\'s, JCPenney, Dick\'s Sporting Goods, Foot Locker, Fanatics, Academy Sports + Outdoors, REI, Argos, Media Expert, Action, HEMA, Carrefour, Allegro, bol.com, OLX, Trendyol, Mercado Libre, Rakuten, QVC, HSN, Barnes & Noble, ThriftBooks, Belk, Abercrombie & Fitch, Hollister, L.L.Bean, Sweetwater, Bed Bath & Beyond, KaBuM!, Magazine Luiza, Casas Bahia, Extra, Ponto, Buscape, Zoom, Drogasil, Droga Raia, Reclame Aqui, Leroy Merlin, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Facebook, Pinterest, Threads, Kuaishou, Douyin, Weibo, Twitch, GitHub, Etsy, AliExpress, Zillow, Redfin, Realtor.com, Rightmove, Rent.com, Trulia, StreetEasy, RentCafe, Movoto, HotPads, Apartment List, Compass, AffordableHousing.com, Lennar, Extra Space Storage, Public Storage, U-Haul, Booking.com, Airbnb, Vrbo, Expedia, Tripadvisor, Yelp, Indeed, Glassdoor, the App Store, Google Play, SEC EDGAR, Companies House, Legistar, company websites (contact and owner enrichment), G2, Capterra, Trustpilot, Goodreads, ad libraries, and any URL',
 		defaults: { name: 'Scavio' },
 		inputs: [NodeConnectionTypes.Main],
 		outputs: [NodeConnectionTypes.Main],
@@ -269,6 +276,7 @@ export class Scavio implements INodeType {
 					{ name: 'Booking.com', value: 'booking' },
 					{ name: 'Boots', value: 'boots' },
 					{ name: 'Bring a Trailer', value: 'bringatrailer' },
+					{ name: 'Buscape + Zoom', value: 'buscape' },
 					{ name: 'Canadian Tire', value: 'canadianTire' },
 					{ name: 'Capterra (Software Reviews)', value: 'capterra' },
 					{ name: 'CarGurus', value: 'cargurus' },
@@ -276,6 +284,7 @@ export class Scavio implements INodeType {
 					{ name: 'Carrefour', value: 'carrefour' },
 					{ name: 'Cars.com', value: 'carscom' },
 					{ name: 'Carvana', value: 'carvana' },
+					{ name: 'Casas Bahia', value: 'casasbahia' },
 					{ name: 'ChatGPT', value: 'chatgpt' },
 					{ name: 'Chewy', value: 'chewy' },
 					{ name: 'Companies House (UK)', value: 'companiesHouse' },
@@ -293,6 +302,7 @@ export class Scavio implements INodeType {
 					{ name: 'Dollar Tree', value: 'dollartree' },
 					{ name: 'Douglas', value: 'douglas' },
 					{ name: 'Douyin (China)', value: 'douyin' },
+					{ name: 'Drogasil + Droga Raia', value: 'rdsaude' },
 					{ name: 'eBay', value: 'ebay' },
 					{ name: 'Edmunds', value: 'edmunds' },
 					{ name: 'EstateSales.net', value: 'estatesales' },
@@ -325,6 +335,7 @@ export class Scavio implements INodeType {
 					{ name: 'Instacart', value: 'instacart' },
 					{ name: 'Instagram', value: 'instagram' },
 					{ name: 'JCPenney', value: 'jcpenney' },
+					{ name: 'KaBuM!', value: 'kabum' },
 					{ name: 'Kelley Blue Book', value: 'kbb' },
 					{ name: "Kohl's", value: 'kohls' },
 					{ name: 'Kroger', value: 'kroger' },
@@ -332,6 +343,7 @@ export class Scavio implements INodeType {
 					{ name: 'L.L.Bean', value: 'llbean' },
 					{ name: 'Legistar (Municipal)', value: 'legistar' },
 					{ name: 'Lennar', value: 'lennar' },
+					{ name: 'Leroy Merlin', value: 'leroymerlin' },
 					{ name: 'LinkedIn', value: 'linkedin' },
 					// Lowe's is the retailer's brand name, not a plural noun, and `lowes` is
 					// frozen once saved in user workflows.
@@ -340,6 +352,7 @@ export class Scavio implements INodeType {
 					// Macy's is the retailer's brand name; `macys` is frozen once saved in user
 					// workflows.
 					{ name: "Macy's", value: 'macys' },
+					{ name: 'Magazine Luiza (Magalu)', value: 'magalu' },
 					// Maisons du Monde is the retailer's brand name; title case would misspell it.
 					// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased
 					{ name: 'Maisons du Monde', value: 'maisonsDuMonde' },
@@ -375,6 +388,7 @@ export class Scavio implements INodeType {
 					{ name: 'QVC + HSN', value: 'qvc' },
 					{ name: 'Rakuten', value: 'rakuten' },
 					{ name: 'Realtor.com', value: 'realtor' },
+					{ name: 'Reclame Aqui', value: 'reclameaqui' },
 					{ name: 'Reddit', value: 'reddit' },
 					{ name: 'Redfin', value: 'redfin' },
 					{ name: 'REI', value: 'rei' },
@@ -642,6 +656,20 @@ export class Scavio implements INodeType {
 			...llbeanFields,
 			...sweetwaterOperations,
 			...sweetwaterFields,
+			...kabumOperations,
+			...kabumFields,
+			...magaluOperations,
+			...magaluFields,
+			...casasbahiaOperations,
+			...casasbahiaFields,
+			...buscapeOperations,
+			...buscapeFields,
+			...rdsaudeOperations,
+			...rdsaudeFields,
+			...reclameaquiOperations,
+			...reclameaquiFields,
+			...leroymerlinOperations,
+			...leroymerlinFields,
 			...argosOperations,
 			...argosFields,
 			...mediaexpertOperations,
