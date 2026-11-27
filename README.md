@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 194 resources and 1,586 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 198 resources and 1,619 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -152,6 +152,10 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Cobasi (Brazil)](https://scavio.dev/docs/cobasi-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Brand Products, Get Deals, Get Product, Get Reviews, Get Questions, Get Pickup and Delivery, Get Search Suggestions, Get Stores, Get Store |
 | [Netshoes (Brazil)](https://scavio.dev/docs/netshoes-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get List Products, Get Product, Get Offers, Get Online Stock, Get Shipping, Get Reviews, Get Questions, Get Daily Deal, Get Seller, Get Popular Searches |
 | [Estante Virtual (Brazil)](https://scavio.dev/docs/estantevirtual-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Get Copies with Include Sellers ceil((1 + copies) / 5) | Search Books, Get Book by ISBN, Get Book, Get Copies, Get Copy, Get Shipping, Get Seller, Get Seller Books, Get Seller Reviews, Get Sellers, Get Category Books, Get List Books |
+| [C&A Brasil (Brazil)](https://scavio.dev/docs/cea-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Brand Products, Get Deals, Get Facets, Get Search Suggestions, Get Categories, Get Product, Get Shipping, Get Pickup Points |
+| [Lojas Renner (Brazil)](https://scavio.dev/docs/renner-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Deals, Get Product, Get SKU Price, Get Stores |
+| [Pichau (Brazil)](https://scavio.dev/docs/pichau-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Brand Products, Get Deals, Get Product, Get Product Live, Get Reviews, Get Installments, Get Coupons, Get Categories, Get Search Suggestions |
+| [Dafiti (Brazil)](https://scavio.dev/docs/dafiti-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Brand Products, Get Deals, Get Product, Get Sizes and Stock |
 | [Rakuten (US, UK and Canada; French pages)](https://scavio.dev/docs/rakuten-stores?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Get Stores, Get Store, Get Store Coupons, Get Rates, Search, Get Suggestions, Get Category Stores, Get Deals, Get In-Store Offers |
 
 ### Social and video
@@ -226,6 +230,48 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.103.0
+
+**4 new resources, 33 operations:** C&A Brasil, Lojas Renner, Pichau, Dafiti. All are new resources; no existing operation changed.
+
+**New resource: C&A Brasil, 10 operations.** C&A Brasil (cea.com.br, the Brazilian arm of the C&A fashion chain), Brazil only, prices in BRL: keyword search, category, brand and promotion-collection listings with the price, list price, Pix price (Pix is Brazil's instant payment) and every size's own price and capped online quantity; the filter values; search suggestions; the department tree; one product; a delivery quote by CEP; and the pickup points near a CEP.
+
+- **Search Products**, **Get Category Products**, **Get Brand Products** and **Get Deals** (one promotion collection by ID): up to 24 a page, pages 1 to 50, the site's 8 sorts (captured 2026-11-27: vestido matched 13549 products).
+- **Get Product** by product ID, size SKU, slug or URL: every size with its price, Pix price and the site's capped online quantity (a round 100, 10000 or 99999 means plenty; not a store's units), each payment method's longest plan and specifications (captured 2026-11-27: an oversized cotton t-shirt at 99.99 BRL in 5 sizes).
+- **Get Shipping**: the delivery quote for one size to a CEP, with the stores near it that can hand the size over (captured 2026-11-27: free delivery to CEP 01310-100 in 6 business days, 5 nearby stores). **Get Pickup Points**: C&A stores and third-party pickup lockers (Clique Retire) near a CEP, with hours.
+- **Get Facets**, **Get Search Suggestions** and **Get Categories**. Collections are returned as IDs only.
+- Not available: reviews (no texts, no aggregate), EAN, store unit counts, price history.
+
+Every C&A Brasil operation costs 1 credit; credits_used says what was charged. Listings carry a 300-second request timeout (they usually take 5 to 100 seconds); the others 180 seconds. Failed calls and refused inputs are not charged; a not-found is charged.
+
+**New resource: Lojas Renner, 6 operations.** Lojas Renner (lojasrenner.com.br, the Brazilian fashion retailer), Brazil only, prices in BRL: keyword search, category listings and product lists with the stock level the site lists and units sold in the last 15 days; one product with per-size availability flags; one size's price; and the stores for a CEP.
+
+- **Search Products**, **Get Category Products** and **Get Deals** (every discounted product by default, or another list): 48 a page, pages 1 to 200, the site's 8 sorts and refinement Filters (category, seller, brand, size, colour, gender, region) (captured 2026-11-27: camiseta matched 9468 products).
+- **Get Product**: price, the Cartao Renner and other-card installments, the rating aggregate and every size's availability flags, not unit counts (captured 2026-11-27: a pair of trousers at 199.90 BRL, list 219.90, rated 4.4 from 21 reviews). **Get SKU Price**: one size's price and flags.
+- **Get Stores**: the stores for a CEP's city or region; stores outside the CEP's state that the site returns are left out with a note (captured 2026-11-27: 5 stores for CEP 01310-100).
+- Not available: review texts, shipping quotes, search suggestions, deal dates, store coordinates, price history.
+
+Every Lojas Renner operation costs 1 credit; credits_used says what was charged. Listings are slow at the source (usually 30 to 200 seconds) and carry a 300-second request timeout; the others 240 seconds. Failed calls and refused inputs are not charged; a not-found is charged.
+
+**New resource: Pichau, 11 operations.** Pichau (pichau.com.br, Brazil's PC-parts store), Brazil only, prices in BRL: keyword search, category, brand and deal listings with the card price, the Pix price, the list price and a running promotion's units left; one product; the same page as loaded, with FPS benchmarks and component lists; reviews; card plans; coupons; the category menu; and search suggestions.
+
+- **Search Products** (a keyword the site sends to a category is followed, with redirected_to), **Get Category Products**, **Get Brand Products** and **Get Deals** (Black Friday, Open Box or another campaign): 36 a page, by price or name, Filters (JSON) (captured 2026-11-27: rtx 5060 matched 1385 products; Black Friday held 1467).
+- **Get Product**: card, Pix and list price, the running offer with its end and units left, specs, EAN and warranty (captured 2026-11-27: an INNO3D RTX 5060 card at 3159.99 BRL by Pix, 3717.64 by card, 2 units left in a Black Friday offer ending 2026-11-30).
+- **Get Product Live**: the page as loaded, with live promotion units, the FPS benchmarks shown on PCs and a prebuilt PC's or kit's components (captured 2026-11-27: 22 component groups and FPS for 14 games on a Pichau prebuilt PC). Slower: 30 to 160 seconds.
+- **Get Reviews** (10 a page, by stars or with media, no reviewer names), **Get Installments** (every card plan, including the discounts on short plans), **Get Coupons**, **Get Categories** and **Get Search Suggestions**.
+- Not available: shipping by CEP, stores, stock unit counts, the PC builder, price history.
+
+Every Pichau operation costs 1 credit; credits_used says what was charged. Every operation carries a 300-second request timeout except Get Reviews (120 seconds). Failed calls and refused inputs are not charged; a not-found is charged.
+
+**New resource: Dafiti, 6 operations.** Dafiti (dafiti.com.br, the Brazilian fashion marketplace), Brazil only, prices in BRL: keyword search, category and brand listings and the outlet; one product with every size's stock and delivery type; and every size of a product with its stock.
+
+- **Search Products**, **Get Category Products**, **Get Brand Products** and **Get Deals** (the outlet): 48 a page plus the sponsored slots, the site's 5 sorts. The site matches searches loosely, so a search with no close match can still list related products (captured 2026-11-27: vestido matched 19233 products).
+- **Get Product** by product ID, SKU or URL: Pix, card and list price, the seller by store name only, every size with its stock, the other colours and specs (captured 2026-11-27: an Asics Gel 1130 sneaker at 389.99 BRL by Pix, 4 of 11 sizes in stock).
+- **Get Sizes and Stock**: faster, for a stock check. Units are exact from 0 to 10; above that the site gives "more than 10", not a count. delivery_type is Dafiti's own stock, fulfillment or drop shipping.
+- Not available: review texts, shipping quotes, search suggestions, Dafiti Colombia, price history.
+
+Every Dafiti operation costs 1 credit; credits_used says what was charged. Listings and Get Product carry a 300-second request timeout (listings usually take 15 to 160 seconds); Get Sizes and Stock 180 seconds. Failed calls and refused inputs are not charged; a not-found is charged.
 
 ## What changed in 0.102.0
 
