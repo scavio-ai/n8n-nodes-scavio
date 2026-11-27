@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 187 resources and 1,515 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 190 resources and 1,543 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -145,6 +145,9 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Natura (Brazil, Argentina, Chile, Colombia, Mexico, Peru)](https://scavio.dev/docs/natura-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Categories, Get Product, Get Search Suggestions, Get Stores, Get Deals |
 | [O Boticario + Eudora (Brazil)](https://scavio.dev/docs/boticario-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; page operations 2 when the page needs a second route; Get Prices 1 per 5 SKUs | Search Products, Get Category Products, Get Categories, Get Deals, Get Promotion Conditions, Get Product, Get Prices, Get Reviews, Get Stores, Get Delivery and Pickup, Get Search Suggestions |
 | [Centauro (Brazil)](https://scavio.dev/docs/centauro-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Deals, Get Product, Get Freight and Pickup, Get Stores, Get Search Suggestions |
+| [Enjoei (Brazil)](https://scavio.dev/docs/enjoei-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Listings, Get Category Listings, Get Categories, Get Product, Get Shop, Get Shop Listings, Get Shop Sold Listings, Get Shop Reviews, Get Search Suggestions |
+| [Atacadao (Brazil)](https://scavio.dev/docs/atacadao-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Product, Get Stores Near, Get Stores, Get Store, Get Flyers, Get Facets, Get Search Suggestions, Get Categories |
+| [Carrefour Brasil (Brazil)](https://scavio.dev/docs/carrefourbr-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Collection Products, Get Product, Get Delivery Options, Get Stores, Get Search Suggestions, Get Coupons, Get Categories |
 | [Rakuten (US, UK and Canada; French pages)](https://scavio.dev/docs/rakuten-stores?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Get Stores, Get Store, Get Store Coupons, Get Rates, Search, Get Suggestions, Get Category Stores, Get Deals, Get In-Store Offers |
 
 ### Social and video
@@ -219,6 +222,40 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.101.0
+
+**3 new resources, 28 operations:** Enjoei, Atacadao, Carrefour Brasil. All are new resources; no existing operation changed.
+
+**New resource: Enjoei, 9 operations.** Enjoei (enjoei.com.br, Brazil's second-hand fashion marketplace), Brazil only, prices in BRL: listing search and department, category and subcategory listings with the price, the price before the seller's discount, size, condition and shipping type; the category tree; one listing with its make-an-offer range; a seller's shop with its counters, rating and on-time delivery history; the shop's listings on sale, sold listings and buyer reviews; and search suggestions.
+
+- **Search Listings** and **Get Category Listings**: 30 a page by cursor (send next_cursor in Cursor), 4 sorts, Brand, clothing, waist and shoe sizes, a price range in BRL, Condition, Listed Within, Store Kind and a discount range; Enjoei's totals stop at 10000 (captured 2026-11-27: vestido farm reached the cap, the first a used FARM linen midi dress at 199 BRL). There is no colour filter: put the colour in the query.
+- **Get Product**: by product ID or link; price, list price, installments, the make-an-offer range the seller accepts, sizes, brand, condition, photos and the seller's handle (captured 2026-11-27: a used FARM dress at 75 BRL, list 90, offers accepted from 45 to 74 BRL).
+- **Get Shop**, **Get Shop Listings**, **Get Shop Sold Listings** and **Get Shop Reviews**: by handle; counters, rating and on-time delivery history; listings on sale; sold listings with the listed price, 40 a page, up to 50 pages, no sold date; reviews all, positive or negative with the star and feedback-tag summary (captured 2026-11-27: utstore, 706 listings on sale, 1998 sold, rated 4.7 from 809 reviews).
+- **Get Categories** and **Get Search Suggestions**.
+- Sellers appear by @handle only: names, avatars and cities are never returned, nor reviewer names. Not available: shipping quotes by CEP (they need a signed-in buyer), product comments, a site-wide sold search, coupons, price history.
+
+Every Enjoei operation costs 1 credit; credits_used says what was charged. Search, category, shop listings and suggestions carry a 240-second request timeout (they usually take 10 to 40 seconds, up to about two minutes); the others 120 seconds. Failed calls and refused inputs are not charged; a not-found is charged.
+
+**New resource: Atacadao, 10 operations.** Atacadao (atacadao.com.br, the Brazilian cash-and-carry wholesale chain of Grupo Carrefour Brasil), Brazil only, prices in BRL: keyword search and category listings priced at the store you choose, with the unit price, every quantity tier and the case size; one product by SKU, EAN, product ID, slug or link; the filter values with the store's counts; the pickup stores near a CEP or a point; the store directory; one store in full; each store's flyers as links; search suggestions; and the department tree.
+
+- **Search Products** and **Get Category Products**: up to 100 a page, pages 1 to 50, 8 sorts, Category, Brand, Collection, a price range and Filters (JSON) from **Get Facets** (captured 2026-11-27: arroz at the Tatuape store matched 52 items, the first the Arroz Branco Camil Tipo 1 5kg at 20.29 BRL).
+- Prices are the online prices of the store in Store ID (from **Get Stores Near** or **Get Stores**); without one, the site's default store (atacadaobr60, Vila Maria, Sao Paulo). price_tiers lists every quantity tier the store gives; there is no was-price (captured 2026-11-27: the Arroz Branco Namorado Tipo 1 5kg was 21.89 BRL for 1 unit and 21.39 BRL each from 6).
+- **Get Stores Near**: the pickup stores near a CEP or a point, nearest first, with hours (captured 2026-11-27: 33 near CEP 01310-100, the nearest 4.9 km away). **Get Stores**: the directory by state and city. **Get Store**: services, payment methods and meal vouchers.
+- **Get Flyers**: the store's current flyers with validity dates; the PDF is returned as a link, not opened (captured 2026-11-27: 6 Black Friday flyers at store 340). **Get Search Suggestions** and **Get Categories**.
+- Not available: the business (CNPJ) channel, store stock and unit counts, reviews, Q&A, price history.
+
+Every Atacadao operation costs 1 credit; credits_used says what was charged. Every operation carries a 120-second request timeout (most calls take 2 to 20 seconds). Failed calls and refused inputs are not charged; a not-found is charged.
+
+**New resource: Carrefour Brasil, 9 operations.** Carrefour Brasil (carrefour.com.br: the Mercado grocery site and the www marketplace) through Site, Brazil only, prices in BRL, separate from the Carrefour (France) resource: keyword or EAN search, category listings and collections with the price, list price, single-payment price, seller and stamps, sponsored placements kept apart; one product with every seller and payment-method prices; delivery and pickup options to a CEP; the pickup stores; search suggestions; the coupon page; and the department menu.
+
+- **Search Products**, **Get Category Products** and **Get Collection Products** (themed and deal lists): 15 a page, pages 1 to 50, 8 sorts, Filters (JSON) from facets and a price range in whole reais (captured 2026-11-27: the Mercado rice category held 100 items, the first the Arroz Branco Camil Tipo 1 5kg at 23.99 BRL).
+- On Mercado, CEP or Store (a store_id from **Get Stores**) gives that region's prices and assortment; without them, the site's default prices (price_scope says which). www prices are national.
+- **Get Product**: by item ID or link; every seller, payment_offers (the site's prices for one payment method, such as the Carrefour card or Pix, Brazil's instant payment), promotions as given, specs and variants (captured 2026-11-27: the Arroz Branco Longo-fino Tipo 1 Tio Joao 1 Kg at 6.59 BRL with a Carrefour card offer of 30% off).
+- **Get Delivery Options**: one item from one seller to a CEP, with nearby pickup stores and their hours (captured 2026-11-27: 10.90 BRL delivery in 2h to CEP 01310-100, free pickup 1.15 km away). **Get Coupons**: codes, values, expiry and rules as published. **Get Stores**, **Get Search Suggestions** and **Get Categories**.
+- Availability is a flag, never a unit count. Not available: reviews and questions (the site has none), flyers, a store locator with hours, price history.
+
+Every Carrefour Brasil operation costs 1 credit; credits_used says what was charged. Every operation carries a 180-second request timeout (most calls take 2 to 25 seconds on Mercado, up to about 50 on www). Failed calls and refused inputs are not charged; a not-found is charged.
 
 ## What changed in 0.100.0
 
