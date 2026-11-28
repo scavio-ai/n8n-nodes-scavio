@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 209 resources and 1,679 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 212 resources and 1,690 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -167,6 +167,9 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Liquidation.com (US)](https://scavio.dev/docs/liquidation-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Lots, Get Lot, Get Manifest, Get Closed Auctions |
 | [Ferguson (US)](https://scavio.dev/docs/ferguson-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | Search and category 2, product 4 (2 when no price is shown) | Search Products, Get Category Products, Get Product |
 | [SupplyHouse.com (US)](https://scavio.dev/docs/supplyhouse-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category, Get Brand Products, Get Product, Get Reviews, Get Questions, Get Categories |
+| [DigiKey (US, CA, DE)](https://scavio.dev/docs/digikey-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 (Get Product by DigiKey part number 4) | Search Parts, Get Product, Get Categories |
+| [Mouser Electronics (US, UK)](https://scavio.dev/docs/mouser-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Parts, Get Product, Get Categories, Get Manufacturer |
+| [RS Components (UK, DE, AU)](https://scavio.dev/docs/rscomponents-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Products, Get Product, Get Category, Get Brand Products |
 | [Rakuten (US, UK and Canada; French pages)](https://scavio.dev/docs/rakuten-stores?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Get Stores, Get Store, Get Store Coupons, Get Rates, Search, Get Suggestions, Get Category Stores, Get Deals, Get In-Store Offers |
 
 ### Social and video
@@ -241,6 +244,30 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.108.0
+
+**3 new resources, 11 operations:** DigiKey, Mouser Electronics, RS Components. All are new resources; no existing operation changed.
+
+**New resource: DigiKey, 3 operations.** DigiKey (digikey.com, the electronic component distributor) in the US (USD), Canada (CAD) and Germany (EUR, prices without VAT).
+
+- **Search Parts** by keyword or part number: exact part matches and the categories holding them; with a leaf Category ID, page 1 of that category's rows (25) with price breaks per packaging, stock and specs, narrowed by DigiKey's own Filters (captured 2026-11-28: LM317 in category 699 with Manufacturer Texas Instruments and In Stock matched 62 parts). Search serves the US and Germany.
+- **Get Product** by link or DigiKey part number: Part Status, the manufacturer's standard lead time, environmental and trade classifications, documents, related parts and the substitutes DigiKey's page lists (captured 2026-11-28: STMicroelectronics LM317T at 1.19 USD at 1 piece, 30-week standard lead time). **Get Categories**: the category tree with product counts.
+- Stock is one number for every market, as the page shows it when fetched. Credits: 2 per call; Get Product by DigiKey part number is held at 4 (2 when it lands straight on a digikey.com product page). Every operation carries a 300-second request timeout.
+
+**New resource: Mouser Electronics, 4 operations.** Mouser Electronics (mouser.com, the electronic component distributor) in the US (USD) and the UK (GBP).
+
+- **Search Parts**: 25 a page in Mouser's own order (no sort), with price breaks per packaging, stock, on-order quantities and dates, factory lead time and lifecycle (captured 2026-11-28: LM7805 matched 33 parts).
+- **Get Product** by Mouser part number or a search row's link: the full price table, specifications, documents, trade codes and country of origin (captured 2026-11-28: Texas Instruments NE555P at 0.59 USD at 1 piece, 26-week factory lead time). **Get Categories** (mouser.com) and **Get Manufacturer**.
+- Every operation costs 2 credits and carries a 300-second request timeout: Mouser pages take 30 to 160 seconds, up to about 240.
+
+**New resource: RS Components, 4 operations.** RS Components (rs-online.com, RS Group's electronic and industrial component distributor) in the UK (GBP), Germany (EUR) and Australia (AUD); RS Americas (us.rs-online.com) is not covered.
+
+- **Search Products**, **Get Category** and **Get Brand Products**: 20 a page with the unit price and pack price labelled, stock status and the site's filters listed with counts (captured 2026-11-28 on uk.rs-online.com: BC547 matched 10 products).
+- **Get Product**: price breaks, the VAT-inclusive unit price, the market's own stock with its ship-date schedule, RoHS, country of origin and datasheets (captured 2026-11-28: Texas Instruments NE555P at 0.304 GBP a unit in packs of 50). Stock differs per market; no alternative products, no sort.
+- Every operation costs 2 credits and carries a 240-second request timeout.
+
+Failed calls and refused inputs are not charged; a not-found is charged.
 
 ## What changed in 0.107.0
 

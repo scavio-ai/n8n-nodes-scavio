@@ -142,6 +142,9 @@ import { sallybeautyOperations, sallybeautyFields } from './descriptions/Sallybe
 import { liquidationOperations, liquidationFields } from './descriptions/LiquidationDescription';
 import { fergusonOperations, fergusonFields } from './descriptions/FergusonDescription';
 import { supplyhouseOperations, supplyhouseFields } from './descriptions/SupplyhouseDescription';
+import { digikeyOperations, digikeyFields } from './descriptions/DigikeyDescription';
+import { mouserOperations, mouserFields } from './descriptions/MouserDescription';
+import { rscomponentsOperations, rscomponentsFields } from './descriptions/RscomponentsDescription';
 import { williamssonomaOperations, williamssonomaFields } from './descriptions/WilliamssonomaDescription';
 import { bedbathbeyondOperations, bedbathbeyondFields } from './descriptions/BedbathbeyondDescription';
 import { fashionnovaOperations, fashionnovaFields } from './descriptions/FashionnovaDescription';
@@ -246,7 +249,7 @@ export class Scavio implements INodeType {
 		version: 1,
 		subtitle: '={{ $parameter["operation"] + ": " + $parameter["resource"] }}',
 		description:
-			'Real-time structured data from Google, ChatGPT, Gemini, Amazon, Walmart, eBay, Target, Home Depot, Costco, HEB, Kroger, Publix, IKEA, Wayfair, Ashley Furniture, Maisons du Monde, Williams-Sonoma, Pottery Barn, West Elm, Decathlon, Spec\'s, Lowe\'s, Ace Hardware, Tractor Supply, Michaels, Nike, Staples, Sam\'s Club, BJ\'s Wholesale Club, Canadian Tire, SportChek, Mark\'s, RONA, Dollar General, Dollar Tree, Discount Tire, Vevor, Nellis Auction, EstateSales.net, Bring a Trailer, Sephora, Ulta Beauty, Dermstore, Bath & Body Works, Space NK, Lookfantastic, Cult Beauty, YesStyle, Notino, Douglas, Boots, ALDI, Micro Center, Walgreens, CVS, Whole Foods Market, Harbor Freight, AutoZone, O\'Reilly Auto Parts, RockAuto, Cars.com, Autotrader, CarGurus, CarMax, Carvana, TrueCar, Edmunds, Kelley Blue Book, Instacart, PC Express, PetSmart, Petco, iHerb, Chewy, Menards, Nordstrom, Nordstrom Rack, Best Buy, Newegg, TCGplayer, Nintendo eShop, H&M, Zara, Uniqlo, ASOS, Fashion Nova, Gap, Old Navy, Banana Republic, Athleta, Zappos, 6pm, Vinted, Mercari, Depop, Poshmark, OfferUp, thredUP, Macy\'s, Saks Fifth Avenue, Kohl\'s, JCPenney, Dick\'s Sporting Goods, Foot Locker, Fanatics, Academy Sports + Outdoors, REI, Argos, Media Expert, Action, HEMA, Carrefour, Allegro, bol.com, OLX, Trendyol, Mercado Libre, Rakuten, QVC, HSN, Barnes & Noble, ThriftBooks, Belk, Abercrombie & Fitch, Hollister, L.L.Bean, Sweetwater, Bed Bath & Beyond, KaBuM!, Magazine Luiza, Casas Bahia, Extra, Ponto, Buscape, Zoom, Drogasil, Droga Raia, Reclame Aqui, Leroy Merlin, Natura, O Boticario, Eudora, Centauro, Enjoei, Atacadao, Carrefour Brasil, Terabyteshop, Cobasi, Netshoes, Estante Virtual, C&A Brasil, Lojas Renner, Pichau, Dafiti, Riachuelo, Petz, Global Industrial, MSC Industrial Supply, Zoro, B-Stock, McMaster-Carr, Sally Beauty, CosmoProf, Liquidation.com, Ferguson, SupplyHouse.com, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Facebook, Pinterest, Threads, Kuaishou, Douyin, Weibo, Twitch, GitHub, Etsy, AliExpress, Zillow, Redfin, Realtor.com, Rightmove, Rent.com, Trulia, StreetEasy, RentCafe, Movoto, HotPads, Apartment List, Compass, AffordableHousing.com, Lennar, Extra Space Storage, Public Storage, U-Haul, Booking.com, Airbnb, Vrbo, Expedia, Tripadvisor, Yelp, Indeed, Glassdoor, the App Store, Google Play, SEC EDGAR, Companies House, Legistar, company websites (contact and owner enrichment), G2, Capterra, Trustpilot, Goodreads, ad libraries, and any URL',
+			'Real-time structured data from Google, ChatGPT, Gemini, Amazon, Walmart, eBay, Target, Home Depot, Costco, HEB, Kroger, Publix, IKEA, Wayfair, Ashley Furniture, Maisons du Monde, Williams-Sonoma, Pottery Barn, West Elm, Decathlon, Spec\'s, Lowe\'s, Ace Hardware, Tractor Supply, Michaels, Nike, Staples, Sam\'s Club, BJ\'s Wholesale Club, Canadian Tire, SportChek, Mark\'s, RONA, Dollar General, Dollar Tree, Discount Tire, Vevor, Nellis Auction, EstateSales.net, Bring a Trailer, Sephora, Ulta Beauty, Dermstore, Bath & Body Works, Space NK, Lookfantastic, Cult Beauty, YesStyle, Notino, Douglas, Boots, ALDI, Micro Center, Walgreens, CVS, Whole Foods Market, Harbor Freight, AutoZone, O\'Reilly Auto Parts, RockAuto, Cars.com, Autotrader, CarGurus, CarMax, Carvana, TrueCar, Edmunds, Kelley Blue Book, Instacart, PC Express, PetSmart, Petco, iHerb, Chewy, Menards, Nordstrom, Nordstrom Rack, Best Buy, Newegg, TCGplayer, Nintendo eShop, H&M, Zara, Uniqlo, ASOS, Fashion Nova, Gap, Old Navy, Banana Republic, Athleta, Zappos, 6pm, Vinted, Mercari, Depop, Poshmark, OfferUp, thredUP, Macy\'s, Saks Fifth Avenue, Kohl\'s, JCPenney, Dick\'s Sporting Goods, Foot Locker, Fanatics, Academy Sports + Outdoors, REI, Argos, Media Expert, Action, HEMA, Carrefour, Allegro, bol.com, OLX, Trendyol, Mercado Libre, Rakuten, QVC, HSN, Barnes & Noble, ThriftBooks, Belk, Abercrombie & Fitch, Hollister, L.L.Bean, Sweetwater, Bed Bath & Beyond, KaBuM!, Magazine Luiza, Casas Bahia, Extra, Ponto, Buscape, Zoom, Drogasil, Droga Raia, Reclame Aqui, Leroy Merlin, Natura, O Boticario, Eudora, Centauro, Enjoei, Atacadao, Carrefour Brasil, Terabyteshop, Cobasi, Netshoes, Estante Virtual, C&A Brasil, Lojas Renner, Pichau, Dafiti, Riachuelo, Petz, Global Industrial, MSC Industrial Supply, Zoro, B-Stock, McMaster-Carr, Sally Beauty, CosmoProf, Liquidation.com, Ferguson, SupplyHouse.com, DigiKey, Mouser Electronics, RS Components, YouTube, Reddit, TikTok, Instagram, X, LinkedIn, Facebook, Pinterest, Threads, Kuaishou, Douyin, Weibo, Twitch, GitHub, Etsy, AliExpress, Zillow, Redfin, Realtor.com, Rightmove, Rent.com, Trulia, StreetEasy, RentCafe, Movoto, HotPads, Apartment List, Compass, AffordableHousing.com, Lennar, Extra Space Storage, Public Storage, U-Haul, Booking.com, Airbnb, Vrbo, Expedia, Tripadvisor, Yelp, Indeed, Glassdoor, the App Store, Google Play, SEC EDGAR, Companies House, Legistar, company websites (contact and owner enrichment), G2, Capterra, Trustpilot, Goodreads, ad libraries, and any URL',
 		defaults: { name: 'Scavio' },
 		inputs: [NodeConnectionTypes.Main],
 		outputs: [NodeConnectionTypes.Main],
@@ -329,6 +332,7 @@ export class Scavio implements INodeType {
 					{ name: 'Depop', value: 'depop' },
 					{ name: 'Dermstore', value: 'dermstore' },
 					{ name: "Dick's Sporting Goods", value: 'dicks' },
+					{ name: 'DigiKey', value: 'digikey' },
 					{ name: 'Discount Tire', value: 'discounttire' },
 					{ name: 'Dollar General', value: 'dollarGeneral' },
 					{ name: 'Dollar Tree', value: 'dollartree' },
@@ -406,6 +410,7 @@ export class Scavio implements INodeType {
 					{ name: 'Meta Ad Library', value: 'metaAds' },
 					{ name: 'Michaels', value: 'michaels' },
 					{ name: 'Micro Center', value: 'microCenter' },
+					{ name: 'Mouser Electronics', value: 'mouser' },
 					{ name: 'Movoto', value: 'movoto' },
 					{ name: 'MSC Industrial Supply', value: 'msc' },
 					{ name: 'Natura', value: 'natura' },
@@ -443,6 +448,7 @@ export class Scavio implements INodeType {
 					{ name: 'Rightmove (UK)', value: 'rightmove' },
 					{ name: 'RockAuto', value: 'rockauto' },
 					{ name: 'RONA', value: 'rona' },
+					{ name: 'RS Components', value: 'rscomponents' },
 					{ name: 'Saks Fifth Avenue', value: 'saks' },
 					{ name: 'Sally Beauty', value: 'sallybeauty' },
 					{ name: "Sam's Club", value: 'samsClub' },
@@ -770,6 +776,12 @@ export class Scavio implements INodeType {
 			...fergusonFields,
 			...supplyhouseOperations,
 			...supplyhouseFields,
+			...digikeyOperations,
+			...digikeyFields,
+			...mouserOperations,
+			...mouserFields,
+			...rscomponentsOperations,
+			...rscomponentsFields,
 			...argosOperations,
 			...argosFields,
 			...mediaexpertOperations,
