@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 207 resources and 1,669 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 209 resources and 1,679 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -165,6 +165,8 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [McMaster-Carr (US)](https://scavio.dev/docs/mcmaster-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Categories |
 | [Sally Beauty and CosmoProf (US and Canada)](https://scavio.dev/docs/sallybeauty-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Clearance, Get Product, Get Stores, Get Store Stock, Get Suggestions, Get Brands, Get Reviews |
 | [Liquidation.com (US)](https://scavio.dev/docs/liquidation-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Lots, Get Lot, Get Manifest, Get Closed Auctions |
+| [Ferguson (US)](https://scavio.dev/docs/ferguson-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | Search and category 2, product 4 (2 when no price is shown) | Search Products, Get Category Products, Get Product |
+| [SupplyHouse.com (US)](https://scavio.dev/docs/supplyhouse-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category, Get Brand Products, Get Product, Get Reviews, Get Questions, Get Categories |
 | [Rakuten (US, UK and Canada; French pages)](https://scavio.dev/docs/rakuten-stores?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Get Stores, Get Store, Get Store Coupons, Get Rates, Search, Get Suggestions, Get Category Stores, Get Deals, Get In-Store Offers |
 
 ### Social and video
@@ -239,6 +241,26 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.107.0
+
+**2 new resources, 10 operations:** Ferguson, SupplyHouse.com. Both are new resources; no existing operation changed.
+
+**New resource: Ferguson, 3 operations.** Ferguson (ferguson.com, the US plumbing, HVAC and waterworks distributor), US only, prices in USD as shown to a visitor who is not signed in.
+
+- **Search Products** and **Get Category Products**: 24 a page, Best Match or Best Selling, with item numbers, Ferguson and manufacturer part numbers, brands, ratings and shipping flags (captured 2026-11-28: pex tubing matched 253 products). These results carry no prices.
+- **Get Product** by item number or link: price, list price, price per unit, package quantities, variants, specs, certifications and documents (captured 2026-11-28: a 1/2 in. brass ball valve at 33.24 USD each). Items Ferguson prices for signed-in customers only answer price null with a note; Ferguson prices by region, so the same item can read a different price on another read.
+- Not available: store stock, reviews, questions.
+- Credits: Search Products and Get Category Products 2 (4 when a keyword Ferguson sends to a category is asked for a later page or Best Selling), Get Product 4 (2 when the page names no price). Search and category carry a 240-second request timeout, Get Product 180 seconds.
+
+**New resource: SupplyHouse.com, 7 operations.** SupplyHouse.com (supplyhouse.com, the US online plumbing, HVAC and electrical supply store), United States, USD.
+
+- **Search Products**, **Get Category** and **Get Brand Products**: 48 a page, with the unit price and box price labelled, quantity-break prices and Total Available (captured 2026-11-28: hot surface igniter matched 551 products).
+- **Get Product**: lead times per warehouse, specs, documents, alternatives and accessories (captured 2026-11-28: a PEX crimp elbow at 0.62 USD each or 27.50 USD a box of 50, 1,919 available). Prices the page does not show answer null with price_hidden.
+- **Get Reviews** and **Get Questions**: 10 a page, newest first, no names; staff answers flagged. **Get Categories**: the top-level departments.
+- Every operation costs 1 credit and carries a 250-second request timeout (Get Categories 180 seconds): SupplyHouse pages take 20 to 120 seconds, up to about 240.
+
+Failed calls and refused inputs are not charged; a not-found is charged (2 credits on Ferguson).
 
 ## What changed in 0.106.0
 
