@@ -28,7 +28,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Home Depot (US; Canada via Country)](https://scavio.dev/docs/home-depot-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2, Get Delivery Quote 4; 1 for Home Depot Canada | Search Products, Get Product, Get Reviews, Find Stores, Get Availability, Get Delivery Quote (US only); Canada only: Get Category Products, Get Categories, Get Store Stock, Get Store, Get Search Suggestions |
 | [Costco](https://scavio.dev/docs/costco-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Search Products, Get Category Products, Get Deals and Find Clearance Items 2 in the United States; Get Warehouse Prices, Get Availability and Get Gas Prices scale with the number of warehouses | Search Products, Get Category Products, Get Categories, Get Products, Get Warehouse Prices, Get Availability, Get Reviews, Get Warehouses, Get Gas Prices, Get Coupon Book, Get Deals, Find Clearance Items, Get Search Suggestions |
 | [HEB](https://scavio.dev/docs/heb-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Products, Get Product, Get Stores |
-| [Kroger, QFC and Fred Meyer](https://scavio.dev/docs/kroger-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Search Products and Get Product 2, Get Store Prices 3 | Search Products, Get Product, Get Store Prices, Find Stores, Get Category Products, Get Weekly Digital Deals, Get Coupons, Get Search Suggestions |
+| [Kroger, QFC, Fred Meyer and Jay C Food Stores](https://scavio.dev/docs/kroger-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Search Products and Get Product 2, Get Store Prices 3 | Search Products, Get Product, Get Store Prices, Find Stores, Get Category Products, Get Weekly Digital Deals, Get Coupons, Get Search Suggestions |
 | [Publix](https://scavio.dev/docs/publix-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Category Products, Get Categories, Get Weekly Ad, Get Extra Savings, Get Coupons, Search Savings, Get Order Ahead Menu, Find Stores, Get Search Suggestions |
 | [IKEA](https://scavio.dev/docs/ikea-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 (Compare Prices by Country: 1 per market) | Search Products, Get Product, Get Reviews, Get Category Products, Get Categories, Get Deals, Get Search Suggestions, Find Stores, Get Store Stock, Get Items, Compare Prices by Country, Get As-Is Offers |
 | [Wayfair](https://scavio.dev/docs/wayfair-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Category Products, Get Sale Events |
@@ -244,6 +244,14 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.109.0
+
+**Kroger: Jay C Food Stores banner.** Nothing else changed.
+
+- The Kroger **Banner** option adds **Jay C Food Stores** (jaycfoods.com: southern Indiana), value `jaycfoods`. Every Kroger operation serves it, at the same credits.
+- Jay C store IDs start with 024, a prefix Kroger stores in the same division share: the store's own record decides, so a Jay C store ID works with **Banner** left on Auto.
+- Without a store ID, Jay C Food Stores uses its store nearest ZIP 47274 (Seymour, IN). Prices differ by banner and by store: Folgers Classic Roast ground coffee measured $15.69 at Jay C Food Stores Seymour, IN and $16.99 at Kroger Cincinnati on 2026-11-28.
 
 ## What changed in 0.108.0
 

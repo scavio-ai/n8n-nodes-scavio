@@ -4,7 +4,8 @@ const show = (operation: string[], extra: Record<string, string[]> = {}) => ({
 	show: { resource: ['kroger'], operation, ...extra },
 });
 
-// Kroger (kroger.com) plus the QFC (qfc.com) and Fred Meyer (fredmeyer.com) banners, 8
+// Kroger (kroger.com) plus the QFC (qfc.com), Fred Meyer (fredmeyer.com) and Jay C Food Stores
+// (jaycfoods.com) banners, 8
 // operations. Search Products and Get Product 2 credits, Get Store Prices 3, the rest 1. Prices
 // are integer cents. A call can take up to about a minute, so every route carries a 120s timeout.
 const request = (url: string) => ({
@@ -24,7 +25,7 @@ const CHARGE =
 	'Failed upstream calls are not charged (they are retried automatically); a not-found is charged.';
 
 const STORE_ID_DESCRIPTION =
-	"A store's 8-digit location_id from Find Stores, e.g. 70500847. QFC IDs start with 705, Fred Meyer IDs with 701.";
+	"A store's 8-digit location_id from Find Stores, e.g. 70500847. QFC IDs start with 705, Fred Meyer IDs with 701; 024 IDs are Jay C Food Stores or Kroger stores, told apart by the store's own record.";
 
 export const krogerOperations: INodeProperties[] = [
 	{
@@ -38,56 +39,56 @@ export const krogerOperations: INodeProperties[] = [
 				name: 'Find Stores',
 				value: 'stores',
 				action: 'Find kroger stores',
-				description: `Kroger, QFC or Fred Meyer stores near a ZIP or a city / address (nearest first), or one store by ID: location_id (the store ID for Get Store Prices, Get Coupons and Get Search Suggestions), banner, type (store or fuel_center), name, store_number, address, coordinates, phone, timezone, hours, open_24_hours, departments, has_pharmacy, has_fuel_center, pickup, delivery and distance_miles. Fuel center locations only, no fuel prices. ${CHARGE} Costs 1 credit.`,
+				description: `Kroger, QFC, Fred Meyer or Jay C Food Stores stores near a ZIP or a city / address (nearest first), or one store by ID: location_id (the store ID for Get Store Prices, Get Coupons and Get Search Suggestions), banner, type (store or fuel_center), name, store_number, address, coordinates, phone, timezone, hours, open_24_hours, departments, has_pharmacy, has_fuel_center, pickup, delivery and distance_miles. Fuel center locations only, no fuel prices. ${CHARGE} Costs 1 credit.`,
 				routing: request('/api/v1/kroger/stores'),
 			},
 			{
 				name: 'Get Category Products',
 				value: 'category',
 				action: 'Get kroger category products',
-				description: `A Kroger, QFC or Fred Meyer category listing by /pl/ URL or taxonomy ID. Returns category (ID, name, URL) and ${GRID} ${SITE_STORE} ${CENTS} ${CHARGE} Costs 1 credit.`,
+				description: `A Kroger, QFC, Fred Meyer or Jay C Food Stores category listing by /pl/ URL or taxonomy ID. Returns category (ID, name, URL) and ${GRID} ${SITE_STORE} ${CENTS} ${CHARGE} Costs 1 credit.`,
 				routing: request('/api/v1/kroger/category'),
 			},
 			{
 				name: 'Get Coupons',
 				value: 'coupons',
 				action: 'Get kroger digital coupons',
-				description: `The digital coupons at one Kroger, QFC or Fred Meyer store (store ID, or the banner's store nearest a ZIP), 24 per page: ID, brand, title, description, details, savings (type, amount in cents, percent), type, min_quantity, categories, tags, valid_for, max_redemptions, starts_at, clip_by, expires_at and image; plus total_at_store, has_more and the categories to filter on. Listing only: coupons are not clipped and no account is used. ${CHARGE} Costs 1 credit.`,
+				description: `The digital coupons at one Kroger, QFC, Fred Meyer or Jay C Food Stores store (store ID, or the banner's store nearest a ZIP), 24 per page: ID, brand, title, description, details, savings (type, amount in cents, percent), type, min_quantity, categories, tags, valid_for, max_redemptions, starts_at, clip_by, expires_at and image; plus total_at_store, has_more and the categories to filter on. Listing only: coupons are not clipped and no account is used. ${CHARGE} Costs 1 credit.`,
 				routing: request('/api/v1/kroger/coupons'),
 			},
 			{
 				name: 'Get Product',
 				value: 'product',
 				action: 'Get a kroger product',
-				description: `One Kroger, QFC or Fred Meyer product by URL or UPC: the search fields plus description, nutrition facts, ingredients, allergens, images, country of origin, dimensions, weight, dietary flags, the aisle at the store (store_location) and breadcrumbs. ${SITE_STORE} ${CENTS} ${CHARGE} Costs 2 credits.`,
+				description: `One Kroger, QFC, Fred Meyer or Jay C Food Stores product by URL or UPC: the search fields plus description, nutrition facts, ingredients, allergens, images, country of origin, dimensions, weight, dietary flags, the aisle at the store (store_location) and breadcrumbs. ${SITE_STORE} ${CENTS} ${CHARGE} Costs 2 credits.`,
 				routing: request('/api/v1/kroger/product'),
 			},
 			{
 				name: 'Get Search Suggestions',
 				value: 'suggestions',
 				action: 'Get kroger search suggestions',
-				description: `Kroger, QFC or Fred Meyer search box suggestions for a partial query: suggestions (text, type) and the store they were asked for. ${CHARGE} Costs 1 credit.`,
+				description: `Kroger, QFC, Fred Meyer or Jay C Food Stores search box suggestions for a partial query: suggestions (text, type) and the store they were asked for. ${CHARGE} Costs 1 credit.`,
 				routing: request('/api/v1/kroger/suggestions'),
 			},
 			{
 				name: 'Get Store Prices',
 				value: 'prices',
 				action: 'Get kroger store prices',
-				description: `Price, promotion, stock and aisle for up to 25 UPCs at one Kroger, QFC or Fred Meyer store you choose (store ID from Find Stores). Per UPC: price, promo_price, promo_ends_at, on_sale, price_display, unit_price_display, in_stock, stock_level, quantity (the site's available estimate, not a shelf count), aisle (description, number, side, bay, shelf), fulfillment and priced_at; unknown UPCs in not_found. ${CENTS} An unknown store ID is a charged not-found. ${CHARGE} Costs 3 credits.`,
+				description: `Price, promotion, stock and aisle for up to 25 UPCs at one Kroger, QFC, Fred Meyer or Jay C Food Stores store you choose (store ID from Find Stores). Per UPC: price, promo_price, promo_ends_at, on_sale, price_display, unit_price_display, in_stock, stock_level, quantity (the site's available estimate, not a shelf count), aisle (description, number, side, bay, shelf), fulfillment and priced_at; unknown UPCs in not_found. ${CENTS} An unknown store ID is a charged not-found. ${CHARGE} Costs 3 credits.`,
 				routing: request('/api/v1/kroger/prices'),
 			},
 			{
 				name: 'Get Weekly Digital Deals',
 				value: 'deals',
 				action: 'Get kroger weekly digital deals',
-				description: `This week's weekly digital deals of Kroger, QFC or Fred Meyer: deals_week (ID, ends_at) and ${GRID} Store promotions carry promo_price; digital-coupon deals show the shelf price (the coupon is in Get Coupons, tag Weekly Digital Deals). The printed weekly ad circular is not available. ${SITE_STORE} ${CENTS} ${CHARGE} Costs 1 credit.`,
+				description: `This week's weekly digital deals of Kroger, QFC, Fred Meyer or Jay C Food Stores: deals_week (ID, ends_at) and ${GRID} Store promotions carry promo_price; digital-coupon deals show the shelf price (the coupon is in Get Coupons, tag Weekly Digital Deals). The printed weekly ad circular is not available. ${SITE_STORE} ${CENTS} ${CHARGE} Costs 1 credit.`,
 				routing: request('/api/v1/kroger/deals'),
 			},
 			{
 				name: 'Search Products',
 				value: 'search',
 				action: 'Search kroger products',
-				description: `Search Kroger, QFC or Fred Meyer products by keyword. Returns ${GRID} ${SITE_STORE} ${CENTS} ${CHARGE} Costs 2 credits.`,
+				description: `Search Kroger, QFC, Fred Meyer or Jay C Food Stores products by keyword. Returns ${GRID} ${SITE_STORE} ${CENTS} ${CHARGE} Costs 2 credits.`,
 				routing: request('/api/v1/kroger/search'),
 			},
 		],
@@ -105,6 +106,7 @@ export const krogerFields: INodeProperties[] = [
 		options: [
 			{ name: 'Auto (Kroger, or From the URL / Store ID)', value: 'auto' },
 			{ name: 'Fred Meyer (Fredmeyer.com: Pacific Northwest and Alaska)', value: 'fred_meyer' },
+			{ name: 'Jay C Food Stores (Jaycfoods.com: Southern Indiana)', value: 'jaycfoods' },
 			{ name: 'Kroger (Kroger.com)', value: 'kroger' },
 			{ name: 'QFC (Qfc.com: Washington and Oregon)', value: 'qfc' },
 		],
@@ -147,7 +149,7 @@ export const krogerFields: INodeProperties[] = [
 		displayOptions: show(['product']),
 		routing: { request: { body: { product_url: '={{ $value || undefined }}' } } },
 		description:
-			'Full or relative product URL on kroger.com, qfc.com or fredmeyer.com (the product URL from Search Products). Pass this or UPC. An absolute URL sets the banner.',
+			'Full or relative product URL on kroger.com, qfc.com, fredmeyer.com or jaycfoods.com (the product URL from Search Products). Pass this or UPC. An absolute URL sets the banner.',
 	},
 	{
 		displayName: 'UPC',
@@ -266,7 +268,7 @@ export const krogerFields: INodeProperties[] = [
 		displayOptions: show(['category'], { categoryBy: ['url'] }),
 		routing: { request: { body: { url: '={{ $value }}' } } },
 		description:
-			"A category listing URL (/pl/&lt;name&gt;/&lt;ID&gt;) on kroger.com, qfc.com or fredmeyer.com. The URL's host sets the banner.",
+			"A category listing URL (/pl/&lt;name&gt;/&lt;ID&gt;) on kroger.com, qfc.com, fredmeyer.com or jaycfoods.com. The URL's host sets the banner.",
 	},
 	{
 		displayName: 'Taxonomy ID',
@@ -447,7 +449,7 @@ export const krogerFields: INodeProperties[] = [
 				default: '',
 				placeholder: '70500847',
 				description:
-					"A store's 8-digit location_id. Without it the banner's store nearest a representative ZIP is used (Kroger 45202, QFC 98101, Fred Meyer 97201).",
+					"A store's 8-digit location_id. Without it the banner's store nearest a representative ZIP is used (Kroger 45202, QFC 98101, Fred Meyer 97201, Jay C Food Stores 47274).",
 				routing: { request: { body: { store_id: '={{ $value || undefined }}' } } },
 			},
 		],
