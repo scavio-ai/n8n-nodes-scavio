@@ -519,7 +519,28 @@ export const costcoFields: INodeProperties[] = [
 			countryOption(false),
 		],
 	),
-	additionalOptions(['product'], [countryOption(true)]),
+	additionalOptions(['product'], [
+		countryOption(true),
+		{
+			displayName: 'Include Online Stock',
+			name: 'include_online_stock',
+			type: 'boolean',
+			default: true,
+			description:
+				"Whether to add each item's live costco.com / costco.ca ship-to-home stock and estimated delivery date (United States and Canada only). Costs 1 credit per 5 lookups, counting the product call.",
+			routing: { request: { body: { include_online_stock: '={{ $value }}' } } },
+		},
+		{
+			displayName: 'Delivery ZIP',
+			name: 'zip',
+			type: 'string',
+			default: '',
+			placeholder: '98101',
+			description:
+				'Where online stock is checked for: a 5-digit US ZIP, or a Canadian postal code with Site set to Canada. Only with Include Online Stock. Defaults to 98101 (US) or M5V 2T6 (Canada).',
+			routing: { request: { body: { zip: '={{ $value }}' } } },
+		},
+	]),
 	additionalOptions(['prices', 'availability', 'autocomplete'], [countryOption(false)]),
 	additionalOptions(
 		['reviews'],
