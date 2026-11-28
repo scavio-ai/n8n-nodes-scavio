@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 203 resources and 1,649 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 207 resources and 1,669 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -161,6 +161,10 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Global Industrial (US and Canada)](https://scavio.dev/docs/globalindustrial-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Brand Products, Get Product, Get Clearance |
 | [MSC Industrial Supply (US)](https://scavio.dev/docs/msc-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Product, Get Clearance, Get Locations |
 | [Zoro (US)](https://scavio.dev/docs/zoro-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Brand Products, Get Product, Get Availability, Get Reviews |
+| [B-Stock](https://scavio.dev/docs/bstock-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Lots, Get Lot, Get Storefronts, Get Filters |
+| [McMaster-Carr (US)](https://scavio.dev/docs/mcmaster-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Categories |
+| [Sally Beauty and CosmoProf (US and Canada)](https://scavio.dev/docs/sallybeauty-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Clearance, Get Product, Get Stores, Get Store Stock, Get Suggestions, Get Brands, Get Reviews |
+| [Liquidation.com (US)](https://scavio.dev/docs/liquidation-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Lots, Get Lot, Get Manifest, Get Closed Auctions |
 | [Rakuten (US, UK and Canada; French pages)](https://scavio.dev/docs/rakuten-stores?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Get Stores, Get Store, Get Store Coupons, Get Rates, Search, Get Suggestions, Get Category Stores, Get Deals, Get In-Store Offers |
 
 ### Social and video
@@ -235,6 +239,39 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.106.0
+
+**4 new resources, 20 operations:** B-Stock, McMaster-Carr, Sally Beauty, Liquidation.com. All are new resources; no existing operation changed.
+
+**New resource: B-Stock, 4 operations.** B-Stock (bstock.com, the liquidation marketplace where retailers sell returns and overstock): the open lots, one lot's auction state and public manifest preview, the storefronts and the search filters.
+
+- **Search Lots** by keyword, storefront, category, condition, inventory type, buying format, region, shipment type and manufacturer, up to 200 a call (captured 2026-11-28: laptop matched 20 open lots).
+- **Get Lot**: auction state, current bid, next minimum bid, the seller's stated retail value, units, pallets, shipping and the manifest preview (the first 10 rows and the total; the full manifest needs a signed-in buyer account).
+- **Get Storefronts** and **Get Filters**: the storefronts with open listings and the filter values with their counts (captured 2026-11-28: 37 storefronts, 735 open listings).
+- Not available: closed and sold lots, final prices, bidder identities.
+
+**New resource: McMaster-Carr, 3 operations.** McMaster-Carr (mcmaster.com, the US industrial-supply catalog), United States, prices in USD.
+
+- **Get Product** by part number or link: the pack price and the per-piece price labelled, quantity breaks, the delivery promise, specifications and compliance (captured 2026-11-28: a socket head screw at 12.42 USD per pack of 50, 0.25 USD per piece). A part number the site does not know is an unbilled error after about 2 minutes.
+- **Search Products** by keywords or a category slug: part rows with price basis, product families and facets (captured 2026-11-28: hose clamps counted 6,125 products). **Get Categories**: the top level of the catalogue.
+- Not available: manufacturer part numbers, UPCs, reviews, stores, deals.
+
+**New resource: Sally Beauty, 9 operations.** Sally Beauty (sallybeauty.com, the US and Canadian beauty supply chain) and CosmoProf (its professional beauty distributor), chosen by Site.
+
+- **Search Products**, **Get Category Products** and **Get Clearance**: 24 a page, sorted and filtered by facet or price (captured 2026-11-28: purple shampoo matched 107 products).
+- **Get Product**: price, regular price, promotions, sizes and the exact online units. **Get Store Stock**: the exact units at each Sally Beauty store near a ZIP or postal code (captured 2026-11-28: in stock at 29 of 30 stores near 90012).
+- **Get Stores**, **Get Suggestions**, **Get Brands** and **Get Reviews** (the first 8 reviews with the totals and questions, no reviewer names).
+- CosmoProf prices, availability and store stock are for licensed professionals, so they are null; store stock and reviews are Sally Beauty only.
+
+**New resource: Liquidation.com, 4 operations.** Liquidation.com (liquidation.com, the US online liquidation auction site of Liquidity Services), USD and CAD.
+
+- **Search Lots** by keyword, category, lot size, condition, region, auction type and seller (captured 2026-11-28: laptop matched 73 open auctions).
+- **Get Lot**: current and minimum bid, buyer's premium, quantity, condition, shipping terms and seller statistics. **Get Manifest**: the items as the seller lists them, price columns keeping the seller's label.
+- **Get Closed Auctions**: a seller's closed lots with final bids; the site shows no close date and ignores keywords on closed lots (captured 2026-11-28: 2,373 for Titan Electronics).
+- Not available: bidder identities.
+
+Every operation of the four resources costs 1 credit; credits_used says what was charged. McMaster-Carr Search Products carries a 300-second request timeout and Sally Beauty Get Reviews 240 seconds; the others 180 seconds. Failed calls and refused inputs are not charged; a not-found is charged.
 
 ## What changed in 0.105.0
 
