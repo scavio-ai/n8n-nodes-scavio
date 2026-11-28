@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 212 resources and 1,690 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 213 resources and 1,700 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -30,6 +30,7 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [HEB](https://scavio.dev/docs/heb-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2 | Search Products, Get Product, Get Stores |
 | [Kroger, QFC, Fred Meyer and Jay C Food Stores](https://scavio.dev/docs/kroger-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Search Products and Get Product 2, Get Store Prices 3 | Search Products, Get Product, Get Store Prices, Find Stores, Get Category Products, Get Weekly Digital Deals, Get Coupons, Get Search Suggestions |
 | [Publix](https://scavio.dev/docs/publix-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Category Products, Get Categories, Get Weekly Ad, Get Extra Savings, Get Coupons, Search Savings, Get Order Ahead Menu, Find Stores, Get Search Suggestions |
+| [Meijer (US)](https://scavio.dev/docs/meijer-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Category Products, Get Categories, Get Deals, Find Stores, Get Store, Get Weekly Ad, Get Coupons, Get Reviews |
 | [IKEA](https://scavio.dev/docs/ikea-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 (Compare Prices by Country: 1 per market) | Search Products, Get Product, Get Reviews, Get Category Products, Get Categories, Get Deals, Get Search Suggestions, Find Stores, Get Store Stock, Get Items, Compare Prices by Country, Get As-Is Offers |
 | [Wayfair](https://scavio.dev/docs/wayfair-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Product, Get Category Products, Get Sale Events |
 | [Ashley Furniture](https://scavio.dev/docs/ashley-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 2; Search Products and Get Product 1 in Canada, the Philippines, Saudi Arabia and Turkey | Search Products, Get Product, Get Category Products, Get Deal Event Products, Find Stores, Get Store |
@@ -244,6 +245,18 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.111.0
+
+**New resource: Meijer, 10 operations, 1 credit each.** Meijer (meijer.com, the Midwest grocery and general-merchandise chain: Michigan, Ohio, Indiana, Illinois, Kentucky, Wisconsin; US only, USD). No existing operation changed.
+
+- **Search Products**, **Get Category Products** and **Get Deals** (default the grocery sale), priced at the store you pick, with stock, mPerks and WIC flags and Meijer's filter counts. Search lists 52 items on page 1 and the next 48 on page 2; departments and collections return their first 52 items with the total.
+- **Get Product** by Meijer ID or UPC / EAN: store price, stock and aisle, sizes with their own store prices, SNAP and WIC flags and ingredients (nutrition and allergens are not on the page). **Get Categories**: the departments and collections with the paths the listings take.
+- **Find Stores** within 50 miles of a ZIP and **Get Store** with its store, pharmacy, pickup, delivery, deli, bakery and gas station hours (no fuel prices).
+- **Get Weekly Ad**: a store's current ad page by page, each offer's price as printed. **Get Coupons**: a store's mPerks coupons, the first 48 or the full list (listed, never clipped). **Get Reviews**: the first page (8) with the rating summary, no reviewer names.
+- Prices differ by store: Meijer Whole Milk, Gallon was $2.88 at Franklin, IN and $2.99 at Jeffersonville, IN and Cincinnati, OH on 2026-11-28. Without a store ID Meijer picks a store by location and store_used names it. Not covered: search suggestions, gas prices, prescription prices, Meijer Express stations. Every operation carries a 240-second request timeout.
+
+Failed calls and refused inputs are not charged; a not-found is charged.
 
 ## What changed in 0.109.0
 
