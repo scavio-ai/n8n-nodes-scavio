@@ -2,7 +2,7 @@
 
 This is an n8n community node. It lets you use [Scavio](https://scavio.dev?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) — a real-time structured-data API for search, AI assistant answers, retail, social, travel, real estate, jobs, app stores, software reviews, ad libraries, public company filings, and any URL — in your n8n workflows.
 
-Scavio returns clean, structured JSON from 200 resources and 1,630 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
+Scavio returns clean, structured JSON from 203 resources and 1,649 operations. Use it to power product research, price and review monitoring, AI agent retrieval, lead enrichment, competitive and ad intelligence, and content workflows.
 
 [Installation](#installation) - [Operations](#operations) - [What changed in 0.13.0](#what-changed-in-0130) - [Per-resource notes](#per-resource-notes) - [Templates](#templates) - [Credentials](#credentials) - [Compatibility](#compatibility) - [Resources](#resources)
 
@@ -158,6 +158,9 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Dafiti (Brazil)](https://scavio.dev/docs/dafiti-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Brand Products, Get Deals, Get Product, Get Reviews, Get Sizes and Stock |
 | [Riachuelo (Brazil)](https://scavio.dev/docs/riachuelo-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Deals, Get Product |
 | [Petz (Brazil)](https://scavio.dev/docs/petz-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Brand Products, Get Deals, Get Product, Get Stores, Get Store |
+| [Global Industrial (US and Canada)](https://scavio.dev/docs/globalindustrial-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Brand Products, Get Product, Get Clearance |
+| [MSC Industrial Supply (US)](https://scavio.dev/docs/msc-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Product, Get Clearance, Get Locations |
+| [Zoro (US)](https://scavio.dev/docs/zoro-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Brand Products, Get Product, Get Availability, Get Reviews |
 | [Rakuten (US, UK and Canada; French pages)](https://scavio.dev/docs/rakuten-stores?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Get Stores, Get Store, Get Store Coupons, Get Rates, Search, Get Suggestions, Get Category Stores, Get Deals, Get In-Store Offers |
 
 ### Social and video
@@ -232,6 +235,39 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.105.0
+
+**3 new resources, 16 operations:** Global Industrial, MSC Industrial Supply, Zoro. All are new resources; no existing operation changed.
+
+**New resource: Global Industrial, 5 operations.** Global Industrial (globalindustrial.com, the US industrial-equipment and MRO supplier; Canada at globalindustrial.ca, prices in CAD with Market Canada): search, category, brand and clearance listings and one product, with the pack price, the per-piece unit price and the site's quantity breaks.
+
+- **Search Products** by keyword, item number or manufacturer part number, optionally one brand. The site may send a keyword to a category or straight to a product page; landed_on and redirected_to say which (captured 2026-11-28: nitrile gloves 6 mil matched 13 products; nitrile gloves opened the disposable gloves category, 79 products).
+- **Get Category Products** by category or department path, optionally one brand or one product group; **Get Brand Products** by brand (captured 2026-11-28: Wesco listed 438 products); **Get Clearance**, the clearance section by clearance category and brand. Listings carry up to 42 products with the full total.
+- **Get Product** by link, slug, item number or part number: price, unit price, quantity breaks, availability, specs and documents (captured 2026-11-28: a Wesco drum dispenser truck at 399.95 USD).
+- price is one selling unit and unit_price the price per piece. A MAP-priced item shows "See price in cart" on the site, so its price fields are null and map_pricing is true. msrp is a list price the site does not show on the page and can sit below the price.
+- Not available: sorting, reviews, questions, price history.
+
+Every Global Industrial operation costs 1 credit; credits_used says what was charged. Every operation carries a 180-second request timeout (usually 5 to 60 seconds). Failed calls and refused inputs are not charged; a not-found is charged.
+
+**New resource: MSC Industrial Supply, 5 operations.** MSC Industrial Supply (mscdirect.com, the US metalworking and MRO distributor), United States, prices in USD: the Web Price as shown, the per-quantity price (for example per 100), a unit price computed by Scavio, the minimum order and order multiple.
+
+- **Search Products** and **Get Category Products**: 24 a page, pages 1 to 400, MSC's 6 sorts (captured 2026-11-28: drill bit matched 132,055 products).
+- **Get Product** by MSC# or link: specs, documents, country of origin, compliance notices and alternates (captured 2026-11-28: a Hertel jobber drill bit at 1.53 USD each, minimum and multiple of 12).
+- **Get Clearance**: the Clearance Specials or Web Specials list as MSC publishes it, with no end dates.
+- **Get Locations**: MSC's distribution, inventory, office and affiliate locations with their business phone numbers, by type, state and country. These are not pickup stores, and MSC publishes no per-branch stock (captured 2026-11-28: 63 locations).
+- Not available: review text, account pricing, delivery estimates.
+
+Every MSC operation costs 1 credit; credits_used says what was charged. Search Products, Get Category Products and Get Product carry a 300-second request timeout (MSC pages usually take 30 to 120 seconds); Get Clearance and Get Locations 180 seconds. Failed calls and refused inputs are not charged; a not-found is charged.
+
+**New resource: Zoro, 6 operations.** Zoro (zoro.com, the US online industrial and business supply store, part of Grainger), United States, prices in USD: the unit price, the selling unit and pack size, and the order-multiple price, labelled.
+
+- **Search Products**, **Get Category Products** and **Get Brand Products**: 36 a page, pages 1 to 100, in Zoro's order (captured 2026-11-28: 3m n95 respirator matched 145 products; Mcr Safety listed 2,901).
+- **Get Product** by Zoro number or link: UPC, specs, documents, variants and shipping restrictions (captured 2026-11-28: MCR Safety BearKat safety glasses at 1.39 USD each, sold in multiples of 12).
+- **Get Availability**: the stock status and delivery estimate the product page shows; Zoro shows no unit counts. **Get Reviews**: the rating summary and the first 5 reviews, without reviewer names (captured 2026-11-28: 4.86 from 50 ratings).
+- Not available: search suggestions, filters, more review pages, price history.
+
+Every Zoro operation costs 1 credit; credits_used says what was charged. Get Availability and Get Reviews carry a 240-second request timeout (usually 60 to 120 seconds; a failed call is not charged and can be retried); the others 180 seconds. Failed calls and refused inputs are not charged; a not-found is charged.
 
 ## What changed in 0.104.0
 
