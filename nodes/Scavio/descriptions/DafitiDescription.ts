@@ -4,9 +4,9 @@ const show = (operation: string[], extra: Record<string, string[]> = {}) => ({
 	show: { resource: ['dafiti'], operation, ...extra },
 });
 
-// Dafiti (dafiti.com.br, the Brazilian fashion marketplace), 6 operations, 1 credit each; credits_used is the truth.
-// Brazil only, BRL. Listings (usually 15 to 160 s) and Get Product (6 to 35 s) carry a 300s timeout; Get Sizes and
-// Stock takes 2 to 15 s and carries 180s.
+// Dafiti (dafiti.com.br, the Brazilian fashion marketplace), 7 operations, 1 credit each; credits_used is the truth.
+// Brazil only, BRL. Listings (usually 15 to 160 s), Get Product (6 to 35 s) and Get Reviews (2 to 20 s by SKU, 10 to
+// 70 s by product ID or link) carry a 300s timeout; Get Sizes and Stock takes 2 to 15 s and carries 180s.
 const request = (url: string, timeout: number, emptyBody = false) => ({
 	request: { method: 'POST' as const, url, timeout, ...(emptyBody ? { body: {} } : {}) },
 });
@@ -89,8 +89,15 @@ export const dafitiOperations: INodeProperties[] = [
 				name: 'Get Product',
 				value: 'product',
 				action: 'Get a dafiti product',
-				description: `One product of ${SITE} by product ID, SKU or link: sku, product_id, name, brand, color, URL, availability (in_stock, limited, out_of_stock), price, list_price, discount_percent, pix_price, card_price, max_installments, installment, rating, review_count, seller (store_name, sold_by_dafiti, delivered_by_dafiti), store_names, size_count, sizes_in_stock, ${SIZES}, colors (the other colours), categories, campaigns, breadcrumbs, specs, details (composition, measures) and images. Marketplace sellers appear by store name only. Not available: marketing description, review texts, shipping quotes, search suggestions, price history; Dafiti Colombia is not covered. An unknown product is a charged not-found. Captured 2026-11-27: an Asics Gel 1130 sneaker at 389.99 BRL by Pix (410.52 by card, list 699.99), 4 of 11 sizes in stock. ${ONE}`,
+				description: `One product of ${SITE} by product ID, SKU or link: sku, product_id, name, brand, color, URL, availability (in_stock, limited, out_of_stock), price, list_price, discount_percent, pix_price, card_price, max_installments, installment, rating, review_count, seller (store_name, sold_by_dafiti, delivered_by_dafiti), store_names, size_count, sizes_in_stock, ${SIZES}, colors (the other colours), categories, campaigns, breadcrumbs, specs, details (composition, measures) and images. Marketplace sellers appear by store name only. The reviews come from Get Reviews. Not available: marketing description, shipping quotes, search suggestions, price history; Dafiti Colombia is not covered. An unknown product is a charged not-found. Captured 2026-11-27: an Asics Gel 1130 sneaker at 389.99 BRL by Pix (410.52 by card, list 699.99), 4 of 11 sizes in stock. ${ONE}`,
 				routing: request('/api/v1/dafiti/product', SLOW_MS),
+			},
+			{
+				name: 'Get Reviews',
+				value: 'reviews',
+				action: 'Get dafiti product reviews',
+				description: `The customer reviews of one product of ${SITE}, by SKU (or product ID or link, slower: the product page is read for the SKU), as the product page shows them: requested, sku, page, per_page, sort, filter, rating_filter, total (the reviews matching the request, from the rating summary), has_more, count, product_name, rating (average, count, histogram per star), review_counts (total, positive as ratings 3 to 5, negative as ratings 1 to 2, with_photos), reviews (ID, rating, title, text, date, purchase_date as the date of the order the review is linked to, recommends, helpful_votes, unhelpful_votes, photos, attributes as the store's follow-up questions such as size and comfort, store_reply, imported, influencer) and notes. Sorted newest (default) or most helpful; filtered positive (ratings 3 to 5), negative (ratings 1 to 2) or with photos, or one star rating (one or the other); up to 100 per page. Reviews can lag the product page by up to 4 hours. Review text is the customer's own; reviewer names are never returned. No questions and answers. An unknown SKU or product is a charged not-found, or an empty answer (count 0, charged). Captured 2026-11-28: a Santa Lolla sneaker rated 4.7 from 477 reviews, 397 of them five-star. ${ONE}`,
+				routing: request('/api/v1/dafiti/reviews', SLOW_MS),
 			},
 			{
 				name: 'Get Sizes and Stock',
@@ -190,6 +197,103 @@ export const dafitiFields: INodeProperties[] = [
 		},
 		description:
 			'The number at the end of a Dafiti product link (product_id of a listing), the Dafiti SKU (sku of a listing, or one size of it) or a dafiti.com.br product link, as chosen in Look Up By',
+	},
+
+	// -- Get Reviews --
+	{
+		displayName: 'Look Up By',
+		name: 'dafitiReviewsBy',
+		type: 'options',
+		default: 'sku',
+		options: [
+			{ name: 'Product ID', value: 'product_id' },
+			{ name: 'SKU', value: 'sku' },
+			{ name: 'URL', value: 'url' },
+		],
+		displayOptions: show(['reviews']),
+	},
+	{
+		displayName: 'Product',
+		name: 'dafitiReviewsProduct',
+		type: 'string',
+		required: true,
+		default: '',
+		placeholder: 'SA232SHF08PKSX',
+		displayOptions: show(['reviews']),
+		routing: {
+			request: {
+				body: {
+					sku: '={{ $parameter["dafitiReviewsBy"] === "sku" ? String($value).trim() : undefined }}',
+					product_id: '={{ $parameter["dafitiReviewsBy"] === "product_id" ? String($value).trim() : undefined }}',
+					url: '={{ $parameter["dafitiReviewsBy"] === "url" ? String($value).trim() : undefined }}',
+				},
+			},
+		},
+		description:
+			'The Dafiti SKU (sku of a listing, or one size of it; the fastest way in), the number at the end of a Dafiti product link or a dafiti.com.br product link, as chosen in Look Up By',
+	},
+	{
+		displayName: 'Additional Options',
+		name: 'dafitiReviewsOptions',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
+		displayOptions: show(['reviews']),
+		options: [
+			{
+				displayName: 'Filter',
+				name: 'dafitiReviewsFilter',
+				type: 'options',
+				default: 'all',
+				description: 'Positive is ratings 3 to 5, negative ratings 1 to 2. Not combined with Star Rating.',
+				options: [
+					{ name: 'All', value: 'all' },
+					{ name: 'Negative', value: 'negative' },
+					{ name: 'Positive', value: 'positive' },
+					{ name: 'With Photos', value: 'with_photos' },
+				],
+				routing: { request: { body: { filter: '={{ $value === "all" ? undefined : $value }}' } } },
+			},
+			{
+				displayName: 'Page',
+				name: 'dafitiReviewsPage',
+				type: 'number',
+				default: 1,
+				typeOptions: { minValue: 1, maxValue: 200 },
+				description: 'Reviews page, 1 to 200',
+				routing: { request: { body: { page: '={{ $value > 1 ? $value : undefined }}' } } },
+			},
+			{
+				displayName: 'Reviews Per Page',
+				name: 'dafitiReviewsPerPage',
+				type: 'number',
+				default: 20,
+				typeOptions: { minValue: 1, maxValue: 100 },
+				description: 'Reviews per page, 1 to 100',
+				routing: { request: { body: { per_page: '={{ $value === 20 ? undefined : $value }}' } } },
+			},
+			{
+				displayName: 'Sort',
+				name: 'dafitiReviewsSort',
+				type: 'options',
+				default: 'newest',
+				description: 'Newest first, or the most helpful votes at the top',
+				options: [
+					{ name: 'Most Helpful', value: 'most_helpful' },
+					{ name: 'Newest', value: 'newest' },
+				],
+				routing: { request: { body: { sort: '={{ $value === "newest" ? undefined : $value }}' } } },
+			},
+			{
+				displayName: 'Star Rating',
+				name: 'dafitiReviewsRating',
+				type: 'number',
+				default: 0,
+				typeOptions: { minValue: 0, maxValue: 5 },
+				description: 'Only reviews with this many stars, 1 to 5 (0 for every rating). Not combined with Filter.',
+				routing: { request: { body: { rating: '={{ $value > 0 ? $value : undefined }}' } } },
+			},
+		],
 	},
 
 	// -- Get Sizes and Stock --

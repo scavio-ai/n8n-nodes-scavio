@@ -152,10 +152,10 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Cobasi (Brazil)](https://scavio.dev/docs/cobasi-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Brand Products, Get Deals, Get Product, Get Reviews, Get Questions, Get Pickup and Delivery, Get Search Suggestions, Get Stores, Get Store |
 | [Netshoes (Brazil)](https://scavio.dev/docs/netshoes-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get List Products, Get Product, Get Offers, Get Online Stock, Get Shipping, Get Reviews, Get Questions, Get Daily Deal, Get Seller, Get Popular Searches |
 | [Estante Virtual (Brazil)](https://scavio.dev/docs/estantevirtual-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1; Get Copies with Include Sellers ceil((1 + copies) / 5) | Search Books, Get Book by ISBN, Get Book, Get Copies, Get Copy, Get Shipping, Get Seller, Get Seller Books, Get Seller Reviews, Get Sellers, Get Category Books, Get List Books |
-| [C&A Brasil (Brazil)](https://scavio.dev/docs/cea-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Brand Products, Get Deals, Get Facets, Get Search Suggestions, Get Categories, Get Product, Get Shipping, Get Pickup Points |
-| [Lojas Renner (Brazil)](https://scavio.dev/docs/renner-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Deals, Get Product, Get SKU Price, Get Stores |
+| [C&A Brasil (Brazil)](https://scavio.dev/docs/cea-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Brand Products, Get Deals, Get Facets, Get Search Suggestions, Get Categories, Get Product, Get Reviews, Get Shipping, Get Pickup Points |
+| [Lojas Renner (Brazil)](https://scavio.dev/docs/renner-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Deals, Get Product, Get Reviews, Get SKU Price, Get Stores |
 | [Pichau (Brazil)](https://scavio.dev/docs/pichau-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Brand Products, Get Deals, Get Product, Get Product Live, Get Reviews, Get Installments, Get Coupons, Get Categories, Get Search Suggestions |
-| [Dafiti (Brazil)](https://scavio.dev/docs/dafiti-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Brand Products, Get Deals, Get Product, Get Sizes and Stock |
+| [Dafiti (Brazil)](https://scavio.dev/docs/dafiti-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Brand Products, Get Deals, Get Product, Get Reviews, Get Sizes and Stock |
 | [Riachuelo (Brazil)](https://scavio.dev/docs/riachuelo-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Deals, Get Product |
 | [Petz (Brazil)](https://scavio.dev/docs/petz-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Products, Get Category Products, Get Brand Products, Get Deals, Get Product, Get Stores, Get Store |
 | [Rakuten (US, UK and Canada; French pages)](https://scavio.dev/docs/rakuten-stores?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Get Stores, Get Store, Get Store Coupons, Get Rates, Search, Get Suggestions, Get Category Stores, Get Deals, Get In-Store Offers |
@@ -232,6 +232,17 @@ In n8n: **Settings -> Community Nodes -> Install** -> enter `n8n-nodes-scavio`.
 | [Companies House (UK)](https://scavio.dev/docs/companies-house-search?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 | Search Companies, Get Company, Get Officers, Get Filing History |
 | [Extract (Any URL)](https://scavio.dev/docs/extract?utm_source=n8n-node&utm_medium=package&utm_campaign=readme) | 1 normal, 1 advanced, 2 ultra; crawl and batch bill that per successful page; Map Website 1; status and cancel free | Extract Page, Map Website, Start Crawl, Get Crawl Status, Cancel Crawl, Start Batch, Get Batch Status, Cancel Batch, Screenshot |
 | Account | Free | Get Usage |
+
+## What changed in 0.104.0
+
+**3 new operations, no new resources:** Lojas Renner, C&A Brasil and Dafiti each gain **Get Reviews**. No existing operation changed.
+
+- **Get Reviews** returns the customer reviews of one product as the store's product page shows them: rating, title, text, the review date, the date of the order the review is linked to, whether the customer recommends it, helpful votes, photos, the store's follow-up questions (size, fit) with the customer's answer, and the store's reply. Up to 100 per page, sorted newest or most helpful, filtered positive (ratings 3 to 5), negative (ratings 1 to 2), with photos or one star rating.
+- **Lojas Renner** by product ID or link: the store's average and count (no star histogram). **C&A Brasil** by product ID: the star histogram, positive, negative and with-photo counts, and the size and colour bought where the review carries it. **Dafiti** by SKU (or product ID or link, slower): the star histogram and the same counts.
+- Reviews can lag the product page by up to 4 hours. Reviewer names are never returned. No questions and answers. Captured 2026-11-28: a C&A white low-top sneaker rated 4.5 from 1189 reviews; a Dafiti Santa Lolla sneaker rated 4.7 from 477; a Lojas Renner satin shirt rated 4.6 from 742.
+- Get Product on the three resources now points at Get Reviews for the reviews.
+
+Each Get Reviews call costs 1 credit; credits_used says what was charged. Usually 2 to 20 seconds (Dafiti by product ID or link 10 to 70 seconds). Failed calls and refused inputs are not charged; a not-found is charged.
 
 ## What changed in 0.103.0
 

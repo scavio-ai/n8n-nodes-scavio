@@ -4,9 +4,9 @@ const show = (operation: string[], extra: Record<string, string[]> = {}) => ({
 	show: { resource: ['renner'], operation, ...extra },
 });
 
-// Lojas Renner (lojasrenner.com.br, the Brazilian fashion retailer), 6 operations, 1 credit each; credits_used is the
+// Lojas Renner (lojasrenner.com.br, the Brazilian fashion retailer), 7 operations, 1 credit each; credits_used is the
 // truth. Brazil only, BRL. Listings are slow at the source (usually 30 to 200 s) and carry a 300s timeout; product,
-// SKU price and stores take 5 to 30 s and carry 240s.
+// SKU price and stores take 5 to 30 s, reviews 2 to 20 s, and carry 240s.
 const request = (url: string, timeout: number, emptyBody = false) => ({
 	request: { method: 'POST' as const, url, timeout, ...(emptyBody ? { body: {} } : {}) },
 });
@@ -127,8 +127,15 @@ export const rennerOperations: INodeProperties[] = [
 				name: 'Get Product',
 				value: 'product',
 				action: 'Get a lojas renner product',
-				description: `One product of ${SITE} by product ID or link, optionally a SKU to pick the colour and size: product_id, requested_sku, sku, sku_matched, name, brand, URL, color, size, price, list_price, on_sale, discount_percent, ${INSTALLMENTS}, rating, review_count, ${FLAGS}, marketplace, seller, gender, categories, breadcrumbs, composition, details, images, colors with their sizes and SKUs, size_count, sizes_available and sizes (the sizes of the colour shown, with the site's availability flags: flags, not unit counts). rating is the aggregate only. Not available: review texts, shipping quotes by CEP, the marketing description. An unknown product is a charged not-found. Captured 2026-11-27: a pair of trousers at 199.90 BRL (list 219.90), 6 interest-free Cartao Renner installments of 33.32, rated 4.4 from 21 reviews. ${ONE}`,
+				description: `One product of ${SITE} by product ID or link, optionally a SKU to pick the colour and size: product_id, requested_sku, sku, sku_matched, name, brand, URL, color, size, price, list_price, on_sale, discount_percent, ${INSTALLMENTS}, rating, review_count, ${FLAGS}, marketplace, seller, gender, categories, breadcrumbs, composition, details, images, colors with their sizes and SKUs, size_count, sizes_available and sizes (the sizes of the colour shown, with the site's availability flags: flags, not unit counts). rating is the aggregate; the reviews themselves come from Get Reviews. Not available: shipping quotes by CEP, the marketing description. An unknown product is a charged not-found. Captured 2026-11-27: a pair of trousers at 199.90 BRL (list 219.90), 6 interest-free Cartao Renner installments of 33.32, rated 4.4 from 21 reviews. ${ONE}`,
 				routing: request('/api/v1/renner/product', FAST_MS),
+			},
+			{
+				name: 'Get Reviews',
+				value: 'reviews',
+				action: 'Get lojas renner product reviews',
+				description: `The customer reviews of one product of ${SITE}, by product ID or link, as the product page shows them: product_id, page, per_page, sort, filter, rating_filter, total (the product's review count; null with a filter or star rating, which the store gives no count for), has_more, count, product_name, rating (average and count; the store shows no star histogram), reviews (ID, rating, title, text, date, purchase_date as the date of the order the review is linked to, recommends, helpful_votes, unhelpful_votes, photos, attributes as the store's follow-up questions such as size and fit, store_reply, imported, influencer) and notes. Sorted newest (default) or most helpful; filtered positive (ratings 3 to 5), negative (ratings 1 to 2) or with photos, or one star rating (one or the other); up to 100 per page. Reviews can lag the product page by up to 4 hours. Review text is the customer's own; reviewer names are never returned. No questions and answers. A product ID the reviews do not know is a charged not-found, or an empty answer (count 0, charged). Captured 2026-11-28: a satin shirt rated 4.6 from 742 reviews. ${ONE}`,
+				routing: request('/api/v1/renner/reviews', FAST_MS),
 			},
 			{
 				name: 'Get SKU Price',
@@ -225,6 +232,72 @@ export const rennerFields: INodeProperties[] = [
 		displayOptions: show(['sku_price']),
 		routing: { request: { body: { sku: '={{ String($value).trim() }}' } } },
 		description: 'The size SKU (sizes sku of Get Product)',
+	},
+
+	// -- Get Reviews --
+	productField('rennerReviewsProduct', ['reviews']),
+	{
+		displayName: 'Additional Options',
+		name: 'rennerReviewsOptions',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
+		displayOptions: show(['reviews']),
+		options: [
+			{
+				displayName: 'Filter',
+				name: 'rennerReviewsFilter',
+				type: 'options',
+				default: 'all',
+				description: 'Positive is ratings 3 to 5, negative ratings 1 to 2. Not combined with Star Rating.',
+				options: [
+					{ name: 'All', value: 'all' },
+					{ name: 'Negative', value: 'negative' },
+					{ name: 'Positive', value: 'positive' },
+					{ name: 'With Photos', value: 'with_photos' },
+				],
+				routing: { request: { body: { filter: '={{ $value === "all" ? undefined : $value }}' } } },
+			},
+			{
+				displayName: 'Page',
+				name: 'rennerReviewsPage',
+				type: 'number',
+				default: 1,
+				typeOptions: { minValue: 1, maxValue: 200 },
+				description: 'Reviews page, 1 to 200',
+				routing: { request: { body: { page: '={{ $value > 1 ? $value : undefined }}' } } },
+			},
+			{
+				displayName: 'Reviews Per Page',
+				name: 'rennerReviewsPerPage',
+				type: 'number',
+				default: 20,
+				typeOptions: { minValue: 1, maxValue: 100 },
+				description: 'Reviews per page, 1 to 100',
+				routing: { request: { body: { per_page: '={{ $value === 20 ? undefined : $value }}' } } },
+			},
+			{
+				displayName: 'Sort',
+				name: 'rennerReviewsSort',
+				type: 'options',
+				default: 'newest',
+				description: 'Newest first, or the most helpful votes at the top',
+				options: [
+					{ name: 'Most Helpful', value: 'most_helpful' },
+					{ name: 'Newest', value: 'newest' },
+				],
+				routing: { request: { body: { sort: '={{ $value === "newest" ? undefined : $value }}' } } },
+			},
+			{
+				displayName: 'Star Rating',
+				name: 'rennerReviewsRating',
+				type: 'number',
+				default: 0,
+				typeOptions: { minValue: 0, maxValue: 5 },
+				description: 'Only reviews with this many stars, 1 to 5 (0 for every rating). Not combined with Filter.',
+				routing: { request: { body: { rating: '={{ $value > 0 ? $value : undefined }}' } } },
+			},
+		],
 	},
 
 	// -- Get Stores --

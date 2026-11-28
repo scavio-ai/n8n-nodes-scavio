@@ -4,9 +4,9 @@ const show = (operation: string[], extra: Record<string, string[]> = {}) => ({
 	show: { resource: ['cea'], operation, ...extra },
 });
 
-// C&A Brasil (cea.com.br, the Brazilian arm of the C&A fashion chain), 10 operations, 1 credit each; credits_used is
-// the truth. Brazil only, BRL. Listings usually take 5 to 100 s and carry a 300s timeout; the others take 2 to 15 s
-// and carry 180s.
+// C&A Brasil (cea.com.br, the Brazilian arm of the C&A fashion chain), 11 operations, 1 credit each; credits_used is
+// the truth. Brazil only, BRL. Listings usually take 5 to 100 s and carry a 300s timeout; reviews take 2 to 20 s, the
+// others 2 to 15 s, and carry 180s.
 const request = (url: string, timeout: number, emptyBody = false) => ({
 	request: { method: 'POST' as const, url, timeout, ...(emptyBody ? { body: {} } : {}) },
 });
@@ -148,8 +148,15 @@ export const ceaOperations: INodeProperties[] = [
 				name: 'Get Product',
 				value: 'product',
 				action: 'Get a c and a brasil product',
-				description: `One product of ${SITE} by product ID, size SKU, slug or link: product_id, name, brand, labels, reference, model_id, URL, images, available, price, list_price, discount_percent, pix_price, best_installment, installments (each payment method's longest plan, e.g. C&A Pay), colors, ${SIZES} with each size's seller, categories, specifications (material, fit, sleeve, made in...), collection_ids and release_date. Not available: marketing description, EAN (the site leaves it empty), reviews (no texts, no aggregate), Q&A, store units, price history. An unknown product is a charged not-found. Captured 2026-11-27: an oversized cotton t-shirt at 99.99 BRL in 5 sizes, payable in 3 interest-free C&A Pay installments of 33.33. ${ONE}`,
+				description: `One product of ${SITE} by product ID, size SKU, slug or link: product_id, name, brand, labels, reference, model_id, URL, images, available, price, list_price, discount_percent, pix_price, best_installment, installments (each payment method's longest plan, e.g. C&A Pay), colors, ${SIZES} with each size's seller, categories, specifications (material, fit, sleeve, made in...), collection_ids and release_date. The reviews and the rating summary come from Get Reviews. Not available: marketing description, EAN (the site leaves it empty), Q&A, store units, price history. An unknown product is a charged not-found. Captured 2026-11-27: an oversized cotton t-shirt at 99.99 BRL in 5 sizes, payable in 3 interest-free C&A Pay installments of 33.33. ${ONE}`,
 				routing: request('/api/v1/cea/product', FAST_MS),
+			},
+			{
+				name: 'Get Reviews',
+				value: 'reviews',
+				action: 'Get c and a brasil product reviews',
+				description: `The customer reviews of one product of ${SITE}, by product ID, as the product page shows them: product_id, page, per_page, sort, filter, rating_filter, total (the reviews matching the request, from the rating summary), has_more, count, product_name, rating (average, count, histogram per star), review_counts (total, positive as ratings 3 to 5, negative as ratings 1 to 2, with_photos), reviews (ID, rating, title, text, date, purchase_date as the date of the order the review is linked to, recommends, helpful_votes, unhelpful_votes, photos, attributes as the store's follow-up questions such as size, fit and height, store_reply, imported, influencer, purchased as the size SKU, size and colour bought where the review carries it) and notes. Sorted newest (default) or most helpful; filtered positive (ratings 3 to 5), negative (ratings 1 to 2) or with photos, or one star rating (one or the other); up to 100 per page. Reviews can lag the product page by up to 4 hours. Review text is the customer's own; reviewer names are never returned. No questions and answers. A product ID the reviews do not know answers with no reviews (count 0, charged), or a charged not-found. Captured 2026-11-28: a white low-top sneaker rated 4.5 from 1189 reviews, 854 of them five-star. ${ONE}`,
+				routing: request('/api/v1/cea/reviews', FAST_MS),
 			},
 			{
 				name: 'Get Search Suggestions',
@@ -330,6 +337,82 @@ export const ceaFields: INodeProperties[] = [
 		},
 		description:
 			'The product ID (product_id of a listing), the SKU of one size (sizes sku), the product slug (the link path before /p) or a cea.com.br product link, as chosen in Look Up By',
+	},
+
+	// -- Get Reviews --
+	{
+		displayName: 'Product ID',
+		name: 'ceaReviewsProductId',
+		type: 'string',
+		required: true,
+		default: '',
+		placeholder: '3700395',
+		displayOptions: show(['reviews']),
+		routing: { request: { body: { product_id: '={{ String($value).trim() }}' } } },
+		description: 'The product ID (product_id of a listing or of Get Product), not a size SKU or the reference',
+	},
+	{
+		displayName: 'Additional Options',
+		name: 'ceaReviewsOptions',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
+		displayOptions: show(['reviews']),
+		options: [
+			{
+				displayName: 'Filter',
+				name: 'ceaReviewsFilter',
+				type: 'options',
+				default: 'all',
+				description: 'Positive is ratings 3 to 5, negative ratings 1 to 2. Not combined with Star Rating.',
+				options: [
+					{ name: 'All', value: 'all' },
+					{ name: 'Negative', value: 'negative' },
+					{ name: 'Positive', value: 'positive' },
+					{ name: 'With Photos', value: 'with_photos' },
+				],
+				routing: { request: { body: { filter: '={{ $value === "all" ? undefined : $value }}' } } },
+			},
+			{
+				displayName: 'Page',
+				name: 'ceaReviewsPage',
+				type: 'number',
+				default: 1,
+				typeOptions: { minValue: 1, maxValue: 200 },
+				description: 'Reviews page, 1 to 200',
+				routing: { request: { body: { page: '={{ $value > 1 ? $value : undefined }}' } } },
+			},
+			{
+				displayName: 'Reviews Per Page',
+				name: 'ceaReviewsPerPage',
+				type: 'number',
+				default: 20,
+				typeOptions: { minValue: 1, maxValue: 100 },
+				description: 'Reviews per page, 1 to 100',
+				routing: { request: { body: { per_page: '={{ $value === 20 ? undefined : $value }}' } } },
+			},
+			{
+				displayName: 'Sort',
+				name: 'ceaReviewsSort',
+				type: 'options',
+				default: 'newest',
+				description: 'Newest first, or the most helpful votes at the top',
+				options: [
+					{ name: 'Most Helpful', value: 'most_helpful' },
+					{ name: 'Newest', value: 'newest' },
+				],
+				routing: { request: { body: { sort: '={{ $value === "newest" ? undefined : $value }}' } } },
+			},
+			{
+				displayName: 'Star Rating',
+				name: 'ceaReviewsRating',
+				type: 'number',
+				default: 0,
+				typeOptions: { minValue: 0, maxValue: 5 },
+				description: 'Only reviews with this many stars, 1 to 5 (0 for every rating). Not combined with Filter.',
+				routing: { request: { body: { rating: '={{ $value > 0 ? $value : undefined }}' } } },
+			},
+		],
 	},
 
 	// -- Get Shipping --
